@@ -28,21 +28,23 @@ All times Mountain (MDT, UTC-6). Integration keeps this file current at every tr
 
 ## Beats on main
 
-| Beat                 | Status  | Note                         |
-| -------------------- | ------- | ---------------------------- |
-| 1 Traffic report     | missing | stage app is UI PR #18, held |
-| 2 Race               | missing |                              |
-| 3 Crash              | missing |                              |
-| 4 Re-plan            | missing |                              |
-| 5 Envelope and proof | missing |                              |
-| 6 Scale and close    | missing |                              |
+| Beat                 | Status | Note                        |
+| -------------------- | ------ | --------------------------- |
+| 1 Traffic report     | ok     | #155                        |
+| 2 Race               | ok     | #168                        |
+| 3 Crash              | ok     | #169; Mountain heatmap #173 |
+| 4 Re-plan            | ok     | #170                        |
+| 5 Envelope and proof | ok     | #171                        |
+| 6 Scale and close    | ok     | #172                        |
 
 ## Train log
 
-| Train | Tagged (MT) | Merged                                                                    | Gate                                                     | Cuts |
-| ----- | ----------- | ------------------------------------------------------------------------- | -------------------------------------------------------- | ---- |
-| 1     | Tue 8:50am  | integration #119, #123                                                    | check:all green                                          | none |
-| 2     | Tue 9:15am  | data #114, #116, #121; engine #113; pitch #17, #15, #16; integration #126 | check:all green; offline-check and facts-check not built | none |
+| Train | Tagged (MT) | Merged                                                                    | Gate                                                                     | Cuts |
+| ----- | ----------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ---- |
+| 1     | Tue 8:50am  | integration #119, #123                                                    | check:all green                                                          | none |
+| 2     | Tue 9:15am  | data #114, #116, #121; engine #113; pitch #17, #15, #16; integration #126 | check:all green; offline-check and facts-check not built                 | none |
+| 3     | Tue 11:55am | data #124; engine #118, #122, #143; integration #132, #147, #149          | check:all green                                                          | none |
+| 4     | not tagged  | data #151; integration #166, #167; ui #155, #168 to #172                  | 4:08pm: check:all green; offline 6/6; facts-check 1 fail (fixed by #167) | none |
 
 ## Rehearsal log
 
@@ -61,7 +63,24 @@ npx tsx engine/cli/envelope.ts public/data/bundle_2026-10-28.json
 npm run check:all
 ```
 
-Then: every merged stretch CLI that writes a per-day file (none yet), the engine re-pin command (asked for on #3, due by Train 5), and the checks in section 6.5 step 4. Final by Train 5.
+Then: every merged stretch CLI that writes a per-day file (none yet) and the checks in section 6.5 step 4. No engine re-pin is needed: the pins run on `contracts/fixtures`.
+
+**Data step tonight.** `prep/refresh_tonight.py` (#44) is not on main. If #44 has not merged by 8:30pm, the data step is this command instead. It is already on main and proven in the dry run. Run it from the int worktree every 5 minutes from about 9:16pm, last try 10:00pm:
+
+```bash
+python -I prep/build_bundle.py --day 2026-10-28 --refetch --out ../clearlane-raw/refresh/bundle_2026-10-28.json
+```
+
+It validates the whole day before an atomic write, and any failure exits non-zero. Copy the file into `public/data/` only after an exit 0 with 24 hours. Then run the engine commands above.
+
+**Must merge before 9:16pm** (found by the dry run; otherwise check:all goes red on any new day): engine `numbers.test.ts:436` reads the Oct 27 bundle by name (#3); ui `App.test.tsx:121` expects "Today" for an Oct 27 clock (#4).
+
+**Dry run, Tue 5:10pm**, on `int/refresh-dry` (never pushed):
+
+- Oct 27 rebuilt from the cache: byte-identical to the committed bundle.
+- Forced OASIS failure (dead proxy): exit 1; `public/data` hashes unchanged.
+- Synthetic Oct 28 (Oct 27 re-dated): both engine CLIs ran; facts-check PASS; build ok; offline-check PASS 6/6, 0 external requests; pitch resolver: 50 keys, none unresolved.
+- check:all: the two day-coupled tests above failed, plus three 5 s timeouts in CLI-spawning tests that pass alone. The timeouts are fixed in `vitest.config.ts`.
 
 ## Stage flag set
 
