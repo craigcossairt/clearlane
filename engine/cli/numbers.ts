@@ -1,7 +1,8 @@
 // Writes public/derived/numbers.json: every stage number, with its provenance, sorted by key.
 // Usage: npx tsx engine/cli/numbers.ts <bundle.json> [--backtest file] [--torus file] [--hist file]
 //          [--snapshot file] [--research dir] [--facts docs/FACTS.md] [--out public/derived/numbers.json]
-// A missing optional input omits its keys and says which (exit 0). A missing bundle exits 2.
+// A missing optional input omits its keys and says which (exit 0). A missing bundle or an incomplete
+// research folder exits 2.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import type {
@@ -58,7 +59,13 @@ if (backtest && validateBacktest(backtest.data).length) {
 const torus = optional("torus", (t) => JSON.parse(t) as TorusPublished);
 const hist = optional("hist", (t) => JSON.parse(t) as HistDay[]);
 const snap = optional("snapshot", snapshotPricesFromCsv);
-const researchData = loadResearch(researchDir);
+let researchData: ReturnType<typeof loadResearch>;
+try {
+  researchData = loadResearch(researchDir);
+} catch (err) {
+  console.error(`invalid research folder ${researchDir}: ${String(err)}`);
+  process.exit(2);
+}
 if (!researchData) omitted.push(`research (${researchDir})`);
 
 const reg = registryWithNewKeys(factsRegistry(readFileSync(factsPath, "utf8")));

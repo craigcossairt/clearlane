@@ -1,4 +1,8 @@
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { loadResearch } from "../cli/research";
 import {
   eiaHours,
   oasisLmp,
@@ -106,5 +110,47 @@ describe("where vs when", () => {
     }
     const r = whereVsWhen(oasisLmp(oasis(rows)), ["P", "Q"], "P");
     expect(r.cheapest_share_pct).toEqual({ P: 100, Q: 0 });
+  });
+});
+
+describe("loadResearch", () => {
+  const tree = (files: Record<string, string>) => {
+    const root = mkdtempSync(join(tmpdir(), "research-"));
+    for (const [p, text] of Object.entries(files)) {
+      mkdirSync(dirname(join(root, p)), { recursive: true });
+      writeFileSync(join(root, p), text);
+    }
+    return root;
+  };
+  const full = {
+    "data/eia930/a.csv": "x\n1",
+    "data/oasis/dam_oct/b.csv": "x\n1",
+    "analysis/option2/oct/c.csv": "x\n1",
+  };
+
+  it("reads a complete corpus", () => {
+    expect(loadResearch(tree(full))!.eia).toHaveLength(1);
+  });
+
+  it("returns null only when every folder is absent", () => {
+    expect(loadResearch(tree({}))).toBeNull();
+  });
+
+  it("throws on a partial corpus", () => {
+    const { "data/eia930/a.csv": _, ...partial } = full;
+    expect(() => loadResearch(tree(partial))).toThrow(/data\/eia930/);
+  });
+
+  it("throws on a wrong file count", () => {
+    expect(() =>
+      loadResearch(tree({ ...full, "data/oasis/dam_oct/z.csv": "x\n1" })),
+    ).toThrow(/one CSV/);
+  });
+
+  it("throws when a folder path is a file", () => {
+    const root = tree({ ...full });
+    rmSync(join(root, "analysis/option2/oct"), { recursive: true });
+    writeFileSync(join(root, "analysis/option2/oct"), "not a folder");
+    expect(() => loadResearch(root)).toThrow();
   });
 });
