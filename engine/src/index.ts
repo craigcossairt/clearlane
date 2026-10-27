@@ -25,3 +25,8 @@ export {
   stepLimits,
 } from "./limits";
 export type { LimitOpts, SiteDpOpts, StepLimits } from "./limits";
+export { DEFAULT_WEAR_USD_MWH, POLICY_LABEL, solve } from "./policies";
+export type { SolveOpts } from "./policies";
+export { checkPlan } from "./checkPlan";
+export { buildPlan, schFlags } from "./plan";
+export type { Schedule } from "./plan";
