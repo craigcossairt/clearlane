@@ -2,6 +2,7 @@
 import { act, cleanup, fireEvent, render } from "@testing-library/react";
 import type { Bundle } from "@contracts/types";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { STUB_ACTIVE } from "./engineClient";
 import { App, BEATS } from "./App";
 import { loadStageData, type StageData } from "./data";
 
@@ -114,14 +115,15 @@ describe("day switch", () => {
 });
 
 describe("shell", () => {
-  it("shows the day label, node, snapshot time, stub banner and chip legend", () => {
+  it("shows the day label, node, snapshot time, the stub banner only while the stub runs, and the chip legend", () => {
     const { container } = render(<App data={data} now={NOW} search="" />);
     const text = container.textContent ?? "";
     expect(text).toContain("Today");
     expect(text).toContain("ELAP_PACE-APND");
     expect(text).toMatch(/Snapshot, fetched .+ MT/);
-    expect(text).toContain("Engine stub: not engine output");
+    expect(text.includes("Engine stub: not engine output")).toBe(STUB_ACTIVE);
     expect(text).toContain("TORUS PUBLISHED: from Torus");
+    // The slot is reserved either way, so the header never resizes.
     expect(container.querySelector('[data-slot="stub-banner"]')).toBeTruthy();
   });
 

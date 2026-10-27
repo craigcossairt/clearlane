@@ -15,6 +15,8 @@ export const STAGE_KEYS: Record<number, readonly string[]> = {
     "lane_clear_max_usd",
     "lane_jam_min_usd",
     "peak_hour_mt",
+    "oct_step_hour_days_at_5_or_6",
+    "oct_step_hour_days_total",
   ],
   // Reference set only, so one card never mixes two plans.
   2: [

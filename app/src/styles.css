@@ -489,3 +489,6 @@ td {
     height: auto;
   }
 }
+.ribbon-caption {
+  margin: 8px 0 0;
+}

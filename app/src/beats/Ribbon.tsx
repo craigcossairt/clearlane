@@ -4,54 +4,92 @@ import { hourLabel } from "../components/Time";
 import { COPY } from "../copy";
 import type { BeatProps } from "./types";
 
-const LANE_WORD: Record<Lane, string> = {
+export const LANE_WORD: Record<Lane, string> = {
   clear: "Clear",
   shoulder: "Shoulder",
   jam: "Jam",
 };
 
-/** Beat 1 (core 4 only starts here): the day as a road, lanes from the engine. */
+// Chart geometry (viewBox units, not data).
+const X0 = 56;
+const CELL = 36;
+const BAR_W = 31;
+const BAR_TOP = 10;
+const BAR_BASE = 126;
+const STRIP_Y = 132;
+const STRIP_H = 58;
+const TICK_Y = 208;
+
+/**
+ * Beat 1: the day as a road. Lanes come from the engine through engineClient (live.day.lanes),
+ * never from typed hours. Every hour cell carries its lane word, so color is never the only
+ * signal. Hour 0 is drawn as the bundle has it (see bundle.notes); hours are never reordered.
+ */
 export function Ribbon({ live }: BeatProps) {
   const hours = live.bundle.hours;
   // Chart scaling only: each series is drawn against its own peak. No value is shown from this.
   const maxPrice = Math.max(...hours.map((h) => h.lmp_usd_mwh), 1);
   const maxSolar = Math.max(...hours.map((h) => h.solar_fcst_mw), 1);
   const maxNet = Math.max(...hours.map((h) => h.net_load_mw), 1);
+  const barH = BAR_BASE - BAR_TOP;
+  const solarPts = linePoints(hours, (h) => h.solar_fcst_mw / maxSolar);
+  const firstX = X0 + BAR_W / 2;
+  const lastX = X0 + (hours.length - 1) * CELL + BAR_W / 2;
 
   return (
     <section className="beat" aria-labelledby="beat-ribbon">
-      <h2 id="beat-ribbon">Traffic report</h2>
-      <p className="muted">
-        Day-ahead price for PacifiCorp East, {COPY.axisCaption}.
-      </p>
+      <h2 id="beat-ribbon">{COPY.ribbonTitle}</h2>
+      <p className="muted">{COPY.ribbonSubtitle}</p>
       <svg
         className="chart"
-        viewBox="0 0 960 280"
+        viewBox="0 0 960 230"
         role="img"
-        aria-label="Twenty-four hours colored by lane, with solar and net load"
+        aria-label={COPY.ribbonAria}
+        data-slot="ribbon-chart"
       >
         {hours.map((hour, index) => {
           const lane = live.day.lanes[index] ?? "shoulder";
-          const x = 48 + index * 37;
-          const h = (hour.lmp_usd_mwh / maxPrice) * 180;
+          const x = X0 + index * CELL;
+          const h = (hour.lmp_usd_mwh / maxPrice) * barH;
+          const cx = x + BAR_W / 2;
+          const wy = STRIP_Y + STRIP_H - 6;
           return (
-            <g key={hour.ts_utc}>
+            <g key={hour.ts_utc} data-lane={lane}>
               <rect
                 x={x}
-                y={210 - h}
-                width={32}
+                y={BAR_BASE - h}
+                width={BAR_W}
                 height={h}
                 fill={`var(--${lane})`}
                 rx={2}
+              />
+              <rect
+                x={x}
+                y={STRIP_Y}
+                width={BAR_W}
+                height={STRIP_H}
+                fill={`var(--${lane})`}
+                opacity={0.35}
+                rx={2}
+              />
+              <text
+                className="lane-word"
+                x={cx}
+                y={wy}
+                transform={`rotate(-90 ${cx} ${wy})`}
+                fill="var(--ink)"
+                fontSize={13}
+                dominantBaseline="middle"
               >
-                <title>{LANE_WORD[lane]}</title>
-              </rect>
-              {index % 6 === 0 ? (
+                {LANE_WORD[lane]}
+              </text>
+              {index % 3 === 0 ? (
                 <text
-                  x={x}
-                  y={236}
+                  x={cx}
+                  y={TICK_Y}
                   fill="var(--muted)"
                   fontSize={14}
+                  textAnchor="middle"
                   data-axis=""
                 >
                   {hourLabel(hour.hour_mt)}
@@ -60,41 +98,45 @@ export function Ribbon({ live }: BeatProps) {
             </g>
           );
         })}
+        <polygon
+          fill="var(--solar)"
+          opacity={0.25}
+          points={`${firstX},${BAR_BASE} ${solarPts} ${lastX},${BAR_BASE}`}
+        />
         <polyline
           fill="none"
           stroke="var(--solar)"
           strokeWidth={3}
-          points={linePoints(hours, (h) => h.solar_fcst_mw / maxSolar)}
+          points={solarPts}
         />
         <polyline
           fill="none"
           stroke="var(--ink)"
-          strokeWidth={3}
+          strokeWidth={4}
           points={linePoints(hours, (h) => h.net_load_mw / maxNet)}
         />
-        <text x={48} y={266} fill="var(--muted)" fontSize={14}>
+        <text x={X0} y={226} fill="var(--muted)" fontSize={14}>
           {COPY.axisCaption}
         </text>
       </svg>
       <div className="legend">
-        <span>
-          <i className="swatch lane-clear" /> {LANE_WORD.clear}
-        </span>
-        <span>
-          <i className="swatch lane-shoulder" /> {LANE_WORD.shoulder}
-        </span>
-        <span>
-          <i className="swatch lane-jam" /> {LANE_WORD.jam}
-        </span>
-        <span>Gold line: solar forecast, scaled to its own peak</span>
-        <span>Ink line: net load, scaled to its own peak</span>
+        <span>{COPY.ribbonLegendBars}</span>
+        <span>{COPY.ribbonLegendSolar}</span>
+        <span>{COPY.ribbonLegendNet}</span>
       </div>
-      <p>
-        Net load climbs <Num k="net_load_climb_mw" /> by the evening step. The
-        peak price <Num k="peak_price" /> is <Num k="peak_over_trough" /> the
-        low <Num k="price_min_oct27" />. The solar forecast falls from{" "}
-        <Num k="solar_4pm_to_6pm_mw_4pm" /> to{" "}
-        <Num k="solar_4pm_to_6pm_mw_6pm" />.
+      <p className="ribbon-caption" data-slot="ribbon-caption">
+        {COPY.ribbonPeak1} <Num k="peak_over_trough" /> {COPY.ribbonPeak2}{" "}
+        <Num k="peak_hour_mt" /> ({COPY.ribbonFrom} <Num k="price_min_oct27" />{" "}
+        {COPY.ribbonTo} <Num k="peak_price" />
+        ). {COPY.ribbonNet} <Num k="net_load_climb_mw" /> {COPY.ribbonMw}{" "}
+        {COPY.ribbonSolar} <Num k="solar_4pm_to_6pm_mw_4pm" /> {COPY.ribbonTo}{" "}
+        <Num k="solar_4pm_to_6pm_mw_6pm" /> {COPY.ribbonMw}.
+      </p>
+      <p className="ribbon-caption" data-slot="ribbon-lanes">
+        {COPY.ribbonLanes1} <Num k="lane_clear_max_usd" />
+        {COPY.ribbonLanes2} <Num k="lane_jam_min_usd" />
+        {COPY.ribbonLanes3} <Num k="oct_step_hour_days_at_5_or_6" />{" "}
+        {COPY.ribbonOf} <Num k="oct_step_hour_days_total" /> {COPY.ribbonStep}
       </p>
     </section>
   );
@@ -105,6 +147,9 @@ function linePoints(
   scale: (hour: HourSignal) => number,
 ): string {
   return hours
-    .map((hour, index) => `${48 + index * 37 + 16},${210 - scale(hour) * 180}`)
+    .map(
+      (_hour, index) =>
+        `${X0 + index * CELL + BAR_W / 2},${BAR_BASE - scale(hours[index]!) * (BAR_BASE - BAR_TOP)}`,
+    )
     .join(" ");
 }

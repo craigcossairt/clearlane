@@ -10,7 +10,11 @@ import type {
   TorusPublished,
 } from "@contracts/types";
 import {
+  buildEnvelope,
+  crash as engineCrash,
   defaultSite as engineDefaultSite,
+  scriptedCalls as engineScriptedCalls,
+  solve as engineSolve,
   laneThresholds as engineLaneThresholds,
   lanes as engineLanes,
   option2Shift as engineOption2Shift,
@@ -34,13 +38,17 @@ import {
  * The only module that imports @engine or app/src/stub. Swapping the stub for the real engine
  * (core 10) changes this file and nothing else.
  *
- * Real engine today: lanes, lane thresholds, System Critical Hours, the reference race values a
- * stub plan carries, fleet scaling, the Option 2 shift and the heatmap rotation.
- * Stub today (STUB_ACTIVE): solve, crash, the ghost and the envelope, because those engine
- * exports are not on main yet. While the stub is active the header shows
+ * Real engine (engine cores 4 to 12 on main): lanes, lane thresholds, System Critical Hours, the
+ * default site, solve, the scripted calls, crash with its re-plan, the ghost, the envelope, fleet
+ * scaling, the Option 2 shift and the heatmap rotation.
+ * The stub stays as the fallback behind STUB_ACTIVE: set it to true to run solve, crash, the
+ * ghost and the envelope on the labeled stub again. While the stub is active the header shows
  * "Engine stub: not engine output".
  */
-export const STUB_ACTIVE = true;
+export const STUB_ACTIVE: boolean = false;
+
+/** The bundle each live plan was solved on, so crash() can re-plan without a wider signature. */
+const planBundle = new WeakMap<Plan, Bundle>();
 
 export type { LaneThresholds, Option2Shift };
 
@@ -67,6 +75,7 @@ export function dayLanes(bundle: Bundle): DayLanes {
  * load and ceiling, which the stub's fixed timetables respect.
  */
 export function defaultSite(): Site {
+  if (!STUB_ACTIVE) return engineDefaultSite();
   return {
     ...engineDefaultSite(),
     host_load_kw_15m: stubHostLoadKw15m(),
@@ -75,6 +84,11 @@ export function defaultSite(): Site {
 }
 
 export function solve(bundle: Bundle, site: Site, policy: Policy): Plan {
+  if (!STUB_ACTIVE) {
+    const plan = engineSolve(bundle, site, policy);
+    planBundle.set(plan, bundle);
+    return plan;
+  }
   const race = referenceRace(bundle);
   const leg =
     policy === "fixed_overnight"
@@ -95,6 +109,10 @@ export interface ScriptedCalls {
 
 /** The 6:40pm MT call and the second press inside its refill window (both SIMULATED). */
 export function scriptedCalls(bundle: Bundle, site: Site): ScriptedCalls {
+  if (!STUB_ACTIVE) {
+    const [first, second] = engineScriptedCalls(bundle, site);
+    return { first, second };
+  }
   const first = stubScriptedCall(bundle, site, CALL_DURATION_S);
   return { first, second: stubSecondCall(first) };
 }
@@ -110,6 +128,13 @@ export function crash(
   torus: TorusPublished | null,
   first?: CrashEvent,
 ): CrashResult {
+  if (!STUB_ACTIVE) {
+    const bundle = planBundle.get(plan);
+    if (!bundle) throw new Error("crash: plan was not solved through engineClient.solve");
+    // The engine takes the first call's result as the prior; recompute it from its event.
+    const prior = first ? engineCrash(plan, site, bundle, first) : undefined;
+    return engineCrash(plan, site, bundle, event, prior);
+  }
   return stubCrash(plan, site, event, first, torus);
 }
 
@@ -119,6 +144,11 @@ export function envelope(
   site: Site,
   fleetKw: number,
 ): Envelope {
+  if (!STUB_ACTIVE)
+    return buildEnvelope(plan, site, bundle, {
+      fleet_kw: fleetKw,
+      generated_utc: bundle.fetched_utc,
+    });
   const day = dayLanes(bundle);
   return stubEnvelope(bundle, day.lanes, day.critical, plan, fleetKw, site);
 }
