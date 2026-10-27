@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img">
+<title>Backtest spread of daily value by policy, May to October 2026</title>
+<desc>One row per policy: a bar from P10 to P90 of daily value in $/MW-day, a tick at P50 and a dot at the mean. fixed_overnight P50 $7.75; price_only P50 $44.91; clearlane P50 $39.21. Window May 1 to Oct 27 2026, 179 days, missing: 2026-05-01. Value to RMP's system at day-ahead prices. The fixed overnight rule is our comparison rule, not Torus practice.</desc>
+<defs><pattern id="hatch-accent" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect x="0" y="0" width="16" height="16" fill="#f6f5f1"/><rect x="0" y="0" width="7" height="16" fill="#1c5bb8"/></pattern></defs>
+<rect x="0" y="0" width="1920" height="1080" fill="#f6f5f1"/>
+<text x="48" y="84" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="52" font-weight="bold" text-anchor="start" fill="#1b1c1e">One good day proves little: daily value over the whole backtest</text>
+<text x="48" y="136" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="normal" text-anchor="start" fill="#5a5d63">$/MW-day, one simulated Torus-style station, May 1 to Oct 27 2026, 179 days, missing: 2026-05-01</text>
+<text x="48" y="190" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="normal" text-anchor="start" fill="#1b1c1e">Bar: P10 to P90 of daily values.  Tick and number: P50.  Dot: mean.</text>
+<line x1="620" y1="310" x2="620" y2="780" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="620" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">-$20</text>
+<line x1="772.5" y1="310" x2="772.5" y2="780" stroke="#1b1c1e" stroke-width="2"/>
+<text x="772.5" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">$0</text>
+<line x1="925" y1="310" x2="925" y2="780" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="925" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">$20</text>
+<line x1="1077.5" y1="310" x2="1077.5" y2="780" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="1077.5" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">$40</text>
+<line x1="1230" y1="310" x2="1230" y2="780" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="1230" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">$60</text>
+<line x1="1382.5" y1="310" x2="1382.5" y2="780" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="1382.5" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">$80</text>
+<line x1="1535" y1="310" x2="1535" y2="780" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="1535" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">$100</text>
+<line x1="1687.5" y1="310" x2="1687.5" y2="780" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="1687.5" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">$120</text>
+<line x1="1840" y1="310" x2="1840" y2="780" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="1840" y="820" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="middle" fill="#5a5d63">$140</text>
+<text x="1230" y="866" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#5a5d63">value per MW per day ($/MW-day)</text>
+<text x="48" y="366" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="start" fill="#1b1c1e">Fixed overnight rule</text>
+<text x="48" y="406" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#5a5d63">fixed_overnight</text>
+<rect data-role="p10-p90" x="663.76" y="342" width="544.75" height="56" fill="#f6eedb" stroke="#b97d0c" stroke-width="3"/>
+<rect x="538.56" y="352" width="117.2" height="36" fill="#f6f5f1"/>
+<text x="651.76" y="379" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#5a5d63">-$14.26</text>
+<rect x="1216.51" y="352" width="101.6" height="36" fill="#f6f5f1"/>
+<text x="1220.51" y="379" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#5a5d63">$57.18</text>
+<line data-role="p50" x1="831.6" y1="328" x2="831.6" y2="412" stroke="#1b1c1e" stroke-width="6"/>
+<text x="831.6" y="318" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="40" font-weight="bold" text-anchor="middle" fill="#1b1c1e">P50 $7.75</text>
+<circle data-role="mean" cx="903.94" cy="428" r="11" fill="#b97d0c" stroke="#1b1c1e" stroke-width="4"/>
+<text x="923.94" y="437" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#1b1c1e">mean $17.24</text>
+<text x="48" y="536" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="start" fill="#1b1c1e">Price only</text>
+<text x="48" y="576" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#5a5d63">price_only</text>
+<rect data-role="p10-p90" x="932.42" y="512" width="857.41" height="56" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="3"/>
+<rect x="822.82" y="522" width="101.6" height="36" fill="#f6f5f1"/>
+<text x="920.42" y="549" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#5a5d63">$20.97</text>
+<rect x="1797.84" y="522" width="117.2" height="36" fill="#f6f5f1"/>
+<text x="1801.84" y="549" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#5a5d63">$133.42</text>
+<line data-role="p50" x1="1114.91" y1="498" x2="1114.91" y2="582" stroke="#1b1c1e" stroke-width="6"/>
+<text x="1114.91" y="488" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="40" font-weight="bold" text-anchor="middle" fill="#1b1c1e">P50 $44.91</text>
+<circle data-role="mean" cx="1235.07" cy="598" r="11" fill="#1c5bb8" stroke="#1b1c1e" stroke-width="4"/>
+<text x="1255.07" y="607" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#1b1c1e">mean $60.66</text>
+<text x="48" y="706" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="start" fill="#1b1c1e">Clearlane</text>
+<text x="48" y="746" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#5a5d63">clearlane</text>
+<rect data-role="p10-p90" x="838.89" y="682" width="819.64" height="56" fill="#e3f2ea" stroke="#1d8457" stroke-width="3"/>
+<rect x="744.89" y="692" width="86" height="36" fill="#f6f5f1"/>
+<text x="826.89" y="719" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#5a5d63">$8.71</text>
+<rect x="1666.52" y="692" width="117.2" height="36" fill="#f6f5f1"/>
+<text x="1670.52" y="719" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#5a5d63">$116.20</text>
+<line data-role="p50" x1="1071.5" y1="668" x2="1071.5" y2="752" stroke="#1b1c1e" stroke-width="6"/>
+<text x="1071.5" y="658" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="40" font-weight="bold" text-anchor="middle" fill="#1b1c1e">P50 $39.21</text>
+<circle data-role="mean" cx="1173.2" cy="768" r="11" fill="#1d8457" stroke="#1b1c1e" stroke-width="4"/>
+<text x="1193.2" y="777" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="start" fill="#1b1c1e">mean $52.55</text>
+<text x="48" y="940" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="start" fill="#1b1c1e">Value to RMP's system at day-ahead prices. The fixed overnight rule is our comparison rule, not Torus practice.</text>
+<text x="48" y="1024" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="normal" text-anchor="start" fill="#5a5d63">Source: public/derived/backtest.json (engine backtest, clearlane.backtest/v1), sha256 3009fbdc04bc</text>
+<text x="48" y="1056" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="normal" text-anchor="start" fill="#5a5d63">DERIVED. science/chart_backtest.py. Window May 1 to Oct 27 2026, 179 days, missing: 2026-05-01. Simulated station on REAL PACE day-ahead prices.</text>
+</svg>
