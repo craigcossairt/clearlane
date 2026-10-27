@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<OASISEDAMWindAndSolarForecast xmlns="http://www.caiso.com/soa/EDAMWindAndSolarForecast_v1.xsd"><REPORT_DATA>
+                    <INTERVAL_START_GMT>2026-10-27T07:00:00-00:00</INTERVAL_START_GMT>
+                    <INTERVAL_END_GMT>2026-10-27T08:00:00-00:00</INTERVAL_END_GMT>
+                    <BAA_GRP_ID>PACE</BAA_GRP_ID>
+                    <SOLAR>0</SOLAR>
+                    <WIND>2074.61</WIND>
+                </REPORT_DATA>
+                <REPORT_DATA>
+                    <INTERVAL_START_GMT>2026-10-27T08:00:00-00:00</INTERVAL_START_GMT>
+                    <INTERVAL_END_GMT>2026-10-27T09:00:00-00:00</INTERVAL_END_GMT>
+                    <BAA_GRP_ID>PACE</BAA_GRP_ID>
+                    <SOLAR>0</SOLAR>
+                    <WIND>2370.32</WIND>
+                </REPORT_DATA>
+                <REPORT_DATA>
+                    <INTERVAL_START_GMT>2026-10-27T09:00:00-00:00</INTERVAL_START_GMT>
+                    <INTERVAL_END_GMT>2026-10-27T10:00:00-00:00</INTERVAL_END_GMT>
+                    <BAA_GRP_ID>PACE</BAA_GRP_ID>
+                    <SOLAR>0</SOLAR>
+                    <WIND>2646.9</WIND>
+                </REPORT_DATA>
+                </OASISEDAMWindAndSolarForecast>
