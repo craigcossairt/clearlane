@@ -448,6 +448,30 @@
       "prov": "DERIVED",
       "note": "Pulse cycles in the operating day's plan.",
       "display": "{cycles_today}"
+    },
+    "clearlane_dp_usd_mw_day": {
+      "fact": "clearlane_dp_usd_mw_day",
+      "source": "numbers",
+      "unit": "$/MW-day",
+      "prov": "DERIVED",
+      "note": "The engine's own 15-minute DP plan. Q&A and beat 5 only, labeled as the engine's plan; beats 2 and 6 say clearlane_usd_mw_day.",
+      "display": "{clearlane_dp_usd_mw_day}"
+    },
+    "backtest_days": {
+      "fact": "backtest_days",
+      "source": "numbers",
+      "unit": "days",
+      "prov": "DERIVED",
+      "note": "Days in the May 1 to Oct 27 backtest.",
+      "display": "{backtest_days}"
+    },
+    "sch_hours_today": {
+      "fact": "sch_hours_today",
+      "source": "numbers",
+      "unit": "h",
+      "prov": "DERIVED",
+      "note": "System Critical Hours in the day's envelope. The rule is our proposal.",
+      "display": "{sch_hours_today}"
     }
   }
 }
