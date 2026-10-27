@@ -23,8 +23,8 @@
     "unit": "s",
     "display": "330",
     "prov": "ASSUMPTION",
-    "source": "engine/src/crash.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/crash.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "call_hours_2025",
@@ -32,8 +32,8 @@
     "unit": "hours",
     "display": "33 hours",
     "prov": "DERIVED",
-    "source": "engine/src/crash.ts + public/data/bundle_2026-10-27.json + https://www.torus.co/case-studies/case-studies-rocky-mountain-power",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/crash.ts + public/data/bundle_2026-10-28.json + https://www.torus.co/case-studies/case-studies-rocky-mountain-power",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "calls_answered_pct_mt",
@@ -203,62 +203,62 @@
     "unit": "MWh",
     "display": "75",
     "prov": "SIMULATED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "campus_usd",
-    "value": 2550.7500000000005,
+    "value": 2336,
     "unit": "$/day",
-    "display": "$2,551",
+    "display": "$2,336",
     "prov": "SIMULATED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "charge_co2_race_clearlane",
-    "value": 448.3333333333333,
+    "value": 458.6666666666667,
     "unit": "g/kWh",
-    "display": "448",
+    "display": "459",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "charge_co2_race_fixed_overnight",
-    "value": 694.75,
+    "value": 702.25,
     "unit": "g/kWh",
-    "display": "695",
+    "display": "702",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "clearlane_500",
-    "value": 29202.670654471578,
+    "value": 25613.08126009761,
     "unit": "$/day",
-    "display": "$29,203",
+    "display": "$25,613",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "clearlane_70",
-    "value": 4088.373891626021,
+    "value": 3585.831376413665,
     "unit": "$/day",
-    "display": "$4,088",
+    "display": "$3,586",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "clearlane_dp_usd_mw_day",
-    "value": 55.714122879767395,
+    "value": 49.63500293389004,
     "unit": "$/MW-day",
-    "display": "$55.71",
+    "display": "$49.64",
     "prov": "DERIVED",
-    "source": "engine/src/policies.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/policies.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "clearlane_p10",
@@ -289,84 +289,84 @@
   },
   {
     "key": "clearlane_usd_mw_day",
-    "value": 58.40534130894316,
+    "value": 51.22616252019522,
     "unit": "$/MW-day",
-    "display": "$58.41",
+    "display": "$51.23",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "co2_500_clearlane",
-    "value": 137.45760852500715,
+    "value": 127.84936290791443,
     "unit": "t/day avoided",
-    "display": "137.5",
+    "display": "127.8",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "co2_500_fixed_overnight",
-    "value": 125.22344075146785,
+    "value": 131.81134288685615,
     "unit": "t/day added",
-    "display": "125.2",
+    "display": "131.8",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "co2_added_70",
-    "value": 17.5312817052055,
+    "value": 18.45358800415986,
     "unit": "t/day added",
-    "display": "17.5",
+    "display": "18.5",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "co2_avoided_70",
-    "value": 19.244065193501,
+    "value": 17.89891080710802,
     "unit": "t/day avoided",
-    "display": "19.2",
+    "display": "17.9",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "co2_fixed_t_per_mw_day",
-    "value": -0.2504468815029357,
+    "value": -0.2636226857737123,
     "unit": "t/MW-day (+ avoided)",
-    "display": "-0.25",
+    "display": "-0.26",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "co2_midday_avg",
-    "value": 466.85714285714283,
+    "value": 472.42857142857144,
     "unit": "g/kWh",
-    "display": "467 g/kWh",
+    "display": "472 g/kWh",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "co2_overnight_avg",
-    "value": 696.4,
+    "value": 704.2,
     "unit": "g/kWh",
-    "display": "696 g/kWh",
+    "display": "704 g/kWh",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "co2_timetable_t_per_mw_day",
-    "value": 0.2749152170500143,
+    "value": 0.25569872581582886,
     "unit": "t/MW-day (+ avoided)",
-    "display": "0.27",
+    "display": "0.26",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "cycles_per_year_by_policy_clearlane",
@@ -397,30 +397,30 @@
   },
   {
     "key": "cycles_today",
-    "value": 1.2195080975540917,
+    "value": 0.9380831519646862,
     "unit": "cycles",
-    "display": "1.22",
+    "display": "0.94",
     "prov": "DERIVED",
-    "source": "engine/src/policies.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/policies.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "discharge_co2_race",
-    "value": 656,
+    "value": 657.5,
     "unit": "g/kWh",
-    "display": "656",
+    "display": "658",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "dp_race_ratio",
-    "value": 2.776717103026182,
+    "value": 0.9807761656808722,
     "unit": "x",
-    "display": "2.8x",
+    "display": "1.0x",
     "prov": "DERIVED",
-    "source": "engine/src/policies.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/policies.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "enrolled_kw",
@@ -428,53 +428,53 @@
     "unit": "kW",
     "display": "250",
     "prov": "SIMULATED",
-    "source": "engine/src/site.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/site.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "evening_avg",
-    "value": 55.31,
+    "value": 59.17,
     "unit": "$/MWh",
-    "display": "$55.31",
+    "display": "$59.17",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "fixed_500",
-    "value": 10032.372908829608,
+    "value": 25303.94022138198,
     "unit": "$/day",
-    "display": "$10,032",
+    "display": "$25,304",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "fixed_70",
-    "value": 1404.532207236145,
+    "value": 3542.5516309934774,
     "unit": "$/day",
-    "display": "$1,405",
+    "display": "$3,543",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "fixed_rule_charge_usd_mwh",
-    "value": 39.53,
+    "value": 28.349999999999998,
     "unit": "$/MWh",
-    "display": "$39.53",
+    "display": "$28.35",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "fixed_usd_mw_day",
-    "value": 20.064745817659215,
+    "value": 50.607880442763964,
     "unit": "$/MW-day",
-    "display": "$20.06",
+    "display": "$50.61",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "fossil_priciest_oct_cheapest",
@@ -500,26 +500,26 @@
     "unit": "kW",
     "display": "800",
     "prov": "SIMULATED",
-    "source": "engine/src/site.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/site.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "lane_clear_max_usd",
-    "value": 29.98,
+    "value": 35.7375,
     "unit": "$/MWh",
-    "display": "$29.98",
+    "display": "$35.74",
     "prov": "DERIVED",
-    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "lane_hours_oct27_clear",
-    "value": 8,
+    "value": 14,
     "unit": "h",
-    "display": "8",
+    "display": "14",
     "prov": "DERIVED",
-    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "lane_hours_oct27_jam",
@@ -527,26 +527,26 @@
     "unit": "h",
     "display": "6",
     "prov": "DERIVED",
-    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "lane_jam_min_usd",
-    "value": 47.18,
+    "value": 51.4125,
     "unit": "$/MWh",
-    "display": "$47.18",
+    "display": "$51.41",
     "prov": "DERIVED",
-    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "load_peak_oct27_mw",
-    "value": 6024,
+    "value": 6035,
     "unit": "MW",
-    "display": "6,024",
+    "display": "6,035",
     "prov": "REAL",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "meter_peak_refill_kw",
@@ -554,17 +554,17 @@
     "unit": "kW",
     "display": "555",
     "prov": "SIMULATED",
-    "source": "engine/src/replan.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/replan.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "midday_avg",
-    "value": 22.831249999999997,
+    "value": 28.431250000000002,
     "unit": "$/MWh",
-    "display": "$22.83",
+    "display": "$28.43",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "mou_70mw",
@@ -573,7 +573,7 @@
     "display": "70",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.businesswire.com/news/home/20250127668054/en/Rocky-Mountain-Power-and-Torus-Announce-Strategic-Partnership",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "mou_share_of_peak_16mo",
@@ -586,30 +586,30 @@
   },
   {
     "key": "mou_share_of_peak_oct27",
-    "value": 8.300132802124834,
+    "value": 8.285004142502071,
     "unit": "%",
     "display": "8.3%",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json + https://www.torus.co/news/torus-raises-200-million-from-magnetar-deployment-of-modular-power-plants",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json + https://www.torus.co/news/torus-raises-200-million-from-magnetar-deployment-of-modular-power-plants",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "net_load_climb_mw",
-    "value": 3654.51,
+    "value": 3349.3600000000006,
     "unit": "MW",
-    "display": "3,655",
+    "display": "3,349",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "net_load_max_oct27",
-    "value": 4709.03,
+    "value": 4700.81,
     "unit": "MW",
-    "display": "4,709",
+    "display": "4,701",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "oct_step_hour_days_at_5_or_6",
@@ -640,12 +640,12 @@
   },
   {
     "key": "overnight_avg",
-    "value": 38.71,
+    "value": 28.345999999999997,
     "unit": "$/MWh",
-    "display": "$38.71",
+    "display": "$28.35",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "pace_cheapest_share",
@@ -671,35 +671,35 @@
     "unit": "hour beginning MT",
     "display": "6pm",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "peak_over_trough",
-    "value": 2.6089803554724043,
+    "value": 2.1236559139784945,
     "unit": "x",
-    "display": "2.6x",
+    "display": "2.1x",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "peak_price",
-    "value": 55.78,
+    "value": 59.25,
     "unit": "$/MWh",
-    "display": "$55.78",
+    "display": "$59.25",
     "prov": "REAL",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "price_min_oct27",
-    "value": 21.38,
+    "value": 27.9,
     "unit": "$/MWh",
-    "display": "$21.38",
+    "display": "$27.90",
     "prov": "REAL",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "price_only_usd_mw_day",
@@ -717,25 +717,25 @@
     "display": "300",
     "prov": "DERIVED",
     "source": "https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "race_discharge_usd_mwh",
-    "value": 55.615,
+    "value": 59.19,
     "unit": "$/MWh",
-    "display": "$55.62",
+    "display": "$59.19",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "race_ratio",
-    "value": 2.910843817295704,
+    "value": 1.012217110695448,
     "unit": "x",
-    "display": "2.9x",
+    "display": "1.0x",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "reserve_cost_pct",
@@ -753,7 +753,7 @@
     "display": "100%",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "rmp_event_band_min_pct",
@@ -762,7 +762,7 @@
     "display": "90%",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "rmp_event_ramp_s",
@@ -771,7 +771,7 @@
     "display": "19",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "rmp_event_ramp_target_s",
@@ -780,7 +780,7 @@
     "display": "30",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "rmp_event_target_pct",
@@ -789,7 +789,7 @@
     "display": "102%",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "rmp_events_2025",
@@ -798,7 +798,7 @@
     "display": "359",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.torus.co/case-studies/case-studies-rocky-mountain-power",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "sch_hours_today",
@@ -806,8 +806,8 @@
     "unit": "h",
     "display": "6",
     "prov": "DERIVED",
-    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/lanes.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "second_call_delivered_pct",
@@ -815,8 +815,8 @@
     "unit": "%",
     "display": "71%",
     "prov": "SIMULATED",
-    "source": "engine/src/replan.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/replan.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "second_call_shortfall_kw",
@@ -824,8 +824,8 @@
     "unit": "kW (mean over the call)",
     "display": "71",
     "prov": "SIMULATED",
-    "source": "engine/src/replan.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/replan.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "second_call_shortfall_kwh",
@@ -833,8 +833,8 @@
     "unit": "kWh",
     "display": "6.5",
     "prov": "SIMULATED",
-    "source": "engine/src/replan.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/replan.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "share_days_beating",
@@ -847,21 +847,21 @@
   },
   {
     "key": "solar_4pm_to_6pm_mw_4pm",
-    "value": 2055.85,
+    "value": 1924.38,
     "unit": "MW",
-    "display": "2,056",
+    "display": "1,924",
     "prov": "REAL",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "solar_4pm_to_6pm_mw_6pm",
-    "value": 35.73,
+    "value": 40.71,
     "unit": "MW",
-    "display": "36",
+    "display": "41",
     "prov": "REAL",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "spin_kwh_per_kw",
@@ -870,7 +870,7 @@
     "display": "0.1",
     "prov": "DERIVED",
     "source": "https://www.torus.co/torus-flywheel",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "spin_recharge_min",
@@ -879,7 +879,7 @@
     "display": "6",
     "prov": "DERIVED",
     "source": "https://www.torus.co/torus-flywheel",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "time_vs_space_oct_space",
@@ -901,12 +901,12 @@
   },
   {
     "key": "timetable_charge_usd_mwh",
-    "value": 21.546666666666667,
+    "value": 28.060000000000002,
     "unit": "$/MWh",
-    "display": "$21.55",
+    "display": "$28.06",
     "prov": "DERIVED",
-    "source": "engine/src/reference.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/reference.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "torus_500mw",
@@ -915,7 +915,7 @@
     "display": "500",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.torus.co/news/torus-raises-200-million-from-magnetar-deployment-of-modular-power-plants",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "torus_lifespan_yr",
@@ -924,7 +924,7 @@
     "display": "25 years",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.torus.co/torus-nova",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "torus_pulse_c_rating",
@@ -933,7 +933,7 @@
     "display": "0.5C",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.torus.co/torus-nova-pulse",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "torus_pulse_cycles",
@@ -942,7 +942,7 @@
     "display": "7,500",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.torus.co/torus-nova-pulse",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "torus_spin_c_rating",
@@ -951,7 +951,7 @@
     "display": "10C",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.torus.co/torus-flywheel",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "torus_spin_cycles",
@@ -960,16 +960,16 @@
     "display": "25,000",
     "prov": "TORUS_PUBLISHED",
     "source": "https://www.torus.co/torus-flywheel",
-    "as_of_mt": "2026-10-27"
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "trough_hour_mt",
-    "value": 15,
+    "value": 14,
     "unit": "hour beginning MT",
-    "display": "3pm",
+    "display": "2pm",
     "prov": "DERIVED",
-    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-27.json",
-    "as_of_mt": "2026-10-27"
+    "source": "engine/src/numbers.ts + public/data/bundle_2026-10-28.json",
+    "as_of_mt": "2026-10-28"
   },
   {
     "key": "wear10_usd_mw_day",

@@ -530,3 +530,120 @@ Four answers from Torus, by message to Craig Cossairt on Oct 27 2026 (cited in r
 2. Clearlane may quote the published Spin and Pulse specs and the 2025 event data on stage, with attribution, beside clearly labeled simulated stations. New row torus_quote_permission.
 3. All 359 events in 2025 were unplanned. Changed rmp_events_2025; new row rmp_events_2025_unplanned and a Do not say row.
 4. Torus does not know whether Lasso can accept an external day-ahead schedule or hourly envelope through its API. New row lasso_external_schedule_api and a Do not say row.
+
+## Oct 28 stage values
+
+Generated from `public/derived/numbers.json` after the Oct 28 refresh (`public/data/bundle_2026-10-28.json`). The Oct 27 rows above are unchanged. Each display is the engine's; the class and source are as in `numbers.json`.
+
+| Key | Display | Class | As of (MT) |
+|---|---|---|---|
+| backtest_days | 179 | DERIVED | 2026-10-27 |
+| battery_only_reserve_usd | $55.56 | DERIVED | 2026-10-27 |
+| call_duration_s | 330 | ASSUMPTION | 2026-10-28 |
+| call_hours_2025 | 33 hours | DERIVED | 2026-10-28 |
+| calls_answered_pct_mt | 99% | SIMULATED | 2026-10-27 |
+| calls_answered_pct_utc | 100% | SIMULATED | 2026-10-27 |
+| calls_answered_pct_utc_mst | 100% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_clearlane_mt | 1% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_clearlane_utc_mdt | 0% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_clearlane_utc_mst | 0% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_fixed_overnight_mt | 23% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_fixed_overnight_utc_mdt | 18% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_fixed_overnight_utc_mst | 19% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_price_only_mt | 40% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_price_only_utc_mdt | 46% | SIMULATED | 2026-10-27 |
+| calls_missed_by_policy_price_only_utc_mst | 44% | SIMULATED | 2026-10-27 |
+| calls_unanswerable_price_only_mt | 77% | DERIVED | 2026-10-27 |
+| calls_unanswerable_price_only_utc_mdt | 52% | DERIVED | 2026-10-27 |
+| calls_unanswerable_price_only_utc_mst | 43% | DERIVED | 2026-10-27 |
+| calls_unanswerable_wear10_mt | 40% | DERIVED | 2026-10-27 |
+| calls_unanswerable_wear10_utc_mdt | 18% | DERIVED | 2026-10-27 |
+| calls_unanswerable_wear10_utc_mst | 14% | DERIVED | 2026-10-27 |
+| campus_mwh | 75 | SIMULATED | 2026-10-28 |
+| campus_usd | $2,336 | SIMULATED | 2026-10-28 |
+| charge_co2_race_clearlane | 459 | DERIVED | 2026-10-28 |
+| charge_co2_race_fixed_overnight | 702 | DERIVED | 2026-10-28 |
+| clearlane_500 | $25,613 | DERIVED | 2026-10-28 |
+| clearlane_70 | $3,586 | DERIVED | 2026-10-28 |
+| clearlane_dp_usd_mw_day | $49.64 | DERIVED | 2026-10-28 |
+| clearlane_p10 | $8.71 | DERIVED | 2026-10-27 |
+| clearlane_p50 | $39.21 | DERIVED | 2026-10-27 |
+| clearlane_p90 | $116.20 | DERIVED | 2026-10-27 |
+| clearlane_usd_mw_day | $51.23 | DERIVED | 2026-10-28 |
+| co2_500_clearlane | 127.8 | DERIVED | 2026-10-28 |
+| co2_500_fixed_overnight | 131.8 | DERIVED | 2026-10-28 |
+| co2_added_70 | 18.5 | DERIVED | 2026-10-28 |
+| co2_avoided_70 | 17.9 | DERIVED | 2026-10-28 |
+| co2_fixed_t_per_mw_day | -0.26 | DERIVED | 2026-10-28 |
+| co2_midday_avg | 472 g/kWh | DERIVED | 2026-10-28 |
+| co2_overnight_avg | 704 g/kWh | DERIVED | 2026-10-28 |
+| co2_timetable_t_per_mw_day | 0.26 | DERIVED | 2026-10-28 |
+| cycles_per_year_by_policy_clearlane | 299 | DERIVED | 2026-10-27 |
+| cycles_per_year_by_policy_fixed_overnight | 342 | DERIVED | 2026-10-27 |
+| cycles_per_year_by_policy_price_only | 587 | DERIVED | 2026-10-27 |
+| cycles_today | 0.94 | DERIVED | 2026-10-28 |
+| discharge_co2_race | 658 | DERIVED | 2026-10-28 |
+| dp_race_ratio | 1.0x | DERIVED | 2026-10-28 |
+| enrolled_kw | 250 | SIMULATED | 2026-10-28 |
+| evening_avg | $59.17 | DERIVED | 2026-10-28 |
+| fixed_500 | $25,304 | DERIVED | 2026-10-28 |
+| fixed_70 | $3,543 | DERIVED | 2026-10-28 |
+| fixed_rule_charge_usd_mwh | $28.35 | DERIVED | 2026-10-28 |
+| fixed_usd_mw_day | $50.61 | DERIVED | 2026-10-28 |
+| fossil_priciest_oct_cheapest | 39.8% | DERIVED | 2026-10-25 |
+| fossil_priciest_oct_priciest | 85.1% | DERIVED | 2026-10-25 |
+| host_ceiling_kw | 800 | SIMULATED | 2026-10-28 |
+| lane_clear_max_usd | $35.74 | DERIVED | 2026-10-28 |
+| lane_hours_oct27_clear | 14 | DERIVED | 2026-10-28 |
+| lane_hours_oct27_jam | 6 | DERIVED | 2026-10-28 |
+| lane_jam_min_usd | $51.41 | DERIVED | 2026-10-28 |
+| load_peak_oct27_mw | 6,035 | REAL | 2026-10-28 |
+| meter_peak_refill_kw | 555 | SIMULATED | 2026-10-28 |
+| midday_avg | $28.43 | DERIVED | 2026-10-28 |
+| mou_70mw | 70 | TORUS_PUBLISHED | 2026-10-28 |
+| mou_share_of_peak_16mo | 4.9% | DERIVED | 2026-10-27 |
+| mou_share_of_peak_oct27 | 8.3% | DERIVED | 2026-10-28 |
+| net_load_climb_mw | 3,349 | DERIVED | 2026-10-28 |
+| net_load_max_oct27 | 4,701 | DERIVED | 2026-10-28 |
+| oct_step_hour_days_at_5_or_6 | 24 | DERIVED | 2026-10-27 |
+| oct_step_hour_days_total | 27 | DERIVED | 2026-10-27 |
+| oct_step_median_usd | $15.1 | DERIVED | 2026-10-27 |
+| overnight_avg | $28.35 | DERIVED | 2026-10-28 |
+| pace_cheapest_share | 81% | DERIVED | 2026-10-27 |
+| pace_peak_16mo_mw | 10,173 | REAL | 2026-10-27 |
+| peak_hour_mt | 6pm | DERIVED | 2026-10-28 |
+| peak_over_trough | 2.1x | DERIVED | 2026-10-28 |
+| peak_price | $59.25 | REAL | 2026-10-28 |
+| price_min_oct27 | $27.90 | REAL | 2026-10-28 |
+| price_only_usd_mw_day | $65.79 | DERIVED | 2026-10-27 |
+| pulse_cycle_budget | 300 | DERIVED | 2026-10-28 |
+| race_discharge_usd_mwh | $59.19 | DERIVED | 2026-10-28 |
+| race_ratio | 1.0x | DERIVED | 2026-10-28 |
+| reserve_cost_pct | 3.4% | DERIVED | 2026-10-27 |
+| rmp_event_band_max_pct | 100% | TORUS_PUBLISHED | 2026-10-28 |
+| rmp_event_band_min_pct | 90% | TORUS_PUBLISHED | 2026-10-28 |
+| rmp_event_ramp_s | 19 | TORUS_PUBLISHED | 2026-10-28 |
+| rmp_event_ramp_target_s | 30 | TORUS_PUBLISHED | 2026-10-28 |
+| rmp_event_target_pct | 102% | TORUS_PUBLISHED | 2026-10-28 |
+| rmp_events_2025 | 359 | TORUS_PUBLISHED | 2026-10-28 |
+| sch_hours_today | 6 | DERIVED | 2026-10-28 |
+| second_call_delivered_pct | 71% | SIMULATED | 2026-10-28 |
+| second_call_shortfall_kw | 71 | SIMULATED | 2026-10-28 |
+| second_call_shortfall_kwh | 6.5 | SIMULATED | 2026-10-28 |
+| share_days_beating | 96% | DERIVED | 2026-10-27 |
+| solar_4pm_to_6pm_mw_4pm | 1,924 | REAL | 2026-10-28 |
+| solar_4pm_to_6pm_mw_6pm | 41 | REAL | 2026-10-28 |
+| spin_kwh_per_kw | 0.1 | DERIVED | 2026-10-28 |
+| spin_recharge_min | 6 | DERIVED | 2026-10-28 |
+| time_vs_space_oct_space | 8% | DERIVED | 2026-10-27 |
+| time_vs_space_oct_time | 41% | DERIVED | 2026-10-27 |
+| timetable_charge_usd_mwh | $28.06 | DERIVED | 2026-10-28 |
+| torus_500mw | 500 | TORUS_PUBLISHED | 2026-10-28 |
+| torus_lifespan_yr | 25 years | TORUS_PUBLISHED | 2026-10-28 |
+| torus_pulse_c_rating | 0.5C | TORUS_PUBLISHED | 2026-10-28 |
+| torus_pulse_cycles | 7,500 | TORUS_PUBLISHED | 2026-10-28 |
+| torus_spin_c_rating | 10C | TORUS_PUBLISHED | 2026-10-28 |
+| torus_spin_cycles | 25,000 | TORUS_PUBLISHED | 2026-10-28 |
+| trough_hour_mt | 2pm | DERIVED | 2026-10-28 |
+| wear10_usd_mw_day | $57.54 | DERIVED | 2026-10-27 |
+| wear_usd_mwh | $9.62 | DERIVED | 2026-10-27 |

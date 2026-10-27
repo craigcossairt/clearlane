@@ -1,0 +1,225 @@
+{
+  "schema": "clearlane.envelope/v1",
+  "operating_day_mt": "2026-10-28",
+  "fleet_kw": 250,
+  "sch_rule": "System Critical Hours (our proposal): the 4 highest net-load hours of the day plus every jam hour. In these hours Pulse keeps enough spare power to cover any part of the enrolled kW that Spin cannot.",
+  "hours": [
+    {
+      "ts_utc": "2026-10-28T06:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": -23.45207879911715,
+      "reason": "shoulder lane: Pulse discharging 23 kW"
+    },
+    {
+      "ts_utc": "2026-10-28T07:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T08:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T09:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 53.30017908890261,
+      "reason": "clear lane: Pulse charging 53 kW"
+    },
+    {
+      "ts_utc": "2026-10-28T10:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 213.20071635561044,
+      "reason": "clear lane: Pulse charging 213 kW"
+    },
+    {
+      "ts_utc": "2026-10-28T11:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 213.20071635561044,
+      "reason": "clear lane: Pulse charging 213 kW"
+    },
+    {
+      "ts_utc": "2026-10-28T12:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T13:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "shoulder lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T14:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 200,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "shoulder lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T15:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 180,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T16:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 150,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T17:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 120,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T18:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 80,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T19:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 40,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T20:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 0,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T21:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 0,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "clear lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-28T22:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 80,
+      "max_discharge_kw": 250,
+      "planned_kw": 53.30017908890261,
+      "reason": "clear lane: charging, host ceiling limits charge to 80 kW"
+    },
+    {
+      "ts_utc": "2026-10-28T23:00:00Z",
+      "system_critical": false,
+      "reserve_kw": 250,
+      "max_charge_kw": 200,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "shoulder lane: Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-29T00:00:00Z",
+      "system_critical": true,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": -234.5207879911715,
+      "reason": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse discharging 235 kW"
+    },
+    {
+      "ts_utc": "2026-10-29T01:00:00Z",
+      "system_critical": true,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-29T02:00:00Z",
+      "system_critical": true,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-29T03:00:00Z",
+      "system_critical": true,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": -211.06870919205434,
+      "reason": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse discharging 211 kW"
+    },
+    {
+      "ts_utc": "2026-10-29T04:00:00Z",
+      "system_critical": true,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle"
+    },
+    {
+      "ts_utc": "2026-10-29T05:00:00Z",
+      "system_critical": true,
+      "reserve_kw": 250,
+      "max_charge_kw": 250,
+      "max_discharge_kw": 250,
+      "planned_kw": 0,
+      "reason": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle"
+    }
+  ],
+  "generated_utc": "2026-10-27T23:52:27Z"
+}
