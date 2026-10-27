@@ -1,6 +1,6 @@
 // Writes public/derived/numbers.json: every stage number, with its provenance, sorted by key.
 // Usage: npx tsx engine/cli/numbers.ts <bundle.json> [--backtest file] [--torus file] [--hist file]
-//          [--snapshot file] [--facts docs/FACTS.md] [--out public/derived/numbers.json]
+//          [--snapshot file] [--research dir] [--facts docs/FACTS.md] [--out public/derived/numbers.json]
 // A missing optional input omits its keys and says which (exit 0). A missing bundle exits 2.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
@@ -21,6 +21,7 @@ import {
 import { DEFAULT_WEAR_USD_MWH } from "../src/policies";
 import { defaultSite } from "../src/site";
 import { argValue } from "./args";
+import { loadResearch } from "./research";
 import { readBundle } from "./common";
 
 const rel = (p: string) => p.replace(/\\/g, "/");
@@ -33,6 +34,7 @@ const files = {
   snapshot:
     argValue("--snapshot") ?? "research/data/pace_snapshot_2026-10-27.csv",
 };
+const researchDir = argValue("--research") ?? "research";
 const factsPath = argValue("--facts") ?? "docs/FACTS.md";
 const out = argValue("--out") ?? "public/derived/numbers.json";
 
@@ -56,6 +58,8 @@ if (backtest && validateBacktest(backtest.data).length) {
 const torus = optional("torus", (t) => JSON.parse(t) as TorusPublished);
 const hist = optional("hist", (t) => JSON.parse(t) as HistDay[]);
 const snap = optional("snapshot", snapshotPricesFromCsv);
+const researchData = loadResearch(researchDir);
+if (!researchData) omitted.push(`research (${researchDir})`);
 
 const reg = registryWithNewKeys(factsRegistry(readFileSync(factsPath, "utf8")));
 const numbers = buildNumbers(
@@ -68,6 +72,9 @@ const numbers = buildNumbers(
     torus,
     backtest,
     hist,
+    research: researchData
+      ? { data: researchData, path: rel(researchDir) }
+      : undefined,
   },
   reg,
 );
