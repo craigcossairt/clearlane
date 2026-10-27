@@ -11,6 +11,7 @@ function files(dir: string): string[] {
 }
 
 const BANNED = [
+  "from 'node:",
   'from "node:',
   "require(",
   "fetch(",
@@ -35,7 +36,7 @@ describe("engine/src purity", () => {
 
   it("never assigns a numeric literal to solve_ms", () => {
     const hits = src.filter((f) =>
-      /solve_ms\s*[:=]\s*[\d.]/.test(readFileSync(f, "utf8")),
+      /solve_ms\s*[:=]\s*[-+]?\s*[\d.]/.test(readFileSync(f, "utf8")),
     );
     expect(hits).toEqual([]);
   });

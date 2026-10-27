@@ -101,3 +101,24 @@ describe("public API", () => {
     expect(typeof api.systemCriticalHours).toBe("function");
   });
 });
+
+describe("review fixes", () => {
+  it("rejects ts_utc without the Z suffix", () => {
+    const off = b.hours.map((h, i) =>
+      i === 2 ? { ...h, ts_utc: "2026-10-27T08:00:00+00:00" } : h,
+    );
+    expect(validateBundle({ ...b, hours: off }).join(" ")).toMatch(/Z/);
+  });
+
+  it("falls back to the labeled price proxy when net load is missing or not finite", () => {
+    const gap = {
+      ...b,
+      hours: b.hours.map((h, i) =>
+        i === 7 ? { ...h, net_load_mw: Number.NaN } : h,
+      ),
+    };
+    const sch = systemCriticalHours(gap, "net_load");
+    expect(sch.proxy).toBe(true);
+    expect(sch.top4).toEqual(systemCriticalHours(b, "price_proxy").top4);
+  });
+});
