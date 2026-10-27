@@ -66,8 +66,17 @@ function redate(src: StageData, from: string, to: string): StageData {
     })),
     notes: [],
   };
+  // numbers.json is regenerated for whichever bundle goes on stage (engine/cli/numbers.ts), so a
+  // re-dated stage day re-dates the rows that carried the old day and the bundle file they cite.
+  const numbers =
+    src.numbers?.map((n) => ({
+      ...n,
+      as_of_mt: n.as_of_mt === from ? to : n.as_of_mt,
+      source: n.source.split(`bundle_${from}.json`).join(`bundle_${to}.json`),
+    })) ?? null;
   return {
     ...src,
+    numbers,
     bundles: { [to]: { bundle: b, file: `public/data/bundle_${to}.json` } },
   };
 }
@@ -80,6 +89,7 @@ describe("day switch", () => {
         <App data={oct28} now={NOW} search={`?beat=${beat.id}&step=end&motion=off`} />,
       );
       const html = container.innerHTML;
+      expect(html, `beat ${beat.id} renders the day`).not.toContain("failed-state");
       expect(html, `beat ${beat.id}`).not.toMatch(/Oct 27|2026-10-27|10\/27/);
       unmount();
     }
