@@ -5,7 +5,7 @@
 // Run from the repo root after `gh auth status` is clean:  node tools/seed-github.mjs [--dry-run]
 
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 
 const DRY = process.argv.includes("--dry-run");
 const LANES = ["integration", "data", "engine", "ui", "pitch", "science"];
@@ -86,7 +86,9 @@ for (const lane of LANES) {
   );
 }
 
-const issues = JSON.parse(readFileSync(new URL("./issues.json", import.meta.url), "utf8"));
+const issuesFile = new URL("./issues.json", import.meta.url);
+const issues = existsSync(issuesFile) ? JSON.parse(readFileSync(issuesFile, "utf8")) : [];
+if (!issues.length) console.log("tools/issues.json missing or empty: seeded labels, milestones and tracking issues only");
 const laneRank = (l) => LANES.indexOf(l);
 issues.sort((a, b) => laneRank(a.lane) - laneRank(b.lane) || a.order - b.order);
 for (const it of issues) {
