@@ -222,17 +222,8 @@ function PolicyCard({ stats }: { stats: PolicyStats }) {
         {COPY.against} <Num k="pulse_cycle_budget" /> {COPY.budgetWord}
       </p>
       <p>
-        {COPY.callsUnanswerable} {COPY.heatmapMountain}{" "}
-        {live(
-          stats.calls_unanswerable_pct.heatmap_as_mt,
-          `${grouped(stats.calls_unanswerable_pct.heatmap_as_mt, 0)}%`,
-        )}
-        , {COPY.heatmapUtc}{" "}
-        {live(
-          stats.calls_unanswerable_pct.heatmap_as_utc,
-          `${grouped(stats.calls_unanswerable_pct.heatmap_as_utc, 0)}%`,
-        )}
-        .
+        {/* Torus confirmed the heatmap is Mountain time, so only the _mt key is shown. */}
+        {COPY.callsUnanswerable} <Num k={`calls_missed_by_policy_${stats.policy}_mt`} />.
       </p>
       <p>
         {COPY.daysBeating}{" "}

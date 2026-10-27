@@ -437,7 +437,7 @@ td {
 
 .heatmaps {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -474,10 +474,6 @@ td {
 @media (max-width: 767px) {
   :root {
     --body: 18px;
-  }
-
-  .heatmaps {
-    grid-template-columns: 1fr;
   }
 
   .stub-slot {
@@ -560,6 +556,12 @@ td {
 }
 .cards.three {
   grid-template-columns: 1fr 1fr 1fr;
+}
+/* Phone width: the three backtest cards stack, or their figures push the page sideways. */
+@media (max-width: 800px) {
+  .cards.three {
+    grid-template-columns: 1fr;
+  }
 }
 .envelope-beat .scroll {
   max-height: none;

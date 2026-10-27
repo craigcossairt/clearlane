@@ -144,8 +144,8 @@ describe("shell", () => {
     expect(document.body.dataset.beat).toBe("3");
     expect(document.body.dataset.state).toBe("call");
     expect(container.textContent).toContain("Simulated Rocky Mountain Power call");
-    expect(container.textContent).toContain("if Mountain time");
-    expect(container.textContent).toContain("if UTC");
+    expect(container.textContent).toContain("Published calls by hour of day, Mountain time");
+    expect(container.textContent).not.toContain("UTC");
     act(() => {
       fireEvent.keyDown(window, { key: "c" });
     });

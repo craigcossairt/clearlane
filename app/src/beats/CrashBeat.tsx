@@ -4,7 +4,7 @@ import { Num } from "../components/Num";
 import { mtClock } from "../components/Time";
 import { COPY } from "../copy";
 import { TORUS_FILE } from "../data";
-import { heatmapReadings, STUB_ACTIVE } from "../engineClient";
+import { heatmapMountain, STUB_ACTIVE } from "../engineClient";
 import { grouped } from "../format";
 import type { BeatProps } from "./types";
 
@@ -53,7 +53,7 @@ export function CrashBeat({ live, call }: BeatProps) {
   const shown = call.second ?? call.first;
   const f = usePlayhead(shown ? shown.event_id : null);
   const byHour = live.torus?.events_2025_by_hour.value ?? null;
-  const readings = byHour ? heatmapReadings(byHour) : null;
+  const mountain = byHour ? heatmapMountain(byHour) : null;
   const ceiling = live.site.host_ceiling_kw;
   // Shared chart scales so the ghost and the inset compare on the same axes (drawing only).
   const all = [shown, call.ghost].filter((r): r is CrashResult => r !== null);
@@ -170,10 +170,9 @@ export function CrashBeat({ live, call }: BeatProps) {
             <Num k="rmp_event_band_max_pct" /> {COPY.band}.
           </p>
           <p className="muted">{COPY.heatmapNote}</p>
-          {readings ? (
+          {mountain ? (
             <div className="heatmaps">
-              <Heat label={COPY.heatmapMountain} counts={readings.mountain} />
-              <Heat label={COPY.heatmapUtc} counts={readings.utc} />
+              <Heat label={COPY.heatmapMountain} counts={mountain} />
             </div>
           ) : (
             <p className="unavailable">
