@@ -244,7 +244,7 @@ None of the C&I pages gives a system size in kW or kWh. Most outcomes are worded
 
 ## 5. Torus's June 2026 comments to ROWE
 
-**What and where.** Torus filed a comment letter dated Jun 12, 2026 with the Regional Organization for Western Energy (ROWE). It responds to ROWE's resource adequacy program design for the EDAM and WEIM footprint. ROWE posted it in a consolidated comments file dated Jun 22, 2026: https://rowesternenergy.org/wp-content/uploads/2026/06/Consolidated-Spring-Workshop-Comments_06222026.pdf (local copy `../clearlane-raw/dl/wraap.txt`, S).
+**What and where.** Torus filed a comment letter dated Jun 12, 2026 with the Regional Organization for Western Energy (ROWE). It responds to ROWE's resource adequacy program design for the EDAM and WEIM footprint. ROWE posted it in a consolidated comments file whose name carries the date Jun 22, 2026: https://rowesternenergy.org/wp-content/uploads/2026/06/Consolidated-Spring-Workshop-Comments_06222026.pdf (local copy `../clearlane-raw/dl/wraap.txt`, S).
 
 **This is a regional filing, not a Utah PSC docket.** Say "Torus's June comments to the Western resource adequacy program (ROWE)", never "Torus asked Utah regulators". Whether Torus made a matching Utah filing is UNVERIFIED.
 
