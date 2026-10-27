@@ -10,6 +10,7 @@ import type {
   TorusPublished,
 } from "@contracts/types";
 import {
+  defaultSite as engineDefaultSite,
   laneThresholds as engineLaneThresholds,
   lanes as engineLanes,
   option2Shift as engineOption2Shift,
@@ -20,7 +21,7 @@ import {
 } from "@engine";
 import type { LaneThresholds, Option2Shift } from "@engine";
 import { CALL_DURATION_S } from "@engine/inputs";
-import { simulatedSite } from "./stub/site";
+import { STUB_HOST_CEILING_KW, stubHostLoadKw15m } from "./stub/site";
 import {
   stubCrash,
   stubEnvelope,
@@ -61,9 +62,16 @@ export function dayLanes(bundle: Bundle): DayLanes {
   };
 }
 
-/** The simulated site the stub plans run on (SIMULATED, not a metered site). */
+/**
+ * The simulated site (SIMULATED, not a metered site): the engine's station, on the stub's host
+ * load and ceiling, which the stub's fixed timetables respect.
+ */
 export function defaultSite(): Site {
-  return simulatedSite();
+  return {
+    ...engineDefaultSite(),
+    host_load_kw_15m: stubHostLoadKw15m(),
+    host_ceiling_kw: STUB_HOST_CEILING_KW,
+  };
 }
 
 export function solve(bundle: Bundle, site: Site, policy: Policy): Plan {
