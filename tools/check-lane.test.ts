@@ -16,7 +16,7 @@ describe("laneCommands", () => {
     expect(
       laneCommands("pitch", has("pitch/test", "pitch/resolve.mjs")),
     ).toEqual([
-      ["node", ["--test", "pitch/test/"]],
+      ["node", ["--test", "pitch/test/**/*.test.mjs"]],
       ["node", ["pitch/resolve.mjs"]],
     ]);
   });
