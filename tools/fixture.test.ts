@@ -19,7 +19,7 @@ describe("contracts fixture, Oct 27", () => {
   // (research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv)
   it("hour 0 price is the real Oct 27 row, not Oct 28's midnight", () => {
     const h0 = bundle.hours[0]!;
-    expect(h0.lmp_usd_mwh).toBe(30.22);
+    expect(h0.lmp_usd_mwh).toBe(30.21857);
     expect(h0.mcc_usd_mwh).toBe(-0.71);
     expect(h0.prov.lmp).toBe("REAL");
   });
@@ -34,7 +34,12 @@ describe("contracts fixture, Oct 27", () => {
     expect(bundle.hours[1]!.prov.load).toBe("REAL");
   });
 
-  it("notes name the previous operating day", () => {
-    expect(bundle.notes.join(" ")).toContain("OPR_DT 2026-10-26");
+  // #120: prices are raw OASIS DAM values as published, not the cent-rounded snapshot.
+  it("prices are unrounded raw DAM values, and the notes name the file", () => {
+    const cents = (x: number) => Math.round(x * 100) / 100 === x;
+    expect(bundle.hours.filter((h) => !cents(h.lmp_usd_mwh)).length).toBeGreaterThan(12);
+    expect(bundle.notes.join(" ")).toContain(
+      "20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+    );
   });
 });
