@@ -18,15 +18,17 @@ export const STAGE_KEYS: Record<number, readonly string[]> = {
     "oct_step_hour_days_at_5_or_6",
     "oct_step_hour_days_total",
   ],
-  // Reference set only, so one card never mixes two plans.
+  // The race plays the live engine plans, so the Clearlane card reads the DP keys and never
+  // the reference timetable (one card never mixes two plans).
   2: [
     "fixed_usd_mw_day",
-    "clearlane_usd_mw_day",
-    "race_ratio",
     "fixed_70",
-    "clearlane_70",
-    "fixed_rule_charge_usd_mwh",
-    "timetable_charge_usd_mwh",
+    "clearlane_dp_usd_mw_day",
+    "dp_race_ratio",
+    "co2_added_70",
+    "co2_avoided_70",
+    "pulse_cycle_budget",
+    "mou_70mw",
   ],
   3: [
     "enrolled_kw",

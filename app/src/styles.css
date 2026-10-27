@@ -492,3 +492,30 @@ td {
 .ribbon-caption {
   margin: 8px 0 0;
 }
+
+/* Beat 2: compact station panels so panels plus end cards fit the 1080px frame. */
+.race .panel p {
+  margin: 4px 0;
+}
+.race .panel .meter-row {
+  display: grid;
+  grid-template-columns: 6ch 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.race .panel .meter-row .meter {
+  margin-top: 0;
+}
+.race .trace {
+  height: 72px;
+}
+[data-slot="race-end-cards"] .card p {
+  margin: 2px 0;
+}
+[data-slot="race-end-cards"] {
+  min-height: 300px;
+}
+[data-slot="race-end-cards"] .card-note {
+  grid-column: 1 / -1;
+  margin: 0;
+}
