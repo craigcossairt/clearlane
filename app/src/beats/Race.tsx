@@ -1,32 +1,42 @@
 import type { Plan } from "@contracts/types";
-import { Num } from "../components/Num";
+import { Num, useNumber } from "../components/Num";
 import { hourLabel } from "../components/Time";
 import { COPY } from "../copy";
+import { scaleUsdPerDay } from "../engineClient";
+import { grouped, usdDay } from "../format";
 import type { BeatProps } from "./types";
 
+const ENGINE_SRC = "engine solve (live, this laptop)";
+
 /**
- * Beat 2 (core 5 only starts here). The end cards read only the reference set:
- * fixed_usd_mw_day, clearlane_usd_mw_day, race_ratio, fixed_70, clearlane_70,
- * fixed_rule_charge_usd_mwh and timetable_charge_usd_mwh. CO2, the MOU size and the cycle
- * lines sit on other beats.
+ * Beat 2: the race. Both plans were solved through engineClient before Space is pressed (App
+ * builds live.plans on load). The animation plays the live engine plans, so the Clearlane card
+ * reads the engine DP's own key (clearlane_dp_usd_mw_day, dp_race_ratio) and its $/day at the
+ * MOU size comes from the engine's linear fleet scaling of the live plan: one card never mixes
+ * the reference timetable with the DP.
  */
 export function Race({ live, hour }: BeatProps) {
   const done = hour >= 24;
+  const mou = useNumber("mou_70mw");
+  const clear = live.plans.clearlane;
+  const clear70 =
+    mou !== undefined
+      ? scaleUsdPerDay(clear.value_usd_per_mw_day, mou.value)
+      : null;
   return (
     <section className="beat" aria-labelledby="beat-race">
-      <h2 id="beat-race">The race</h2>
+      <h2 id="beat-race">{COPY.raceTitle}</h2>
       <p className="muted">
         <span data-slot="race-clock" className="slot-clock">
           {done ? (
-            "End of the day."
+            COPY.raceEnd
           ) : (
             <span data-time="">
               {hourLabel(Math.min(23, Math.floor(hour)))}
             </span>
           )}
         </span>{" "}
-        Space plays the day. The left station is our baseline, not Torus
-        practice.
+        {COPY.raceHint}
       </p>
       <div className="race">
         <Station
@@ -37,7 +47,7 @@ export function Race({ live, hour }: BeatProps) {
           live={live}
         />
         <Station
-          plan={live.plans.clearlane}
+          plan={clear}
           title={COPY.clearlaneLabel}
           hour={hour}
           spin
@@ -47,32 +57,44 @@ export function Race({ live, hour }: BeatProps) {
       <div className="cards" data-slot="race-end-cards">
         {done ? (
           <>
-            <article className="card">
+            <article className="card" data-card="fixed_overnight">
               <h3>{COPY.fixedLabel}</h3>
               <Num k="fixed_usd_mw_day" width={8} />
-              <p className="muted">per MW-day</p>
+              <p className="muted">{COPY.perMwDay}</p>
               <Num k="fixed_70" width={8} />
-              <p>per day at the MOU size, {COPY.valueToSystem}.</p>
               <p>
-                Charges at <Num k="fixed_rule_charge_usd_mwh" /> per MWh.
+                {COPY.perDayAtMou}, {COPY.valueToSystem}.
+              </p>
+              <p>
+                <Num k="co2_added_70" width={6} /> {COPY.co2AddedAt70}
               </p>
             </article>
-            <article className="card">
+            <article className="card" data-card="clearlane">
               <h3>{COPY.clearlaneLabel}</h3>
-              <Num k="clearlane_usd_mw_day" width={8} />
-              <p className="muted">per MW-day</p>
-              <Num k="clearlane_70" width={8} />
-              <p>per day at the MOU size, {COPY.valueToSystem}.</p>
+              <Num k="clearlane_dp_usd_mw_day" width={8} />
+              <p className="muted">
+                {COPY.perMwDay}, <Num k="dp_race_ratio" width={5} />{" "}
+                {COPY.raceRatioTail}
+              </p>
+              <Num
+                value={clear70}
+                display={clear70 === null ? "" : usdDay(clear70)}
+                prov="DERIVED"
+                source={`${ENGINE_SRC}, scaled to mou_70mw`}
+                reason={COPY.notComputed}
+                width={8}
+              />
               <p>
-                Charges at <Num k="timetable_charge_usd_mwh" /> per MWh.{" "}
-                <Num k="race_ratio" /> the off-peak rule.
+                {COPY.perDayAtMou}, {COPY.valueToSystem}.
+              </p>
+              <p>
+                <Num k="co2_avoided_70" width={6} /> {COPY.co2AvoidedAt70}
               </p>
             </article>
+            <p className="muted card-note">{COPY.co2Caveat}</p>
           </>
         ) : (
-          <p className="muted">
-            End cards stay in this space and fill in when the day finishes.
-          </p>
+          <p className="muted">{COPY.raceCardsPending}</p>
         )}
       </div>
     </section>
@@ -103,24 +125,36 @@ function Station({
       ? 0
       : Math.min(100, (row.spin_soc_kwh / live.site.station.spin_kwh) * 100);
   return (
-    <article className="panel">
-      <h3>{title}</h3>
-      <p className="muted">
-        {spin ? "Spin held for calls" : "No Spin on this baseline"}
-      </p>
-      <p>
-        Spin
+    <article className="panel" data-policy={plan.policy}>
+      <h3>
+        {title}:{" "}
+        <span className="muted">{spin ? COPY.spinHeld : COPY.noSpin}</span>
+      </h3>
+      <p className="meter-row">
+        {COPY.spinWord}
         <span className="meter" aria-hidden="true">
           <b style={{ width: `${spinPct}%` }} />
         </span>
       </p>
-      <p>
-        Pulse
+      <p className="meter-row">
+        {COPY.pulseWord}
         <span className="meter" aria-hidden="true">
           <b style={{ width: `${pulsePct}%` }} />
         </span>
       </p>
       <Meter plan={plan} hour={hour} ceiling={live.site.host_ceiling_kw} />
+      <p data-slot={`cycles-${plan.policy}`}>
+        {COPY.cyclesToday}{" "}
+        <Num
+          value={plan.pulse_cycles}
+          display={grouped(plan.pulse_cycles, 2)}
+          prov="DERIVED"
+          source={ENGINE_SRC}
+          width={5}
+        />
+        {COPY.cyclesBudget} <Num k="pulse_cycle_budget" width={5} />{" "}
+        {COPY.cyclesBudgetTail}
+      </p>
     </article>
   );
 }
@@ -136,20 +170,38 @@ function Meter({
 }) {
   const last = Math.min(95, Math.floor(hour * 4));
   const shown = plan.intervals.slice(0, last + 1);
-  const peak = Math.max(ceiling, ...shown.map((r) => r.meter_kw), 1);
+  // Chart scale only: the axis tops out at the larger of the ceiling and the day's peak.
+  const peak = Math.max(ceiling, ...plan.intervals.map((r) => r.meter_kw), 1);
   const points = shown
     .map((r) => `${(r.i / 95) * 280 + 8},${78 - (r.meter_kw / peak) * 64}`)
     .join(" ");
   const yCeiling = 78 - (ceiling / peak) * 64;
   return (
     <>
-      <p className="muted">Host meter, in kW. The dashed line is the ceiling.</p>
+      <p className="muted">
+        {COPY.meterCaption}{" "}
+        <Num
+          value={plan.host_peak_kw}
+          display={`${grouped(plan.host_peak_kw, 0)} kW`}
+          prov="SIMULATED"
+          source={ENGINE_SRC}
+          width={9}
+        />{" "}
+        {COPY.meterCeiling}{" "}
+        <Num
+          value={ceiling}
+          display={`${grouped(ceiling, 0)} kW`}
+          prov="SIMULATED"
+          source="engine defaultSite (simulated host)"
+          width={9}
+        />
+      </p>
       <svg
         className="trace"
         viewBox="0 0 300 90"
         preserveAspectRatio="none"
         role="img"
-        aria-label="Host meter against its ceiling"
+        aria-label={COPY.meterAria}
       >
         <line
           x1={8}
@@ -157,7 +209,9 @@ function Meter({
           y1={yCeiling}
           y2={yCeiling}
           stroke="var(--jam)"
-          strokeDasharray="4 3"
+          strokeWidth={3}
+          vectorEffect="non-scaling-stroke"
+          strokeDasharray="6 4"
         />
         <polyline
           fill="none"
