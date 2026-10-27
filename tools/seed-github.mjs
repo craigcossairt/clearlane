@@ -96,9 +96,14 @@ for (const it of issues) {
   create(it.title, it.body, [`lane:${it.lane}`, `tier:${it.tier}`], trainTitle(train));
 }
 
-// Dependencies: append "Depends on" once every number is known.
+// Dependencies: append "Depends on" once every number is known. An unresolved title is an error, never a silent drop.
+const unresolved = issues.flatMap((it) => (it.depends_on_titles ?? []).filter((t) => !existing.has(t)).map((t) => `${it.title} -> ${t}`));
+if (unresolved.length && !DRY) {
+  console.error(`unresolved dependency titles:\n  ${unresolved.join("\n  ")}`);
+  process.exit(1);
+}
 for (const it of issues) {
-  const deps = (it.depends_on_titles ?? []).map((t) => existing.get(t)).filter(Boolean);
+  const deps = (it.depends_on_titles ?? []).map((t) => existing.get(t));
   if (!deps.length || DRY) continue;
   const n = existing.get(it.title);
   const body = gh(["issue", "view", String(n), "--json", "body", "-q", ".body"]);
