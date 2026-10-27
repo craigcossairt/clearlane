@@ -4,11 +4,16 @@ import argparse
 import csv
 import json
 import math
+import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from prep import mtday, oasis
-from prep._paths import PUBLIC_DATA, ROOT
+from prep._paths import PUBLIC_DATA
 from prep.jsonio import write_json
 
 NODES = ("ELAP_PACE-APND", "ELAP_PACW-APND", "ELAP_PGE-APND", "TH_SP15_GEN-APND")
