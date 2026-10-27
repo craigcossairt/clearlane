@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img">
+<title>Hour of each day's largest price step, October vs July 2026</title>
+<desc>Bar chart by hour beginning, Mountain time. 24 of 27 October days: HB 5pm or 6pm. July: 28 of 30 between HB 1pm and 8pm. October bars are solid, July bars are hatched. PacifiCorp East day-ahead prices.</desc>
+<defs><pattern id="hatch-accent" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect x="0" y="0" width="16" height="16" fill="#f6f5f1"/><rect x="0" y="0" width="7" height="16" fill="#1c5bb8"/></pattern></defs>
+<rect x="0" y="0" width="1920" height="1080" fill="#f6f5f1"/>
+<text x="50" y="84" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="52" font-weight="bold" text-anchor="start" fill="#1b1c1e">When does the day's biggest price jump land?</text>
+<text x="50" y="136" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="normal" text-anchor="start" fill="#5a5d63">PacifiCorp East day-ahead price, largest rise from one hour to the next, each day</text>
+<rect x="50" y="176" width="44" height="44" fill="#bf3a29"/>
+<text x="110" y="214" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="44" font-weight="bold" text-anchor="start" fill="#1b1c1e">24 of 27 October days: HB 5pm or 6pm</text>
+<rect x="50" y="246" width="44" height="44" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<text x="110" y="284" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="44" font-weight="bold" text-anchor="start" fill="#1b1c1e">July: 28 of 30 between HB 1pm and 8pm</text>
+<line x1="170" y1="800" x2="1860" y2="800" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="154" y="809" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#5a5d63">0</text>
+<line x1="170" y1="665.62" x2="1860" y2="665.62" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="154" y="674.62" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#5a5d63">5</text>
+<line x1="170" y1="531.25" x2="1860" y2="531.25" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="154" y="540.25" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#5a5d63">10</text>
+<line x1="170" y1="396.88" x2="1860" y2="396.88" stroke="#5a5d63" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="154" y="405.88" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#5a5d63">15</text>
+<text x="154" y="348" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="end" fill="#5a5d63">days</text>
+<rect x="529.12" y="773.12" width="26.76" height="26.88" fill="#bf3a29"/>
+<rect x="599.54" y="773.12" width="26.76" height="26.88" fill="#bf3a29"/>
+<rect x="630.3" y="773.12" width="26.76" height="26.88" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="740.38" y="773.12" width="26.76" height="26.88" fill="#bf3a29"/>
+<rect x="1123.22" y="746.25" width="26.76" height="53.75" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="1193.63" y="665.62" width="26.76" height="134.38" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="1264.05" y="773.12" width="26.76" height="26.88" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="1334.47" y="719.38" width="26.76" height="80.62" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="1374.12" y="558.12" width="26.76" height="241.88" fill="#bf3a29"/>
+<rect x="1404.88" y="773.12" width="26.76" height="26.88" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="1444.54" y="396.88" width="26.76" height="403.12" fill="#bf3a29"/>
+<rect x="1475.3" y="638.75" width="26.76" height="161.25" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="1545.72" y="611.88" width="26.76" height="188.12" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="1616.13" y="719.38" width="26.76" height="80.62" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<rect x="1827.38" y="773.12" width="26.76" height="26.88" fill="url(#hatch-accent)" stroke="#1c5bb8" stroke-width="2"/>
+<text x="1387.5" y="546.12" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="40" font-weight="bold" text-anchor="middle" fill="#1b1c1e">9</text>
+<text x="1457.92" y="384.88" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="40" font-weight="bold" text-anchor="middle" fill="#1b1c1e">15</text>
+<line x1="170" y1="800" x2="1860" y2="800" stroke="#1b1c1e" stroke-width="2"/>
+<line x1="205.21" y1="800" x2="205.21" y2="810" stroke="#1b1c1e" stroke-width="2"/>
+<text x="205.21" y="844" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#1b1c1e">12am</text>
+<line x1="416.46" y1="800" x2="416.46" y2="810" stroke="#1b1c1e" stroke-width="2"/>
+<text x="416.46" y="844" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#1b1c1e">3am</text>
+<line x1="627.71" y1="800" x2="627.71" y2="810" stroke="#1b1c1e" stroke-width="2"/>
+<text x="627.71" y="844" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#1b1c1e">6am</text>
+<line x1="838.96" y1="800" x2="838.96" y2="810" stroke="#1b1c1e" stroke-width="2"/>
+<text x="838.96" y="844" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#1b1c1e">9am</text>
+<line x1="1050.21" y1="800" x2="1050.21" y2="810" stroke="#1b1c1e" stroke-width="2"/>
+<text x="1050.21" y="844" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#1b1c1e">12pm</text>
+<line x1="1261.46" y1="800" x2="1261.46" y2="810" stroke="#1b1c1e" stroke-width="2"/>
+<text x="1261.46" y="844" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#1b1c1e">3pm</text>
+<line x1="1472.71" y1="800" x2="1472.71" y2="810" stroke="#1b1c1e" stroke-width="2"/>
+<text x="1472.71" y="844" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#1b1c1e">6pm</text>
+<line x1="1683.96" y1="800" x2="1683.96" y2="810" stroke="#1b1c1e" stroke-width="2"/>
+<text x="1683.96" y="844" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="middle" fill="#1b1c1e">9pm</text>
+<text x="1015" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="normal" text-anchor="middle" fill="#5a5d63">hour beginning, Mountain time</text>
+<text x="48" y="992" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="normal" text-anchor="start" fill="#5a5d63">Source: CAISO OASIS day-ahead LMP, ELAP_PACE-APND, research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv</text>
+<text x="48" y="1024" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="normal" text-anchor="start" fill="#5a5d63">and research/analysis/option2/jul/20260630_20260730_PRC_LMP_DAM_20261026_20_37_57_v12.csv</text>
+<text x="48" y="1056" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="normal" text-anchor="start" fill="#5a5d63">DERIVED. science/chart_step_hours.py. Mountain days Oct 1 to 27 (27) and Jul 1 to 30 (30), 2026; ties go to the earlier hour.</text>
+</svg>
