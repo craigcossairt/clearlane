@@ -25,3 +25,53 @@ export {
   stepLimits,
 } from "./limits";
 export type { LimitOpts, SiteDpOpts, StepLimits } from "./limits";
+export { DEFAULT_WEAR_USD_MWH, POLICY_LABEL, solve } from "./policies";
+export type { SolveOpts } from "./policies";
+export { checkPlan } from "./checkPlan";
+export { buildPlan, schFlags } from "./plan";
+export type { Schedule } from "./plan";
+export { SECOND_CALL_OFFSET_S, scriptedCalls, simulateCall } from "./crash";
+export type { CallResult } from "./crash";
+export { crash, replanFrom, stateAfterCalls } from "./replan";
+export type { CrashOutcome, Replan, ReplanState } from "./replan";
+export { SCH_RULE, buildEnvelope, validateEnvelope } from "./envelope";
+export type { EnvelopeOpts } from "./envelope";
+export { mulberry32, poisson, weighted } from "./rng";
+export type { Rng } from "./rng";
+export {
+  dayStartMs,
+  hourWeights,
+  mountainOffsetH,
+  READINGS,
+  sampleCalls,
+  weekdayIndex,
+} from "./events";
+export type { Reading, SampleOpts } from "./events";
+export {
+  BACKTEST_WINDOW,
+  DEFAULT_SEED,
+  POLICIES,
+  clearlaneCyclesPerYr,
+  histBundle,
+  runBacktest,
+  validateBacktest,
+  windowDays,
+} from "./backtest";
+export type { BacktestDayRow, BacktestOpts, BacktestRun } from "./backtest";
+export { mean, pctl, percentile } from "./stats";
+export { calibrateWear } from "./wear";
+export type { WearCalibration, WearOpts } from "./wear";
+export {
+  FIXPY_AS_OF,
+  SUFFIXES,
+  baseKey,
+  buildNumbers,
+  factsRegistry,
+  largestStep,
+  registryWithNewKeys,
+  snapshotPricesFromCsv,
+  stepHourDays,
+  validateNumbers,
+} from "./numbers";
+export type { NumberInputs } from "./numbers";
+export { NEW_KEYS } from "./newKeys";

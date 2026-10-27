@@ -39,6 +39,8 @@ export function validateBundle(b: Bundle): string[] {
     }
     if (!Number.isFinite(h.lmp_usd_mwh))
       errors.push(`hour ${i}: lmp_usd_mwh is not finite`);
+    if (!Number.isFinite(h.co2_g_kwh))
+      errors.push(`hour ${i}: co2_g_kwh is not finite`);
     if (
       i > 0 &&
       Date.parse(h.ts_utc) - Date.parse(b.hours[i - 1]!.ts_utc) !== HOUR_MS

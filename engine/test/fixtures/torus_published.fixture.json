@@ -1,0 +1,137 @@
+{
+  "events_2025_total": {
+    "value": 359,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_rmp_case_study"
+  },
+  "events_2025_by_hour": {
+    "value": [
+      9, 41, 5, 4, 1, 3, 4, 14, 23, 26, 25, 20, 15, 33, 19, 14, 14, 8, 6, 4, 5,
+      34, 24, 8
+    ],
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_rmp_event_heatmap"
+  },
+  "events_2025_by_weekday": {
+    "value": [50, 57, 43, 57, 53, 45, 54],
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_rmp_event_heatmap"
+  },
+  "ramp_s": {
+    "value": 19,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_rmp_event_response"
+  },
+  "ramp_target_s": {
+    "value": 30,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_rmp_event_response"
+  },
+  "delivered_pct": {
+    "value": 102,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_rmp_event_response"
+  },
+  "delivered_band_pct": {
+    "value": [90, 100],
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_rmp_event_response"
+  },
+  "spin_c_rate": {
+    "value": 10,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_flywheel"
+  },
+  "spin_cycle_life": {
+    "value": 25000,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_flywheel"
+  },
+  "spin_discharge_recharge_min": {
+    "value": 12,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_flywheel"
+  },
+  "pulse_c_rate": {
+    "value": 0.5,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_nova_pulse"
+  },
+  "pulse_cycle_life": {
+    "value": 7500,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_nova_pulse"
+  },
+  "pulse_life_yr": {
+    "value": 25,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_nova_station"
+  },
+  "mou_mw": {
+    "value": 70,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "rmp_torus_first_mou"
+  },
+  "mou_ceiling_mw": {
+    "value": 500,
+    "prov": "TORUS_PUBLISHED",
+    "source_id": "torus_expanded_mou"
+  },
+  "sources": [
+    {
+      "id": "torus_rmp_case_study",
+      "url": "https://www.torus.co/case-studies/case-studies-rocky-mountain-power",
+      "license": "Torus public web page, facts only, no text copied",
+      "retrieved_utc": "2026-10-26"
+    },
+    {
+      "id": "torus_rmp_event_heatmap",
+      "url": "https://www.datocms-assets.com/93357/1778881001-vpp-events-rmp.jpg",
+      "license": "Torus public web page, facts only, no text copied",
+      "retrieved_utc": "2026-10-26"
+    },
+    {
+      "id": "torus_rmp_event_response",
+      "url": "https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg",
+      "license": "Torus public web page, facts only, no text copied",
+      "retrieved_utc": "2026-10-26"
+    },
+    {
+      "id": "torus_flywheel",
+      "url": "https://www.torus.co/torus-flywheel",
+      "license": "Torus public web page, facts only, no text copied",
+      "retrieved_utc": "2026-10-26"
+    },
+    {
+      "id": "torus_nova_pulse",
+      "url": "https://www.torus.co/torus-nova-pulse",
+      "license": "Torus public web page, facts only, no text copied",
+      "retrieved_utc": "2026-10-26"
+    },
+    {
+      "id": "torus_nova_station",
+      "url": "https://www.torus.co/torus-nova",
+      "license": "Torus public web page, facts only, no text copied",
+      "retrieved_utc": "2026-10-26"
+    },
+    {
+      "id": "rmp_torus_first_mou",
+      "url": "https://www.businesswire.com/news/home/20250127668054/en/Rocky-Mountain-Power-and-Torus-Announce-Strategic-Partnership",
+      "license": "Torus public web page, facts only, no text copied",
+      "retrieved_utc": "2026-10-26"
+    },
+    {
+      "id": "torus_expanded_mou",
+      "url": "https://www.torus.co/news/torus-raises-200-million-from-magnetar-deployment-of-modular-power-plants",
+      "license": "Torus public web page, facts only, no text copied",
+      "retrieved_utc": "2026-10-26"
+    }
+  ],
+  "notes": [
+    "TEST FIXTURE for engine tests, copied from public/data/torus_published.json (data lane #39); values match FACTS rmp_heatmap_by_hour and rmp_heatmap_by_weekday.",
+    "The event heatmap states no time zone; always show it read as Mountain time and as UTC.",
+    "359 is the RMP case study count; Torus's 2025 wrap-up says more than 360. We use 359.",
+    "pulse_life_yr is the Torus Station lifespan of 25 years, not a Pulse-specific rating.",
+    "500 MW is the ceiling of the expanded MOU, not installed capacity."
+  ]
+}

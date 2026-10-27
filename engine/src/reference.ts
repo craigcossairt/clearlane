@@ -90,9 +90,16 @@ export function option2Shift(
   opts: Option2Opts = { mw: 25, hours: 3, window_hb: [9, 17] },
 ): Option2Shift {
   const from = asc(ranked(b, 0, 23, -1).slice(0, opts.hours));
+  // destination hours never include a source hour, and there must be as many of them
   const to = asc(
-    ranked(b, opts.window_hb[0], opts.window_hb[1], 1).slice(0, opts.hours),
+    ranked(b, opts.window_hb[0], opts.window_hb[1], 1)
+      .filter((h) => !from.includes(h))
+      .slice(0, opts.hours),
   );
+  if (to.length < opts.hours)
+    throw new Error(
+      `option2Shift: only ${to.length} free hours in HB ${opts.window_hb[0]}-${opts.window_hb[1]} for ${opts.hours}`,
+    );
   const p = (h: number) => b.hours[h]!.lmp_usd_mwh;
   const ci = (h: number) => b.hours[h]!.co2_g_kwh;
   return {

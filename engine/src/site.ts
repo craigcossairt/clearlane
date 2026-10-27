@@ -9,10 +9,10 @@ import {
 } from "./inputs";
 
 // Host load by Mountain hour beginning, kW: overnight base, morning ramp, an 800 kW peak at HB 14-15,
-// a second shift to HB 20, back to base by HB 23.
+// a second shift around 540 kW to HB 20 (leaving room under the ceiling for an uncapped Spin refill), back to base by HB 23.
 const HOST_BY_HOUR_KW = [
   300, 300, 300, 300, 300, 340, 440, 540, 600, 620, 650, 680, 720, 760, 800,
-  800, 720, 640, 620, 600, 580, 460, 360, 300,
+  800, 720, 600, 540, 540, 520, 460, 360, 300,
 ];
 
 export const SITE_DEFAULT_ID = "sim-utah-manufacturer";

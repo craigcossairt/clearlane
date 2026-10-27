@@ -35,6 +35,10 @@ describe("bundle", () => {
       i === 3 ? { ...h, lmp_usd_mwh: Number.NaN } : h,
     );
     expect(validateBundle({ ...b, hours: nan }).join(" ")).toMatch(/finite/);
+    const co2 = b.hours.map((h, i) =>
+      i === 7 ? { ...h, co2_g_kwh: Number.NaN } : h,
+    );
+    expect(validateBundle({ ...b, hours: co2 }).join(" ")).toMatch(/co2_g_kwh/);
   });
 });
 
