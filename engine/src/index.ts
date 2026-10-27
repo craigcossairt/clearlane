@@ -36,3 +36,13 @@ export { crash, replanFrom, stateAfterCalls } from "./replan";
 export type { CrashOutcome, Replan, ReplanState } from "./replan";
 export { SCH_RULE, buildEnvelope, validateEnvelope } from "./envelope";
 export type { EnvelopeOpts } from "./envelope";
+export { mulberry32, poisson, weighted } from "./rng";
+export type { Rng } from "./rng";
+export {
+  dayStartMs,
+  hourWeights,
+  mountainOffsetH,
+  sampleCalls,
+  weekdayIndex,
+} from "./events";
+export type { Reading, SampleOpts } from "./events";
