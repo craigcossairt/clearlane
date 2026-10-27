@@ -9,17 +9,24 @@ export function readBundle(file: string | undefined): Bundle {
     console.error(`bundle not found: ${file ?? "(none given)"}`);
     process.exit(2);
   }
-  let b: Bundle;
+  let raw: unknown;
   try {
-    b = JSON.parse(readFileSync(file, "utf8")) as Bundle;
+    raw = JSON.parse(readFileSync(file, "utf8"));
   } catch (err) {
     console.error(`bundle is not JSON: ${file}: ${String(err)}`);
     process.exit(2);
   }
-  const errors =
-    b.schema === "clearlane.bundle/v1"
-      ? validateBundle(b)
-      : [`schema is ${String(b.schema)}`];
+  const b = raw as Bundle;
+  const errors = (() => {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw))
+      return ["not an object"];
+    if (b.schema !== "clearlane.bundle/v1")
+      return [`schema is ${String(b.schema)}`];
+    if (!Array.isArray(b.hours)) return ["hours is not an array"];
+    if (!b.hours.every((h) => h && typeof h === "object"))
+      return ["an hour is not an object"];
+    return validateBundle(b);
+  })();
   if (errors.length) {
     console.error(`invalid bundle ${file}:\n  ${errors.join("\n  ")}`);
     process.exit(2);

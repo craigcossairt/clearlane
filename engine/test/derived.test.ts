@@ -34,6 +34,8 @@ describe("public/derived stays in step with the engine", () => {
   it("no file in public/derived has an em dash", () => {
     const dir = repoPath("public/derived");
     for (const f of readdirSync(dir))
-      expect(readFileSync(`${dir}/${f}`, "utf8")).not.toContain("�");
+      expect(readFileSync(`${dir}/${f}`, "utf8")).not.toContain(
+        String.fromCharCode(0x2014),
+      );
   });
 });

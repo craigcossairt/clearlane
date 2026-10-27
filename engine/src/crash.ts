@@ -75,7 +75,13 @@ export function simulateCall(
   const dayStart = Date.parse(plan.intervals[0]!.ts_utc);
   const s0 = (Date.parse(event.start_utc) - dayStart) / 1000;
   const spinCap = hasSpin(plan) ? st.spin_kwh : 0;
-  const ps = priorState(prior, site, prior ? (Date.parse(event.start_utc) - Date.parse(startOf(prior))) / 1000 : 0);
+  const ps = priorState(
+    prior,
+    site,
+    prior
+      ? (Date.parse(event.start_utc) - Date.parse(startOf(prior))) / 1000
+      : 0,
+  );
   let spinSoc = hasSpin(plan) ? Math.min(spinCap, ps.spin) : 0;
   let pulseSoc = plannedSocAt(plan, site, s0) - ps.pulseDrawnKwh;
   let servedKwh = 0;
@@ -108,7 +114,8 @@ export function simulateCall(
       let spinServe = Math.min(target, st.spin_kw, spinSoc * 3600);
       let pulseServe = Math.min(
         target - spinServe,
-        st.pulse_kw - Math.abs(planned),
+        // net Pulse is planned - pulseServe and may reach -rating: a planned charge can be dropped first
+        st.pulse_kw + planned,
         Math.max(0, pulseSoc) * e * 3600,
       );
       pulseServe = Math.max(0, pulseServe);
@@ -167,6 +174,6 @@ export function simulateCall(
 }
 
 // A call's start time, recovered from its trace length and end.
-function startOf(r: CallResult): string {
+export function startOf(r: CallResult): string {
   return addSeconds(r.spin_full_again_utc, -r.trace.length);
 }
