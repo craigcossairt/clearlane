@@ -138,7 +138,10 @@ def build(fetch_only: bool = False, out: Path | None = None) -> list[dict]:
         "sources": sources,
         "fetched_utc": max(fetched),
         "notes": [
-            "Price data: California ISO OASIS. EIA PACE CO2 data is public domain; credit the U.S. Energy Information Administration."
+            "Price data: California ISO OASIS. EIA PACE CO2 data is public domain; credit the U.S. Energy Information Administration.",
+            "CO2 is null where the EIA PACE series has no value. The last EIA CO2 hour is "
+            + eia_meta["last_co2_utc_start"]
+            + "; later hours are null, never filled.",
         ],
     }
     data_path = out or PUBLIC_DATA / "hist_2026-05-01_2026-10-27.json"

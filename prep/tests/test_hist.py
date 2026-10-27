@@ -3,23 +3,25 @@
 import unittest
 import csv
 import json
+import math
 import pathlib
+import tempfile
 
-from prep.build_hist import _day_record
+from prep import oasis
+from prep.build_hist import WINDOWS, _call_url, _day_record, build
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 HIST = ROOT / "public" / "data" / "hist_2026-05-01_2026-10-27.json"
 META = ROOT / "public" / "data" / "hist_2026-05-01_2026-10-27.meta.json"
 
 
-def _research_prices(path: pathlib.Path, start: str, end: str) -> dict[str, float]:
+def _research_prices(path: pathlib.Path) -> dict[str, float]:
+    """Published PACE LMP by UTC hour start. The extracts begin at 06:00Z, a Mountain midnight."""
     with path.open(newline="", encoding="utf-8") as stream:
         return {
             row["INTERVALSTARTTIME_GMT"].replace("-00:00", "Z"): float(row["MW"])
             for row in csv.DictReader(stream)
-            if row["NODE"] == "ELAP_PACE-APND"
-            and row["LMP_TYPE"] == "LMP"
-            and start <= row["INTERVALSTARTTIME_GMT"][:10] <= end
+            if row["NODE"] == "ELAP_PACE-APND" and row["LMP_TYPE"] == "LMP"
         }
 
 
@@ -32,8 +34,6 @@ class HistoryBuildTest(unittest.TestCase):
             / "oasis"
             / "dam_jul"
             / "20260630_20260730_PRC_LMP_DAM_20261026_20_19_29_v12.csv",
-            "2026-07-01",
-            "2026-07-30",
         )
         october = _research_prices(
             ROOT
@@ -42,13 +42,10 @@ class HistoryBuildTest(unittest.TestCase):
             / "oasis"
             / "dam_oct"
             / "20260930_20261025_PRC_LMP_DAM_20261026_20_19_45_v12.csv",
-            "2026-10-01",
-            "2026-10-25",
         )
-        self.assertEqual(len(july), 714)
-        self.assertEqual(sum(1 for stamp in july if stamp.startswith("2026-07-01")), 18)
-        self.assertEqual(len(october), 594)
-        self.assertEqual(sum(1 for stamp in october if stamp.startswith("2026-10-01")), 18)
+        # Jul 1-30 is 30 Mountain days and Oct 1-25 is 25, each with 24 priced hours.
+        self.assertEqual(len(july), 30 * 24)
+        self.assertEqual(len(october), 25 * 24)
 
     def test_incomplete_day_is_listed_and_never_filled(self):
         day = "2026-05-01"
@@ -92,7 +89,9 @@ class HistoryBuildTest(unittest.TestCase):
         for day in days:
             self.assertEqual(len(day["lmp_usd_mwh"]), 24)
             self.assertEqual(len(day["co2_g_kwh"]), 24)
-            self.assertTrue(all(isinstance(value, (int, float)) for value in day["lmp_usd_mwh"]))
+            self.assertTrue(
+                all(isinstance(value, (int, float)) and math.isfinite(value) for value in day["lmp_usd_mwh"])
+            )
             self.assertTrue(all(value is None or value > 0 for value in day["co2_g_kwh"]))
         indexed = {day["operating_day_mt"]: day for day in days}
         pins = (
@@ -118,12 +117,10 @@ class HistoryBuildTest(unittest.TestCase):
             ),
         )
         for first, last, source in pins:
-            expected = _research_prices(source, first, last)
+            expected = _research_prices(source)
+            compared = 0
             for day in days:
                 if first <= day["operating_day_mt"] <= last:
-                    if day["operating_day_mt"] in ("2026-07-01", "2026-10-01"):
-                        # The committed research extracts each have only 18 hours on the first pinned day.
-                        continue
                     from prep.mtday import mountain_day_hours
 
                     stamps = [
@@ -131,6 +128,8 @@ class HistoryBuildTest(unittest.TestCase):
                         for instant in mountain_day_hours(day["operating_day_mt"])
                     ]
                     self.assertEqual(day["lmp_usd_mwh"], [expected[stamp] for stamp in stamps])
+                    compared += 24
+            self.assertEqual(compared, len(expected))
         bundle_path = ROOT / "public" / "data" / "bundle_2026-10-27.json"
         if bundle_path.is_file():
             bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
@@ -138,6 +137,22 @@ class HistoryBuildTest(unittest.TestCase):
             self.assertEqual(
                 [round(x, 2) for x in history_day["lmp_usd_mwh"][1:]], [x["lmp_usd_mwh"] for x in bundle["hours"][1:]]
             )
+
+    @unittest.skipUnless(
+        all(oasis._cache_path(_call_url(*window), "prc_lmp").is_file() for window in WINDOWS),
+        "raw OASIS cache not present (CI has no clearlane-raw)",
+    )
+    def test_two_builds_are_byte_identical_and_match_committed_output(self):
+        with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second:
+            out_a = pathlib.Path(first) / HIST.name
+            out_b = pathlib.Path(second) / HIST.name
+            build(out=out_a)
+            build(out=out_b)
+            self.assertEqual(out_a.read_bytes(), out_b.read_bytes())
+            self.assertEqual(out_a.with_name(META.name).read_bytes(), out_b.with_name(META.name).read_bytes())
+            if HIST.is_file() and META.is_file():
+                self.assertEqual(out_a.read_bytes(), HIST.read_bytes())
+                self.assertEqual(out_a.with_name(META.name).read_bytes(), META.read_bytes())
 
 
 if __name__ == "__main__":
