@@ -61,3 +61,17 @@ export type { BacktestDayRow, BacktestOpts, BacktestRun } from "./backtest";
 export { mean, pctl, percentile } from "./stats";
 export { calibrateWear } from "./wear";
 export type { WearCalibration, WearOpts } from "./wear";
+export {
+  FIXPY_AS_OF,
+  SUFFIXES,
+  baseKey,
+  buildNumbers,
+  factsRegistry,
+  largestStep,
+  registryWithNewKeys,
+  snapshotPricesFromCsv,
+  stepHourDays,
+  validateNumbers,
+} from "./numbers";
+export type { NumberInputs } from "./numbers";
+export { NEW_KEYS } from "./newKeys";
