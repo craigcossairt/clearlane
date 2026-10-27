@@ -19,13 +19,16 @@ const discharged = (acts: number[]) =>
 const mean = (xs: number[]) => xs.reduce((a, x) => a + x, 0) / xs.length;
 
 describe("the fix.py vector", () => {
-  it("is the fixture rotated left by one, apart from the borrowed hour 0", () => {
+  // #120: the fixture holds raw OASIS DAM prices; the snapshot CSV fix.py reads holds them rounded to the cent.
+  it("is the fixture rotated left by one and rounded to the cent, apart from the borrowed hour 0", () => {
     const rot = rotateLeft(
       loadFixture().hours.map((h) => h.lmp_usd_mwh),
       1,
     );
+    const cents = (x: number) => Math.round(x * 100) / 100;
     expect(snap).toHaveLength(24);
-    expect(rot.slice(0, 23)).toEqual(snap.slice(0, 23));
+    expect(rot.slice(0, 23).map(cents)).toEqual(snap.slice(0, 23));
+    expect(rot.slice(0, 23)).not.toEqual(snap.slice(0, 23));
     // the snapshot's last row is HB 0 of Oct 28 ($46.11); pins solve over the CSV, not the fixture (crosscheck item 1)
     expect(snap[23]).toBe(46.11);
   });

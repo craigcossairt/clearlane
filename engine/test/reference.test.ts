@@ -33,11 +33,14 @@ const HE: Record<number, number> = {
   24: 693,
 };
 
+// #120: the fixture holds raw OASIS DAM prices (unrounded). Pins are habit.py's arithmetic run on those
+// raw ELAP_PACE-APND LMPs (research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv),
+// not habit.py on the cent-rounded snapshot (which gave 20.064746, 58.405341).
 describe("reference race on the Oct 27 fixture (habit.py)", () => {
   it("pins the values", () => {
-    expect(race.fixed.usd_per_mw_day).toBeCloseTo(20.064746, 6);
-    expect(race.timetable.usd_per_mw_day).toBeCloseTo(58.405341, 6);
-    expect(race.fixed.usd_per_mw_day.toFixed(2)).toBe("20.06");
+    expect(race.fixed.usd_per_mw_day).toBeCloseTo(20.065129, 6);
+    expect(race.timetable.usd_per_mw_day).toBeCloseTo(58.409678, 6);
+    expect(race.fixed.usd_per_mw_day.toFixed(2)).toBe("20.07");
     expect(race.timetable.usd_per_mw_day.toFixed(2)).toBe("58.41");
     expect(race.ratio.toFixed(3)).toBe("2.911");
   });
@@ -48,7 +51,7 @@ describe("reference race on the Oct 27 fixture (habit.py)", () => {
     expect(race.timetable.discharge_hb).toEqual([18, 19]);
     expect(race.fixed.charge_mean_usd_mwh.toFixed(2)).toBe("39.53");
     expect(race.timetable.charge_mean_usd_mwh.toFixed(2)).toBe("21.55");
-    expect(race.fixed.discharge_mean_usd_mwh).toBeCloseTo(55.615, 9);
+    expect(race.fixed.discharge_mean_usd_mwh).toBeCloseTo(55.61569, 9);
   });
 
   it("pins CO2 to 1e-4 t/MW-day", () => {
@@ -71,15 +74,15 @@ describe("reference race on the Oct 27 fixture (habit.py)", () => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       });
-    expect(usd(scaleUsdPerDay(race.fixed.usd_per_mw_day, 70))).toBe("1,404.53");
+    expect(usd(scaleUsdPerDay(race.fixed.usd_per_mw_day, 70))).toBe("1,404.56");
     expect(usd(scaleUsdPerDay(race.timetable.usd_per_mw_day, 70))).toBe(
-      "4,088.37",
+      "4,088.68",
     );
     expect(usd(scaleUsdPerDay(race.fixed.usd_per_mw_day, 500))).toBe(
-      "10,032.37",
+      "10,032.56",
     );
     expect(usd(scaleUsdPerDay(race.timetable.usd_per_mw_day, 500))).toBe(
-      "29,202.67",
+      "29,204.84",
     );
   });
 });
@@ -90,7 +93,7 @@ describe("option 2 shift (numbers.py)", () => {
     expect(s.from_hb).toEqual([18, 19, 20]);
     expect(s.to_hb).toEqual([13, 14, 15]);
     expect(s.mwh).toBe(75);
-    expect(s.usd.toFixed(2)).toBe("2550.75");
+    expect(s.usd.toFixed(2)).toBe("2550.94");
     // CO2 avoided: 25 MW x (evening minus midday hour-beginning g/kWh) / 1000
     expect(s.co2_t).toBeCloseTo(
       (25 * (629 + 673 + 676 - (450 + 443 + 446))) / 1000,
