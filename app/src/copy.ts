@@ -99,6 +99,15 @@ export const COPY = {
   against: "against a",
   target: "target",
   band: "band",
+  replanTitle: "Re-plan",
+  replannedIn: "Re-planned in",
+  replanNote:
+    "The rest of the day, re-solved from the state of charge the call left behind, timed live on this laptop. Simulated station.",
+  replanEmpty: "No call yet, so there is no re-plan. Press C, then come back.",
+  replanAria:
+    "Pulse state of charge across the day: the morning plan, dashed, and the re-plan from the call, solid",
+  replanLegend:
+    "Dashed: Pulse state of charge as planned this morning. Solid: the re-plan from the call (red line). Space plays on from the call minute.",
   heatmapMountain: "if Mountain time",
   heatmapUtc: "if UTC",
   heatmapNote:
