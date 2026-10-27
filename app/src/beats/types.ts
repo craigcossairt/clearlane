@@ -33,4 +33,6 @@ export interface BeatProps {
   backtest: boolean;
   fleetMw: number | null;
   onFleet: (mw: number) => void;
+  /** The beat's step; beat 6 shows the close card at "end". Optional so tests can omit it. */
+  step?: "start" | "end";
 }

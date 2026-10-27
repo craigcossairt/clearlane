@@ -217,7 +217,9 @@ function Stage({
       event.preventDefault();
       switch (binding.action) {
         case "next":
-          go(clampBeat(beat + 1));
+          // On the last beat, Right turns to the close card.
+          if (beat === 6) setStep("end");
+          else go(clampBeat(beat + 1));
           break;
         case "prev":
           go(clampBeat(beat - 1));
@@ -317,6 +319,7 @@ function Stage({
     backtest,
     fleetMw,
     onFleet: setFleetMw,
+    step,
   };
   const Current = BEATS.find((b) => b.id === beat)?.Component ?? Ribbon;
 
