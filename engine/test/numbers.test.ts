@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type {
   BacktestResult,
+  Bundle,
   HistDay,
   StageNumber,
   TorusPublished,
@@ -429,34 +430,45 @@ describe("validateNumbers rejects", () => {
   ])("%s", (_, rows, re) => expect(bad(rows as StageNumber[])).toMatch(re));
 });
 
-// Not committed until core 13 (#63): pitch/resolve.mjs needs a row for every pitch key (#144).
 const committed = repoPath("public/derived/numbers.json");
+// The bundle the committed file was generated from (engine.md: `npx tsx engine/cli/numbers.ts
+// public/data/bundle_2026-10-27.json`). Everything else below is a default path the CLI reads.
+const CLI_BUNDLE = "public/data/bundle_2026-10-27.json";
 
 describe("public/derived/numbers.json", () => {
   it.skipIf(!existsSync(committed))(
     "equals the CLI output for the inputs on disk",
     () => {
-      const f = committed;
+      // Same inputs, same defaults, same optional-file rule as engine/cli/numbers.ts.
       const opt = <T>(p: string, parse: (t: string) => T) =>
         existsSync(repoPath(p)) ? { data: parse(read(p)), path: p } : undefined;
       const backtest = opt(
         "public/derived/backtest.json",
         (t) => JSON.parse(t) as BacktestResult,
       );
+      const torus = opt(TORUS, (t) => JSON.parse(t) as TorusPublished);
       const hist = opt(
         "public/data/hist_2026-05-01_2026-10-27.json",
         (t) => JSON.parse(t) as HistDay[],
       );
+      const snap = opt(SNAP, snapshotPricesFromCsv);
+      const research = loadResearch(repoPath("research"));
       const expected = buildNumbers(
         {
-          ...inputs,
+          bundle: JSON.parse(read(CLI_BUNDLE)) as Bundle,
+          bundle_path: CLI_BUNDLE,
+          site: defaultSite(),
           wear_usd_mwh: backtest?.data.wear_usd_mwh ?? DEFAULT_WEAR_USD_MWH,
+          snapshot: snap && { prices: snap.data, path: snap.path },
+          torus,
           backtest,
           hist,
+          research: research ? { data: research, path: "research" } : undefined,
         },
         reg,
       );
-      expect(readFileSync(f, "utf8")).toBe(stableJson(expected));
+      expect(validateNumbers(expected, reg)).toEqual([]);
+      expect(readFileSync(committed, "utf8")).toBe(stableJson(expected));
     },
   );
 });
