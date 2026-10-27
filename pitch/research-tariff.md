@@ -1,12 +1,12 @@
 # Tariff, System Critical Hours, heatmap time zone
 
-Checked Mon Oct 26, 2026, about 12:30am MT. Each claim is verified against the page named, or marked not verified. Quotes stay under 15 words. Nothing here is a stage number until it is a `{key}` in `public/derived/numbers.json`.
+Checked Tue Oct 27, 2026, about 12:30am MT. Corrected Tue Oct 27, 2026, 2:30am MT. Each claim is verified against the page named, or marked not verified. Quotes stay under 15 words. Nothing here is a stage number until it is a `{key}` in `public/derived/numbers.json`.
 
 Host one-pagers stay in kW. The demand charges below are context for judges, not a bill saving. Clearlane does not show a host dollar figure.
 
 ## (a) Rocky Mountain Power Utah Schedules 6, 6A and 8
 
-Verified against the tariff sheets Rocky Mountain Power posts, P.S.C.U. No. 52, Docket No. 26-035-T08, filed August 5, 2026, effective August 10, 2026. The Utah price summary "in effect as of September 25, 2026" matches these base rates. Downloaded Oct 26, 2026.
+Verified against the tariff sheets Rocky Mountain Power posts, P.S.C.U. No. 52. Schedules 6 and 6A, and Schedule 8 sheets 8.1 and 8.2, are Docket No. 26-035-T08, filed August 5, 2026, effective August 10, 2026. The Utah price summary "in effect as of September 25, 2026" matches these base rates. Downloaded Tue Oct 27, 2026, 12:17am MT.
 
 Sheets:
 
@@ -54,7 +54,7 @@ Facilities kW is the 15-minute period of greatest use at any time in the month. 
 | Power, on-peak   | $16.84 per kW    | $14.90 per kW    |
 | Power, off-peak  | none             | none             |
 
-On-peak hours, Monday through Friday, except holidays:
+On-peak hours, Monday through Friday, except holidays. These hours are on sheet 8.3, which is Original Sheet No. 8.3, Docket No. 24-035-04, filed May 9, 2025, effective April 25, 2025. The dollar rates above are on sheets 8.1 and 8.2 under Docket No. 26-035-T08.
 
 - October through May: 6:00 a.m. to 9:00 a.m. and 6:00 p.m. to 10:00 p.m.
 - June through September: 3:00 p.m. to 10:00 p.m.
@@ -64,28 +64,28 @@ On-peak hours, Monday through Friday, except holidays:
 - The 15-minute interval is verified for Facilities kW on all three schedules, and for Power on Schedules 6 and 8. The host ceiling in the demo matches the billing interval.
 - Schedule 6 has no time-of-day window. A midday charge sets the same demand charge as a 6pm charge. The host value of Clearlane on Schedule 6 is "the meter does not set a new 15-minute peak," not "charging moved off-peak."
 - Schedule 6A's on-peak is 6pm to 10pm weekdays, all year. That is not the 7am to 11pm window in the 2020 ChargePoint filing. The 2020 window is not the current sheet.
-- Schedule 8's summer on-peak starts at 3pm, which includes the clear-lane hours the timetable charges in. Winter on-peak includes a morning window the timetable does not use, and 6pm to 10pm, which it does.
+- Schedule 8's summer on-peak starts at 3pm. The Oct 27 timetable charges hour-beginning 1pm to 3pm (FACTS `midday_avg`), so the summer window overlaps only the 3pm hour. Summer lanes are a different day's plan. Winter on-peak includes a morning window the timetable does not use, and 6pm to 10pm, which it does.
 - OpenEI's $13.27 and $11.74 per kW are not on the current sheets. Those sheets show $14.49 and $12.82 for Schedule 6 power, plus a separate facilities charge. Do not quote the OpenEI pair.
 
 ## (b) System Critical Hours
 
 Not verified as a defined term in any Utah or Wyoming docket.
 
-Checked Oct 26, 2026:
+Checked Tue Oct 27, 2026:
 
 - Utah PSC document search for the exact phrase returned no docket that defines it. Older Utah filings use "critical hours" for loss-of-load studies. That is a different phrase.
 - Wyoming PSC search for the phrase returned no match.
-- The June 2026 ROWE consolidated comments use the phrase. Torus's section 6.4 says the design document references SCH and that the methodology "remains an area for further development." Torus asks the work group to say whether SCH is a fixed number of highest-stress hours, a probabilistic envelope, or another approach, and says it "does not advocate for a specific SCH definition at this stage." PDF page 12 of https://rowesternenergy.org/wp-content/uploads/2026/06/Consolidated-Spring-Workshop-Comments_06222026.pdf
+- The June 2026 ROWE consolidated comments use the phrase. Torus's section 6.4, PDF page 12: "specific SCH definition methodology remains an area for further development." Same page: "does not advocate for a specific SCH definition at this stage." https://rowesternenergy.org/wp-content/uploads/2026/06/Consolidated-Spring-Workshop-Comments_06222026.pdf
 - WRAP uses "Capacity Critical Hours," a different term, in its Business Practice Manual 104. Not the same phrase.
 
 Say: "our proposed rule for the hours Torus asked ROWE to define." Do not say a Utah or Wyoming commission has defined System Critical Hours.
 
 ## (c) Heatmap time zone
 
-Not verified. The chart states no time zone.
+Not verified. Show both readings. The chart states no time zone.
 
 Image: https://www.datocms-assets.com/93357/1778881001-vpp-events-rmp.jpg from https://www.torus.co/case-studies/case-studies-rocky-mountain-power
 
-Read Oct 26, 2026. The hour axis is labeled 12am through 11pm. No zone, no offset, no "MT" or "UTC." The bottom row sums to 359, matching the "359 Events" header. Weekday totals Monday to Sunday are 50, 57, 43, 57, 53, 45, 54.
+Read Tue Oct 27, 2026, 12:18am MT. The hour axis is labeled 12am through 11pm. No zone, no offset, no "MT" or "UTC." The bottom row sums to 359, matching the "359 Events" header. Weekday totals Monday to Sunday are 50, 57, 43, 57, 53, 45, 54.
 
 Show both readings. Do not pick one.
