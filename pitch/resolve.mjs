@@ -8,15 +8,25 @@
  * Exit 1 when a key is unknown, a number is hand-typed, or a guardrail fails.
  * If public/derived/numbers.json exists, display text comes from there and a
  * key missing from that file fails. Until it exists, pitch/keys.json is the catalog.
+ *
+ * Two kinds of key never read numbers.json (docs/lanes/pitch.md section 3):
+ * - source "facts": display is the keys.json wording, which must appear verbatim
+ *   in the named FACTS row (`fact`). The row must be VERIFIED, or CONFLICT with
+ *   the display inside its say-instead wording. Such a key in numbers.json fails.
+ * - prov "MEASURED": timed live on the demo machine, rendered "[read from screen]".
+ *   Such a key in numbers.json fails.
  */
 
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseFacts } from "../tools/lib/facts.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const keysPath = join(root, "pitch", "keys.json");
 const numbersPath = join(root, "public", "derived", "numbers.json");
+const factsPath = join(root, "docs", "FACTS.md");
+const MEASURED_DISPLAY = "[read from screen]";
 
 const BANNED = [
   [/Torus lacks/i, "Torus lacks"],
@@ -28,15 +38,56 @@ const BANNED = [
 
 const SKIP = new Set(["review-log.md", "research-tariff.md", "keys.json"]);
 
+function factsDisplay(key, entry, facts) {
+  const fact = facts.get(entry.fact);
+  if (!fact)
+    throw new Error(
+      `${key}: source "facts" names FACTS row ${entry.fact}, which does not exist`,
+    );
+  const display = entry.display;
+  if (
+    typeof display !== "string" ||
+    display.length === 0 ||
+    display.includes("{")
+  ) {
+    throw new Error(
+      `${key}: source "facts" needs its exact wording in display`,
+    );
+  }
+  if (
+    fact.status === "VERIFIED" &&
+    (fact.claim.includes(display) || fact.value.includes(display))
+  )
+    return display;
+  if (fact.status === "CONFLICT" && fact.sayInstead?.includes(display))
+    return display;
+  throw new Error(
+    `${key}: display "${display}" is not in FACTS row ${entry.fact} as allowed for status ${fact.status}`,
+  );
+}
+
 function loadCatalog() {
   const catalog = JSON.parse(readFileSync(keysPath, "utf8")).keys;
+  const facts = parseFacts(readFileSync(factsPath, "utf8"));
   const display = {};
-  for (const [key, row] of Object.entries(catalog)) display[key] = row.display;
+  for (const [key, entry] of Object.entries(catalog)) {
+    if (entry.prov === "MEASURED") display[key] = MEASURED_DISPLAY;
+    else if (entry.source === "facts")
+      display[key] = factsDisplay(key, entry, facts);
+    else display[key] = entry.display;
+  }
   if (!existsSync(numbersPath)) return { display, fromNumbers: false };
   const rows = JSON.parse(readFileSync(numbersPath, "utf8"));
   const byKey = new Map(rows.map((row) => [row.key, row]));
-  for (const key of Object.keys(catalog)) {
+  for (const [key, entry] of Object.entries(catalog)) {
     const row = byKey.get(key);
+    if (entry.prov === "MEASURED" || entry.source === "facts") {
+      if (row)
+        throw new Error(
+          `${key}: ${entry.prov === "MEASURED" ? "MEASURED" : 'source "facts"'}, but numbers.json also has a row for it`,
+        );
+      continue;
+    }
     if (!row) throw new Error(`numbers.json has no row for ${key}`);
     if (typeof row.display !== "string" || row.display.length === 0) {
       throw new Error(`numbers.json display empty for ${key}`);
