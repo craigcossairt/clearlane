@@ -1,0 +1,4 @@
+[
+  { "key": "stored_ok", "value": 1, "unit": "$/MWh", "display": "$1.00", "prov": "DERIVED", "source": "fixture", "as_of_mt": "2026-10-27" },
+  { "key": "clash_live", "value": 12, "unit": "ms", "display": "12 ms", "prov": "MEASURED", "source": "fixture", "as_of_mt": "2026-10-27" }
+]
