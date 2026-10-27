@@ -30,3 +30,5 @@ export type { SolveOpts } from "./policies";
 export { checkPlan } from "./checkPlan";
 export { buildPlan, schFlags } from "./plan";
 export type { Schedule } from "./plan";
+export { SECOND_CALL_OFFSET_S, scriptedCalls, simulateCall } from "./crash";
+export type { CallResult } from "./crash";
