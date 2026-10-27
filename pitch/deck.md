@@ -12,6 +12,8 @@ Clearlane. Fill up when Utah's grid is clear. Keep Spin ready for the crash.
 
 Torus bounty, Energy x AI Infrastructure. Option 1 is the spine. Option 2 is one card: in time, not in space.
 
+Notes: on stage, this slide, then the live demo, then the close. Every slide between is a Q&A backup.
+
 ## 2. Utah's rush hour is 6pm
 
 Ribbon of the operating day. Three numbers: overnight average `{overnight_avg}`, midday average `{midday_avg}`, 6pm price `{peak_price}`.
@@ -33,8 +35,6 @@ A call of about five and a half minutes, answered at `{pulse_c_rate}` by Pulse a
 `{events_2025}` events in 2025 (Torus, RMP case study) add up to about `{call_hours_2025}`.
 
 Spin at `{spin_c_rate}` holds `{spin_kwh_per_kw}` per kW, enough for one call, and refills in about six minutes under the host's ceiling. Six minutes is our reading of Torus's published twelve-minute discharge and recharge.
-
-Torus's own line, short: Spin absorbs spikes so Pulse can discharge steadily.
 
 ## 5. Not one good day
 
@@ -68,7 +68,7 @@ A simulated campus shift on the operating day: `{campus_usd}` a day. Simulated. 
 
 ## 9. Scale, and the caveat
 
-`{mou_mw}` is the demand-response agreement Torus says it filled. `{mou_ceiling_mw}` is an MOU ceiling, not installed capacity.
+`{mou_mw}` is the demand-response agreement Torus says it filled. `{mou_ceiling_mw}` is an MOU for up to that amount, not installed capacity.
 
 The ceiling is about `{mou_share_of_peak_pct}` of the operating day's peak load forecast (`{load_peak_oct27_mw}`). The slider says the fleet is assumed not to move prices. That assumption gets weaker as the fleet grows.
 

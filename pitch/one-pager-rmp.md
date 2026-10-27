@@ -22,7 +22,7 @@ At `{mou_mw}`, that is `{fixed_70}` a day against `{clearlane_70}` a day. Those 
 
 This is value to RMP's system at day-ahead prices. It is not Torus revenue, not a host bill cut, and not a settlement.
 
-Estimated CO2, using EIA average emissions for PacifiCorp East, not marginal: the off-peak rule adds about `{co2_added_70}` a day at that scale, and the timetable avoids about `{co2_avoided_70}`. Average emissions can differ from marginal.
+CO2 is estimated, using average emissions for PacifiCorp East, not marginal: the off-peak rule adds about `{co2_added_70}` a day at that scale, and the timetable avoids about `{co2_avoided_70}`. Average emissions can differ from marginal.
 
 ## The call
 
