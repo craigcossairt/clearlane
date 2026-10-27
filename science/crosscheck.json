@@ -1,0 +1,446 @@
+{
+  "checks": {
+    "clearlane_500": {
+      "facts_key": "clearlane_500",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Reference value x 500 MW; assumes every MW behaves like the reference station and the fleet does not move prices.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 29203,
+        "numbers_json": null
+      },
+      "science": 29204.839,
+      "second_path": {
+        "passes_tolerance": true,
+        "source": "snapshot da_lmp_elap_pace (prices rounded to cents)",
+        "value": 29202.671
+      },
+      "status": "mismatch",
+      "tolerance": "rounds equal at 0 dp",
+      "unit": "$/day"
+    },
+    "clearlane_70": {
+      "facts_key": "clearlane_70",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Reference value x 70 MW; assumes every MW behaves like the reference station and the fleet does not move prices.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 4088.4,
+        "numbers_json": null
+      },
+      "science": 4088.677,
+      "second_path": {
+        "passes_tolerance": true,
+        "source": "snapshot da_lmp_elap_pace (prices rounded to cents)",
+        "value": 4088.374
+      },
+      "status": "mismatch",
+      "tolerance": "rounds equal at 1 dp",
+      "unit": "$/day"
+    },
+    "clearlane_p50": {
+      "facts_key": "clearlane_p50",
+      "inputs": [],
+      "method": "Not computed in #102; waits on public/derived/backtest.json and the hist file (#107).",
+      "numbers_key": null,
+      "pinned": {
+        "facts": "PENDING-ENGINE",
+        "numbers_json": null
+      },
+      "science": null,
+      "status": "pending",
+      "tolerance": null,
+      "unit": "$/MW-day"
+    },
+    "clearlane_usd_mw_day": {
+      "facts_key": "clearlane_usd_mw_day",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Reference station 1 MW, 2 MWh, RTE 0.88 split sqrt per leg; value = 2*sqrt(0.88)*mean(discharge) - 2/sqrt(0.88)*mean(charge); charge HB 13,14,15 (mean 21.5452), same discharge.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 58.4053,
+        "numbers_json": null
+      },
+      "science": 58.40968,
+      "second_path": {
+        "passes_tolerance": true,
+        "source": "snapshot da_lmp_elap_pace (prices rounded to cents)",
+        "value": 58.40534
+      },
+      "status": "mismatch",
+      "tolerance": "rounds equal at 4 dp and within 0.01",
+      "unit": "$/MW-day"
+    },
+    "fixed_500": {
+      "facts_key": "fixed_500",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Reference value x 500 MW; assumes every MW behaves like the reference station and the fleet does not move prices.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 10032,
+        "numbers_json": null
+      },
+      "science": 10032.564,
+      "second_path": {
+        "passes_tolerance": true,
+        "source": "snapshot da_lmp_elap_pace (prices rounded to cents)",
+        "value": 10032.373
+      },
+      "status": "mismatch",
+      "tolerance": "rounds equal at 0 dp",
+      "unit": "$/day"
+    },
+    "fixed_70": {
+      "facts_key": "fixed_70",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Reference value x 70 MW; assumes every MW behaves like the reference station and the fleet does not move prices.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 1404.5,
+        "numbers_json": null
+      },
+      "science": 1404.559,
+      "second_path": {
+        "passes_tolerance": true,
+        "source": "snapshot da_lmp_elap_pace (prices rounded to cents)",
+        "value": 1404.532
+      },
+      "status": "mismatch",
+      "tolerance": "rounds equal at 1 dp",
+      "unit": "$/day"
+    },
+    "fixed_usd_mw_day": {
+      "facts_key": "fixed_usd_mw_day",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Reference station 1 MW, 2 MWh, RTE 0.88 split sqrt per leg; value = 2*sqrt(0.88)*mean(discharge) - 2/sqrt(0.88)*mean(charge); charge HB 1-4 (mean 39.5304), discharge HB 18-19 (mean 55.6157).",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 20.0647,
+        "numbers_json": null
+      },
+      "science": 20.06513,
+      "second_path": {
+        "passes_tolerance": true,
+        "source": "snapshot da_lmp_elap_pace (prices rounded to cents)",
+        "value": 20.06475
+      },
+      "status": "mismatch",
+      "tolerance": "rounds equal at 4 dp and within 0.01",
+      "unit": "$/MW-day"
+    },
+    "fossil_priciest_jul": {
+      "facts_key": "fossil_priciest_jul",
+      "inputs": [
+        "research/data/eia930/PACE_EIA930_BALANCE_2026_Jul_Dec.csv",
+        "research/data/oasis/dam_jul/20260630_20260730_PRC_LMP_DAM_20261026_20_19_29_v12.csv"
+      ],
+      "method": "Hours with UTC start in Mountain days 2026-07-01 to 2026-07-30, joined to EIA-930 on UTC start (end minus 1 h); share = coal+gas over coal, gas, hydro, solar w/o battery, wind w/o battery, geothermal, other ((Adjusted), negatives and blanks as 0); ranked by LMP, ties by time; deciles of n/10.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "bottom_lmp": 12.9,
+          "bottom_share_pct": 52.2,
+          "top_lmp": 65.2,
+          "top_share_pct": 76.3
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "blank_fuel_cells": 720,
+        "bottom_lmp": 12.90268,
+        "bottom_share_pct": 52.21035,
+        "n_hours": 720,
+        "top_lmp": 65.19189,
+        "top_share_pct": 76.28715,
+        "unmatched_hours": 0
+      },
+      "status": "match",
+      "tolerance": "LMP rounds equal at 1 dp; shares within 0.1 point",
+      "unit": "$/MWh and % fossil"
+    },
+    "fossil_priciest_oct": {
+      "facts_key": "fossil_priciest_oct",
+      "inputs": [
+        "research/data/eia930/PACE_EIA930_BALANCE_2026_Jul_Dec.csv",
+        "research/data/oasis/dam_oct/20260930_20261025_PRC_LMP_DAM_20261026_20_19_45_v12.csv"
+      ],
+      "method": "Hours with UTC start in Mountain days 2026-10-01 to 2026-10-25, joined to EIA-930 on UTC start (end minus 1 h); share = coal+gas over coal, gas, hydro, solar w/o battery, wind w/o battery, geothermal, other ((Adjusted), negatives and blanks as 0); ranked by LMP, ties by time; deciles of n/10.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "bottom_lmp": 23.0,
+          "bottom_share_pct": 39.8,
+          "top_lmp": 67.3,
+          "top_share_pct": 85.1
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "blank_fuel_cells": 600,
+        "bottom_lmp": 23.02664,
+        "bottom_share_pct": 39.75382,
+        "n_hours": 600,
+        "top_lmp": 67.33642,
+        "top_share_pct": 85.08028,
+        "unmatched_hours": 0
+      },
+      "status": "match",
+      "tolerance": "LMP rounds equal at 1 dp; shares within 0.1 point",
+      "unit": "$/MWh and % fossil"
+    },
+    "jul_step_hour_spread": {
+      "facts_key": "jul_step_hour_spread",
+      "inputs": [
+        "research/analysis/option2/jul/20260630_20260730_PRC_LMP_DAM_20261026_20_37_57_v12.csv"
+      ],
+      "method": "Same step definition, Mountain days Jul 1 to 30.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "days": 30,
+          "hb13_to_20": 28,
+          "median_step": 10.1
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "by_hour": {
+          "13": 2,
+          "14": 5,
+          "15": 1,
+          "16": 3,
+          "17": 1,
+          "18": 6,
+          "19": 7,
+          "20": 3,
+          "23": 1,
+          "6": 1
+        },
+        "days": 30,
+        "hb13_to_20": 28,
+        "median_step": 10.09922,
+        "skipped_days": []
+      },
+      "status": "match",
+      "tolerance": "counts exact; median rounds equal at 1 dp",
+      "unit": "days"
+    },
+    "lane_clear_max_usd": {
+      "facts_key": "lane_clear_max_usd",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Day min + 25% of range (clear) or max - 25% (jam). Mountain day 2026-10-27: min 21.37912 at HB 15, max 55.78409 at HB 18, range 34.40497. Snapshot rows (HB 0 = Oct 28 00:00): min 21.38000, max 55.78000, range 34.40000.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 29.98,
+        "numbers_json": null
+      },
+      "science": {
+        "mountain_day": 29.98036,
+        "snapshot_rows": 29.98
+      },
+      "status": "match",
+      "tolerance": "rounds equal at 2 dp (both ways)",
+      "unit": "$/MWh"
+    },
+    "lane_jam_min_usd": {
+      "facts_key": "lane_jam_min_usd",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Day min + 25% of range (clear) or max - 25% (jam). Mountain day 2026-10-27: min 21.37912 at HB 15, max 55.78409 at HB 18, range 34.40497. Snapshot rows (HB 0 = Oct 28 00:00): min 21.38000, max 55.78000, range 34.40000.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 47.18,
+        "numbers_json": null
+      },
+      "science": {
+        "mountain_day": 47.18285,
+        "snapshot_rows": 47.18
+      },
+      "status": "match",
+      "tolerance": "rounds equal at 2 dp (both ways)",
+      "unit": "$/MWh"
+    },
+    "net_load_climb_mw": {
+      "facts_key": "net_load_climb_mw",
+      "inputs": [
+        "research/data/caiso3/20261027_20261028_SLD_FCST_DAM_20261026_20_17_09_v1.csv",
+        "research/data/caiso4/20261027_20261027_EDAM_WND_SLR_FORECAST_GRP_N_v1.xml",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "Net load = PACE DA load forecast - max(EDAM solar, 0) - EDAM wind (forecasts, not metered); path 1 raw caiso3 + caiso4, path 2 snapshot columns.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "climb": 3654.51,
+          "hb15": 604.6,
+          "hb18": 4259.1
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "hours_compared": 24,
+        "max_abs_diff_raw_vs_snapshot_mw": 0.0,
+        "raw_climb": 3654.51,
+        "raw_hb15": 604.62,
+        "raw_hb18": 4259.13,
+        "snapshot_climb": 3654.51,
+        "snapshot_hb15": 604.62,
+        "snapshot_hb18": 4259.13
+      },
+      "status": "match",
+      "tolerance": "within 0.1 MW each; paths within 0.1 MW at every hour",
+      "unit": "MW"
+    },
+    "oct_step_hour_days": {
+      "facts_key": "oct_step_hour_days",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv"
+      ],
+      "method": "Per Mountain day Oct 1 to 27 (06:00Z start): h in 1..23 maximizing p[h]-p[h-1], ties to earliest; no cross-midnight step.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "days": 27,
+          "hb17": 9,
+          "hb17_or_18": 24,
+          "hb18": 15,
+          "median_step": 15.1
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "by_hour": {
+          "17": 9,
+          "18": 15,
+          "5": 1,
+          "6": 1,
+          "8": 1
+        },
+        "days": 27,
+        "hb17": 9,
+        "hb17_or_18": 24,
+        "hb18": 15,
+        "median_step": 15.09984,
+        "skipped_days": []
+      },
+      "status": "match",
+      "tolerance": "counts exact; median rounds equal at 1 dp",
+      "unit": "days"
+    },
+    "race_ratio": {
+      "facts_key": "race_ratio",
+      "inputs": [
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+        "research/data/pace_snapshot_2026-10-27.csv"
+      ],
+      "method": "clearlane_usd_mw_day / fixed_usd_mw_day.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 2.911,
+        "numbers_json": null
+      },
+      "science": 2.911,
+      "second_path": {
+        "passes_tolerance": true,
+        "source": "snapshot da_lmp_elap_pace (prices rounded to cents)",
+        "value": 2.91084
+      },
+      "status": "match",
+      "tolerance": "rounds equal at 3 dp",
+      "unit": "ratio"
+    },
+    "share_days_beating": {
+      "facts_key": "share_days_beating",
+      "inputs": [],
+      "method": "Not computed in #102; waits on public/derived/backtest.json and the hist file (#107).",
+      "numbers_key": null,
+      "pinned": {
+        "facts": "PENDING-ENGINE",
+        "numbers_json": null
+      },
+      "science": null,
+      "status": "pending",
+      "tolerance": null,
+      "unit": "%"
+    }
+  },
+  "inputs": [
+    {
+      "path": "research/analysis/option2/jul/20260630_20260730_PRC_LMP_DAM_20261026_20_37_57_v12.csv",
+      "sha256": "016421c4429a87e35491aa55aeb0679c86f8f050caf49d09cb2591dfb7a53eaa"
+    },
+    {
+      "path": "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+      "sha256": "3ab4dddb82383e8c15b47b290dd2c7ea09a46bdcd3787ed6981f8d11b6f16010"
+    },
+    {
+      "path": "research/data/caiso2/20261027_20261028_PRC_LMP_DAM_20261026_20_16_40_v12.csv",
+      "sha256": "92177de9788a34286b795fa516d2eed64dc9a5ca78cc996a48fbe534a2f038cd"
+    },
+    {
+      "path": "research/data/caiso3/20261027_20261028_SLD_FCST_DAM_20261026_20_17_09_v1.csv",
+      "sha256": "d7ca11fbf11e0c14a939e775c4d4a8b5b5dea2b742f70daccc7dc86358a19251"
+    },
+    {
+      "path": "research/data/caiso4/20261027_20261027_EDAM_WND_SLR_FORECAST_GRP_N_v1.xml",
+      "sha256": "3b7f3d25b64aa6803e5b6d3475a4c695596df320eaccd45005e54bf541e01088"
+    },
+    {
+      "path": "research/data/eia930/PACE_EIA930_BALANCE_2026_Jul_Dec.csv",
+      "sha256": "255f922e6fdb060bde64f9919a37bd93645454c30816b0adcb471efe250c9fc2"
+    },
+    {
+      "path": "research/data/oasis/dam_jul/20260630_20260730_PRC_LMP_DAM_20261026_20_19_29_v12.csv",
+      "sha256": "cfe66cc67d3e9d6aefe03b49bbd73dbf9e47ba9120d3a5831f649b3ff9ab052e"
+    },
+    {
+      "path": "research/data/oasis/dam_oct/20260930_20261025_PRC_LMP_DAM_20261026_20_19_45_v12.csv",
+      "sha256": "8794e0571dc3a4f6feed70a0f3495734b8b1dbeb5f9ea72323081effc78cbca4"
+    },
+    {
+      "path": "research/data/pace_snapshot_2026-10-27.csv",
+      "sha256": "09ef8f80aa28bff17122f3fc34c1e9f68d0e3dba897526d41552f29cd25f3bf6"
+    }
+  ],
+  "notes": [
+    "Mountain day 2026-10-27 HB 0 from raw OASIS = 30.21857; snapshot HB 0 row is 10-28 00:00 MT = 46.11000.",
+    "Raw OASIS vs snapshot, HB 1 to 23: max abs difference 0.00487 $/MWh.",
+    "caiso4 rows are hourly; no sub-hourly averaging was needed.",
+    "caiso3 filter: TAC_AREA_NAME == PACE and MARKET_RUN_ID == DAM (24 rows, LOAD_TYPE 1). caiso4 filter: BAA_GRP_ID == PACE."
+  ],
+  "operating_day_mt": "2026-10-27",
+  "schema": "clearlane.science.crosscheck/v1",
+  "script": "science/crosscheck.py"
+}
