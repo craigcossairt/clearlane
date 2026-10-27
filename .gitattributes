@@ -1,5 +1,6 @@
 # Shell scripts must check out with LF everywhere — CRLF breaks bash ("\r: command not found").
-* text=auto
+# Every text file checks out LF on every machine (this PC has core.autocrlf=true; the lanes share one tree).
+* text=auto eol=lf
 *.sh text eol=lf
 brain/bin/qmd text eol=lf
 .githooks/* text eol=lf

@@ -323,7 +323,7 @@ How to position it: Clearlane is one more grid signal that Lasso could take thro
 ## 8. Guardrails for talking about Torus on stage
 
 - **Stations.** Say "simulated Torus-style station". No Torus logos and no Torus branding. Clearlane is its own tool.
-- **Facts.** Never invent a Torus fact. Each Torus number is TORUS_PUBLISHED, from one named page. Where Torus's pages disagree, pick one and name it: 359 vs "more than 360" events; 99.9% vs 99.99% uptime; 540,000, 545,000 or 582,000 sq ft.
+- **Facts.** Never invent a Torus fact. Each Torus number is TORUS_PUBLISHED, from one named page. Where Torus's pages disagree, pick one and name it: 359 vs more than 360 events; 99.9% vs 99.99% uptime; 540,000, 545,000 or 582,000 sq ft.
 - **Absence.** Say "not advertised", never "Torus lacks" or "Torus is missing".
 - **The baseline.** The fixed overnight schedule is the off-peak rule baseline, not Torus practice. Question 1 asks Torus what sets charging today.
 - **Who gets the value.** Dollar figures are value to RMP's system at day-ahead prices, not Torus revenue. RMP's customers capture it today; Torus and hosts share in it only if a program credits scheduled dispatch.
@@ -363,7 +363,7 @@ Craig sends these Tue Oct 27 at about 9:00am MT, via the mentor table or the eve
 |---|---|---|
 | Factory size | 540,000 vs 545,000 vs 582,000 sq ft | Maloy news; Station body; Station FAQ |
 | Uptime | 99% (Station meta), 99.9% (most pages), 99.99% (2025 wrap-up) | torus-nova; case study; wrap-up |
-| 2025 events | 359 vs "more than 360" | case study; wrap-up |
+| 2025 events | 359 vs more than 360 | case study; wrap-up |
 | Event timing | 2024: mostly late afternoon and evening (CEO); 2025 heatmap: every hour, with no time zone | Utility Dive; heatmap image |
 | Trace image | A 0-400 kW axis against a 3,828 kW label | event trace image |
 | Product names | Nova vs Station; "Nova Spin" in the Spin page meta | torus-nova; torus-flywheel |
