@@ -123,3 +123,18 @@ describe("a second day", () => {
     expect(option2Shift(d2).from_hb).toEqual([6, 7, 8]); // old HB 18-20 moved 12 hours
   });
 });
+
+describe("option 2 destination hours", () => {
+  it("never reuses a source hour and needs enough free hours", () => {
+    const b = loadFixture();
+    // make HB 9 the priciest hour of the day: it moves to the source side, never the destination
+    const p = b.hours.map((h, k) => (k === 9 ? 99 : h.lmp_usd_mwh));
+    const d = redated(b, 0, p);
+    const s = option2Shift(d, { mw: 25, hours: 3, window_hb: [9, 12] });
+    expect(s.from_hb).toContain(9);
+    expect(s.to_hb).not.toContain(9);
+    expect(() =>
+      option2Shift(d, { mw: 25, hours: 3, window_hb: [9, 11] }),
+    ).toThrow(/free hours/);
+  });
+});

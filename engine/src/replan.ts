@@ -117,6 +117,9 @@ export function replanFrom(
       sched.spin_kw.push(s.spin_refill_kw[t]!);
       sched.spin_soc_kwh.push(spinEnd(t));
     }
+  } else {
+    // the calls ran to the end of the day: nothing left to re-plan, so report what is missing
+    deficit = Math.max(0, startSocKwh(site, plan.policy) - s.pulse_soc_kwh);
   }
   const solveMs = performance.now() - t0;
   return {

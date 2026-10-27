@@ -55,7 +55,8 @@ function priorState(
   offsetS: number,
 ) {
   if (!prior) return { spin: site.station.spin_kwh, pulseDrawnKwh: 0 };
-  const pt = prior.trace.find((p) => p.t_s === offsetS);
+  // trace point t_s holds the state after second t_s, so the start of second offsetS is t_s = offsetS - 1
+  const pt = prior.trace.find((p) => p.t_s === offsetS - 1);
   return {
     spin: pt ? pt.spin_soc_kwh : site.station.spin_kwh,
     pulseDrawnKwh: prior.pulse_kwh / eta(site),

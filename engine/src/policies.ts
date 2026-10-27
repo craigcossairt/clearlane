@@ -6,6 +6,7 @@ import {
   DP_FLOOR_LEVEL,
   eta,
   hold4,
+  pulseDz,
   solveSiteDP,
   spinAvailKw,
   stepLimits,
@@ -108,4 +109,4 @@ export function solve(
 export const startSocKwh = (site: Site, policy: Policy) =>
   policy === "fixed_overnight"
     ? 0
-    : (DP_FLOOR_LEVEL * site.station.pulse_kwh) / 40;
+    : DP_FLOOR_LEVEL * pulseDz(site);

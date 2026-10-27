@@ -75,3 +75,25 @@ describe("checkPlan flags hand-built bad plans", () => {
     );
   });
 });
+
+describe("checkPlan rejects non-finite values", () => {
+  it("flags NaN meter, power and SoC, and a NaN terminal SoC", () => {
+    const site = defaultSite();
+    const plan = solve(loadFixture(), site, "clearlane");
+    const bad: Plan = {
+      ...plan,
+      intervals: plan.intervals.map((x, k) =>
+        k === 10
+          ? { ...x, meter_kw: Number.NaN, pulse_kw: Number.NaN }
+          : k === 95
+            ? { ...x, pulse_soc_kwh: Number.NaN }
+            : x,
+      ),
+    };
+    const v = checkPlan(bad, site).join(" ");
+    expect(v).toMatch(/meter_kw is not finite/);
+    expect(v).toMatch(/pulse_kw is not finite/);
+    expect(v).toMatch(/pulse_soc_kwh is not finite/);
+    expect(v).toMatch(/terminal Pulse SoC/);
+  });
+});

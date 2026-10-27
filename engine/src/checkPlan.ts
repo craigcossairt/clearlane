@@ -21,6 +21,8 @@ export function checkPlan(
   iv.forEach((x, k) => {
     const at = `interval ${x.i} (${x.ts_utc})`;
     if (x.i !== k) v.push(`${at}: index out of order`);
+    for (const f of ["meter_kw", "pulse_kw", "pulse_soc_kwh"] as const)
+      if (!Number.isFinite(x[f])) v.push(`${at}: ${f} is not finite`);
     if (
       k > 0 &&
       Date.parse(x.ts_utc) - Date.parse(iv[k - 1]!.ts_utc) !== INTERVAL_S * 1000
@@ -54,7 +56,7 @@ export function checkPlan(
     }
   });
   const end = iv[iv.length - 1];
-  if (end && end.pulse_soc_kwh < startSoc - TOL) {
+  if (end && !(end.pulse_soc_kwh >= startSoc - TOL)) {
     v.push(
       `terminal Pulse SoC ${end.pulse_soc_kwh} kWh below the start ${startSoc} kWh`,
     );
