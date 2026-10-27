@@ -226,6 +226,8 @@ function Stage({
           go(clampBeat(Number(event.key)));
           break;
         case "play":
+          // After the re-plan, Space resumes the day from the call minute, not from midnight.
+          if (beat === 4 && hourRef.current < callHour(live)) setHour(callHour(live));
           setPlaying((p) => !p);
           break;
         case "call":
@@ -382,6 +384,13 @@ function Stage({
       </div>
     </div>
   );
+}
+
+/** Hours from the bundle's first interval to the scripted call start (time arithmetic only). */
+export function callHour(live: Live): number {
+  const h0 = live.bundle.hours[0]?.ts_utc;
+  if (!h0) return 0;
+  return (Date.parse(live.calls.first.start_utc) - Date.parse(h0)) / 3_600_000;
 }
 
 function clampBeat(n: number): BeatId {
