@@ -242,8 +242,8 @@ All 36 proposals are accounted for. Merges and moves are noted.
 
 ## What Integration owes the lanes
 
-- **By Train 3 (Tue 10:45am):** `contracts/flags.ts` with every `ff_*` name above, default off; `contracts/envelope.v1.schema.json`; exact-version root dev dependencies for axe-core and Playwright, and a QR encoder for `public-url` unless the UI hand-writes one; `eol=lf` for `*.json` in `.gitattributes`; one GitHub issue per item above, labeled `lane:*` and `tier:*`, milestoned to its deadline train, with this file's done-when as acceptance.
-- **By Train 4 (Tue 2:00pm):** `FleetResult` and `FleetCallResult` in `contracts/types.ts`; an optional `refill_source` on CrashResult.
+- **By Train 3 (Tue 10:45am):** `contracts/flags.ts` with every `ff_*` name above, default off; `contracts/envelope.v1.schema.json`; exact-version root dev dependencies for axe-core and Playwright, and a QR encoder for `public-url` unless the UI hand-writes one; `eol=lf` for `*.json` in `.gitattributes`; an optional `refill_source` on CrashResult (landed early, in the Train 1 freeze); one GitHub issue per item above, labeled `lane:*` and `tier:*`, milestoned to its deadline train, with this file's done-when as acceptance.
+- **By Train 4 (Tue 2:00pm):** `FleetResult` and `FleetCallResult` in `contracts/types.ts`, copied exactly from the engine's local definitions in `engine/src/fleet.ts` after its PR merges (the engine does not wait on contracts for these).
 - **Before each proof-drawer card merges:** an optional exported type for the JSON it reads, and the agreed path for any `science/` file the app reads.
 - **By Train 5:** every merged stretch CLI that writes a per-day file is on the Tue-night refresh list.
 - **At Train 6:** Craig picks the stage flag set after the flags-on rehearsal; `v1-stage` bakes it in.

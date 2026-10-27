@@ -136,7 +136,10 @@ PR #15 (`pitch/review-log.md`, Closes #7) raises three items. Settle them as fol
 
 In the same PR:
 - add a Coordination line to `AGENTS.md`: before each new issue, read the latest Integration comment on your lane's tracking issue; a `QUEUE:` line there overrides issue order;
-- update the `contracts/types.ts` header to say v1 is frozen.
+- update the `contracts/types.ts` header to say v1 is frozen;
+- add `sources?: SourceRef[]` and `notes?: string[]` to `TorusPublished`, a `HistMeta` type (`clearlane.hist_meta/v1`, the fields data Core 6 lists), a `BacktestDay` type (engine Core 10 writes `backtest_days.json`), `heatmap_as_utc_mst` on `PolicyStats.calls_unanswerable_pct`, and an optional `refill_source?: "grid" | "pulse"` on `CrashResult` (moved up from Train 4);
+- comment on #3 that the fixture's hour 0 changed from $46.11 to 30.21857 ($30.22);
+- record the beat 2 decision (section 6.11): the race card reads only the reference set.
 
 Then merge the green PRs in lane order, tag `train-1` and announce it.
 
@@ -186,6 +189,7 @@ Then merge the green PRs in lane order, tag `train-1` and announce it.
 
 **Core 12. README and submission text for judges** (draft by Train 6, final at Train 8).
 - `README.md`. Every number in it comes from a generated block, never typed.
+- Pitch delivers `pitch/readme-judges.md` and `pitch/submission.md` drafts at Train 7 as input. Integration alone writes `README.md` and the final submission text at Train 8.
 - `demo/submission.md` holds the text Craig pastes into the submission. The method is not stated (JUDGING.md section 6).
 
 **Core 13. Public-repo readiness scan, then go public on Craig's go** (scan done by Train 8; the switch happens at submission). Section 6.8.
@@ -202,10 +206,11 @@ Your trains, merges and the refresh always come first. Stretch-1 is due at Train
    - `contracts/envelope.v1.schema.json`;
    - exact-version dev dependencies for axe-core and a QR encoder (Playwright is Core 2);
    - a check that `.gitattributes` already gives `*.json` LF endings (`* text=auto eol=lf` is in place);
+   - `api/**` in the tsconfig and vitest `include`, `"@engine": ["engine/src/index.ts"]` in tsconfig `paths`, and `check:pitch` and `check:science` scripts chained into `check:all` (#117);
    - one issue per STRETCH item, each with its lane, tier and deadline milestone.
 
    The UI helper reads each flag's `default`, and `?ff=` turns flags on. At Train 6, baking Craig's flag set into `v1-stage` means flipping those defaults to `true` in one PR before the tag.
-2. **Contract additions by Train 4 (Tue 2:00pm).** Add `FleetResult` and `FleetCallResult` to `contracts/types.ts`, matching the engine's merged `fleet-rollup` and `fleet-call` shapes exactly. Add an optional `refill_source?: "grid" | "pulse"` on `CrashResult`. Also, before each proof-drawer card merges, add an optional exported type for the JSON that card reads.
+2. **Contract additions by Train 4 (Tue 2:00pm).** The engine defines `FleetResult` and `FleetCallResult` locally in `engine/src/fleet.ts` first and names them in its PR body. After that PR merges, copy them into `contracts/types.ts` exactly, as an additive change. (`refill_source` on `CrashResult` moved to the Train 1 freeze.) Also, before each proof-drawer card merges, add an optional exported type for the JSON that card reads.
 3. **`reproduce`** (`off_reproduce`). On a clean clone with Wi-Fi off, `npm ci` then `npm run reproduce`:
    - checks `public/data` against `tools/manifest.sha256`;
    - re-runs the engine CLIs into a temp dir;
@@ -289,7 +294,7 @@ A PR merges only when **all** of these hold:
    Merge the revert as soon as its CI is green. Then tell the owning lane, on the original issue, what failed and the exact command that reproduces it.
 9. **Record it:** comment "merged in train-<N>" (or the merge time) on the PR's issue.
 
-Lanes cut every branch from `origin/main`. If a lane stacks one branch on an unmerged PR, tell it to stop.
+Lanes cut every branch from `origin/main`. If a lane stacks one branch on an unmerged PR, tell it to stop. Exception: a PR whose body says "Stacked on #N" is allowed for engine (up to 4 deep) and for pitch on #17. Merge the parent first, then retarget the child to `main`.
 
 ### 6.2 Schedule and the train checklist
 
@@ -298,7 +303,7 @@ Lanes cut every branch from `origin/main`. If a lane stacks one branch on an unm
 | Tue 1:45am | **Train 1**, contracts frozen | Core 1; merge green PRs; tag `train-1`; seed the missing lane issues |
 | Tue 2am to 7am | Craig asleep | Keep merging green PRs; build Core 5 to 7. No contract change, no cut, no flag choice. Collect questions for 7am. |
 | Tue 7:00am | Craig's first read | Phone status ready (section 9) |
-| Tue 8:00am | **Train 2**, CORE COMPLETE target | Core gate; decide which race value the card shows (section 6.11) |
+| Tue 8:00am | **Train 2**, CORE COMPLETE target | Core gate |
 | Tue 8:45am | Torus questions | Core 9, paste-ready |
 | Tue 10:45am | **Train 3**, stretch-1 under way; rehearsal 0 | Stretch enablers merged; rehearsal 0 with the offline check and the projector check |
 | Tue 11:00am to 1:30pm | Craig away | Merge, gate, keep lanes moving |
@@ -389,23 +394,26 @@ Next: Train <N+1> at <time>. Rebase your open PRs on origin/main now.
 - Per `research/DATA-SOURCES.md` section 5, it fetches:
   - PRC_LMP DAM for 20261028T06:00 to 20261029T06:00;
   - SLD_FCST and the EDAM wind and solar forecasts for CAISO operating days Oct 27 and Oct 28;
-  - EIA's 930-api and `PACE.xlsx` for the trailing 30-day CO2 mean.
+  - CO2 from the committed EIA extract (no 930-api or `PACE.xlsx` fetch at night).
 - OASIS calls stay at least 5 s apart, and raw responses go to `../clearlane-raw`. The data lane's script handles all of this; you run it.
 
-**Refresh list** (final by Train 5), kept in `demo/run-of-show.md` under "Refresh list", in this order:
-1. the data lane's refresh command. The plan names it `prep/refresh_tonight.ps1` (`powershell -NoProfile -File prep/refresh_tonight.ps1`); use the name and flags in the data lane's merged code and `docs/lanes/data.md`;
-2. `npx tsx engine/cli/backtest.ts`;
-3. `npx tsx engine/cli/numbers.ts public/data/bundle_2026-10-28.json`;
-4. the envelope CLI, if it is separate from numbers;
-5. every merged stretch CLI that writes a per-day file;
-6. the engine lane's re-pin command. Ask for it on #3 by Train 5. If none exists, the engine session re-pins in its own PR before 10:30pm;
-7. the checks in step 4 of the run below.
+**Refresh list** (final by Train 5), kept in `demo/run-of-show.md` under "Refresh list". The core list:
+
+```bash
+python -I prep/refresh_tonight.py --day 2026-10-28 --poll-until 22:00
+npx tsx engine/cli/numbers.ts public/data/bundle_2026-10-28.json
+npx tsx engine/cli/envelope.ts public/data/bundle_2026-10-28.json
+npm run check:all
+```
+This is the one refresh command list. It is copied verbatim in `docs/lanes/data.md` Core 7, `docs/lanes/engine.md` section 6.9 and `docs/lanes/integration.md` section 6.5; change all three together. CO2 comes from the committed extract; nothing fetches EIA at night.
+
+Then, outside the verbatim block: every merged stretch CLI that writes a per-day file; the engine lane's re-pin command (ask for it on #3 by Train 5; if none exists, the engine session re-pins in its own PR before 10:30pm); and the checks in step 4 of the run below. The backtest does not rerun: its window ends Oct 27.
 
 **Dry run, Tue 5:00pm.** Run the whole list on Oct 27 on a throwaway `int/refresh-dry` branch, and never merge it. It proves two things: every command runs, and the data script exits non-zero and changes nothing when OASIS fails (use the failure switch the data brief names).
 
 **Live run:**
 1. **9:10pm:** main is green. Run `git -C "C:/Users/Craig Cossairt/Code/clearlane-int" switch -c int/oct28-refresh origin/main`.
-2. **From about 9:16pm:** run the data command in the int worktree. If Oct 28 rows are not there yet, wait 5 minutes and try again. Stop trying at 10:00pm.
+2. **From about 9:16pm:** run the data command in the int worktree. `--poll-until 22:00` retries every 5 minutes and gives up at 10:00pm on its own.
 3. Run the engine CLIs and the re-pin, in list order.
 4. Run the checks:
    - `npm run check:all`;
@@ -455,6 +463,7 @@ Next: Train <N+1> at <time>. Rebase your open PRs on origin/main now.
   - the operating day matches the stage;
   - there is no em dash;
   - there is no Nucleus slide.
+- **Release assets:** attach the deck and one-pager PDFs (from `pitch/out/`, never committed) to a GitHub release on the submission tag.
 - **Submission:** Craig submits by 5:00pm, from `demo/submission.md`. Make the repo public per section 6.8, and only on his go.
 
 ### 6.7 Offline check (`tools/offline-check.mjs`)
@@ -472,7 +481,7 @@ Usage: `node tools/offline-check.mjs [--dist dist] [--browser msedge|chrome|chro
 4. **Drive the six beats** with the UI's hooks (ui.md 6.10):
    - open `/?beat=<1..6>&step=end&motion=off`;
    - wait for `body[data-state]` to leave `loading`;
-   - press the beat's keys: Space; C, then C again; E; B; + and End; R.
+   - press the beat's keys: Space; C, then C again; E; B; + and End; Right for the re-plan step; then R once at the very end to reset. `docs/lanes/ui.md` section 6.8 is the one source for keys; copy from it when it changes.
 
    A `failed` state counts as a failure.
 5. **Output.** Print one line per violation, then either `PASS offline-check: 0 external requests, <n> same-origin, 6/6 beats` or `FAIL offline-check: <k> violations`.
@@ -596,15 +605,17 @@ Afterwards, check GitHub's secret-scanning alerts for the repo, and post the res
   - #16 (`grok/8-tariff-research`, Closes #8);
   - #17 (`grok/9-deck`, the deck, one-pagers and Q&A).
 
-  All three touch only `pitch/`. Merge them under section 6.1 at Train 1 if they are green.
+  - #18 (`ui/14-six-beats`, the stage app). Before it merges: `app/src/qa/cards.json` moves to pitch; `app/src/stub/published.ts` becomes a fetch of `public/data/torus_published.json` behind the stub flag; the math in `app/src/stub/reference.ts` goes in favor of `numbers.json`; the Spin source URL is corrected to the torus-flywheel page in FACTS.
+
+  The pitch PRs touch only `pitch/`. Order: #17 merges at Train 2, then #15 and #16; pitch's stacked branches retarget after that.
 - **#15 item 1, the CO2 map, is a likely false positive.** FACTS "Hour conventions" says EIA's `PACE.xlsx` is hour ending, local time, so hour beginning h uses HE h+1. The fixture and `habit.py` do exactly that. Keep the map, and keep the pinned values -0.2625 and +0.270 t per MW-day.
 - **#15 item 2, fixture hour 0.** It holds Oct 28 00:00 values ($46.11 at 2026-10-28T06:00Z) labeled REAL. The real Oct 27 hour-0 LMP is in `research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv`: interval start 2026-10-27T06:00Z, OPR_DT 2026-10-26, HE 24, LMP 30.21857. Both prices lie between the day's min ($21.38) and max ($55.78) and fall in the shoulder lane, so the lane thresholds do not move. The engine's DP value on the fixture can move, so tell the engine lane on #3.
 - **#15 item 3, `pulse_life_yr`.** It is the Station lifespan, so mark the 300-cycles-a-year budget as resting on an ASSUMPTION, by comment.
-- **Beat 2 charge prices.** If the race shows a charge price, it needs engine keys for the rules' charge-hour means ($39.53 and $21.55). Proposed names: `fixed_charge_avg_usd_mwh` and `clearlane_charge_avg_usd_mwh`. Agree them with the engine lane and register them in FACTS.
+- **Beat 2 charge prices.** The keys are pitch's names, `fixed_rule_charge_usd_mwh` ($39.53) and `timetable_charge_usd_mwh` ($21.55). Engine Core 12 writes them; FACTS has their rows.
 - **Race card value.**
   - FACTS has `clearlane_usd_mw_day` (the reference, $58.41) and `clearlane_dp_usd_mw_day` (the engine DP, PENDING-ENGINE).
   - UI core 5 asserts that the live plan's value equals its key, and the deck's stage script reads `{clearlane_usd_mw_day}`.
-  - Decide at Train 2: the card and the script must show the value of the plan that actually plays. Either the engine writes the DP value under `clearlane_usd_mw_day` and the FACTS row is re-pinned (its note allows that), or the script switches to the DP key.
+  - Decided at Train 1 (#19, cross-check item 7): beat 2 reads only the reference set (`fixed_usd_mw_day`, `clearlane_usd_mw_day`, `race_ratio`, `fixed_70`, `clearlane_70`) and plays the reference timetable. `clearlane_dp_usd_mw_day` moves to the backtest or crash beat with its own label.
 - **Key clash:** settled in ui.md 6.8.
 - **Playwright:** moved to Core 2.
 

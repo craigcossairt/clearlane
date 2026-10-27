@@ -3,6 +3,8 @@
 Harness: **Codex desktop app**. Worktree: `C:\Users\Craig Cossairt\Code\clearlane-data`. Branch prefix: `data/`.
 Tracking issue: **#2 "Lane: data status"**. Queue: `gh issue list --label lane:data --state open`.
 
+Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file wins over the plan files in `docs/plan/`, which are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
+
 Read `AGENTS.md` first. If this brief disagrees with `AGENTS.md` or `contracts/types.ts`, they win: follow them and say so on #2 so Integration fixes the brief.
 
 All times are Mountain (MDT, UTC-6 until Sun Nov 1 2026).
@@ -240,7 +242,7 @@ Shape: each key is `{ "value": ..., "prov": "TORUS_PUBLISHED", "source_id": "<id
 
 **Verify.** `python -I prep/build_torus.py`, then `python -I -m unittest discover -s prep/tests -t . -k test_torus`.
 
-**Depends on:** nothing. Integration must add optional `sources?` and `notes?` to `TorusPublished` (see notes on #2).
+**Depends on:** nothing. Integration adds optional `sources?` and `notes?` to `TorusPublished` in the Train 1 freeze (#20).
 
 ### Core 3. OASIS client, parsers and Mountain-day mapping
 
@@ -339,13 +341,23 @@ As of the research copy, the workbook runs 2015-07-01 to 2026-10-26 and its last
 
 **Goal.** Integration runs one command at about 9:16pm Tue to build `public/data/bundle_2026-10-28.json`. On any failure it exits non-zero and changes nothing.
 
-**Build** `prep/refresh_tonight.py --day 2026-10-28 [--dry-run] [--poll-until 22:30] [--oasis-base URL]`:
+**Build** `prep/refresh_tonight.py --day 2026-10-28 [--dry-run] [--poll-until 22:00] [--oasis-base URL]`:
 
 - Fresh fetches (no cache reuse) into `RAW/refresh/<day>-<utcstamp>/`: PRC_LMP for the Mountain day (06:00Z bounds, four nodes), SLD_FCST and EDAM for operating days D-1 and D. CO2 uses the committed extract (no 75 MB download at night).
 - Build into a temp file, validate with `prep/validate.py` plus "24 priced hours, no null", then `os.replace` into `public/data/`. `--dry-run` does everything except the replace and prints `DRY RUN: would write <path>`.
 - Exit codes: **0** written (or dry run green); **1** data not ready or invalid, nothing changed; **2** could not run (bad arguments, raw folder not writable, Python error). Never exit 0 on a partial day.
-- `--poll-until 22:30` retries the price fetch every 300 s until that Mountain time, then exits 1 with "Oct 28 prices not posted by 22:30; stay on Oct 27".
+- `--poll-until 22:00` retries the price fetch every 300 s until that Mountain time, then exits 1 with "Oct 28 prices not posted by 22:00; stay on Oct 27". 22:00 leaves Integration 30 minutes to run the engine CLIs and merge before the 10:30pm hard stop.
 - After writing: run `python -I -m unittest discover -s prep/tests -t .`, then print a per-hour table of Oct 28 against Oct 27 (price, net load, CO2), daily min, max and mean, and the next commands for Integration (`git add public/data/bundle_2026-10-28.json`, then the engine CLIs). It never commits.
+
+**The refresh command list** (Integration runs it):
+
+```bash
+python -I prep/refresh_tonight.py --day 2026-10-28 --poll-until 22:00
+npx tsx engine/cli/numbers.ts public/data/bundle_2026-10-28.json
+npx tsx engine/cli/envelope.ts public/data/bundle_2026-10-28.json
+npm run check:all
+```
+This is the one refresh command list. It is copied verbatim in `docs/lanes/data.md` Core 7, `docs/lanes/engine.md` section 6.9 and `docs/lanes/integration.md` section 6.5; change all three together. CO2 comes from the committed extract; nothing fetches EIA at night.
 
 **Tests** (`test_refresh.py`, fake transport): success writes via temp then replace; dry run writes nothing; an OASIS error, a 23-hour day, and a validation failure each exit 1 and leave every file under `public/data` byte-identical (hash before and after); removing the validation call makes the planted-bad-bundle case fail (mutation check in the PR).
 

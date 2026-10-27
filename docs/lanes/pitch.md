@@ -1,5 +1,7 @@
 # Pitch lane brief
 
+Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file wins over the plan files in `docs/plan/`, which are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
+
 | | |
 |---|---|
 | Lane | Pitch |
@@ -215,7 +217,7 @@ Trains are Mountain time.
 | 11 | [pitch] Tuesday-night judge drill and rehearsal sheet | Train 6 | 5, 8 |
 | 12 | [pitch] Submission write-up and README judge section (draft for Integration) | Train 8, Wed noon | 6, 8 |
 
-**First, get PR #17 merge-ready.** It holds first drafts of the deck, both one-pagers, the Q&A, the stage script, `keys.json` and `resolve.mjs`, and CI is green. Change its body from "Closes #9" to "Refs" the deck, stage script, one-pager and Q&A issues, because each of those closes with its own PR. Then apply the draft fixes listed under items 5 to 8 that are cheap, so Integration can merge it at Train 2 and other lanes can see the copy.
+**First, get PR #17 merge-ready.** It holds first drafts of the deck, both one-pagers, the Q&A, the stage script, `keys.json` and `resolve.mjs`, and CI is green. Change its body from "Closes #9" to "Refs" the deck, stage script, one-pager and Q&A issues, because each of those closes with its own PR. Then apply the draft fixes listed under items 5 to 8 that are cheap. Integration merges #17 at Train 2, then #15 and #16; branches stacked on #17 retarget to `origin/main` after that.
 
 ### 1. Close out the contract review (PR #15, branch `grok/pitch`)
 
@@ -440,7 +442,7 @@ Acceptance:
   - Read the Edge path from env `MSEDGE`, falling back to the path above.
   - The demo laptop's Edge path is UNVERIFIED.
   - If Edge fails, the fallback is Ctrl+P from the HTML.
-- [ ] **`pitch/.gitignore` holds `out/`.** Final PDFs are committed only in the submission PR (item 12), under `pitch/release/`.
+- [ ] **`pitch/.gitignore` holds `out/`.** Final PDFs are never committed (the 500 KB rule). Integration attaches them as GitHub release assets on the submission tag; git keeps the source and a link.
 - [ ] **`deck.test.mjs`:**
   - no "Nucleus" or "Startup State"
   - slide count matches the outline minus slide 9
@@ -556,7 +558,8 @@ Acceptance:
   - a one-paragraph method note (one founder, six agent lanes, every task on GitHub Issues)
   - links to the deck PDF
 - [ ] **`pitch/readme-judges.md`:** the README section text for Integration to paste.
-- [ ] **Final PDFs in `pitch/release/`:** `clearlane-deck.pdf`, `one-pager-host.pdf` and `one-pager-rmp.pdf`, re-exported after the last copy fix. Integration needs them by Wed 3:30pm.
+- [ ] **Timing:** both drafts above are delivered at Train 7 as input. Integration alone writes `README.md` and the final submission text at Train 8.
+- [ ] **Final PDFs** `clearlane-deck.pdf`, `one-pager-host.pdf` and `one-pager-rmp.pdf`, re-exported after the last copy fix, in `pitch/out/` (not committed). Integration attaches them as release assets on the submission tag and needs them by Wed 3:30pm.
 - [ ] **Checker clean in `--strict` mode.**
 
 ---

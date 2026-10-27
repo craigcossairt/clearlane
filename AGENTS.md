@@ -48,6 +48,8 @@ Critical Hours. Data flows `prep/` (Python) -> `public/data/` (REAL) -> `engine/
 
 ## Coordination
 
+`tools/out/**` is gitignored scratch; any lane may write there.
+
 GitHub Issues on `craigcossairt/clearlane` are the task board: labels `lane:*`, `tier:core|stretch-1|stretch-2|moonshot`,
 `status:blocked`, `status:needs-review`; milestones are the trains. Your queue: `gh issue list --label lane:<lane> --state open`.
 Comment "claimed by <harness>" when you start an issue and link the PR when you finish. Blocked: add `status:blocked`,
