@@ -12,7 +12,7 @@
       {
         "command": "\"C:/Program Files/Git/bin/bash.exe\" bin/run-claude-hook.sh cursor block-sensitive-files",
         "matcher": "Write|StrReplace|Delete",
-        "timeout": 10,
+        "timeout": 30,
         "failClosed": true
       }
     ],
