@@ -20,7 +20,7 @@ export type Action =
   | "close";
 
 /** "all" applies on every beat; a beat context applies only there. */
-export type KeyContext = "all" | "beat2" | "beat3" | "beat5" | "beat6";
+export type KeyContext = "all" | "beat2" | "beat3" | "beat4" | "beat5" | "beat6";
 
 export interface Binding {
   /** KeyboardEvent.key values. Letters are matched case-insensitively. */
@@ -36,7 +36,7 @@ export const KEYMAP: Binding[] = [
   { keys: ["ArrowRight", "PageDown"], action: "next", contexts: ["all"], keyLabel: "Right, PageDown", label: "Next step" },
   { keys: ["ArrowLeft", "PageUp"], action: "prev", contexts: ["all"], keyLabel: "Left, PageUp", label: "Previous step" },
   { keys: ["1", "2", "3", "4", "5", "6"], action: "beat", contexts: ["all"], keyLabel: "1 to 6", label: "Jump to that beat" },
-  { keys: [" "], action: "play", contexts: ["beat2"], keyLabel: "Space", label: "Play or pause the day" },
+  { keys: [" "], action: "play", contexts: ["beat2", "beat4"], keyLabel: "Space", label: "Play or pause the day (after the re-plan, from the call minute)" },
   { keys: ["c"], action: "call", contexts: ["beat2", "beat3"], keyLabel: "C", label: "Call at 6:40pm, again during the refill" },
   { keys: ["e"], action: "envelope", contexts: ["beat5"], keyLabel: "E", label: "Envelope" },
   { keys: ["b"], action: "backtest", contexts: ["beat5"], keyLabel: "B", label: "Backtest card" },
@@ -58,6 +58,7 @@ export function contextsFor(beat: number): KeyContext[] {
   const ctx: KeyContext[] = ["all"];
   if (beat === 2) ctx.push("beat2");
   if (beat === 3) ctx.push("beat3");
+  if (beat === 4) ctx.push("beat4");
   if (beat === 5) ctx.push("beat5");
   if (beat === 6) ctx.push("beat6");
   return ctx;
