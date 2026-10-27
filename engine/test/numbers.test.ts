@@ -304,29 +304,34 @@ describe("validateNumbers rejects", () => {
   ])("%s", (_, rows, re) => expect(bad(rows as StageNumber[])).toMatch(re));
 });
 
+// Not committed until core 13 (#63): pitch/resolve.mjs needs a row for every pitch key (#144).
+const committed = repoPath("public/derived/numbers.json");
+
 describe("public/derived/numbers.json", () => {
-  it("equals the CLI output for the inputs on disk", () => {
-    const f = repoPath("public/derived/numbers.json");
-    expect(existsSync(f)).toBe(true);
-    const opt = <T>(p: string, parse: (t: string) => T) =>
-      existsSync(repoPath(p)) ? { data: parse(read(p)), path: p } : undefined;
-    const backtest = opt(
-      "public/derived/backtest.json",
-      (t) => JSON.parse(t) as BacktestResult,
-    );
-    const hist = opt(
-      "public/data/hist_2026-05-01_2026-10-27.json",
-      (t) => JSON.parse(t) as HistDay[],
-    );
-    const expected = buildNumbers(
-      {
-        ...inputs,
-        wear_usd_mwh: backtest?.data.wear_usd_mwh ?? DEFAULT_WEAR_USD_MWH,
-        backtest,
-        hist,
-      },
-      reg,
-    );
-    expect(readFileSync(f, "utf8")).toBe(stableJson(expected));
-  });
+  it.skipIf(!existsSync(committed))(
+    "equals the CLI output for the inputs on disk",
+    () => {
+      const f = committed;
+      const opt = <T>(p: string, parse: (t: string) => T) =>
+        existsSync(repoPath(p)) ? { data: parse(read(p)), path: p } : undefined;
+      const backtest = opt(
+        "public/derived/backtest.json",
+        (t) => JSON.parse(t) as BacktestResult,
+      );
+      const hist = opt(
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        (t) => JSON.parse(t) as HistDay[],
+      );
+      const expected = buildNumbers(
+        {
+          ...inputs,
+          wear_usd_mwh: backtest?.data.wear_usd_mwh ?? DEFAULT_WEAR_USD_MWH,
+          backtest,
+          hist,
+        },
+        reg,
+      );
+      expect(readFileSync(f, "utf8")).toBe(stableJson(expected));
+    },
+  );
 });
