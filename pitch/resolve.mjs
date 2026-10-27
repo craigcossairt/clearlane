@@ -1,141 +1,119 @@
 /**
- * Resolve {key} placeholders in judge-facing pitch copy.
+ * Check judge-facing pitch copy and optionally write resolved files.
  *
- * Usage: node pitch/resolve.mjs [file...]
- * With no files, checks every .md in pitch/ except review-log.md and research-tariff.md.
+ * Exit 0: clean. Exit 1: findings. Exit 2: could not run.
+ * Draft mode (no --strict) allows a numbers key to keep its placeholder and
+ * prints how many keys are unresolved. --strict fails those keys. Once
+ * public/derived/numbers.json exists the run is always strict, so check:all
+ * fails on a key the engine does not write.
+ * A key with prov "MEASURED" in keys.json renders "[read from screen]".
  *
- * Exit 0 when every key is known and the copy has no em dash or banned phrase.
- * Exit 1 when a key is unknown, a number is hand-typed, or a guardrail fails.
- * If public/derived/numbers.json exists, display text comes from there and a
- * key missing from that file fails. Until it exists, pitch/keys.json is the catalog.
- *
- * Two kinds of key never read numbers.json (docs/lanes/pitch.md section 3):
- * - source "facts": display is the keys.json wording, which must appear verbatim
- *   in the named FACTS row (`fact`). The row must be VERIFIED, or CONFLICT with
- *   the display inside its say-instead wording. Such a key in numbers.json fails.
- * - prov "MEASURED": timed live on the demo machine, rendered "[read from screen]".
- *   Such a key in numbers.json fails.
+ * node pitch/resolve.mjs [--strict] [--facts path] [--render dir] [files...]
  */
 
-import { readFileSync, existsSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseFacts } from "../tools/lib/facts.mjs";
+import { catalogFindings, formatFinding, lintText, parseFacts, resolveInput } from "./lib/rules.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const keysPath = join(root, "pitch", "keys.json");
-const numbersPath = join(root, "public", "derived", "numbers.json");
-const factsPath = join(root, "docs", "FACTS.md");
-const MEASURED_DISPLAY = "[read from screen]";
 
-const BANNED = [
-  [/Torus lacks/i, "Torus lacks"],
-  [/Torus can't/i, "Torus can't"],
-  [/Torus cannot/i, "Torus cannot"],
-  [/Lasso doesn't/i, "Lasso doesn't"],
-  [/Lasso does not/i, "Lasso does not"],
-];
-
-const SKIP = new Set(["review-log.md", "research-tariff.md", "keys.json"]);
-
-function factsDisplay(key, entry, facts) {
-  const fact = facts.get(entry.fact);
-  if (!fact)
-    throw new Error(
-      `${key}: source "facts" names FACTS row ${entry.fact}, which does not exist`,
-    );
-  const display = entry.display;
-  if (
-    typeof display !== "string" ||
-    display.length === 0 ||
-    display.includes("{")
-  ) {
-    throw new Error(
-      `${key}: source "facts" needs its exact wording in display`,
-    );
-  }
-  if (
-    fact.status === "VERIFIED" &&
-    (fact.claim.includes(display) || fact.value.includes(display))
-  )
-    return display;
-  if (fact.status === "CONFLICT" && fact.sayInstead?.includes(display))
-    return display;
-  throw new Error(
-    `${key}: display "${display}" is not in FACTS row ${entry.fact} as allowed for status ${fact.status}`,
-  );
+function failRun(message) {
+  console.error(`could not run: ${message}`);
+  process.exit(2);
 }
 
-function loadCatalog() {
-  const catalog = JSON.parse(readFileSync(keysPath, "utf8")).keys;
-  const facts = parseFacts(readFileSync(factsPath, "utf8"));
-  const display = {};
-  for (const [key, entry] of Object.entries(catalog)) {
-    if (entry.prov === "MEASURED") display[key] = MEASURED_DISPLAY;
-    else if (entry.source === "facts")
-      display[key] = factsDisplay(key, entry, facts);
-    else display[key] = entry.display;
+function parseArgs(argv) {
+  const args = { strict: false, facts: null, render: null, files: [] };
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === "--strict") args.strict = true;
+    else if (arg === "--facts") args.facts = argv[++i];
+    else if (arg === "--render") args.render = argv[++i];
+    else if (arg.startsWith("--")) failRun(`unknown flag ${arg}`);
+    else args.files.push(arg);
   }
-  if (!existsSync(numbersPath)) return { display, fromNumbers: false };
-  const rows = JSON.parse(readFileSync(numbersPath, "utf8"));
-  const byKey = new Map(rows.map((row) => [row.key, row]));
-  for (const [key, entry] of Object.entries(catalog)) {
-    const row = byKey.get(key);
-    if (entry.prov === "MEASURED" || entry.source === "facts") {
-      if (row)
-        throw new Error(
-          `${key}: ${entry.prov === "MEASURED" ? "MEASURED" : 'source "facts"'}, but numbers.json also has a row for it`,
-        );
-      continue;
+  return args;
+}
+
+function readJson(path, label) {
+  if (!existsSync(path)) failRun(`missing ${label}: ${path}`);
+  try {
+    return JSON.parse(readFileSync(path, "utf8"));
+  } catch {
+    failRun(`bad JSON in ${label}`);
+  }
+}
+
+function loadContext(args) {
+  const catalog = readJson(join(root, "pitch", "keys.json"), "keys.json");
+  if (!catalog.keys || typeof catalog.keys !== "object") failRun("bad JSON in keys.json");
+  let numbers = null;
+  const numbersPath = join(root, "public", "derived", "numbers.json");
+  if (existsSync(numbersPath)) {
+    const rows = readJson(numbersPath, "numbers.json");
+    if (!Array.isArray(rows)) failRun("bad JSON in numbers.json");
+    numbers = new Map(rows.map((row) => [row.key, row]));
+  }
+  const needsFacts = Object.values(catalog.keys).some((entry) => entry.source === "facts");
+  let facts = { rows: new Map(), sayInstead: [] };
+  const factsPath = args.facts ? resolveInput(root, args.facts) : join(root, "docs", "FACTS.md");
+  if (args.facts || needsFacts || existsSync(factsPath)) {
+    if (!existsSync(factsPath)) failRun(`unreadable FACTS.md: ${factsPath}`);
+    try {
+      facts = parseFacts(readFileSync(factsPath, "utf8"));
+    } catch {
+      failRun(`unreadable FACTS.md: ${factsPath}`);
     }
-    if (!row) throw new Error(`numbers.json has no row for ${key}`);
-    if (typeof row.display !== "string" || row.display.length === 0) {
-      throw new Error(`numbers.json display empty for ${key}`);
+  }
+  const measured = Object.entries(catalog.keys)
+    .filter(([, entry]) => entry.prov === "MEASURED")
+    .map(([key]) => key);
+  return { keys: catalog.keys, numbers, facts, measured, strict: args.strict || numbers !== null };
+}
+
+function pitchFiles() {
+  const out = [];
+  function walk(dir) {
+    for (const ent of readdirSync(dir, { withFileTypes: true })) {
+      const abs = join(dir, ent.name);
+      const rel = relative(root, abs).replaceAll("\\", "/");
+      if (ent.isDirectory()) {
+        if (rel === "pitch/test/fixtures" || rel.startsWith("pitch/test/fixtures/")) continue;
+        walk(abs);
+        continue;
+      }
+      if (!/\.(md|html)$/.test(ent.name)) continue;
+      if (rel === "pitch/review-log.md" || /^pitch\/research-.*\.md$/.test(rel)) continue;
+      if (rel.startsWith("pitch/test/fixtures/")) continue;
+      out.push(rel);
     }
-    display[key] = row.display;
   }
-  return { display, fromNumbers: true };
+  walk(join(root, "pitch"));
+  return out;
 }
 
-function check(file, text, display) {
-  const errors = [];
-  if (text.includes("\u2014") || text.includes("\u2013")) {
-    errors.push(`${file}: em dash or en dash`);
+const args = parseArgs(process.argv.slice(2));
+const ctx = loadContext(args);
+const files = args.files.length ? args.files : pitchFiles();
+const findings = catalogFindings(ctx);
+let unresolved = 0;
+for (const file of files) {
+  const abs = join(root, file);
+  if (!existsSync(abs)) failRun(`unreadable ${file}`);
+  const text = readFileSync(abs, "utf8");
+  const result = lintText(file, text, ctx);
+  findings.push(...result.findings);
+  unresolved += result.unresolved;
+  if (args.render && result.findings.length === 0) {
+    const dest = join(args.render, file);
+    mkdirSync(dirname(dest), { recursive: true });
+    writeFileSync(dest, result.rendered, "utf8");
   }
-  for (const [pattern, label] of BANNED) {
-    if (pattern.test(text)) errors.push(`${file}: banned phrase "${label}"`);
-  }
-  // A result a judge could read as ours: a dollar figure, a percent, or a
-  // number glued to a unit. Years, docket numbers and clock times are not
-  // results. A bare count has to be a {key}; a year (19xx or 20xx) does not.
-  const withoutKeys = text.replace(/\{[a-z0-9_]+\}/g, " ");
-  const result = withoutKeys.match(
-    /\$\s?\d|\d+(?:\.\d+)?\s?%|\d[\d,]*(?:\.\d+)?\s?(?:MW|kW|kWh|MWh|g\/kWh|t\/day|ms)\b|\b(?!19|20)\d{3,}\b/,
-  );
-  if (result) errors.push(`${file}: hand-typed result "${result[0]}"`);
-  for (const match of text.matchAll(/\{([a-z0-9_]+)\}/g)) {
-    const key = match[1];
-    if (key === "key") continue;
-    if (!(key in display)) errors.push(`${file}: unknown key {${key}}`);
-  }
-  return errors;
 }
-
-function filesFromArgs(args) {
-  if (args.length) return args;
-  return readdirSync(join(root, "pitch"))
-    .filter((name) => name.endsWith(".md") && !SKIP.has(name))
-    .map((name) => join("pitch", name));
-}
-
-const { display } = loadCatalog();
-const errors = [];
-for (const file of filesFromArgs(process.argv.slice(2))) {
-  const text = readFileSync(join(root, file), "utf8");
-  errors.push(...check(file, text, display));
-}
-if (errors.length) {
-  console.error(errors.join("\n"));
+if (!args.strict) console.log(`unresolved: ${unresolved}`);
+if (findings.length) {
+  console.error(findings.map(formatFinding).join("\n"));
   process.exit(1);
 }
-console.log(`ok: ${Object.keys(display).length} keys`);
+console.log(`ok: ${Object.keys(ctx.keys).length} keys`);
