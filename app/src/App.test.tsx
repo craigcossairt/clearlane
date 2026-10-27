@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { STUB_ACTIVE } from "./engineClient";
 import { App, BEATS } from "./App";
 import { loadStageData, type StageData } from "./data";
+import { resolveStageDay } from "./stageDay";
 
 beforeEach(() => {
   Object.defineProperty(window, "matchMedia", {
@@ -114,18 +115,51 @@ describe("day switch", () => {
   });
 });
 
+/**
+ * The header's day label and date for a stage day, worked out independently of the app: the day
+ * the app resolves from the data (numbers.json, then the latest bundle) against NOW's calendar
+ * date. NOW is noon in Denver, so its UTC date is its Mountain date.
+ */
+function expectedDay(stage: StageData, now: Date): { label: string; date: string } {
+  const resolved = resolveStageDay(stage, "");
+  if (resolved.state !== "ready") throw new Error(`fixture has no stage day: ${resolved.reason}`);
+  const dayMs = Date.parse(`${resolved.day}T12:00:00Z`);
+  const todayMs = Date.parse(`${now.toISOString().slice(0, 10)}T12:00:00Z`);
+  const label =
+    dayMs === todayMs
+      ? "Today"
+      : dayMs === todayMs + 24 * 3600 * 1000
+        ? "Tomorrow (day-ahead)"
+        : "Cached";
+  const date = new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(dayMs));
+  return { label, date };
+}
+
 describe("shell", () => {
-  it("shows the day label, node, snapshot time, the stub banner only while the stub runs, and the chip legend", () => {
-    const { container } = render(<App data={data} now={NOW} search="" />);
-    const text = container.textContent ?? "";
-    expect(text).toContain("Today");
-    expect(text).toContain("ELAP_PACE-APND");
-    expect(text).toMatch(/Snapshot, fetched .+ MT/);
-    expect(text.includes("Engine stub: not engine output")).toBe(STUB_ACTIVE);
-    expect(text).toContain("TORUS PUBLISHED: from Torus");
-    // The slot is reserved either way, so the header never resizes.
-    expect(container.querySelector('[data-slot="stub-banner"]')).toBeTruthy();
-  });
+  const stages: [string, StageData][] = [
+    ["the stage day on disk", data],
+    ["a stage day re-dated to Oct 28", redate(data, "2026-10-27", "2026-10-28")],
+  ];
+  for (const [name, stage] of stages) {
+    it(`shows the day label for ${name}, node, snapshot time, the stub banner only while the stub runs, and the chip legend`, () => {
+      const { container } = render(<App data={stage} now={NOW} search="" />);
+      const text = container.textContent ?? "";
+      const { label, date } = expectedDay(stage, NOW);
+      expect(container.querySelector("header p")?.textContent).toBe(`${label} ${date}`);
+      expect(text).toContain("ELAP_PACE-APND");
+      expect(text).toMatch(/Snapshot, fetched .+ MT/);
+      expect(text.includes("Engine stub: not engine output")).toBe(STUB_ACTIVE);
+      expect(text).toContain("TORUS PUBLISHED: from Torus");
+      // The slot is reserved either way, so the header never resizes.
+      expect(container.querySelector('[data-slot="stub-banner"]')).toBeTruthy();
+    });
+  }
 
   it("drives the beats from the keyboard and keeps body hooks in step", () => {
     const { container } = render(<App data={data} now={NOW} search="?motion=off" />);
