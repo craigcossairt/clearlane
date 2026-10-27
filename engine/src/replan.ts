@@ -7,8 +7,8 @@ import type {
   Site,
 } from "@contracts/types";
 import { INTERVAL_S, INTERVALS, prices } from "./bundle";
-import { simulateCall, startOf } from "./crash";
-import type { CallResult } from "./crash";
+import { priorChain, simulateCall, startOf } from "./crash";
+import type { CallResult, Priors } from "./crash";
 import type { SchMode } from "./lanes";
 import {
   DP_FLOOR_LEVEL,
@@ -233,16 +233,14 @@ export function crash(
   site: Site,
   b: Bundle,
   event: CrashEvent,
-  prior?: CrashResult,
+  priors?: Priors,
   opts: { sch_mode?: SchMode } = {},
 ): CrashOutcome {
-  const call = simulateCall(plan, site, event, prior);
-  const calls = prior
-    ? [
-        { event: priorEvent(prior), result: prior },
-        { event, result: call },
-      ]
-    : [{ event, result: call }];
+  const call = simulateCall(plan, site, event, priors);
+  const calls = [
+    ...priorChain(priors).map((r) => ({ event: priorEvent(r), result: r })),
+    { event, result: call },
+  ];
   const state = stateAfterCalls(plan, site, calls);
   const rp = replanFrom(plan, site, b, state, opts.sch_mode);
   return {

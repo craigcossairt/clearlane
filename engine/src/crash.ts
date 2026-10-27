@@ -49,17 +49,21 @@ function plannedSocAt(plan: Plan, site: Site, sec: number): number {
 }
 
 // Extra stored Pulse energy a prior call drew (kWh), and Spin SoC from its trace at `atS` after its start.
-function priorState(
-  prior: CallResult | undefined,
-  site: Site,
-  offsetS: number,
-) {
+// A prior call, or a chain of calls each starting while the one before was on, oldest first.
+export type Priors = CallResult | CallResult[] | undefined;
+
+export const priorChain = (p: Priors): CallResult[] =>
+  p === undefined ? [] : Array.isArray(p) ? p : [p];
+
+// Spin comes from the last call's trace; Pulse loses every call's draw, since the plan saw none of them.
+function priorState(chain: CallResult[], site: Site, offsetS: number) {
+  const prior = chain[chain.length - 1];
   if (!prior) return { spin: site.station.spin_kwh, pulseDrawnKwh: 0 };
   // trace point t_s holds the state after second t_s, so the start of second offsetS is t_s = offsetS - 1
   const pt = prior.trace.find((p) => p.t_s === offsetS - 1);
   return {
     spin: pt ? pt.spin_soc_kwh : site.station.spin_kwh,
-    pulseDrawnKwh: prior.pulse_kwh / eta(site),
+    pulseDrawnKwh: chain.reduce((a, r) => a + r.pulse_kwh, 0) / eta(site),
   };
 }
 
@@ -67,7 +71,7 @@ export function simulateCall(
   plan: Plan,
   site: Site,
   event: CrashEvent,
-  prior?: CallResult,
+  priors?: Priors,
 ): CallResult {
   const st = site.station;
   const e = eta(site);
@@ -75,8 +79,10 @@ export function simulateCall(
   const dayStart = Date.parse(plan.intervals[0]!.ts_utc);
   const s0 = (Date.parse(event.start_utc) - dayStart) / 1000;
   const spinCap = hasSpin(plan) ? st.spin_kwh : 0;
+  const chain = priorChain(priors);
+  const prior = chain[chain.length - 1];
   const ps = priorState(
-    prior,
+    chain,
     site,
     prior
       ? (Date.parse(event.start_utc) - Date.parse(startOf(prior))) / 1000
