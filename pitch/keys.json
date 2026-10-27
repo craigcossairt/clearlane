@@ -1,5 +1,5 @@
 {
-  "note": "Keys the deck, one-pagers, Q&A and stage script may use. Display text is a placeholder until public/derived/numbers.json exists. The resolver overwrites display from that file and fails if a key is missing there.",
+  "note": "Keys the deck, one-pagers, Q&A and stage script may use. A key reads its display from public/derived/numbers.json unless it is source \"facts\" (display is the exact FACTS wording, checked against the named row) or prov MEASURED (timed live, renders [read from screen]). The resolver fails if a numbers key is missing from that file, or a facts or MEASURED key is in it.",
   "keys": {
     "overnight_avg": {
       "unit": "$/MWh",
@@ -26,25 +26,31 @@
       "prov": "DERIVED",
       "display": "{peak_over_trough}"
     },
-    "oct_step_hour_days": {
+    "oct_step_hour_days_at_5_or_6": {
       "unit": "days",
       "prov": "DERIVED",
-      "display": "{oct_step_hour_days}"
+      "fact": "oct_step_hour_days",
+      "note": "October days whose largest upward price step was HB 5pm or HB 6pm.",
+      "display": "{oct_step_hour_days_at_5_or_6}"
     },
-    "oct_step_hour_total": {
+    "oct_step_hour_days_total": {
       "unit": "days",
       "prov": "DERIVED",
-      "display": "{oct_step_hour_total}"
+      "fact": "oct_step_hour_days",
+      "note": "October days counted (Oct 1 to 27).",
+      "display": "{oct_step_hour_days_total}"
     },
-    "fossil_priciest_pct": {
+    "fossil_priciest_oct_priciest": {
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{fossil_priciest_pct}"
+      "fact": "fossil_priciest_oct",
+      "display": "{fossil_priciest_oct_priciest}"
     },
-    "fossil_cheapest_pct": {
+    "fossil_priciest_oct_cheapest": {
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{fossil_cheapest_pct}"
+      "fact": "fossil_priciest_oct",
+      "display": "{fossil_priciest_oct_cheapest}"
     },
     "net_load_climb_mw": {
       "unit": "MW",
@@ -61,8 +67,16 @@
       "prov": "DERIVED",
       "display": "{clearlane_usd_mw_day}"
     },
-    "race_ratio": { "unit": "x", "prov": "DERIVED", "display": "{race_ratio}" },
-    "fixed_70": { "unit": "$/day", "prov": "DERIVED", "display": "{fixed_70}" },
+    "race_ratio": {
+      "unit": "x",
+      "prov": "DERIVED",
+      "display": "{race_ratio}"
+    },
+    "fixed_70": {
+      "unit": "$/day",
+      "prov": "DERIVED",
+      "display": "{fixed_70}"
+    },
     "clearlane_70": {
       "unit": "$/day",
       "prov": "DERIVED",
@@ -91,7 +105,10 @@
     "pulse_share_per_call": {
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{pulse_share_per_call}"
+      "source": "facts",
+      "fact": "pulse_share_per_call",
+      "note": "Not in numbers.json. FACTS says: say about 5%.",
+      "display": "about 5%"
     },
     "call_hours_2025": {
       "unit": "hours",
@@ -103,50 +120,65 @@
       "prov": "DERIVED",
       "display": "{spin_kwh_per_kw}"
     },
-    "events_2025": {
+    "rmp_events_2025": {
       "unit": "events",
       "prov": "TORUS_PUBLISHED",
-      "display": "{events_2025}"
+      "fact": "rmp_events_2025",
+      "note": "CONFLICT row. Say it as: 359 events in 2025 (Torus, RMP case study).",
+      "display": "{rmp_events_2025}"
     },
     "lasso_dispatch_ms": {
       "unit": "ms",
       "prov": "TORUS_PUBLISHED",
-      "display": "{lasso_dispatch_ms}"
+      "source": "facts",
+      "fact": "lasso_dispatch_ms",
+      "note": "Not in numbers.json. FACTS value is sub-250 ms; copy reads 'under 250 ms'.",
+      "display": "250 ms"
     },
-    "spin_c_rate": {
+    "torus_spin_c_rating": {
       "unit": "C",
       "prov": "TORUS_PUBLISHED",
-      "display": "{spin_c_rate}"
+      "fact": "torus_spin_c_rating",
+      "display": "{torus_spin_c_rating}"
     },
-    "pulse_c_rate": {
+    "torus_pulse_c_rating": {
       "unit": "C",
       "prov": "TORUS_PUBLISHED",
-      "display": "{pulse_c_rate}"
+      "fact": "torus_pulse_c_rating",
+      "display": "{torus_pulse_c_rating}"
     },
-    "pulse_cycles": {
+    "torus_pulse_cycles": {
       "unit": "cycles",
       "prov": "TORUS_PUBLISHED",
-      "display": "{pulse_cycles}"
+      "fact": "torus_pulse_cycles",
+      "display": "{torus_pulse_cycles}"
     },
-    "station_life_yr": {
+    "torus_lifespan_yr": {
       "unit": "years",
       "prov": "TORUS_PUBLISHED",
-      "display": "{station_life_yr}"
+      "fact": "torus_lifespan_yr",
+      "note": "CONFLICT row. Station lifespan, not Pulse. Display already says 'years'.",
+      "display": "{torus_lifespan_yr}"
     },
-    "cycle_budget_per_yr": {
+    "pulse_cycle_budget": {
       "unit": "cycles/yr",
       "prov": "DERIVED",
-      "display": "{cycle_budget_per_yr}"
+      "fact": "pulse_cycle_budget",
+      "display": "{pulse_cycle_budget}"
     },
-    "mou_mw": {
+    "mou_70mw": {
       "unit": "MW",
       "prov": "TORUS_PUBLISHED",
-      "display": "{mou_mw}"
+      "fact": "mou_70mw",
+      "note": "Display has no unit; copy writes MW after it.",
+      "display": "{mou_70mw}"
     },
-    "mou_ceiling_mw": {
+    "torus_500mw": {
       "unit": "MW",
       "prov": "TORUS_PUBLISHED",
-      "display": "{mou_ceiling_mw}"
+      "fact": "torus_500mw",
+      "note": "CONFLICT row. Always an MOU ceiling, never installed capacity. Display has no unit; copy writes MW after it.",
+      "display": "{torus_500mw}"
     },
     "share_days_beating": {
       "unit": "%",
@@ -183,15 +215,17 @@
       "prov": "SIMULATED",
       "display": "{campus_usd}"
     },
-    "time_shift_pct": {
+    "time_vs_space_oct_time": {
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{time_shift_pct}"
+      "fact": "time_vs_space_oct",
+      "display": "{time_vs_space_oct_time}"
     },
-    "space_shift_pct": {
+    "time_vs_space_oct_space": {
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{space_shift_pct}"
+      "fact": "time_vs_space_oct",
+      "display": "{time_vs_space_oct_space}"
     },
     "pace_cheapest_share": {
       "unit": "%",
@@ -208,27 +242,50 @@
       "prov": "SIMULATED",
       "display": "{host_ceiling_kw}"
     },
-    "solve_ms": { "unit": "ms", "prov": "MEASURED", "display": "{solve_ms}" },
-    "replan_ms": { "unit": "ms", "prov": "MEASURED", "display": "{replan_ms}" },
+    "solve_ms": {
+      "unit": "ms",
+      "prov": "MEASURED",
+      "fact": "solve_ms",
+      "note": "Timed live; never read from a file. Renders [read from screen].",
+      "display": "{solve_ms}"
+    },
+    "replan_ms": {
+      "unit": "ms",
+      "prov": "MEASURED",
+      "fact": "replan_ms",
+      "note": "Timed live; never read from a file. Renders [read from screen].",
+      "display": "{replan_ms}"
+    },
     "load_peak_oct27_mw": {
       "unit": "MW",
       "prov": "REAL",
       "display": "{load_peak_oct27_mw}"
     },
-    "mou_share_of_peak_pct": {
+    "mou_share_of_peak_oct27": {
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{mou_share_of_peak_pct}"
+      "fact": "mou_share_of_peak",
+      "note": "Share of the Oct 27 day-ahead peak forecast.",
+      "display": "{mou_share_of_peak_oct27}"
     },
     "calls_unanswerable_price_only_mt": {
       "unit": "%",
       "prov": "DERIVED",
       "display": "{calls_unanswerable_price_only_mt}"
     },
-    "calls_unanswerable_price_only_utc": {
+    "calls_unanswerable_price_only_utc_mdt": {
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{calls_unanswerable_price_only_utc}"
+      "fact": "calls_unanswerable_price_only",
+      "note": "UTC reading, MDT shift (6 hours).",
+      "display": "{calls_unanswerable_price_only_utc_mdt}"
+    },
+    "calls_unanswerable_price_only_utc_mst": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "fact": "calls_unanswerable_price_only",
+      "note": "UTC reading, MST shift (7 hours).",
+      "display": "{calls_unanswerable_price_only_utc_mst}"
     }
   }
 }

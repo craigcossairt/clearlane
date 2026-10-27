@@ -1,0 +1,84 @@
+{
+  "schema": "clearlane.backtest/v1",
+  "window": {
+    "start_mt": "2026-05-01",
+    "end_mt": "2026-10-27",
+    "days": 179,
+    "missing_days": [
+      "2026-05-01"
+    ]
+  },
+  "wear_usd_mwh": 9.62,
+  "seed": 20261027,
+  "policies": [
+    {
+      "policy": "fixed_overnight",
+      "usd_per_mw_day": {
+        "p10": -14.26151697957755,
+        "p50": 7.751020775473549,
+        "p90": 57.181005465941155,
+        "mean": 17.2377544435824
+      },
+      "co2_t_per_mw_day": {
+        "p10": -0.8024602066708235,
+        "p50": -0.4831959715411922,
+        "p90": -0.18034605956377822,
+        "mean": -0.46810380600657153
+      },
+      "pulse_cycles_per_yr": 342.4003504671112,
+      "calls_unanswerable_pct": {
+        "heatmap_as_mt": 23.03030303030303,
+        "heatmap_as_utc": 17.575757575757574,
+        "heatmap_as_utc_mst": 18.78787878787879
+      },
+      "host_ceiling_breaches": 0,
+      "days_beating_fixed_overnight_pct": 0
+    },
+    {
+      "policy": "price_only",
+      "usd_per_mw_day": {
+        "p10": 20.973307424607345,
+        "p50": 44.90588079721297,
+        "p90": 133.4211194240824,
+        "mean": 60.66427801283702
+      },
+      "co2_t_per_mw_day": {
+        "p10": -0.1405876224552052,
+        "p50": 0.2250572345935787,
+        "p90": 0.6437154731276233,
+        "mean": 0.23823729926511109
+      },
+      "pulse_cycles_per_yr": 586.7192597599133,
+      "calls_unanswerable_pct": {
+        "heatmap_as_mt": 40,
+        "heatmap_as_utc": 46.06060606060606,
+        "heatmap_as_utc_mst": 43.63636363636363
+      },
+      "host_ceiling_breaches": 2040,
+      "days_beating_fixed_overnight_pct": 100
+    },
+    {
+      "policy": "clearlane",
+      "usd_per_mw_day": {
+        "p10": 8.70650045776269,
+        "p50": 39.21366936711043,
+        "p90": 116.19983685636377,
+        "mean": 52.5506409220984
+      },
+      "co2_t_per_mw_day": {
+        "p10": -0.11669856746784528,
+        "p50": 0.19820588357288743,
+        "p90": 0.6784520952828703,
+        "mean": 0.23560376090454294
+      },
+      "pulse_cycles_per_yr": 299.36120026873095,
+      "calls_unanswerable_pct": {
+        "heatmap_as_mt": 1.2121212121212122,
+        "heatmap_as_utc": 0,
+        "heatmap_as_utc_mst": 0
+      },
+      "host_ceiling_breaches": 0,
+      "days_beating_fixed_overnight_pct": 95.53072625698324
+    }
+  ]
+}
