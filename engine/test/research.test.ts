@@ -1,0 +1,156 @@
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { loadResearch } from "../cli/research";
+import {
+  eiaHours,
+  oasisLmp,
+  parseCsv,
+  peakDemandMw,
+  whereVsWhen,
+} from "@engine/research";
+
+const OASIS_HEAD = "INTERVALSTARTTIME_GMT,NODE,LMP_TYPE,MW";
+const oasis = (rows: [string, string, string, number][]) =>
+  parseCsv([OASIS_HEAD, ...rows.map((r) => r.join(","))].join("\n"));
+const FUELS = [
+  "Coal",
+  "Natural Gas",
+  "Hydropower Excluding Pumped Storage",
+  "Solar without Integrated Battery Storage",
+  "Wind without Integrated Battery Storage",
+  "Geothermal",
+  "Other Fuel Sources",
+].map((f) => `"Net Generation (MW) from ${f} (Adjusted)"`);
+const eia = (rows: string[][]) =>
+  parseCsv(
+    [
+      `﻿"Local Time at End of Hour","Demand (MW) (Adjusted)","Demand (MW)",${FUELS.join(",")}`,
+      ...rows.map((r) => r.join(",")),
+    ].join("\n"),
+  );
+
+describe("parsing", () => {
+  it("strips a BOM and header quotes", () => {
+    expect(parseCsv('﻿"a","b"\n1,2').head).toEqual(["a", "b"]);
+  });
+
+  it("shifts OASIS GMT starts to MDT and keeps LMP rows only", () => {
+    const m = oasisLmp(
+      oasis([
+        ["2026-10-01T06:00:00-00:00", "A", "LMP", 10],
+        ["2026-10-01T06:00:00-00:00", "A", "MCC", 99],
+      ]),
+    );
+    expect([...m.keys()]).toEqual([Date.UTC(2026, 9, 1, 0)]);
+    expect(m.get(Date.UTC(2026, 9, 1, 0))!.get("A")).toBe(10);
+  });
+
+  it("reads EIA 12am and 12pm hour ends as hour beginnings", () => {
+    const h = eiaHours(
+      eia([
+        [
+          "10/02/2026 12:00:00 AM",
+          "100",
+          "",
+          "1",
+          "1",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+        ],
+        [
+          "10/02/2026 12:00:00 PM",
+          "",
+          "200",
+          "1",
+          "0",
+          "-5",
+          "1",
+          "0",
+          "0",
+          "0",
+        ],
+      ]),
+    );
+    expect(h.get(Date.UTC(2026, 9, 1, 23))).toEqual({ demand: 100, fossil: 1 });
+    // demand falls back to the raw column; negative generation counts as 0
+    expect(h.get(Date.UTC(2026, 9, 2, 11))).toEqual({
+      demand: 200,
+      fossil: 0.5,
+    });
+  });
+
+  it("takes the largest demand across files", () => {
+    const row = (d: string) => [
+      "10/02/2026 1:00:00 AM",
+      d,
+      "",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+    ];
+    expect(peakDemandMw([eia([row("5")]), eia([row("7")])])).toBe(7);
+  });
+});
+
+describe("where vs when", () => {
+  it("gives a tie for cheapest node to the first node listed", () => {
+    const rows: [string, string, string, number][] = [];
+    for (let h = 0; h < 24; h++) {
+      const t = `2026-10-02T${String(h).padStart(2, "0")}:00:00-00:00`;
+      rows.push([t, "P", "LMP", 5], [t, "Q", "LMP", 5]);
+    }
+    const r = whereVsWhen(oasisLmp(oasis(rows)), ["P", "Q"], "P");
+    expect(r.cheapest_share_pct).toEqual({ P: 100, Q: 0 });
+  });
+});
+
+describe("loadResearch", () => {
+  const tree = (files: Record<string, string>) => {
+    const root = mkdtempSync(join(tmpdir(), "research-"));
+    for (const [p, text] of Object.entries(files)) {
+      mkdirSync(dirname(join(root, p)), { recursive: true });
+      writeFileSync(join(root, p), text);
+    }
+    return root;
+  };
+  const full = {
+    "data/eia930/a.csv": "x\n1",
+    "data/oasis/dam_oct/b.csv": "x\n1",
+    "analysis/option2/oct/c.csv": "x\n1",
+  };
+
+  it("reads a complete corpus", () => {
+    expect(loadResearch(tree(full))!.eia).toHaveLength(1);
+  });
+
+  it("returns null only when every folder is absent", () => {
+    expect(loadResearch(tree({}))).toBeNull();
+  });
+
+  it("throws on a partial corpus", () => {
+    const { "data/eia930/a.csv": _, ...partial } = full;
+    expect(() => loadResearch(tree(partial))).toThrow(/data\/eia930/);
+  });
+
+  it("throws on a wrong file count", () => {
+    expect(() =>
+      loadResearch(tree({ ...full, "data/oasis/dam_oct/z.csv": "x\n1" })),
+    ).toThrow(/one CSV/);
+  });
+
+  it("throws when a folder path is a file", () => {
+    const root = tree({ ...full });
+    rmSync(join(root, "analysis/option2/oct"), { recursive: true });
+    writeFileSync(join(root, "analysis/option2/oct"), "not a folder");
+    expect(() => loadResearch(root)).toThrow();
+  });
+});

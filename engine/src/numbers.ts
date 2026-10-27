@@ -24,6 +24,14 @@ import { NEW_KEYS } from "./newKeys";
 import { solve } from "./policies";
 import { option2Shift, referenceRace, scaleUsdPerDay } from "./reference";
 import { crash } from "./replan";
+import {
+  type CsvTable,
+  eiaHours,
+  fossilByPriceDecile,
+  oasisLmp,
+  peakDemandMw,
+  whereVsWhen,
+} from "./research";
 import { mean, percentile } from "./stats";
 
 export const PROVENANCES: Provenance[] = [
@@ -44,7 +52,15 @@ export const SUFFIXES = [
   "_clearlane",
   "_4pm",
   "_6pm",
-  "_n",
+  "_utc",
+  "_at_5_or_6",
+  "_total",
+  "_priciest",
+  "_cheapest",
+  "_time",
+  "_space",
+  "_oct27",
+  "_16mo",
 ];
 export const FIXPY_AS_OF = "2026-10-27";
 const READING_SUFFIX = ["_mt", "_utc_mdt", "_utc_mst"] as const;
@@ -132,6 +148,14 @@ export interface NumberInputs {
   torus?: { data: TorusPublished; path: string };
   backtest?: { data: BacktestResult; path: string };
   hist?: { data: HistDay[]; path: string };
+  research?: { data: ResearchTables; path: string };
+}
+
+// The committed research CSVs behind the October facts (see engine/cli/research.ts).
+export interface ResearchTables {
+  eia: CsvTable[]; // research/data/eia930, every PACE balance file
+  dam_oct: CsvTable; // research/data/oasis/dam_oct, PACE DAM Oct 1-25
+  edam_oct: CsvTable; // research/analysis/option2/oct, EDAM nodes Oct 1-27
 }
 
 type Draft = Omit<StageNumber, "prov"> & { prov?: Provenance };
@@ -217,6 +241,12 @@ export function buildNumbers(
   add("net_load_max_oct27", Math.max(...nl), "MW", num(Math.max(...nl)), bsrc);
   const load = Math.max(...b.hours.map((h) => h.load_fcst_mw));
   add("load_peak_oct27_mw", load, "MW", num(load), bsrc);
+  // CO2 windows: HB 1am to 5am (overnight_avg's window) and HB 9am to 3pm (one hour shorter than midday_avg)
+  const co2 = b.hours.map((h) => h.co2_g_kwh);
+  const co2Over = hourMean(co2, 1, 5);
+  const co2Mid = hourMean(co2, 9, 15);
+  add("co2_overnight_avg", co2Over, "g/kWh", `${num(co2Over)} g/kWh`, bsrc);
+  add("co2_midday_avg", co2Mid, "g/kWh", `${num(co2Mid)} g/kWh`, bsrc);
 
   // Reference race (habit.py), fleet scale and CO2
   const rsrc = src("reference", inp.bundle_path);
@@ -548,6 +578,48 @@ export function buildNumbers(
       num(kwhPerKw, 1),
       url(tp.spin_c_rate.source_id),
     );
+    tag(
+      "torus_spin_c_rating",
+      tp.spin_c_rate,
+      "C",
+      `${num(tp.spin_c_rate.value)}C`,
+    );
+    tag(
+      "torus_pulse_c_rating",
+      tp.pulse_c_rate,
+      "C",
+      `${num(tp.pulse_c_rate.value, 1)}C`,
+    );
+    // Torus lists the 25 years for the Station, not for Pulse
+    tag(
+      "torus_lifespan_yr",
+      tp.pulse_life_yr,
+      "years",
+      `${num(tp.pulse_life_yr.value)} years`,
+    );
+    // Not in contracts/types.ts yet; emitted once torus_published.json carries it
+    const lasso = (
+      tp as { lasso_dispatch_ms?: { value: number; source_id: string } }
+    ).lasso_dispatch_ms;
+    if (lasso)
+      tag("lasso_dispatch_ms", lasso, "ms", `sub-${num(lasso.value)} ms`);
+    const calls = tp.events_2025_total.value;
+    const callHours = (calls * c1.duration_s) / 3600;
+    add(
+      "call_hours_2025",
+      callHours,
+      "hours",
+      `${num(callHours)} hours`,
+      `${src("crash", inp.bundle_path)} + ${url(tp.events_2025_total.source_id)}`,
+    );
+    const share = (100 * tp.mou_ceiling_mw.value) / load;
+    add(
+      "mou_share_of_peak_oct27",
+      share,
+      "%",
+      pct(share, 1),
+      `${bsrc} + ${url(tp.mou_ceiling_mw.source_id)}`,
+    );
     const recharge = tp.spin_discharge_recharge_min.value / 2;
     add(
       "spin_recharge_min",
@@ -618,10 +690,12 @@ export function buildNumbers(
         ),
       );
     }
+    // The whole window is under MDT, so the UTC reading is the 6-hour shift; the 7-hour one is a sensitivity
+    const ANSWERED_SUFFIX = ["_mt", "_utc", "_utc_mst"];
     readings.forEach((r, k) => {
       const v = 100 - cl.calls_unanswerable_pct[r];
       add(
-        `calls_answered_pct${READING_SUFFIX[k]}`,
+        `calls_answered_pct${ANSWERED_SUFFIX[k]}`,
         v,
         "% of calls",
         pct(v),
@@ -643,20 +717,83 @@ export function buildNumbers(
     // no full October day: no median to take, so the keys are left out like a missing input
     if (s.n > 0) {
       add(
-        "oct_step_hour_days",
+        "oct_step_hour_days_at_5_or_6",
         s.days,
         "days",
-        `${num(s.days)} of ${num(s.n)}`,
+        num(s.days),
         hsrc,
         "2026-10-27",
       );
-      add("oct_step_hour_days_n", s.n, "days", num(s.n), hsrc, "2026-10-27");
+      add(
+        "oct_step_hour_days_total",
+        s.n,
+        "days",
+        num(s.n),
+        hsrc,
+        "2026-10-27",
+      );
       add(
         "oct_step_median_usd",
         s.median_usd,
         "$/MWh",
         usd(s.median_usd, 1),
         hsrc,
+        "2026-10-27",
+      );
+    }
+  }
+
+  // October research facts, recomputed from the committed CSVs
+  if (inp.research) {
+    const r = inp.research.data;
+    const rsrc2 = src("research", inp.research.path);
+    const eia = new Map(r.eia.flatMap((t) => [...eiaHours(t)]));
+    const fos = fossilByPriceDecile(eia, oasisLmp(r.dam_oct));
+    for (const part of ["priciest", "cheapest"] as const)
+      add(
+        `fossil_priciest_oct_${part}`,
+        fos[part].fossil_pct,
+        "% fossil",
+        pct(fos[part].fossil_pct, 1),
+        rsrc2,
+        "2026-10-25",
+      );
+    const ww = whereVsWhen(oasisLmp(r.edam_oct));
+    add(
+      "time_vs_space_oct_time",
+      ww.time_saving_pct,
+      "% saved",
+      pct(ww.time_saving_pct),
+      rsrc2,
+      "2026-10-27",
+    );
+    add(
+      "time_vs_space_oct_space",
+      ww.space_saving_pct,
+      "% saved",
+      pct(ww.space_saving_pct),
+      rsrc2,
+      "2026-10-27",
+    );
+    const paceShare = ww.cheapest_share_pct["ELAP_PACE-APND"]!;
+    add(
+      "pace_cheapest_share",
+      paceShare,
+      "% of hours",
+      pct(paceShare),
+      rsrc2,
+      "2026-10-27",
+    );
+    const peak = peakDemandMw(r.eia);
+    add("pace_peak_16mo_mw", peak, "MW", num(peak), rsrc2, "2026-10-27");
+    if (inp.torus) {
+      const ceil = inp.torus.data.mou_ceiling_mw.value;
+      add(
+        "mou_share_of_peak_16mo",
+        (100 * ceil) / peak,
+        "%",
+        pct((100 * ceil) / peak, 1),
+        `${rsrc2} + ${inp.torus.path}`,
         "2026-10-27",
       );
     }

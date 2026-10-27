@@ -20,6 +20,7 @@ import {
 import type { NumberInputs } from "@engine/numbers";
 import { DEFAULT_WEAR_USD_MWH } from "@engine/policies";
 import { defaultSite } from "@engine/site";
+import { loadResearch } from "../cli/research";
 import { loadFixture, redated, repoPath } from "./helpers/fixture";
 import { loadDam } from "./helpers/oasis";
 
@@ -36,6 +37,7 @@ const inputs: NumberInputs = {
   wear_usd_mwh: DEFAULT_WEAR_USD_MWH,
   snapshot: { prices: snapshotPricesFromCsv(read(SNAP)), path: SNAP },
   torus: { data: JSON.parse(read(TORUS)) as TorusPublished, path: TORUS },
+  research: { data: loadResearch(repoPath("research"))!, path: "research" },
 };
 const nums = buildNumbers(inputs, reg);
 const byKey = new Map(nums.map((n) => [n.key, n]));
@@ -175,6 +177,72 @@ describe("numbers on the Oct 27 fixture", () => {
   });
 });
 
+describe("October research facts, recomputed from the committed CSVs", () => {
+  it.each([
+    ["fossil_priciest_oct_priciest", "85.1%", "2026-10-25"],
+    ["fossil_priciest_oct_cheapest", "39.8%", "2026-10-25"],
+    ["time_vs_space_oct_time", "41%", "2026-10-27"],
+    ["time_vs_space_oct_space", "8%", "2026-10-27"],
+    ["pace_cheapest_share", "81%", "2026-10-27"],
+    ["pace_peak_16mo_mw", "10,173", "2026-10-27"],
+    ["mou_share_of_peak_16mo", "4.9%", "2026-10-27"],
+  ])("%s shows %s", (key, display, asOf) => {
+    expect(byKey.get(key)!.display).toBe(display);
+    expect(byKey.get(key)!.as_of_mt).toBe(asOf);
+  });
+
+  it("leaves them out without the research folder", () => {
+    const bare = buildNumbers({ ...inputs, research: undefined }, reg);
+    const keys = new Set(bare.map((n) => n.key));
+    expect(keys.has("pace_cheapest_share")).toBe(false);
+    expect(keys.has("mou_share_of_peak_16mo")).toBe(false);
+    expect(keys.has("mou_share_of_peak_oct27")).toBe(true);
+  });
+});
+
+describe("pitch keys from #138", () => {
+  it.each([
+    ["co2_overnight_avg", "698 g/kWh", "DERIVED"],
+    ["co2_midday_avg", "468 g/kWh", "DERIVED"],
+    ["torus_spin_c_rating", "10C", "TORUS_PUBLISHED"],
+    ["torus_pulse_c_rating", "0.5C", "TORUS_PUBLISHED"],
+    ["torus_lifespan_yr", "25 years", "TORUS_PUBLISHED"],
+    ["call_hours_2025", "33 hours", "DERIVED"],
+    ["mou_share_of_peak_oct27", "8.3%", "DERIVED"],
+  ])("%s shows %s", (key, display, prov) => {
+    expect(byKey.get(key)!.display).toBe(display);
+    expect(byKey.get(key)!.prov).toBe(prov);
+  });
+
+  it("writes sub-250 ms once torus_published.json carries lasso_dispatch_ms", () => {
+    expect(byKey.has("lasso_dispatch_ms")).toBe(false);
+    const tp = {
+      ...inputs.torus!.data,
+      lasso_dispatch_ms: {
+        value: 250,
+        prov: "TORUS_PUBLISHED",
+        source_id: "torus_lasso",
+      },
+    } as TorusPublished;
+    const n = buildNumbers(
+      { ...inputs, torus: { data: tp, path: TORUS } },
+      reg,
+    );
+    const row = n.find((x) => x.key === "lasso_dispatch_ms")!;
+    expect(row.display).toBe("sub-250 ms");
+    expect(row.prov).toBe("TORUS_PUBLISHED");
+  });
+
+  it("never writes the three source-facts keys", () => {
+    for (const k of [
+      "pulse_share_per_call",
+      "calls_missed_range_pct",
+      "crash_call_minutes",
+    ])
+      expect(byKey.has(k)).toBe(false);
+  });
+});
+
 describe("missing inputs", () => {
   it("leaves out their keys", () => {
     const bare = buildNumbers(
@@ -185,6 +253,8 @@ describe("missing inputs", () => {
     expect(keys.has("price_only_usd_mw_day")).toBe(false);
     expect(keys.has("rmp_events_2025")).toBe(false);
     expect(keys.has("calls_unanswerable_wear10_mt")).toBe(false);
+    expect(keys.has("torus_spin_c_rating")).toBe(false);
+    expect(keys.has("co2_overnight_avg")).toBe(true);
     expect(keys.has("fixed_usd_mw_day")).toBe(true);
     expect(validateNumbers(bare, reg)).toEqual([]);
   });
@@ -290,16 +360,38 @@ describe("backtest and history keys", () => {
     expect(k.get("wear_usd_mwh")!.display).toBe("$9.16");
     expect(k.get("cycles_per_year_by_policy_price_only")!.value).toBe(301);
     expect(k.get("calls_missed_by_policy_clearlane_utc_mst")!.value).toBe(6);
-    expect(k.get("calls_answered_pct_utc_mdt")!.value).toBe(96);
+    expect(k.get("calls_answered_pct_mt")!.value).toBe(98);
+    expect(k.get("calls_answered_pct_utc")!.value).toBe(96);
+    expect(k.get("calls_answered_pct_utc_mst")!.value).toBe(94);
+    expect(k.has("calls_answered_pct_utc_mdt")).toBe(false);
     expect(k.get("clearlane_p90")!.as_of_mt).toBe("2026-10-27");
+  });
+
+  it("with the backtest and history, writes every #138 key but the Lasso row", () => {
+    const want =
+      `overnight_avg midday_avg fixed_rule_charge_usd_mwh timetable_charge_usd_mwh peak_price
+      price_min_oct27 peak_over_trough oct_step_hour_days_at_5_or_6 oct_step_hour_days_total
+      fossil_priciest_oct_priciest fossil_priciest_oct_cheapest net_load_climb_mw fixed_usd_mw_day
+      clearlane_usd_mw_day race_ratio fixed_70 clearlane_70 co2_added_70 co2_avoided_70 co2_overnight_avg
+      co2_midday_avg call_hours_2025 spin_kwh_per_kw rmp_events_2025 torus_spin_c_rating torus_pulse_c_rating
+      torus_pulse_cycles torus_lifespan_yr pulse_cycle_budget mou_70mw torus_500mw share_days_beating
+      clearlane_p10 clearlane_p50 clearlane_p90 calls_answered_pct_mt calls_answered_pct_utc campus_usd
+      time_vs_space_oct_time time_vs_space_oct_space pace_cheapest_share enrolled_kw host_ceiling_kw
+      load_peak_oct27_mw mou_share_of_peak_oct27 mou_share_of_peak_16mo calls_unanswerable_price_only_mt
+      calls_unanswerable_price_only_utc_mdt calls_unanswerable_price_only_utc_mst peak_hour_mt
+      trough_hour_mt`.split(/\s+/);
+    expect(want).toHaveLength(51);
+    expect(want.filter((key) => !k.has(key))).toEqual([]);
+    expect(k.has("solve_ms") || k.has("replan_ms")).toBe(false);
   });
 
   it("pins October's step hour: 24 of 27 days, median step $15.1", () => {
     expect(oct.filter((d) => d.operating_day_mt >= "2026-10-01")).toHaveLength(
       27,
     );
-    expect(k.get("oct_step_hour_days")!.display).toBe("24 of 27");
-    expect(k.get("oct_step_hour_days_n")!.value).toBe(27);
+    expect(k.get("oct_step_hour_days_at_5_or_6")!.display).toBe("24");
+    expect(k.get("oct_step_hour_days_total")!.display).toBe("27");
+    expect(k.has("oct_step_hour_days")).toBe(false);
     expect(k.get("oct_step_median_usd")!.display).toBe("$15.1");
   });
 
