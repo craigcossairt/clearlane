@@ -14,6 +14,8 @@ def validate_bundle(bundle: dict) -> None:
         raise ValueError("bundle schema must be clearlane.bundle/v1")
     if bundle.get("node") != "ELAP_PACE-APND":
         raise ValueError("bundle node must be ELAP_PACE-APND")
+    if bundle.get("data_mode") not in ("snapshot", "live"):
+        raise ValueError("bundle data_mode is invalid")
     hours = bundle.get("hours")
     if not isinstance(hours, list) or len(hours) != 24:
         raise ValueError("bundle must have 24 hours")
@@ -71,9 +73,15 @@ def validate_bundle(bundle: dict) -> None:
             raise ValueError(f"hour {index} profile CO2 must be DERIVED")
         if hour["co2_kind"] not in ("eia_observed_avg", "eia_profile_avg_30d"):
             raise ValueError(f"hour {index} has unknown CO2 kind")
-    for peer in bundle.get("peers", []):
+    peers = bundle.get("peers", [])
+    expected_peers = {"ELAP_PACW-APND", "ELAP_PGE-APND", "TH_SP15_GEN-APND"}
+    if {peer.get("node") for peer in peers} != expected_peers:
+        raise ValueError("bundle must contain the three expected peer nodes")
+    for peer in peers:
         if len(peer.get("lmp_usd_mwh", [])) != 24:
             raise ValueError(f"peer {peer.get('node')} must have 24 prices")
+        if any(not isinstance(value, (int, float)) or not math.isfinite(value) for value in peer["lmp_usd_mwh"]):
+            raise ValueError(f"peer {peer.get('node')} has an invalid price")
     sources = bundle.get("sources")
     if not isinstance(sources, list) or not sources:
         raise ValueError("bundle sources must be a non-empty list")

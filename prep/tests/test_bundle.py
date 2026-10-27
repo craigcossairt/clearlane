@@ -8,6 +8,7 @@ import math
 
 from prep.build_bundle import _round2, _co2_profile
 from prep.validate import validate_all
+from prep.mtday import local_mt
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 BUNDLE = ROOT / "public" / "data" / "bundle_2026-10-27.json"
@@ -61,6 +62,7 @@ class BundleBuildTest(unittest.TestCase):
             self.assertEqual(
                 hour["net_load_mw"], round(hour["load_fcst_mw"] - hour["solar_fcst_mw"] - hour["wind_fcst_mw"], 2)
             )
+            self.assertEqual(hour["local_mt"], local_mt(hour["ts_utc"]))
             for value in hour.values():
                 if isinstance(value, (int, float)):
                     self.assertTrue(math.isfinite(value))

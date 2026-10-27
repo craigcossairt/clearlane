@@ -3,11 +3,16 @@
 import argparse
 import csv
 import json
+import sys
 from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from prep import mtday, oasis
-from prep._paths import PUBLIC_DATA, RAW, ROOT
+from prep._paths import PUBLIC_DATA, RAW
 from prep.jsonio import write_json
 from prep.validate import validate_bundle
 
@@ -94,11 +99,13 @@ def build(
             price_by_hour.setdefault(entry["ts_utc"], {})[(entry["node"], entry["lmp_type"])] = entry["value"]
 
     forecasts = {"load": {}, "wind": {}, "solar": {}}
-    # The previous CAISO operating day is requested for its HE24 at the Mountain-day boundary.
-    # The current operating day supplies the remaining 23 hours.
+    # Each CAISO operating day is 07:00Z to 07:00Z. The previous day's response includes
+    # HE24 at the Mountain-day boundary (06:00Z), and the current day's response covers hours 1..23.
+    prev_start = datetime.combine(op_prev, time.min, tzinfo=UTC) + timedelta(hours=7)
+    day_start = datetime.combine(op_day, time.min, tzinfo=UTC) + timedelta(hours=7)
     calls = (
-        (op_prev, start_mt, start_mt + timedelta(hours=1)),
-        (op_day, start_mt + timedelta(hours=1), next_start + timedelta(hours=1)),
+        (op_prev, prev_start, prev_start + timedelta(days=1)),
+        (op_day, day_start, day_start + timedelta(days=1)),
     )
     for operating_day, lower, upper in calls:
         for report in ("sld_fcst", "edam_wind_solar"):
