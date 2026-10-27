@@ -1,0 +1,234 @@
+{
+  "note": "Keys the deck, one-pagers, Q&A and stage script may use. Display text is a placeholder until public/derived/numbers.json exists. The resolver overwrites display from that file and fails if a key is missing there.",
+  "keys": {
+    "overnight_avg": {
+      "unit": "$/MWh",
+      "prov": "DERIVED",
+      "display": "{overnight_avg}"
+    },
+    "midday_avg": {
+      "unit": "$/MWh",
+      "prov": "DERIVED",
+      "display": "{midday_avg}"
+    },
+    "peak_price": {
+      "unit": "$/MWh",
+      "prov": "REAL",
+      "display": "{peak_price}"
+    },
+    "price_min_oct27": {
+      "unit": "$/MWh",
+      "prov": "REAL",
+      "display": "{price_min_oct27}"
+    },
+    "peak_over_trough": {
+      "unit": "x",
+      "prov": "DERIVED",
+      "display": "{peak_over_trough}"
+    },
+    "oct_step_hour_days": {
+      "unit": "days",
+      "prov": "DERIVED",
+      "display": "{oct_step_hour_days}"
+    },
+    "oct_step_hour_total": {
+      "unit": "days",
+      "prov": "DERIVED",
+      "display": "{oct_step_hour_total}"
+    },
+    "fossil_priciest_pct": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{fossil_priciest_pct}"
+    },
+    "fossil_cheapest_pct": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{fossil_cheapest_pct}"
+    },
+    "net_load_climb_mw": {
+      "unit": "MW",
+      "prov": "DERIVED",
+      "display": "{net_load_climb_mw}"
+    },
+    "fixed_usd_mw_day": {
+      "unit": "$/MW-day",
+      "prov": "DERIVED",
+      "display": "{fixed_usd_mw_day}"
+    },
+    "clearlane_usd_mw_day": {
+      "unit": "$/MW-day",
+      "prov": "DERIVED",
+      "display": "{clearlane_usd_mw_day}"
+    },
+    "race_ratio": { "unit": "x", "prov": "DERIVED", "display": "{race_ratio}" },
+    "fixed_70": { "unit": "$/day", "prov": "DERIVED", "display": "{fixed_70}" },
+    "clearlane_70": {
+      "unit": "$/day",
+      "prov": "DERIVED",
+      "display": "{clearlane_70}"
+    },
+    "co2_added_70": {
+      "unit": "t/day",
+      "prov": "DERIVED",
+      "display": "{co2_added_70}"
+    },
+    "co2_avoided_70": {
+      "unit": "t/day",
+      "prov": "DERIVED",
+      "display": "{co2_avoided_70}"
+    },
+    "co2_overnight_avg": {
+      "unit": "g/kWh",
+      "prov": "DERIVED",
+      "display": "{co2_overnight_avg}"
+    },
+    "co2_midday_avg": {
+      "unit": "g/kWh",
+      "prov": "DERIVED",
+      "display": "{co2_midday_avg}"
+    },
+    "pulse_share_per_call": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{pulse_share_per_call}"
+    },
+    "call_hours_2025": {
+      "unit": "hours",
+      "prov": "DERIVED",
+      "display": "{call_hours_2025}"
+    },
+    "spin_kwh_per_kw": {
+      "unit": "kWh/kW",
+      "prov": "DERIVED",
+      "display": "{spin_kwh_per_kw}"
+    },
+    "events_2025": {
+      "unit": "events",
+      "prov": "TORUS_PUBLISHED",
+      "display": "{events_2025}"
+    },
+    "lasso_dispatch_ms": {
+      "unit": "ms",
+      "prov": "TORUS_PUBLISHED",
+      "display": "{lasso_dispatch_ms}"
+    },
+    "spin_c_rate": {
+      "unit": "C",
+      "prov": "TORUS_PUBLISHED",
+      "display": "{spin_c_rate}"
+    },
+    "pulse_c_rate": {
+      "unit": "C",
+      "prov": "TORUS_PUBLISHED",
+      "display": "{pulse_c_rate}"
+    },
+    "pulse_cycles": {
+      "unit": "cycles",
+      "prov": "TORUS_PUBLISHED",
+      "display": "{pulse_cycles}"
+    },
+    "station_life_yr": {
+      "unit": "years",
+      "prov": "TORUS_PUBLISHED",
+      "display": "{station_life_yr}"
+    },
+    "cycle_budget_per_yr": {
+      "unit": "cycles/yr",
+      "prov": "DERIVED",
+      "display": "{cycle_budget_per_yr}"
+    },
+    "mou_mw": {
+      "unit": "MW",
+      "prov": "TORUS_PUBLISHED",
+      "display": "{mou_mw}"
+    },
+    "mou_ceiling_mw": {
+      "unit": "MW",
+      "prov": "TORUS_PUBLISHED",
+      "display": "{mou_ceiling_mw}"
+    },
+    "share_days_beating": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{share_days_beating}"
+    },
+    "clearlane_p10": {
+      "unit": "$/MW-day",
+      "prov": "DERIVED",
+      "display": "{clearlane_p10}"
+    },
+    "clearlane_p50": {
+      "unit": "$/MW-day",
+      "prov": "DERIVED",
+      "display": "{clearlane_p50}"
+    },
+    "clearlane_p90": {
+      "unit": "$/MW-day",
+      "prov": "DERIVED",
+      "display": "{clearlane_p90}"
+    },
+    "calls_answered_pct_mt": {
+      "unit": "%",
+      "prov": "SIMULATED",
+      "display": "{calls_answered_pct_mt}"
+    },
+    "calls_answered_pct_utc": {
+      "unit": "%",
+      "prov": "SIMULATED",
+      "display": "{calls_answered_pct_utc}"
+    },
+    "campus_usd": {
+      "unit": "$/day",
+      "prov": "SIMULATED",
+      "display": "{campus_usd}"
+    },
+    "time_shift_pct": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{time_shift_pct}"
+    },
+    "space_shift_pct": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{space_shift_pct}"
+    },
+    "pace_cheapest_share": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{pace_cheapest_share}"
+    },
+    "enrolled_kw": {
+      "unit": "kW",
+      "prov": "SIMULATED",
+      "display": "{enrolled_kw}"
+    },
+    "host_ceiling_kw": {
+      "unit": "kW",
+      "prov": "SIMULATED",
+      "display": "{host_ceiling_kw}"
+    },
+    "solve_ms": { "unit": "ms", "prov": "MEASURED", "display": "{solve_ms}" },
+    "replan_ms": { "unit": "ms", "prov": "MEASURED", "display": "{replan_ms}" },
+    "load_peak_oct27_mw": {
+      "unit": "MW",
+      "prov": "REAL",
+      "display": "{load_peak_oct27_mw}"
+    },
+    "mou_share_of_peak_pct": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{mou_share_of_peak_pct}"
+    },
+    "calls_unanswerable_price_only_mt": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{calls_unanswerable_price_only_mt}"
+    },
+    "calls_unanswerable_price_only_utc": {
+      "unit": "%",
+      "prov": "DERIVED",
+      "display": "{calls_unanswerable_price_only_utc}"
+    }
+  }
+}
