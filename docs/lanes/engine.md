@@ -2,7 +2,7 @@
 
 You are the **engine lane**: Claude Code (second session), worktree `C:\Users\Craig Cossairt\Code\clearlane-engine`, branch prefix `engine/`. You write the planner the stage runs: lanes and System Critical Hours, the 15-minute DP, the three policies, the crash and re-plan, the envelope, the backtest and `numbers.json`. Every number a judge sees either comes out of your code or passes through your `numbers.json`.
 
-Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file wins over the engine `first_prompt` in `docs/plan/synthesis.json`, which predates the current paths and scope (there is no `prep/reference/`; the reference scripts are in `research/analysis/demo-story/`).
+Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file wins over the engine `first_prompt` in `docs/plan/synthesis.json`, which predates the current paths and scope `prep/reference/` arrives with data Core 1; until then use `research/analysis/demo-story/`, matching FACTS "Paths". The plan files in `docs/plan/` are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
 
 Lane done when (from `AGENTS.md`): the pinned Oct 27 numbers pass to the cent; `backtest.json` and `numbers.json` validate; solve times are measured, never typed.
 
@@ -91,7 +91,7 @@ gh issue comment <n> --body "claimed by Claude Code (engine lane)"
 10. `gh issue comment <n> --body "PR #<m> open: <one line>"`, then take the next issue.
 11. Reviews. Data (Codex) cross-reviews every engine PR; Pitch (Grok) reviews every PR for claims, guardrails and em dashes. Fix on the same branch, push, reply in the thread. If you disagree with a finding, reply with the reason and the evidence; never resolve a thread silently.
 
-**Stacking (engine only).** The core queue is a chain, and nothing merges between Train 1 (1:45am) and Train 2 (8:00am). When the next issue needs code from your own open engine PR, cut from that branch (`git switch -c engine/<n>-<slug> engine/<parent-branch>`), keep `--base main`, and put `Stacked on #<pr>` in the body. Never stack on another lane's PR. When the parent merges: `git fetch origin`, `git rebase --onto origin/main engine/<parent-branch>`, `npm run check:all`, `git push --force-with-lease`. Keep a stack at most four deep; past that, take an issue that does not need it.
+**Stacking (engine only).** The core queue is a chain. When the next issue needs code from your own open engine PR, cut from that branch (`git switch -c engine/<n>-<slug> engine/<parent-branch>`), keep `--base main`, and put `Stacked on #<pr>` in the body. Never stack on another lane's PR. When the parent merges: `git fetch origin`, `git rebase --onto origin/main engine/<parent-branch>`, `npm run check:all`, `git push --force-with-lease`. Keep a stack at most four deep; past that, take an issue that does not need it.
 
 **Trains.** When Integration announces a train on #3, for each open `engine/` branch: `git fetch origin`, `git rebase origin/main` (or `--onto` for a stack), `npm run check:all`, `git push --force-with-lease`. Then post the status comment (section 9).
 
@@ -132,11 +132,12 @@ Overnight (2am to 7am) nobody answers questions: mark blocked and move on. Each 
   - CO2 -0.2625 and +0.2698 t/MW-day
   - 70 MW: $1,404.53 and $4,088.37; 500 MW: $10,032.37 and $29,202.67
 - `scaleUsdPerDay` is linear (price taker).
-- `option2Shift` moves 25 MW x 3 h from HB 18-20 to HB 13-15: 75 MWh, $2,550.75.
+- `option2Shift` moves 25 MW x 3 h from HB 18-20 to HB 13-15: 75 MWh, $2,550.75. It also returns `co2_t` (DERIVED, same CO2 profile as the race's charge CO2) for pitch's option-2 card.
+- Write `public/derived/site_default.json` (the `defaultSite()` host load and limits). Science's planner cross-check reads it.
 
 **Core 3. Grid DP with an hourly mode that reproduces `fix.py`.**
 - `engine/src/dp.ts` is the one DP. `dpHourly` mirrors `fix.py dp_wear` operation for operation.
-- It runs on the fixture rotated left by one, which is the snapshot's file order.
+- Build the hourly test vector directly from `research/data/pace_snapshot_2026-10-27.csv` in snapshot order. Do not rotate the fixture: after Integration Core 1 the fixture's hour 0 is the real Oct 27 value ($30.22), so a rotated fixture no longer equals the snapshot.
 - Pins:
   - W=0: $65.79, 3.846 MWh discharged
   - W=10: gross $57.54, objective $38.78, 1.876 MWh discharged, active HB 8, 13, 14, 15, 18 and 19
@@ -194,7 +195,8 @@ Overnight (2am to 7am) nobody answers questions: mark blocked and move on. Each 
   - cycles a year; calls unanswerable per reading
   - host-ceiling breaches; share of days beating the off-peak rule
 - Missing days are listed, never filled.
-- Writes `public/derived/backtest.json`.
+- Writes `public/derived/backtest.json` and `public/derived/backtest_days.json` (`BacktestDay[]` in `contracts/types.ts`; one row per day and policy). UI `any-day` and science `backtest-intervals` read it, so it lands here, not in the stretch-2 sensitivity item.
+- Fills `calls_unanswerable_pct.heatmap_as_utc_mst` (the UTC-7 reading) next to the Mountain and UTC readings.
 
 **Core 11. Wear price calibrated to 300 Pulse cycles a year.**
 - Bisect W over $0 to $60/MWh: the smallest W at which clearlane uses at most 300 full-equivalent cycles a year.
@@ -204,6 +206,7 @@ Overnight (2am to 7am) nobody answers questions: mark blocked and move on. Each 
 **Core 12. `numbers.json` writer for every stage number.**
 - `engine/cli/numbers.ts` writes `StageNumber[]` under the FACTS keys, with the rules in section 6.5.
 - Validated against the FACTS key list plus a new-key list for Integration.
+- The full stage-key list is in this issue's body (Integration, Train 1). It includes `fixed_rule_charge_usd_mwh` ($39.53) and `timetable_charge_usd_mwh` ($21.55), the two rules' charge-hour means, and `peak_hour_mt` and `trough_hour_mt`.
 - Deterministic, with no MEASURED values.
 
 **Core 13. Regenerate `public/derived` on real data and prove Oct 28 readiness.**
@@ -213,7 +216,7 @@ Overnight (2am to 7am) nobody answers questions: mark blocked and move on. Each 
 
 ## 5. Stretch queue (behind flags)
 
-**When to start.** Stretch-1 starts only when all your core issues are merged and Integration has posted CORE GREEN on #3. Stretch-2 starts when your stretch-1 items are merged or cut. Moonshots go after stretch-2 and must be merged by Train 6 or they are cut. Deadlines: stretch-1 by **Train 5 (Tue 5:30pm)**, stretch-2 and moonshots by **Train 6 (Tue 11:30pm, feature freeze)**.
+**When to start.** Stretch-1 starts only when all your core issues are merged and Integration has posted CORE GREEN on #3. Stretch-2 starts when your stretch-1 items are merged or cut. Moonshots go after stretch-2, start only after the QUEUE line on #3 says MOONSHOT OPEN, and must be merged by Train 6 or they are cut. Deadlines: stretch-1 by **Train 5 (Tue 5:30pm)**, stretch-2 and moonshots by **Train 6 (Tue 11:30pm, feature freeze)**.
 
 **Every stretch PR carries:**
 - its `ff_*` flag (Integration registers it in `contracts/flags.ts` by Train 3, default off)
@@ -228,11 +231,11 @@ Engine code may land without a runtime switch when nothing in the six beats call
 | # | Issue | Flag | Waits on | Done when (summary) |
 |---|---|---|---|---|
 | S1-1 | Crash anywhere | `ff_crash_anywhere` | core 7 | a call at each of 96 intervals, clearlane and ghost; clearlane never short and never over the ceiling; midnight-crossing refill reported; `crashAt(plan, interval)` exported; any clearlane shortfall becomes a core issue |
-| S1-2 | Spin refill source | `ff_spin_refill_source` | core 7; `refill_source` on CrashResult (Integration, Train 4) | grid or pulse refill; grid never lifts the meter over the ceiling; pulse debits Pulse SoC at an ASSUMPTION efficiency; both refill within 12 minutes uncapped |
-| S1-3 | Fleet roll-up | `ff_fleet` | core 8; envelope schema (Train 3); `FleetResult` (Train 4) | N seeded SIMULATED sites (3 and 24), 30 kW to 1.2 MW, 3 archetypes; the fleet envelope is the sum of the site envelopes; byte-identical by seed; `fleet_<day>.json` |
-| S1-4 | Fleet call | `ff_fleet_call` | S1-3; `FleetCallResult` (Train 4) | allocate a fleet request by `spare_kw`, refill-window sites last; 90% when covered; honest shortfall; "our rule" |
+| S1-2 | Spin refill source | `ff_spin_refill_source` | core 7; `refill_source` on CrashResult (Integration, Train 1 freeze) | grid or pulse refill; grid never lifts the meter over the ceiling; pulse debits Pulse SoC at an ASSUMPTION efficiency; both refill within 12 minutes uncapped |
+| S1-3 | Fleet roll-up | `ff_fleet` | core 8; envelope schema (Train 3). Define `FleetResult` locally in `engine/src/fleet.ts` and name it in the PR body; Integration copies it into contracts after the merge | N seeded SIMULATED sites (3 and 24), 30 kW to 1.2 MW, 3 archetypes; the fleet envelope is the sum of the site envelopes; byte-identical by seed; `fleet_<day>.json` |
+| S1-4 | Fleet call | `ff_fleet_call` | S1-3. Define `FleetCallResult` locally in `engine/src/fleet.ts`, as for S1-3 | allocate a fleet request by `spare_kw`, refill-window sites last; 90% when covered; honest shortfall; "our rule" |
 | S2-1 | Call ledger | `ff_call_ledger` | core 9, core 6 | exactly 359 calls per reading matching the heatmap arrays; per-call rows and summary; byte-identical by seed; stress-replay density stated |
-| S2-2 | Sensitivity | `ff_sensitivity` | core 11 | `backtest_days.json`; one-at-a-time ranges; break-even RTE and spread; RTE x spread grid; base case equals `backtest.json` |
+| S2-2 | Sensitivity | `ff_sensitivity` | core 11 | reads core 10's `backtest_days.json`; one-at-a-time ranges; break-even RTE and spread; RTE x spread grid; base case equals `backtest.json` |
 | S2-3 | Wear rainflow | `ff_wear_rainflow` | core 10 | rainflow, Miner damage at k 1.0, 1.5 and 2.0, dwell above 80%, a life estimate with an ASSUMPTION chip; DP variant equals linear wear at k = 1 |
 | S2-4 | Host frontier | `ff_host_frontier` | S1-3 | Oct 1-27 month-to-date ratchet; evening block 0 to `pulse_kw` in 10 steps; break point; kW only |
 | M-1 | RT replay | `ff_rt_replay` | core 7, core 10; data's rt-history | DA plus RT settlement; hold, re-plan and foresight policies; regret per day; measured re-plan times |
@@ -251,7 +254,7 @@ Grow this export list issue by issue. Do not rename a published export; add a ne
 | `lanes(bundle)`, `laneThresholds(prices)` | `Lane[]` (24), `{ clear_max_usd, jam_min_usd }` | 1 | beat 1 |
 | `systemCriticalHours(bundle)` | Mountain hours, ascending | 1 | beats 1, 5 |
 | `referenceRace(bundle)`, `scaleUsdPerDay(usdPerMwDay, fleetMw)` | race values; $/day | 2 | numbers CLI, beat 6 |
-| `option2Shift(bundle, opts?)` | `{ from_hb, to_hb, mwh, usd }` | 2 | close card |
+| `option2Shift(bundle, opts?)` | `{ from_hb, to_hb, mwh, usd, co2_t }` | 2 | close card |
 | `defaultSite()` | `Site` | 4 | everything |
 | `solve(bundle, site, policy, opts?)` | `Plan` (live, `solve_ms` measured) | 5 | beat 2 |
 | `checkPlan(plan, site)` | violation strings, empty when clean | 5 | tests |
@@ -273,9 +276,9 @@ Grow this export list issue by issue. Do not rename a published export; add a ne
 - **Hour labels.** Hour beginning (HB) everywhere. EIA CO2 is published by hour ending; the bundle's `co2_g_kwh` is already shifted to hour beginning, the same as `habit.py`'s `ci[h] = he[h + 1]`.
 - **The `fix.py` vector.**
   - `research/data/pace_snapshot_2026-10-27.csv` runs HB 1 of Oct 27 to HB 0 of Oct 28.
-  - `fix.py` and `numbers.py` solve over that order. It equals the fixture's `lmp_usd_mwh` rotated left by one; prove it in a test against the CSV.
-  - Hourly-mode pins use the rotated vector. Everything 15-minute uses the Mountain day, HB 0 to 23.
-- **Hour 0.** In the fixture, hour 0 is borrowed from Oct 28 ($46.11, see `bundle.notes`). The real Oct 27 bundle's hour 0 is $30.23, which is still shoulder. The race never touches hour 0, so its pins hold on both.
+  - `fix.py` and `numbers.py` solve over that order. Hourly-mode pins read that vector straight from the CSV; never rotate the fixture to get it.
+  - Everything 15-minute uses the Mountain day, HB 0 to 23.
+- **Hour 0.** After Integration Core 1, the fixture's hour 0 is the real Oct 27 value, 30.21857 ($30.22, CAISO OPR_DT Oct 26 HE 24; see `bundle.notes`). It used to borrow Oct 28's $46.11. Both are shoulder. The race never touches hour 0, so its pins hold on both.
 - **Signs.**
   - `pulse_kw` and `spin_kw` are + for charging or recharging and - for discharging, at the meter.
   - `meter_kw = host + pulse_kw + spin_kw`.
@@ -427,7 +430,17 @@ Paste all of it in the PR. A constraint whose removal turns nothing red needs a 
 
 ### 6.9 Oct 28 refresh
 
-At about 9:16pm Tue, Integration regenerates data and reruns your CLIs on `bundle_2026-10-28.json` (hard stop 10:30pm). The backtest window ends Oct 27, so `backtest.json` does not change. The refresh is `envelope.ts` then `numbers.ts` on the new bundle. Core 13 proves this on a synthetic Oct 28 bundle and posts the exact commands on #1. Date-bearing FACTS keys (`price_min_oct27` and similar) keep their names until Integration renames them in FACTS; `as_of_mt` carries the real day.
+At about 9:16pm Tue, Integration regenerates data and reruns your CLIs on `bundle_2026-10-28.json` (hard stop 10:30pm). The backtest window ends Oct 27, so `backtest.json` does not change. The refresh runs exactly this list:
+
+```bash
+python -I prep/refresh_tonight.py --day 2026-10-28 --poll-until 22:00
+npx tsx engine/cli/numbers.ts public/data/bundle_2026-10-28.json
+npx tsx engine/cli/envelope.ts public/data/bundle_2026-10-28.json
+npm run check:all
+```
+This is the one refresh command list. It is copied verbatim in `docs/lanes/data.md` Core 7, `docs/lanes/engine.md` section 6.9 and `docs/lanes/integration.md` section 6.5; change all three together. CO2 comes from the committed extract; nothing fetches EIA at night.
+
+ Core 13 proves this on a synthetic Oct 28 bundle and posts the exact commands on #1. Date-bearing FACTS keys (`price_min_oct27` and similar) keep their names until Integration renames them in FACTS; `as_of_mt` carries the real day.
 
 ## 7. Guardrails
 

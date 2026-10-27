@@ -2,7 +2,7 @@
 
 You are the **science lane**: Claude Science (desktop app, Windows 11), worktree `C:\Users\Craig Cossairt\Code\clearlane-science`, branch prefix `science/`, repo `craigcossairt/clearlane`, tracking issue **#6 "Lane: science status"**. You make the evidence a judge can check: three projector-ready charts, a two-page cited brief, and an independent re-derivation of the pinned numbers from raw public data.
 
-Precedence: `AGENTS.md`, `contracts/types.ts`, `DESIGN.md` and `docs/FACTS.md` win over this file. This file wins over the science `first_prompt` in `docs/plan/synthesis.json`.
+Precedence: `AGENTS.md`, `contracts/types.ts`, `DESIGN.md` and `docs/FACTS.md` win over this file. This file wins over the plan files in `docs/plan/`, which are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
 
 Lane done when (from `AGENTS.md`): three charts, a cited brief and an independent cross-check of the pinned numbers are merged.
 
@@ -169,7 +169,7 @@ Each issue body holds the full checklist. The summary below is the contract.
   - Confirm clearlane P10, P50 and P90 are at or below price_only's.
   - Confirm `window.days` and `missing_days` from the hist file.
   - Spot-check hist prices against raw OASIS for May 1 to 23, Jul 1 to 30 and Oct 1 to 27 (every hour, to $0.00001).
-  - Confirm the Oct 27 bundle's HB 0 price is $30.22857, not the fixture's borrowed $46.11.
+  - Confirm the Oct 27 bundle's HB 0 price is 30.21857 ($30.22), not the fixture's borrowed $46.11.
 - Take the policy definitions from `contracts/types.ts`, `docs/lanes/engine.md` (when present), the engine's test names and `backtest.json` itself, never from engine code.
 - Report P50 under both percentile methods (6.7) and say which one matches.
 
@@ -185,7 +185,7 @@ Stretch-1 starts only when every science core issue is merged and Integration po
 
 **Stretch-2, merged by Train 6 (Tue 11:30pm):**
 
-4. **`backtest-intervals`** (`off_backtest_intervals`): `science/backtest-intervals.md` and `science/backtest_intervals.json`. A seeded 7-day block bootstrap over `public/derived/backtest_days.json` (from the engine's `sensitivity` item) gives 90% intervals for P50 $/MW-day per policy and for `days_beating_fixed_overnight_pct`; a stationary bootstrap (mean block 7 days) gives a second interval for comparison. Same seed, identical bytes.
+4. **`backtest-intervals`** (`off_backtest_intervals`): `science/backtest-intervals.md` and `science/backtest_intervals.json`. A seeded 7-day block bootstrap over `public/derived/backtest_days.json` (from engine core 10, the backtest) gives 90% intervals for P50 $/MW-day per policy and for `days_beating_fixed_overnight_pct`; a stationary bootstrap (mean block 7 days) gives a second interval for comparison. Same seed, identical bytes.
 5. **`crosscheck-stretch`** (`off_science_methods`): `science/crosscheck-stretch.md` reports match or mismatch, tolerances written first, for every stretch output merged by 9:00pm Tue:
    - marginal CO2, a load-level-binned estimator vs `response_tables.json`'s hour-of-day OLS (agreement means within the OLS interval);
    - `reserve-risk` vs `call-ledger`;
@@ -206,7 +206,7 @@ After stretch-2: no new analysis. Fix review comments, keep the brief current, a
 - The whole window May 1 to Oct 27 2026 is MDT, UTC-6. Mountain day D runs from D 06:00Z to D+1 06:00Z; hour beginning h starts at D (06+h):00Z.
 - CAISO operating days start at 07:00Z (Pacific midnight). Never use `OPR_DT` or `OPR_HR`; use `INTERVALSTARTTIME_GMT`. Mountain HB 0 of day D is CAISO `OPR_DT` D-1 HE24.
 - EIA-930 and `PACE.xlsx` are hour ENDING, local: UTC start = "UTC Time at End of Hour" minus 1 hour; hour beginning h uses HE h+1.
-- `research/data/pace_snapshot_2026-10-27.csv` is the CAISO operating day: 07:00Z Oct 27 to 06:00Z Oct 28, `local_mt` 10-27 01:00 to 10-28 00:00. Its HB 0 row is **Oct 28** 00:00 MT ($46.11). The true Oct 27 HB 0 price is $30.22857, from `research/analysis/option2/oct/`. The contract fixture borrows the Oct 28 hour and says so in its notes.
+- `research/data/pace_snapshot_2026-10-27.csv` is the CAISO operating day: 07:00Z Oct 27 to 06:00Z Oct 28, `local_mt` 10-27 01:00 to 10-28 00:00. Its HB 0 row is **Oct 28** 00:00 MT ($46.11). The true Oct 27 HB 0 price is 30.21857 ($30.22), from `research/analysis/option2/oct/`. The contract fixture borrows the Oct 28 hour and says so in its notes.
 - May 1 has only 23 priced hours (prices begin 2026-05-01T07:00Z). A day without 24 prices is skipped and listed, never filled.
 
 ### 6.2 Inputs (all REAL unless noted; all in git unless marked local)
@@ -257,7 +257,7 @@ For each Mountain day with 24 prices: step(h) = p[h] minus p[h-1] for h = 1 to 2
 ### 6.7 Backtest, planner and percentiles
 
 - The window is May 1 to Oct 27 (180 calendar days before skips). Policies: `fixed_overnight`, `price_only`, `clearlane`.
-- The planner spec (confirm it in `docs/plan/synthesis.json` and `docs/lanes/engine.md` before coding): 96 fifteen-minute steps, 41 state-of-charge levels, at most 5 levels per step (0.5C), sqrt(0.88) on each leg, ending charge at or above the starting charge. `price_only` uses no wear price, no envelope, no host ceiling and no Spin reserve.
+- The planner spec is engine.md section 6.4 ("DP" and "15-minute limits"), copied verbatim, not paraphrased: 41 levels of 12.5 kWh, 4 levels up and 5 down per step at the meter, export limit 0, the host ceiling, the SCH spare rule, ending charge at or above the start level, sqrt(0.88) on each leg. Read host load and limits from `public/derived/site_default.json` (engine core 2), never from your own guess. `price_only` uses no wear price, no envelope, no host ceiling and no Spin reserve.
 - **Dominance you can test without engine code.** Clearlane's plan is feasible for the price-only problem, so its value is at or below price_only's on every day. Order statistics keep that order, so its P10, P50 and P90 must be too. A violation is a mismatch, filed.
 - The percentile method is not pinned in the contracts. Compute nearest-rank and linear interpolation (Hyndman-Fan type 7) and report both; Integration pins one. Count `days_beating_fixed_overnight_pct` with strict "greater than", ties not beating, and say so.
 

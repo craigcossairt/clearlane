@@ -2,7 +2,7 @@
 
 You are the **ui lane**: Cursor (Agent; Design Mode allowed), worktree `C:\Users\Craig Cossairt\Code\clearlane-ui`, branch prefix `ui/`. You build the stage app the judges watch: six beats, keyboard driven, offline, on a projector in a sponsor room, plus a phone layout.
 
-Precedence: `AGENTS.md`, `contracts/types.ts` and `DESIGN.md` win over this file. This file wins over the UI `first_prompt` in `docs/plan/synthesis.json`, which was written before the schedule and scope changed.
+Precedence: `AGENTS.md`, `contracts/types.ts` and `DESIGN.md` win over this file. This file wins over the plan files in `docs/plan/`, which are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
 
 Lane done when (from `AGENTS.md`): the six beats run from the keyboard at 1920x1080 and 375px, every number carries a provenance chip, and snapshot mode makes no request to any other origin.
 
@@ -55,7 +55,7 @@ Work in the order of sections 4 and 5 (each issue body states its order), not by
 gh issue comment <n> --body "claimed by Cursor (ui lane)"
 ```
 
-**Work already in flight.** Issue #14 ("Stage app: six beats on the Oct 27 fixture") was opened before this brief, is claimed by you, and has uncommitted stub work on branch `ui/14-six-beats`. Do not throw it away. Cut it down to the scope of core 1 to 3 below, land it as one PR whose body says `Closes #14` plus those three issue numbers, and move everything else into the later beat issues.
+**Work already in flight.** Issue #14 ("Stage app: six beats on the Oct 27 fixture") was opened before this brief, is claimed by you, and is now open as PR #18 on branch `ui/14-six-beats`. Before it merges: move `app/src/qa/cards.json` out (Q&A content belongs to pitch, through its own PR); replace `app/src/stub/published.ts` with a fetch of `public/data/torus_published.json` behind the stub flag; delete the reference math in `app/src/stub/reference.ts` in favor of `numbers.json`; and correct the Spin source URL to the torus-flywheel page in FACTS (not torus-nova). Cut it down to the scope of core 1 to 3 below, land it as one PR whose body says `Closes #14` plus those three issue numbers, and move everything else into the later beat issues.
 
 ## 3. Per-issue loop
 
@@ -282,8 +282,8 @@ Keys the beats expect, by their `docs/FACTS.md` names. Where a beat needs a scal
 
 | Beat | Keys |
 |---|---|
-| 1 | `price_min_oct27`, `peak_price`, `peak_over_trough`, `net_load_climb_mw`, `solar_4pm_to_6pm_mw` (split into 4pm and 6pm), `oct_step_hour_days` (split into 24 and 27), `lane_clear_max_usd`, `lane_jam_min_usd`, the peak hour (new) |
-| 2 | `fixed_usd_mw_day`, `clearlane_dp_usd_mw_day` (live race value; `clearlane_usd_mw_day` is the research timetable), `race_ratio`, `fixed_70`, `clearlane_70`, `co2_added_70`, `co2_avoided_70`, `mou_70mw`, `host_ceiling_kw`, `pulse_cycle_budget` (per day, new split) |
+| 1 | `price_min_oct27`, `peak_price`, `peak_over_trough`, `net_load_climb_mw`, `solar_4pm_to_6pm_mw` (split into 4pm and 6pm), `oct_step_hour_days` (split into 24 and 27), `lane_clear_max_usd`, `lane_jam_min_usd`, `peak_hour_mt` |
+| 2 | Reference set only, decided at Train 1 so one card never mixes two plans: `fixed_usd_mw_day`, `clearlane_usd_mw_day`, `race_ratio`, `fixed_70`, `clearlane_70`, `fixed_rule_charge_usd_mwh`, `timetable_charge_usd_mwh`. The animation plays the reference timetable. `clearlane_dp_usd_mw_day` (the engine DP) appears only on the backtest or crash beat, with its own label. Also: `co2_added_70`, `co2_avoided_70`, `mou_70mw`, `host_ceiling_kw`, `pulse_cycle_budget` (per day, new split) |
 | 3 | `enrolled_kw`, `call_duration_s`, `rmp_events_2025`, `rmp_event_ramp_s` (split into 19 and 30), `rmp_event_target_pct` (split into 102, 90 and 100), `reserve_cost_pct`, `second_call_shortfall_kw`, `meter_peak_refill_kw` |
 | 4 | `pulse_cycle_budget`, `cycles_today`, `replan_ms` (the live value wins on stage) |
 | 5 | `share_days_beating`, `clearlane_p10`, `clearlane_p50`, `clearlane_p90`, `calls_answered_pct` (both readings), `backtest_days`, `cycles_per_year_by_policy`, `calls_missed_by_policy`, `sch_hours_today` |
