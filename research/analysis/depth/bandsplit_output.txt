@@ -1,0 +1,16 @@
+campus mean 213 MW, min 120, max 296; raw ramp max 5,347 MW/s
+raw: 96.7% of load variance in 0.1-20 Hz; std 55.5 MW
+
+Crossover sweep (Spin takes everything faster than tau; grid sees EMA(load, tau)):
+ tau_s  grid_ramp_MW/s  grid_0.1-20Hz_std_MW  spin_P_MW  spin_E_need_MWh  spin_cap_MWh(10C)  spin_EFC/day  spin_life_yr(EFC)  spin_life_h(count)  spin_life_yr(fatigue m=3)
+     2           53.13                  7.31      106.3             0.07              10.63          53.4               1.28                9.74                   748648.6
+    10           10.64                  1.49      106.4             0.33              10.64          54.8               1.25               14.13                   114505.0
+    30            3.48                  0.50      104.5             0.81              10.45          56.5               1.21               14.23                    13237.2
+   120            0.90                  0.12      107.6             2.34              10.76          54.6               1.26               14.23                     1032.8
+   300            0.36                  0.05      109.1             5.14              10.91          52.2               1.31               14.23                      108.0
+
+Pulse 200 MWh taking the fast band (tau 30s): EFC/day 2.95 -> life 7.0 yr on throughput reading; oscillations/day 42,168
+Pulse 200 MWh doing one arbitrage cycle/day plus ~22 curtailment events/yr instead: ~19.4 yr (throughput reading)
+band <0.5 Hz inter-area: raw 16.57 MW rms -> grid 3.952 MW rms (tau 30s)
+band 0.5-5 Hz local swing: raw 38.28 MW rms -> grid 0.352 MW rms (tau 30s)
+band 5-25 Hz torsional (part): raw 5.08 MW rms -> grid 0.004 MW rms (tau 30s)

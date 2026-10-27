@@ -1,0 +1,36 @@
+{
+  "name": "clearlane",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Day planner for Torus-style stations on Utah's grid: fill up in the clear lane, keep Spin ready for the crash.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --passWithNoTests",
+    "check": "npm run typecheck && npm run test && npm run build",
+    "check:py": "python -I -m unittest discover -s prep/tests -t .",
+    "check:all": "npm run check && npm run check:py",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/react": "16.3.3",
+    "@types/node": "22.20.5",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "6.1.2",
+    "jsdom": "29.1.1",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.4",
+    "vitest": "5.0.3"
+  }
+}

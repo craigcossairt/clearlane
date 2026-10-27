@@ -1,0 +1,40 @@
+{
+  "$schema_comment": "Grok Build hooks. Logic lives once in .claude/hooks/; bin/run-claude-hook.sh adapts verdicts. Git Bash by full path because a bare bash on this PC resolves to WSL.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"C:/Program Files/Git/bin/bash.exe\" bin/run-claude-hook.sh grok session-start",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|search_replace",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"C:/Program Files/Git/bin/bash.exe\" bin/run-claude-hook.sh grok block-sensitive-files",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|search_replace",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"C:/Program Files/Git/bin/bash.exe\" bin/run-claude-hook.sh grok format-on-edit",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

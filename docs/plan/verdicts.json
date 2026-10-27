@@ -1,0 +1,442 @@
+[
+ {
+  "judge": "judge-torus",
+  "scores": [
+   {
+    "concept_key": "A-torus-fleet",
+    "torus_fit": 9,
+    "creativity": 8,
+    "clarity_of_insight": 8,
+    "execution_feasibility": 6,
+    "demo_impact": 7,
+    "nucleus_rubric": 8,
+    "strongest_point": "It describes our business the way we would. A Rocky Mountain Power call is a kW promise that costs about six minutes of full power. The math checks out: 359 calls x 5.5 min is about 33 h a year; a 5.5-minute call at 0.5C uses 4.6% of a Pulse; Spin at 10C is roughly one call deep. So the same steel can sell RMP a second, scheduled product, a day-ahead envelope plus System Critical Hours, without costing hosts their demand-charge savings up to a computed break point. That is almost word for word what we asked ROWE to credit in our June 2026 comments ('controlled and scheduled dispatch', 'utility-directed operating envelopes', transparent System Critical Hours; torus-intel.findings.md). It also treats Pulse cycle life as the scarce resource and never claims the Spin/Pulse split as new. This is the one concept we would actually carry into an RMP meeting.",
+    "fatal_flaw_or_biggest_weakness": "Scope and one physics slip in the wow beat. Five screens, a 7k-variable LP, a 178-day x 12-site x 3-policy backtest with 200 Monte Carlo scenarios a day, an envelope, two one-pagers and an AI-cluster class are too much for 43 hours with one human reviewer. The slip: the wow script holds Spin's refill 'until the green midday window'. That leaves the flywheel empty for many hours while Pulse is busy with the evening block, so a second call that night (the 9pm hour alone carries 34 of the 359 events) cannot be met at full power. Any Torus engineer would catch this. The naive-policy penalty also rests on Spin refilling from the grid. If Lasso refills Spin from Pulse, which our Pulse page implies ('Spin absorbs spikes so Pulse can discharge steadily'), the contrast largely goes away.",
+    "must_fix": [
+     "Rewrite the wow so Spin refills right after the call, inside the 12-minute recharge our Spin page cites, from Pulse or from the grid with the refill rate capped below the host's demand ceiling. The demand-charge story should be about capping the refill rate, never about postponing it. Show the RMP lane covered in every 15-minute interval.",
+     "Swap the refill-dependent naive comparison for one that holds whatever Lasso does: utility-first (hold 80% SoC) loses the host's monthly peak, and host-first misses full power on a call during the block. Keep refill-from-grid only as a toggle.",
+     "Cut to three screens: Traffic Report (real), Fleet Lanes with live call injection, and the block-MW versus host-savings frontier. Fold Export into a button. Drop the AI-cluster card to one slide unless M3 is green by Tue 5pm.",
+     "Replace the 200-scenario Monte Carlo with a deterministic replay of 359 calls drawn from our published hour and weekday marginals, under both time-zone readings. It is cheaper and Torus-recognizable.",
+     "Make the frontier break point ('the first Y MW of evening block cost these hosts nothing') and the ROWE alignment the close. Today the close is a slogan.",
+     "Present the Pulse cycle budget as a wear price, not a hard cap. Our own Pulse page talks about 'less battery repowering', so the 7,500-over-25-years derivation is conservative.",
+     "Label every host-dollar figure as resting on the unverified third-party Schedule 6 transcription. Never show it as Torus-measured savings.",
+     "Ask Torus Tuesday morning who sets the SoC reserve (RMP DBGMS or Lasso) and how Spin refills, and change the wow beat that day if the answer requires it."
+    ]
+   },
+   {
+    "concept_key": "D-demo-wow",
+    "torus_fit": 7,
+    "creativity": 7,
+    "clarity_of_insight": 9,
+    "execution_feasibility": 8,
+    "demo_impact": 9,
+    "nucleus_rubric": 7,
+    "strongest_point": "The best stagecraft and the tightest scope, with every stage number reproduced. I reran habit.py and fix.py: $1,405 vs $4,088/day for 70 MW (2.9x); about 18 t added vs 19 t removed per day; $57.54/MW-day on Oct 27; $39.71-48.52/MW-day, or $14,496-17,708/MW-yr, in Oct and Jul; the reserve costs about 3%. The snapshot math also holds: overnight 1-5am averages $38.71 vs $22.83 for 9am-4pm, and net load climbs 3,655 MW from 3pm to 6pm. Handing the clicker to the Torus judge ('You're the grid') is unscripted, works at any hour, and proves the crash lane on our own 19-second ramp. The DP planner (24 steps x 41 SoC levels) is small enough to finish and test.",
+    "fatal_flaw_or_biggest_weakness": "It flattens our dual-use model into EDAM energy arbitrage, and the villain is aimed near us. Three problems. (1) The headline dollars are EDAM arbitrage value that neither Torus nor its hosts are paid today: hosts pay RMP retail tariffs, and RMP dispatches us in under 1% of hours. If the unverified Schedule 6 transcription in concept A ($13.27/kW-month) is close, a MW of host peak shaved is worth roughly ten times D's $14.5-17.7k/MW-yr. So the host demand-charge lane, which is what we actually sell hosts, is underweighted here as a mere charging constraint. (2) 'Charge overnight out of habit adds CO2' could describe a station following a host's rate schedule, which our Pulse FAQ says Lasso does ('facility load, rate schedules and grid signals'). Said in front of us, it sounds like 'your fleet makes the grid dirtier'. RMP planners will also call it a strawman, since RMP's own TOU pilot already puts on-peak at 6-10pm. (3) Day-ahead price arbitrage is the recipe Stem, Tesla Opticaster and Fluence already describe (prior-art.findings.md). The Spin-only crash lane sized at an assumed 25% of station power may also not cover the full enrolled kW RMP calls for.",
+    "must_fix": [
+     "Make the host demand-charge lane a first-class lane on screen (Pulse holds energy for the host's 15-minute peak), next to the timetable and crash lanes. Pair the grid-value number with the host-value number so the grid number does not look small or imaginary.",
+     "Size the crash lane to the enrolled kW: Spin first, then Pulse's spare power (concept A's constraint), not Spin alone at 25% of station power.",
+     "Reframe the habit lane as 'a fixed overnight schedule', and confirm with Torus before the stage what sets charging at a C&I site today. Never imply Torus Stations add CO2.",
+     "Say 'value to Rocky Mountain Power's system at day-ahead prices, not Torus revenue' out loud on the big-number panel. Ask Torus how a fleet could be paid for daily peak management.",
+     "Put the average-versus-marginal caveat on the race end-cards, not only in the Engineer view. An academic judge (Lassonde) will push.",
+     "Cite the 'daily load cycling' allowance as Rocky Mountain Power's Wyoming DSM plan, which is where the research found it, not as a general Wattsmart rule."
+    ]
+   },
+   {
+    "concept_key": "B-three-way-stack",
+    "torus_fit": 5,
+    "creativity": 9,
+    "clarity_of_insight": 6,
+    "execution_feasibility": 5,
+    "demo_impact": 7,
+    "nucleus_rubric": 8,
+    "strongest_point": "The most hard-tech depth, and the best Utah asset in the set. It reruns the Duke headroom method on 12 months of PACE EIA-930 data: 1,265 MW at 0.5% curtailment, every curtailed hour in Jun-Aug afternoons, and Utah's 902 MW grid-connected data-center build needing only 61 hours (22 events) a year. I verified this in headroom_output.txt and extras_output.txt. It also gives a quantified answer to 'why Spin plus Pulse instead of Megapacks': Pulse life of about 7 years taking the swing vs about 19 years without it, and a $5.9-7.2M/yr energy cost to have the GPUs smooth themselves, priced at real PACE day-ahead prices.",
+    "fatal_flaw_or_biggest_weakness": "It can embarrass us on cycle life, in exactly the use case we market Spin for. In bandsplit_output.txt, taking a 0.5 Hz, 108 MW swing costs Spin about 55 equivalent full cycles a day, roughly 20,000 a year, whatever the crossover. That is four to seven times the 3,000-5,000 a year Beacon's flywheels run (prior-art.findings.md). On the dial it reads as Spin lasting 14 hours (count model) or 1.2 years (throughput). Only an assumed fatigue model (S-N exponent 3) rescues it. One slider position on stage tells the room our flagship flywheel dies in the AI-training duty our Spin FAQ advertises, which also says 'zero capacity degradation'. On top of that, it builds on the data-center story we pulled from torus.co after Aug 2026, at sizes far outside anything we field: 105 MW of Spin and 200 MWh of Pulse, against Wattsmart's 30 kW-1.2 MW and a published Pulse maximum of 40 MWh. The fast band rests on a synthetic trace where most parameters are assumptions.",
+    "must_fix": [
+     "Remove the oscillation-count model. Never convert Spin throughput into years of life without Torus's own definition of the 25,000-cycle rating. Show Spin duty as shallow micro-cycles (under 1% depth) and get the answer from Torus before the stage, not on it.",
+     "Re-scale to products we sell, or say plainly 'scalable to 100+ MW per the Station page'. Do not show a 200 MWh Pulse without that caveat.",
+     "Lead with the C&I hedge (welders, laminators, CNC/EDM spikes at Wasatch Front hosts) or the utility headroom story if Torus says data centers are paused.",
+     "Cut the zoom ladder to two rungs (seconds and the Jul 20 event) so non-grid judges follow it."
+    ]
+   },
+   {
+    "concept_key": "C-compute-router",
+    "torus_fit": 4,
+    "creativity": 6,
+    "clarity_of_insight": 7,
+    "execution_feasibility": 7,
+    "demo_impact": 6,
+    "nucleus_rubric": 6,
+    "strongest_point": "The where-versus-when finding is a real, verified insight that deflates the most crowded hackathon pattern. On a 4-hour evening block in October, waiting for Utah's cheapest hours cut cost 40% and moving to the cheapest node at the same hours cut 8%. Utah was the cheapest PacifiCorp/PGE node in 81% of hours, and the cheapest node was also the cleanest in only 15% (all reproduced in where_vs_when_output.txt and carbon_tradeoff_output.txt). The line 'software can pick the hour; only storage can absorb the second' is crisp.",
+    "fatal_flaw_or_biggest_weakness": "We are a supporting character in our own bounty. The spine is a cross-region compute router: no Torus product, and the pattern with at least nine near-identical prior entries. Its honest timescale table gives the hour, and even the top-of-hour cliff ('about $19 per exit'), to software, which shrinks our role to seconds and one to two hours. Its own evidence ('hour-scale shifting needs no storage', Emerald's software-only 25% for 3 hours) argues against buying a Torus Station. It leans on the AI data-center story we just took off our site. The herding claim rests on European evidence seen only through a search summary.",
+    "must_fix": [
+     "If built at all, invert it: lead with the landing and the RMP reserve, and demote the router to one card.",
+     "Drop the '$19 software fix' framing, or pair it with what the same exit costs a host's demand-charge peak.",
+     "Verify the European top-of-hour frequency-deviation evidence on source, or cut the herding beat."
+    ]
+   }
+  ],
+  "ranking": [
+   "A-torus-fleet",
+   "D-demo-wow",
+   "B-three-way-stack",
+   "C-compute-router"
+  ],
+  "best_ideas_to_graft": [
+   "From D into A: the judge-pressed crash clicker ('You're the grid. Press this whenever you like.') replaces A's scripted 6:12pm injection. An unscripted call at any hour, answered at full power while the plan re-solves, is the strongest possible proof of A's core claim that calls can only be covered, not scheduled.",
+   "From D into A: the 15-second moon/sun flip-card opener with verified snapshot and EIA numbers (1-5am averages $38.71/MWh vs $22.83 for 9am-4pm on Oct 27; EIA October generated CO2 about 698 g/kWh overnight vs about 468 midday). Frame it as 'when is the grid clear', never as 'our batteries charge at the wrong time'.",
+   "From D into A: D's scope discipline. Cut checkpoints at Tue 1pm and 5pm, feature freeze at 9pm Tue, a deterministic year replay of 359 calls from the Torus heatmap instead of 200-scenario Monte Carlo, and a greedy or DP fallback ready before the LP is trusted.",
+   "From D and C into A: pinned-number tests (vitest or pytest) that fail loudly if any stage number drifts after the Tuesday-night Oct 28 refresh, so the script never quotes a stale figure.",
+   "From D into A: the live-tile honesty rule. If the RTM fetch fails or the price is flat, show Tuesday's forecast against what actually happened from the frozen bundle, and never claim a climb that is not on screen.",
+   "From D into A: 'Spin refilled in 12 minutes' from Torus's own Spin page, as the refill model in the wow beat, instead of holding Spin empty until midday.",
+   "From B into A (Nucleus version and Q&A): one Utah-impact slide with the Duke-style PACE headroom calendar. 1,265 MW at 0.5% curtailment, every curtailed hour Jun-Aug afternoons, and the 902 MW grid-connected cohort needing only 61 hours (22 events) a year, labeled 'Duke-style, our implementation'.",
+   "From B into A: quote Torus's own Pulse FAQ line that Spin absorbs spikes so Pulse can discharge steadily, as the stated reason the lanes split the way they do. It shows we read their material and are extending it, not inventing it.",
+   "From C into A: one Q&A answer to 'why not route compute elsewhere?'. On October EDAM data, time-shifting a 4-hour block saved 40% vs 8% for place-shifting, and Utah was the cheapest node 81% of the time. That justifies A leaving the 'where' half out.",
+   "From D into A: present any day-ahead-price dollars as 'value to Rocky Mountain Power's system, not Torus revenue', and pair them with the host demand-charge number so the economics read correctly to a Torus exec."
+  ],
+  "questions_this_judge_would_ask_on_stage": [
+   "Lasso already forecasts from load, weather, rate schedules and grid signals, and schedules charge and discharge. What does your plan know that Lasso does not, and through which interface would it reach a station: our API, IEEE 2030.5 through RMP's DBGMS, or something else?",
+   "Today RMP's DBGMS can set battery reserve. In your model, who owns the reservation decision, RMP or Lasso, and why would RMP accept a day-ahead envelope from a third party?",
+   "After a call, we can recharge Spin from Pulse in minutes. Does your naive-policy demand-charge penalty survive that?",
+   "What happens when an RMP call lands in the middle of the scheduled evening block? Which commitment wins, and what does the host see on its bill?",
+   "How would RMP pay for a scheduled evening block: under the MOU, a Wattsmart program change, or the ROWE proposals? Who captures the day-ahead-price value you show?",
+   "What did you assume for Spin kWh per kW, the Spin-to-Pulse ratio and the call size at a typical 500 kW site? Where do those numbers come from, if not from us?",
+   "How are you counting Pulse wear: throughput, depth-weighted, or rainflow? Does one cycle a day still fit a 25-year life, given that we can repower Pulse?",
+   "Your event model uses our 2025 heatmap. What time zone did you assume, and does your plan change if 1 AM is really 7 PM?",
+   "Your CO2 numbers are average, generated-basis intensity, and PACE is a net exporter. Why should a utility trust the CO2-shifted figure?",
+   "If we handed you 15-minute interval data from one real host tomorrow, what in this demo would change by Friday?",
+   "(For Crossover) How did you define Spin's 25,000-cycle rating? Our Spin page says zero capacity degradation, so where does 1.2 years come from?"
+  ],
+  "verdict": "Build A (RampMeter), the concept a Torus team would actually carry into a Rocky Mountain Power meeting, but cut it to D's scope and give it D's showmanship.\n\n**Why A wins.** It is the only concept that models Torus's real dual-use business:\n- the host's 15-minute demand peak, which is what Torus sells hosts;\n- RMP's random calls, treated as a kW promise that costs about six minutes (the numbers check out: 33 h a year, 4.6% of a Pulse per call, Spin roughly one call deep);\n- Pulse cycle life, treated as the scarce resource;\n- an output aimed at what Torus asked ROWE to credit in its June 2026 comments: scheduled dispatch, utility-directed operating envelopes and System Critical Hours.\n\nIt respects Lasso by staying a day-ahead layer and never claiming the Spin/Pulse split as new.\n\n**What A must fix before Tuesday.**\n- Rewrite the wow beat so Spin refills right after a call, inside the 12-minute recharge Torus publishes. As written, the flywheel sits empty until midday while Pulse is busy with the evening block, and a Torus engineer will catch it.\n- Cut to three screens and replace the 200-scenario Monte Carlo with a 359-call replay drawn from the Torus heatmap.\n- Steal D's judge-pressed crash clicker and its 15-second moon/sun opener.\n\n**D (Clearlane) is a close second and the fallback.** Its numbers all reproduce, and it is the safest to ship and the most memorable on stage. If Craig is solo and A's planner is not solving by the Tuesday 1pm checkpoint, ship D, with two changes:\n- add a first-class host demand-charge lane;\n- reframe its \"charge overnight out of habit\" villain so it does not land on Torus.\n\nIts weakness for this sponsor is that it reduces Torus to price arbitrage that nobody in its model is paid for today.\n\n**B and C.**\n- B (Crossover) has the deepest physics and the best Utah material. It should not be the Torus entry, because one position of its wear dial tells the room that Spin dies in 14 hours, or 1.2 years, in the AI-smoothing duty Torus markets it for. Use its PACE headroom calendar as a Nucleus and Q&A slide only.\n- C (Soft Landing) puts Torus in a supporting role behind the most crowded hackathon pattern. Do not build it. Keep its where-versus-when result as a Q&A answer."
+ },
+ {
+  "judge": "judge-cto",
+  "scores": [
+   {
+    "concept_key": "A-torus-fleet",
+    "torus_fit": 9,
+    "creativity": 8,
+    "clarity_of_insight": 7,
+    "execution_feasibility": 4,
+    "demo_impact": 6,
+    "nucleus_rubric": 7,
+    "strongest_point": "It has the best product thesis and the most Torus-specific insight. A Rocky Mountain Power fast-frequency call is a kW promise, not a kWh one. A 5.5-minute call at 0.5C uses about 4.6% of a Pulse (5.5/120 min), and 359 calls x 5.5 min comes to about 33 h/yr. That is about 16 Pulse equivalent cycles, against 36% of Spin's derived 1,000/yr. So the utility reserve can sit on Spin plus spare Pulse power, and Pulse is free for the evening rush. The output is an hourly operating envelope, which is what Torus asked ROWE to define in June 2026 (torus-intel #14). I checked every number against torus-cases-a/b, lmp_analysis_output.txt and the snapshot CSV, and they all reproduce. The architecture (contracts, one adapter per source, provenance on every record, bundles, an envelope API) is how I would want a real product laid out.",
+    "fatal_flaw_or_biggest_weakness": "It is overscoped by about 2x for 43 hours with sleep: pydantic-to-TS codegen, FastAPI, five screens plus export and two one-pagers, a 12-site x 96-interval LP with month-to-date peak state, a 1-second Monte Carlo at 200 scenarios a day, a 178-day backtest (June, August and September EDAM history are not on disk yet), a CO2 ridge model and an AI-cluster class. Its headline number, the 'free MW' break point, is mostly an artifact of synthesized host loads, simulated station sizes, an unverified third-party tariff and an assumed refill mechanism. The wow beat beats a naive 'refill immediately' policy that Lasso almost certainly does not use.",
+    "must_fix": [
+     "Cut to three screens (Traffic Report, Fleet Lanes with the event replay, Backtest) and 3-4 archetype sites. Drop the codegen and make the one-pagers a single static export.",
+     "Precompute the frontier sweep and measure the LP solve time before promising a sub-second live re-solve. Keep the greedy policy as a ready fallback, not cut-list item 7.",
+     "Show how the break point moves with the synthetic loads (several load seeds or archetypes), so the 'free MW' number is not read as a property of the grid.",
+     "Before building the wow beat, confirm with Torus on Tuesday morning how Spin refills after a call. If Lasso already avoids refilling into the host's peak, call the baseline 'battery-only, refill-on-demand', not 'naive'.",
+     "Pull the missing May/Jun/Aug/Sep EDAM windows tonight, or shrink the backtest to the days already cached.",
+     "Report demand-charge results in kW of peak avoided until the current Schedule 6/8 tariff is verified."
+    ]
+   },
+   {
+    "concept_key": "B-three-way-stack",
+    "torus_fit": 6,
+    "creativity": 9,
+    "clarity_of_insight": 6,
+    "execution_feasibility": 6,
+    "demo_impact": 7,
+    "nucleus_rubric": 8,
+    "strongest_point": "It has the most real computation already running, and it reproduces. I checked scratch-depth's headroom/bandsplit/extras outputs:\n- A Duke-method headroom rerun on 12 months of PACE EIA-930 gives 1,265 MW at 0.5%. All 184 curtailed hours fall in June-August, hour-ending 12-22.\n- The 902 MW grid-connected cohort needs 61 h in 22 events. The worst is the 8 h, 4,355 MWh event on Jul 20, 2026.\n- 100 MW / 200 MWh covers 13 of the 22 events and 50% of 4,498 MWh.\n- Pulse life falls from 19.4 to 7.0 years if it takes the fast band.\n- The GPU-floor 'burner' would cost $5.87-7.23M/yr.\nThis is the only concept whose Utah-impact numbers are both new and computed on real data. It fills open gaps 1-5 in prior-art.findings.md.",
+    "fatal_flaw_or_biggest_weakness": "The physics shown on stage rests on a synthetic 50 Hz trace (60% synchronized share, 0.5 Hz and 50 ms edges are all assumptions). The most visual result, 38 to 0.35 MW rms in the 0.5-5 Hz band, is just the transfer function of a 30 s EMA on a 0.5 Hz signal (about 1/94), so it is true by construction, not a finding. The real decision, Spin versus compute, is undetermined: Spin life ranges from 14 hours to 1.2 years to effectively unlimited across the three wear models. It also centers on 300 MW AI campuses, a segment Torus removed from its site between Aug and Oct 2026, with a 105 MW Spin per campus that is far beyond any public Torus install (Wattsmart is 30 kW-1.2 MW).",
+    "must_fix": [
+     "Lead with the real-data results (headroom calendar, July 20 replay, Pulse coverage curve). Present the spectrum as the filter design, not as evidence.",
+     "Never put 'Spin life: 14 hours' on screen unless Torus has said how its 25,000-cycle rating counts shallow cycles. Default the dial to fatigue only if Torus confirms it.",
+     "Build the C&I spiky-host switch (welders, laminators) early. It is the hedge against Torus having paused the data-center story, so it cannot stay at cut-list item 3.",
+     "Overlay one real NLR 5/10 Hz training trace, or say plainly that no real trace was used.",
+     "Collapse the zoom ladder to three views and rehearse it on a non-technical listener. A mixed panel will lose three wear models across seven orders of magnitude of time."
+    ]
+   },
+   {
+    "concept_key": "C-compute-router",
+    "torus_fit": 4,
+    "creativity": 6,
+    "clarity_of_insight": 8,
+    "execution_feasibility": 7,
+    "demo_impact": 6,
+    "nucleus_rubric": 5,
+    "strongest_point": "It has the cleanest real-data insight of the four, and the numbers are verified in scratch-opt2. In October, waiting for Utah's cheapest 4 hours cut a 4-hour block's cost 40%, while moving it to the cheapest other EDAM node cut it 8% (July: 51% vs 13%). PACE was the cheapest PacifiCorp/PGE node in 81% of hours, and cheaper but dirtier than PACW in 456 of 576. The break-even is $31/t, falling to $2/t in July. The day's largest PACE price step landed at 5 or 6pm on 24 of 27 days. Pinning every quoted stat in tests is exactly the honest-pipeline discipline I look for.",
+    "fatal_flaw_or_biggest_weakness": "It is two products stapled together by an inferred claim ('the work that moves is the work that shakes'). Its spine is the most crowded hackathon pattern (9+ near-identical router entries), in the one area where Torus has no product. Its own honest timescale table says software handles hours and minutes (the cliff is fixed for about $19), which leaves Torus only the seconds band, so a Torus judge hears 'you are a small part of this'. The herding evidence came only through a search summary.",
+    "must_fix": [
+     "Invert it: make the landing (Spin/Pulse sizing per MW of training landed) the spine, and cut the router to one 'where vs when' card.",
+     "Verify the European top-of-hour frequency evidence on source, or drop the herding act.",
+     "Reframe the slew result so storage's role is not minimized in front of Torus.",
+     "Put Torus outputs (Spin MW, Pulse MWh, reserve held for RMP calls) in the headline, not on screen 3."
+    ]
+   },
+   {
+    "concept_key": "D-demo-wow",
+    "torus_fit": 9,
+    "creativity": 7,
+    "clarity_of_insight": 9,
+    "execution_feasibility": 9,
+    "demo_impact": 9,
+    "nucleus_rubric": 6,
+    "strongest_point": "It has the highest execution certainty, and every stage number reproduces today. I reran habit.py and fix.py:\n- $20.06 vs $58.41 per MW-day, which is $1,405 vs $4,088 a day at 70 MW;\n- -18.4 t vs +18.9 t CO2 a day;\n- $14,496-17,708 per MW-year;\n- a 3.4% cost for a battery-only reserve.\nThe Oct 27 price figures also check out against the snapshot CSV: $38.71 overnight vs $22.83 midday, and a 3,655 MW net-load climb from 3pm to 6pm. The engine is static and in-browser, so nothing on the stage path needs the network. 'A battery is only as clean as the hour it charges' is the clearest line in the field. It uses the CTO's own freeway metaphor and matches the research's recommended Option 1 spine almost exactly.",
+    "fatal_flaw_or_biggest_weakness": "The engineering is thin, and a CTO will ask what is hard. The core is a 24-step single-battery arbitrage DP, which every behind-the-meter storage vendor already ships (prior-art #27: Stem Athena, Tesla Opticaster). The 'habit: charge 1-5am' baseline may be a strawman nobody runs. The dollars are wholesale day-ahead arbitrage, which neither a behind-the-meter host nor Torus actually receives. The annual figure is extrapolated from July and October alone. And the judge-held crash cannot fail, because the crash lane is reserved by construction, so it demos a re-solve, not a test. The 'Re-planned in 38 ms' string must be a real measurement, not a literal.",
+    "must_fix": [
+     "Establish the real baseline before Wednesday. Find out what sets C&I Pulse charging today (Lasso's rate-schedule mode, RMP's C&I TOU windows). If the tariff pushes charging overnight, reframe the finding as 'the tariff and the new market disagree', which is a stronger claim than beating a strawman.",
+     "Say who captures the value: RMP's net power cost, not Torus revenue. Ask Torus how daily peak management would be paid before showing '$7-9M at 500 MW'.",
+     "Run the full May 1-Oct 27 backtest with a P10-P90 band before quoting any per-MW-year number.",
+     "Make the crash moment carry engineering weight. Run the DP at 15-minute steps, show the host's 15-minute demand meter and the Spin refill decision during the call, and contrast it with a battery-only fleet that has to give up value or set a new peak.",
+     "Display the measured re-plan time from the running code (performance.now), never a hard-coded string.",
+     "Pin every stage number in tests so the Tuesday-night Wednesday bundle cannot silently change the script."
+    ]
+   }
+  ],
+  "ranking": [
+   "D-demo-wow",
+   "A-torus-fleet",
+   "B-three-way-stack",
+   "C-compute-router"
+  ],
+  "best_ideas_to_graft": [
+   "From A into D: put the kW-not-kWh argument on screen as the reason the crash lane sits on Spin. A 5.5-minute call at 0.5C uses about 4.6% of a Pulse, 359 calls x 5.5 min is about 33 h/yr, and that is about 16 Pulse equivalent cycles a year. This turns the crash beat from 'answered by construction' into a physics argument.",
+   "From A into D: during the crash replay, show the host's 15-minute demand meter and the Spin refill decision. Next to it, run a refill-on-demand policy that sets a new monthly peak. That gives the clicker moment a failure mode a CTO can respect, and it uses the concept's own demand-ceiling constraint.",
+   "From A into D: an hourly operating-envelope JSON (start_utc, critical_hour, ffr_kw_ready, scheduled_kw, reason, provenance) as the Lasso integration contract. Present it as the 'utility-directed operating envelopes' and transparent 'System Critical Hours' Torus asked ROWE for in June 2026.",
+   "From A into D: a three-policy backtest table (battery-only reserve, habit or tariff-following, timetable) over every EDAM day since May 1, with P10-P90, in place of the July+October annualization.",
+   "From B into D: one Utah-impact card with the Duke-method PACE headroom rerun. It is already computed on real EIA-930: 1,265 MW at 0.5% curtailment, all 184 hours in June-August hour-ending 12-22, and the 902 MW grid-connected cohort needs 61 h in 22 events. It is real, new and strong on the Nucleus rubric.",
+   "From B into D: put Pulse cycle wear in the explanation, not just the objective. With wear priced at $0 the DP double-cycles; with $10/MWh it holds one cycle a day, which is 365 of 7,500 cycles a year, about 20 years. Show both plans side by side in the Engineer view.",
+   "From C into D: a single 'where vs when' card. In October, time-shifting cut cost 40% and place-shifting 8% (July: 51% vs 13%), and PACE was cheaper but dirtier than PACW in 456 of 576 hours. It answers Option 2's 'where' half honestly in 15 seconds and sets the project apart from the 9+ router entries.",
+   "From C: pinned-number tests (vitest/pytest) that fail loudly when a refreshed bundle changes any quoted stat, so the Wednesday bundle cannot silently break the script.",
+   "From A and D: a time-zone toggle on Torus's 2025 heatmap, with no claim about which hours calls land in. fix.py shows the price-only miss rate swinging from 14% to 77% depending on how the zone is read.",
+   "From D, kept as is: the show-of-hands opener, the habit-vs-timetable race with live meters, the judge-held clicker, DATA_MODE=snapshot by default, the all-static in-browser engine, and the REAL/DERIVED/SIMULATED badges with a 'What's real' table.",
+   "From B's risk list: frame wear and every dollar figure as model output with visible sliders. Headline in MWh, cycles and life-years, which come straight from the data and the published specs."
+  ],
+  "questions_this_judge_would_ask_on_stage": [
+   "Your race compares against charging from 1 to 5am. Who actually does that today? If Lasso already schedules against a TOU tariff or prices, what is your real baseline and what is the delta against it?",
+   "Who writes the check for the $1.0-1.2M a year per 70 MW? A behind-the-meter host pays a retail tariff, not the EDAM LMP. Walk me through the money flow.",
+   "You annualized from July and October. What do your P10 day and a March or December day look like?",
+   "When I press the button, can the plan ever fail? If the crash lane is reserved by construction, what am I actually testing?",
+   "Is that re-plan running in the browser right now, or are you replaying precomputed JSON? Show me where the timing number comes from.",
+   "Demand charges settle on 15-minute intervals and your planner is hourly. How do you guarantee the refill after a call does not set the host's monthly peak?",
+   "Your CO2 result mixes October-average hourly intensity with one day's prices, on an average generated basis, for a net-exporting BA. Does 'habit adds 18 tonnes' survive marginal emissions?",
+   "Which of your headline numbers would change if your synthetic host loads were different? Show me the sensitivity.",
+   "What does Lasso already do that you are duplicating, and what is the first API contract Torus would actually integrate?",
+   "What happens if OASIS is down or Wednesday's day-ahead prices posted late? Is the demo different?",
+   "(If Crossover) Isn't the 38 to 0.35 MW rms drop just the transfer function of your 30-second filter on a 0.5 Hz input? What did you learn that the filter design didn't already tell you?",
+   "If you had two more weeks, what would you cut, and what is the first thing that breaks at 500 MW across a thousand sites?"
+  ],
+  "verdict": "Ranking, judged as Ryan Byrd: Clearlane (D), then RampMeter (A), then Crossover (B), then Soft Landing (C). No fabrication found. I spot-checked every load-bearing number in all four concepts against the research files. All of them matched, including a fresh rerun of Clearlane's habit.py and fix.py ($20.06 vs $58.41/MW-day, $1,405 vs $4,088/day at 70 MW, -18.4 vs +18.9 t CO2/day, $14,496-17,708/MW-yr, 3.4% reserve cost) and Crossover's headroom/bandsplit outputs. Two small overreaches in D: the daily load cycling permission comes from the Wyoming DSM plan, not Utah's, and the clear lane is 9am-4pm, not 9am-5pm (5pm is $34.03).\n\nClearlane wins because it is the only concept I am confident will run flawlessly at 5pm Wednesday with a reveal a mixed panel will remember. As written, though, I would mark it down on depth. Its engine is a textbook arbitrage DP, its baseline may be a strawman, its dollars are wholesale value nobody behind the meter is paid, and its crash cannot fail. The fix is to graft in RampMeter's best ideas, not to pick RampMeter:\n- the kW-not-kWh reservation argument as the reason the crash lane lives on Spin;\n- a 15-minute demand meter and the refill decision during the crash, so the clicker moment has a real failure mode beside it;\n- RampMeter's operating-envelope JSON as the Lasso contract, tied to Torus's own June 2026 ROWE asks;\n- a full May-October three-policy backtest with P10-P90.\nThen add Crossover's real-data PACE headroom calendar as the single Utah-impact card, and Soft Landing's 40% vs 8% 'where vs when' card as the one-breath answer to Option 2.\n\nRampMeter has the best product thesis and architecture, but it is overscoped by about 2x, and its headline break point mostly reflects its own synthetic loads. Crossover has the deepest real computation already running and would score best on hard-tech depth for Nucleus. But it targets a segment Torus pulled from its site, its showiest result is true by construction of the filter, and its decisive Spin-life number is undetermined. Soft Landing has the crispest data insight, but it argues against its own spine and against Torus's role.\n\nDo this Tuesday morning, before anything is built on these assumptions:\n- Find out what sets C&I battery charging today (Lasso rate-schedule mode or RMP C&I TOU windows), so the baseline is real.\n- Ask Torus how Spin refills after a call.\n- Ask organizers whether double entry with Nucleus is allowed."
+ },
+ {
+  "judge": "judge-investors",
+  "scores": [
+   {
+    "concept_key": "A-torus-fleet",
+    "torus_fit": 9,
+    "creativity": 7,
+    "clarity_of_insight": 6,
+    "execution_feasibility": 4,
+    "demo_impact": 6,
+    "nucleus_rubric": 7,
+    "strongest_point": "It has the best path to reality in the field. Its main output, a day-ahead operating envelope plus a list of System Critical Hours, is close to word for word what Torus asked regulators to credit and define in its June 2026 ROWE comments ('controlled and scheduled dispatch', 'utility-directed operating envelopes', System Critical Hours; torus-intel.findings). That gives a named buyer workflow (Torus's utility team carries it to RMP) and a regulatory tailwind. The physics checks out against the research. 359 calls x 5.5 min is about 33 h a year (0.38% of hours). A full-power call drains about 4.6% of a 0.5C Pulse. 7,500 cycles over 25 years is about 300 a year, so Pulse cycles, not charge, are the scarce resource.",
+    "fatal_flaw_or_biggest_weakness": "There is too much engine for roughly 30 working hours, and the insight needs a panel that already thinks in kW versus kWh. A 7k-variable LP with month-to-date demand peaks, a Monte Carlo replay at 1-second steps, a 178-day x 12-site x 3-policy backtest with monthly settlement, a frontier sweep, five screens and two one-pagers is a lot to get demo-solid by Wed 2pm. The wow beat also rests on an unconfirmed modeling assumption: the naive refill sets a new demand peak, and Spin can refill from Pulse. To an investor the payoff is 'a meter line stayed flat', which is subtle.",
+    "must_fix": [
+     "Cut the engine to the minimum that proves the insight. Use a greedy reservation rule plus the event simulator first, and add the LP only if ahead at the Tue 1pm checkpoint. Start the backtest at 30 days.",
+     "Rewrite the insight as one sentence a non-engineer gets in 10 seconds, e.g. 'Rocky Mountain Power needs the station's muscle for six minutes, not its tank all day, so the rest of the tank can work the evening rush.'",
+     "Confirm with Torus Tuesday morning how Spin refills after a call and whether a call or its refill has ever set a host's monthly peak. If not, the split-screen wow beat has to change.",
+     "Verify the current RMP Schedule 6/8 demand charges before showing any host dollar figure. The OpenEI transcription lost its season labels.",
+     "Name the first buyer and the ask on the close slide: who at Torus or RMP uses the envelope next week."
+    ]
+   },
+   {
+    "concept_key": "B-three-way-stack",
+    "torus_fit": 6,
+    "creativity": 9,
+    "clarity_of_insight": 6,
+    "execution_feasibility": 5,
+    "demo_impact": 7,
+    "nucleus_rubric": 8,
+    "strongest_point": "The Duke-style headroom rerun on 12 months of PACE EIA-930 data already runs (headroom_output.txt, extras_output.txt) and is the most Utah-relevant number any concept has. PACE can take about 1.27 GW of new flat load at 0.5% curtailment. Every curtailed hour falls on a June-August afternoon. Utah's 902 MW grid-connected data-center build (2,602 MW under construction minus 1,700 MW behind the meter, per utah-grid.findings) would need curtailment in only 61 hours a year across 22 events. For Angela Smith and Scott Holley this turns Operation Gigawatt into a battery-sizing problem. It is also the only concept with real hard-tech depth: a spectral band split, rainflow plus Miner wear, and the 0.5-5 Hz band cut from 38 to 0.35 MW rms.",
+    "fatal_flaw_or_biggest_weakness": "The central recommendation, 'give the swing to Spin', depends on a number nobody has. On the same simulated trace, Spin lasts 14 hours, 1.2 years or effectively forever, depending on how Torus's 25,000-cycle rating is counted (bandsplit_output.txt). If the Torus judge says the rating is throughput-based, the headline turns into 'your flywheel dies in 14 months'. The spine is also an AI-campus story Torus pulled from its own site between Aug 4 and Oct 26, 2026, and the fast band runs on a synthetic 50 Hz trace. The buyer (a hyperscaler, Torus sales, or RMP) is never pinned down.",
+    "must_fix": [
+     "Get Torus's definition of the Spin cycle rating Tuesday morning, before building the wear dial. Prepare a fallback pitch that leads with the PACE headroom calendar if the answer is throughput-based.",
+     "Lead with the Utah headroom story (1.27 GW, 61 hours for 902 MW) and make the AI campus the example host, not the spine, since Torus removed its data-center pages.",
+     "Reduce the spectrum and rainflow material to one before/after visual and one sentence for non-grid judges. Never show the 5,347 MW/s ramp.",
+     "State the Duke caveat on screen: 'Duke-style, our implementation'. We get 1.27 GW where Duke's chart reads about 1.5 GW, and the seasonal-ceiling rule gives 500 MW.",
+     "Name who buys the plan and what they pay for. 'A hyperscaler buys both products' is a Torus sales outcome, not a customer for this software."
+    ]
+   },
+   {
+    "concept_key": "C-compute-router",
+    "torus_fit": 4,
+    "creativity": 6,
+    "clarity_of_insight": 8,
+    "execution_feasibility": 7,
+    "demo_impact": 6,
+    "nucleus_rubric": 5,
+    "strongest_point": "Of all the cross-node analyses in the research, 'Money moves in time, carbon moves in place' is the clearest and best verified. On Oct 2026 EDAM data, waiting for Utah's cheapest four hours cuts a 4-hour evening block's cost 40%, while moving it to the cheapest node at the same hours cuts only 8%. Adding a $25/t carbon weight keeps the 40% saving, lifts the CO2 cut from 29% to 44%, and drops Utah's share from 89% to 51% (carbon_tradeoff_output.txt, where_vs_when_output.txt). 'Software can pick the hour; only storage can absorb the second' is a memorable close. The build is all-TypeScript and in-browser, on data already pulled for four nodes.",
+    "fatal_flaw_or_biggest_weakness": "The spine is the most crowded pattern in the space. prior-art.findings lists at least nine near-identical carbon-aware routers, and EuroSys 2024 found their savings modest. Torus does not route compute (torus-intel.findings). The concept's own honest analysis shrinks Torus's role: software fixes the top-of-hour cliff for about $19. Under carbon weighting the router sends half the work out of Utah, which is a weak Utah-impact story for a Utah ecosystem panel. There is no buyer: data-center operators already have Emerald AI and Google's own tooling.",
+    "must_fix": [
+     "If kept, lead with the landing (the hours-to-seconds zoom and the Torus toggle) and treat routing as context, not the product. Never open with 'there are a dozen routers, we built one too'.",
+     "Drop the European 15-minute-market and frequency-herding evidence, or verify it on source. The research saw it only through a search summary.",
+     "Reframe the Utah story: the work that stays in Utah lands in the midday solar window and Utah storage absorbs it. Do not lead with Utah's share falling.",
+     "Name a customer and the ask. Otherwise investors will read it as a feature competing with Emerald AI and Google."
+    ]
+   },
+   {
+    "concept_key": "D-demo-wow",
+    "torus_fit": 8,
+    "creativity": 6,
+    "clarity_of_insight": 9,
+    "execution_feasibility": 8,
+    "demo_impact": 9,
+    "nucleus_rubric": 7,
+    "strongest_point": "Its headline is surprising and I reproduced it: running habit.py on the Oct 27 snapshot gives the same output. 70 MW charged overnight out of habit earns $1,405 a day and adds 18.4 t of CO2. Charged in the published midday clear lane, the same hardware earns $4,088 a day (2.91x) and removes 18.9 t. Overnight PACE power averaged about 698 g/kWh against 468 at midday in Oct 1-25 (EIA PACE.xlsx). The overnight price of $38.71 against $22.83 at midday also checks out against the snapshot CSV. The hook lands with non-experts ('A battery is only as clean as the hour it charges'), and the judge-held clicker that 'crashes the grid' is the most memorable interaction on offer. The engine is a small DP whose figures already reproduce in scratch ($57.54/MW-day on Oct 27; $39.71-48.52/MW-day for Oct and Jul in fix.py), so it carries the lowest risk of a broken demo.",
+    "fatal_flaw_or_biggest_weakness": "There is not much engineering depth, and nobody clearly gets paid. Day-ahead arbitrage plus a reserve floor is the standard behind-the-meter storage recipe that Stem, Tesla Opticaster and Fluence already describe (prior-art.findings). The $14.5-17.7k per MW-year is wholesale system value: hosts pay retail tariffs, and no program is shown to pay a fleet for it. The 'habit' baseline may be a strawman, or may read as a dig at how Lasso schedules today, until Torus says what sets charging now. Pulse lists rate schedules as a scheduling input. Daily cycling also uses 365 Pulse cycles a year against a budget of about 300 (7,500 over 25 years), so Pulse would wear out in about 20.5 years, short of the 25-year life.",
+    "must_fix": [
+     "Remove or measure the placeholders in the script: 'Re-planned in 38 ms (the measured value)' and 'This crash cost $41' are not measured yet. Show only numbers the engine computed on stage.",
+     "Ask Torus Tuesday morning what sets Pulse charging today (rate schedule, Lasso forecast or RMP) and adjust the 'habit' framing. If retail TOU windows point batteries at night, the honest headline becomes 'Utah's rate schedules point batteries at the wrong hour', which is a stronger policy story. Do not say it until the tariff is verified.",
+     "Say who captures the value. Show it as value to RMP's power costs, and as the case for expanding the MOU from 70 MW toward the up-to-500 MW ceiling, not as revenue to the host or to Torus.",
+     "Reconcile Pulse wear: spend a cycle only when the day's spread beats a wear price tied to a budget of about 300 cycles a year, and show a cycles-used meter.",
+     "Fix the sourcing. 'Daily load cycling' is from RMP's Wyoming DSM plan, not Wattsmart program-wide. Emerald's 25%-for-3-hours result was on a 256-GPU cluster, not 100 MW. Each CO2 figure is EIA average generated-basis intensity, not marginal.",
+     "Replace the single-day race numbers with the May-Oct backtest band (P10-P90) on the 'big number' screen. One good day is not a year.",
+     "Add one Nucleus slide covering Utah impact and path to reality, which is where this concept is thinnest for this panel."
+    ]
+   }
+  ],
+  "ranking": [
+   "D-demo-wow",
+   "A-torus-fleet",
+   "B-three-way-stack",
+   "C-compute-router"
+  ],
+  "best_ideas_to_graft": [
+   "From A into D: make the nightly plan JSON a day-ahead operating envelope (hourly charge and discharge setpoints, reserve kW ready, and a System Critical Hours flag). Pitch it as the exact artifact Torus asked ROWE regulators to credit in June 2026. That gives D a named buyer workflow and a regulatory tailwind for 'path to reality' (torus-intel.findings).",
+   "From A into D: the 'kW promise, not kWh' line as the reason the crash lane is cheap. 359 calls x 5.5 min is about 33 hours a year (0.38% of hours), and a full-power call drains about 4.6% of a 0.5C Pulse. This turns D's assumed 3% reserve cost into physics a judge can check.",
+   "From A into D: a Pulse cycle budget. 7,500 cycles over 25 years is about 300 a year, against D's 365 daily cycles. Cycle only on days whose spread beats the wear price (median daily spreads of $22.7 in Oct and $27.2 in Jul), and show a cycles-used meter next to the $ and CO2 meters.",
+   "From B into D: one Utah-impact slide for the Nucleus panel. A Duke-style rerun on PACE gives about 1.27 GW of headroom at 0.5% curtailment, and the 902 MW grid-connected data-center build needs curtailment in only 61 hours a year, all on June-August afternoons. Label it 'Duke-style, our implementation' (headroom_output.txt, extras_output.txt).",
+   "From C into D: replace the single SP15 'where' card with C's verified finding, 'money moves in time, carbon moves in place'. A 4-hour block gets 40% cheaper by waiting versus 8% cheaper by moving, and Utah keeps the cheapest hours. It answers 'why not a job router' in one breath and justifies D's 'when' focus.",
+   "From C into D: pinned-number tests. Each figure quoted on stage gets a vitest assertion against the frozen bundle, so Tuesday night's data refresh cannot silently make the script wrong.",
+   "From A into D: export two one-pagers, one for RMP (fleet envelope, MW ready at every hour) and one for a host (demand ceiling never broken by charging). Investors read these as product, not dashboard.",
+   "From A into D (stretch): on the crash beat, show the refill waiting for the clear lane so the host's 15-minute peak is never set. It costs one extra line on the event card and answers the host's objection to sharing the battery.",
+   "From B: the line 'we measured before we built' for Nucleus 'progress beyond concept'. The analysis scripts ran on real PACE data before the repo existed.",
+   "From all: keep the time-zone toggle on Torus's 2025 heatmap and never claim an hour-of-day pattern for RMP calls."
+  ],
+  "questions_this_judge_would_ask_on_stage": [
+   "Who writes the first check: Torus, Rocky Mountain Power, or a host? What does a pilot look like next quarter, and who at Torus or RMP have you shown this to?",
+   "Your dollar figures are wholesale day-ahead value, but hosts pay retail tariffs. Who actually captures the $14,500-17,700 per MW-year, and is it big enough to change a decision at Torus or RMP?",
+   "Lasso already forecasts from load, weather and grid signals. What stops Torus from building this in a two-week sprint, and why should it be a company rather than a feature?",
+   "Walk me through your 'What's real' table. Which numbers on screen are measured market data, which are your math, and which are simulated?",
+   "How many MW of new Utah load, or how many evening fossil hours, does this unlock for Operation Gigawatt and the data centers going up in Delta and Eagle Mountain?",
+   "Is the 'charge overnight' baseline what Torus stations really do today, or a strawman? What sets charging right now: the rate schedule, Lasso, or RMP?",
+   "Your CO2 numbers are average, not marginal. Does 'charging at night adds CO2' still hold on marginal emissions?",
+   "Daily cycling uses about 365 Pulse cycles a year against a 7,500-cycle rating. Does that fit Torus's warranty and its 25-year life?",
+   "You built this in 43 hours as essentially a team of one plus coding agents. Is this a company you would pursue after Thursday, who else is on the team, and what would you do with the $10K?",
+   "Why does this get built in Utah rather than by an existing California VPP or DERMS vendor?"
+  ],
+  "verdict": "Build Clearlane (D) as the chassis, with RampMeter's (A) substance and Crossover's (B) Utah number grafted in. For this panel, D is the only concept that is likely to work flawlessly by Wed 2pm, explains itself to a VC, an ecosystem COO and an academic in 15 seconds, and lets a judge touch the demo. Its core numbers reproduce from the scratch scripts. I re-ran habit.py and fix.py and checked the Oct 27 CSV: $1,405 vs $4,088 a day, -18.4 vs +18.9 t of CO2, $38.71 overnight vs $22.83 midday, $14.5-17.7k per MW-year.\n\nD has two weaknesses for investors. It has thin depth, and nobody is clearly paid for the value it shows. Fix both with A's ideas. Ship the nightly plan as the operating envelope plus System Critical Hours that Torus asked ROWE to define in June 2026. Show the 'kW promise, not kWh' reason the crash lane is nearly free (33 hours a year; 4.6% of a Pulse per call). Spend Pulse cycles against a budget of about 300 a year. Then add one slide with B's PACE headroom finding (about 1.27 GW at 0.5% curtailment; 61 hours a year for the 902 MW grid-connected data-center build), which wins the 35% of the Nucleus rubric that covers hard-tech depth and Utah impact.\n\nA on its own has the best path to reality but is the most likely to be half-built at judging. B has the best Nucleus depth, but its headline flips on an unknown Spin rating and it leans on a data-center line Torus just pulled from its site. C is a well-argued entry in the most crowded category, with weak Torus fit and no buyer.\n\nBefore the build commits Tuesday morning, ask Torus two things. First, what sets Pulse charging today? That decides whether 'habit' is a strawman or a real rate-design problem. Second, would an RMP-facing envelope be useful to them? Confirm with organizers whether one project can be entered for both bounties."
+ },
+ {
+  "judge": "judge-skeptic",
+  "scores": [
+   {
+    "concept_key": "D-demo-wow",
+    "torus_fit": 8,
+    "creativity": 7,
+    "clarity_of_insight": 9,
+    "execution_feasibility": 8,
+    "demo_impact": 9,
+    "nucleus_rubric": 6,
+    "strongest_point": "The demo's headline numbers are already computed and they reproduce. I reran habit.py, numbers.py and fix.py against the cached data. Habit charging earns $1,405/day and adds 18.4 t CO2. Charging on the timetable earns $4,088/day (2.91x) and removes 18.9 t. The Oct 27 plan is worth $57.54/MW-day, which annualizes to $14,496-17,708 per MW-year. Holding a crash reserve on a battery alone costs 3.4%. The campus shift moves 75 MWh worth $2,551. The engine is a 24-step x 41-level DP that runs in milliseconds in the browser, and the app is static. It has one counterintuitive line a non-expert remembers: overnight is about 50% dirtier (698 vs 468 g/kWh) and 70% pricier ($38.71 vs $22.83). It also has one moment the judge drives: pressing the crash button.",
+    "fatal_flaw_or_biggest_weakness": "The 'habit' baseline is a strawman a Torus engineer can knock down in one sentence (\"our stations don't charge overnight\"). The $1M/yr is arbitrage value at EDAM prices, which neither Torus nor the host is paid today. The crash beat is also 'answered by construction': the judge presses and a light blinks. There is no contrast and no real cost, and the script quotes '38 ms (the measured value)' and '$41' before any code exists. Smaller problems: 8 beats in 3:00 is over budget. In a 30-second 24-hour time-lapse, a 6-minute call lasts 0.125 s, so the crash cannot be seen unless the time-lapse pauses.",
+    "must_fix": [
+     "Never script a number that has not been computed. '38 ms', '$41 of rush-hour value' and the crash card values must come from the engine at runtime, and Tuesday night's figures must be regenerated from the frozen Oct 28 bundle.",
+     "Give the crash a contrast and a real cost. When the judge presses, pause the day time-lapse and play the 6-minute event in an inset at about 70x speed. Show what a Pulse-only plan would have had to give up at that minute (pull out of the jam: the computed reserve cost) next to Spin carrying it while Pulse stays in rush hour. Decide what happens on a second press during an event or inside Spin's refill window.",
+     "Reframe the baseline as 'the off-peak rule' or 'a fixed night-charging schedule', never as Torus's behavior. Ask Torus on Tuesday morning what sets charging today. If the answer is 'Lasso already charges midday', keep the race but call the bottom lane 'what tomorrow's public timetable confirms'.",
+     "Say 'value to the grid at day-ahead prices', not revenue, and have a one-line answer to who captures it (RMP power cost, and the case for growing the program).",
+     "Fix sourcing details. 'Wattsmart allows daily load cycling' comes from RMP's WYOMING DSM plan (torus-cases-a.findings line 9), so say that. Torus's event card read 102% against a 90-100% target, so don't restyle it as 100%. 'Clear lane 9am-5pm at $21.38-28.61' is wrong because the 5pm hour is $34.03: say 9am-4pm. 'Jam 6-10pm at $54.57-55.78' is wrong because 10pm is $54.10: say '$54-56'.",
+     "Cut to 6 beats and rehearse to 2:45: flip cards, ribbon (with the Torus station shown inline, no separate garage beat), race, judge crash, a 15-second AI truck, then close on the big number. The live RTM tile is a bonus, not the close.",
+     "When porting the scratch scripts, rename numbers.py. It shadows Python's stdlib 'numbers' module, and fix.py crashes with a circular import unless it is run with python -I."
+    ]
+   },
+   {
+    "concept_key": "A-torus-fleet",
+    "torus_fit": 9,
+    "creativity": 7,
+    "clarity_of_insight": 7,
+    "execution_feasibility": 4,
+    "demo_impact": 7,
+    "nucleus_rubric": 7,
+    "strongest_point": "It has the best Torus-specific insight and the best single piece of evidence in any concept. Torus's June 2026 ROWE comments (read on source) ask regulators to credit 'controlled and scheduled dispatch', to set standards for 'utility-directed operating envelopes' and to define 'System Critical Hours' transparently. RampMeter's output is exactly that object. The physics line is also correct and checkable: a full-power 5.5-minute call uses about 4.6% of a 0.5C Pulse and about one Spin tank. So the RMP promise is a kW promise, and Pulse cycles (7,500) are the scarce resource.",
+    "fatal_flaw_or_biggest_weakness": "The scope will not survive 43 hours with a solo founder. It needs a 12-site, 96-interval chance-constrained LP over synthetic 15-minute host loads, monthly demand-charge settlement on an unverified third-party transcription of the 2024-25 tariff, 200-scenario Monte Carlo, a 178-day x 12-site x 3-policy backtest, a CO2 ridge, a stress index, 6 screens, two one-pagers, an IEEE 2030.5-shaped envelope and an AI-cluster class. It runs two processes (FastAPI + Vite), and cvxpy is not even installed on this PC. The wow beat compares against a naive policy the team designs to fail. A dense, number-heavy script will lose Nicole Witmyer and the investors on the kW-versus-kWh point.",
+    "must_fix": [
+     "The minimum lovable version is: a traffic report on real DA data, ONE host card plus a fleet total, and ONE injected call shown split screen. On the naive side, the refill lands in the host's peak interval and sets a new monthly peak (kW only, no tariff dollars). On the plan side, Spin carries the call. Cut everything else.",
+     "Replace cvxpy with scipy.optimize (HiGHS ships in the installed scipy 1.18.1), or with a D-style DP. Precompute everything so the stage runs one static process.",
+     "Make the naive policy the one an operator would plausibly run ('refill immediately after the event') and say so out loud, or a judge will call it rigged.",
+     "Show demand-charge outcomes in kW of new peak avoided until the current Schedule 6/8 is verified. The OpenEI transcription lost its season labels.",
+     "Use one number per beat. Lead with the 6-minute-call-versus-full-battery visual, not the cycle-budget arithmetic."
+    ]
+   },
+   {
+    "concept_key": "B-three-way-stack",
+    "torus_fit": 6,
+    "creativity": 8,
+    "clarity_of_insight": 6,
+    "execution_feasibility": 4,
+    "demo_impact": 7,
+    "nucleus_rubric": 8,
+    "strongest_point": "It has the deepest hard tech and two engine modules already run. Every figure I checked matches headroom_output, bandsplit_output and extras_output. On the headroom side: 1,265 MW at 0.5% curtailment, all 184 hours in Jun-Aug afternoons; the 902 MW cohort needs only 61 hours in 22 events; and a 100 MW / 200 MWh Pulse covers 13 of the 22 with no GPU action. On the band-split side, the 0.5-5 Hz band falls from 38.3 to 0.35 MW rms. Pulse life drops from 19.4 to 7.0 years if it absorbs the swing, and raising the GPU floor to 70% burns 518 MWh a day ($5.9-7.2M a year). It is the best Nucleus entry by a wide margin.",
+    "fatal_flaw_or_biggest_weakness": "The wear dial is a loaded gun pointed at the sponsor. On B's own synthetic trace, Spin lasts 14 hours (counting every swing) or 1.2 years (throughput reading) doing the AI-smoothing job Torus markets it for. B's host is an AI campus, the line Torus removed from its site between Aug and Oct 2026. All of the 'seconds' physics rests on a synthetic 50 Hz trace with an assumed 60% synchronized share. The headroom headline is also method-sensitive: the seasonal ceiling gives 500 MW, not 1.27 GW. Building it would take 4 views across 7 timescales, 3 wear models, 84 precomputed combinations, an LP and a July replay. Option 1 is reduced to a context strip.",
+    "must_fix": [
+     "Do not put the Spin wear dial on stage without Torus's definition of the 25,000-cycle rating. Ask Tuesday morning. If there is no answer, move it to Q&A as a model-dependent sensitivity.",
+     "Lead with the utility headroom story (PACE can take new load if it steps back 0.5% of hours, all of them summer afternoons), not with an AI campus.",
+     "Cut to two views: the 10-second Spin toggle with its spectrum, and the July 20 replay showing Pulse, then deferral, then caps.",
+     "Show both ceiling rules side by side, or do not headline 1.27 GW. Never headline 5,347 MW/s.",
+     "Label the synthetic trace on screen in large type. The only sourced anchors are the 0.2-3 Hz band and the 40-100% swing."
+    ]
+   },
+   {
+    "concept_key": "C-compute-router",
+    "torus_fit": 4,
+    "creativity": 5,
+    "clarity_of_insight": 7,
+    "execution_feasibility": 7,
+    "demo_impact": 6,
+    "nucleus_rubric": 5,
+    "strongest_point": "The analysis is honest and verified, and its line is crisp: 'money moves in time, carbon moves in place'. On a 4-hour evening block, waiting for Utah's cheapest hours cut cost about 40%, while moving to the cheapest PacifiCorp/PGE node cut it 8%. Utah was the cheapest node in 81% of October hours. A $25/t carbon weight keeps the 40% cost cut, raises the CO2 cut from 29% to 44%, and drops Utah's share from 89% to 51%. On 24 of 27 October days the day's biggest price jump came at 5 or 6pm. The build is all browser TypeScript, so it is the second-easiest to build.",
+    "fatal_flaw_or_biggest_weakness": "It builds the most crowded hackathon pattern (at least 9 near-identical routers, EuroSys 2024 says the savings are modest) for a sponsor that does not route compute. Its own numbers say the routing it builds is the part that matters least (8% vs 40%). The Torus beat is a synthetic campus with a synthetic oscillation, and the honest timescale table says software fixes the top-of-hour cliff for about $19, which shrinks Torus's role on stage. The herding argument leans on European frequency evidence that was seen only in a search summary.",
+    "must_fix": [
+     "If built at all, make the insight the product: the 'where vs when' chart is the whole demo, and the router is plumbing.",
+     "Cut the '$19 software fixes the cliff' beat, or reframe it so storage is not shrunk on stage.",
+     "Verify the deterministic-frequency-deviation sources on source, or drop the herding claim.",
+     "Torus would need to be the hero, not a toggle on screen 3. That probably means it is a different concept."
+    ]
+   }
+  ],
+  "ranking": [
+   "D-demo-wow",
+   "A-torus-fleet",
+   "B-three-way-stack",
+   "C-compute-router"
+  ],
+  "best_ideas_to_graft": [
+   "From A, the strongest Torus hook in the pile (torus-intel.findings, read on source): name Clearlane's nightly JSON a 'day-ahead operating envelope' that flags 'System Critical Hours'. In June 2026, Torus asked the Western resource adequacy program (ROWE) for standards on utility-directed operating envelopes and for System Critical Hours defined transparently. One sentence in the close: 'In June you asked regulators to define operating envelopes and System Critical Hours. Here is one, built from public data, every night.'",
+   "From A, the kW-not-kWh line for the crash beat: 'A full-power six-minute call uses less than 5% of a Pulse, and it fits Spin's six-minute tank.' It is derived from Torus's 0.5C and 10C specs and fits in one breath.",
+   "From A, the split-screen contrast applied to the judge's crash. Show what the Pulse-only plan gives up at the pressed minute (it pulls out of the jam: the computed reserve cost, 3.4% of daily value in fix.py) next to the Spin-carried plan staying in rush hour. The press then changes something on screen.",
+   "From A, promote the host demand ceiling from D's cut list into the race end card as one line ('and midday charging never sets the host's monthly peak'). It answers the C&I objection, and the constraint is already in D's DP.",
+   "From A and D, keep the heatmap time-zone toggle and never make an hour-of-day claim about calls. Reproduce Torus's event-card metrics exactly as published: 19 s ramp against a 30 s target, 102% delivered against a 90-100% band.",
+   "From C, the 'where' card and the Q&A answer to 'why not route compute across regions?': waiting for Utah's cheapest 4 hours cut a 4-hour evening block's cost about 40%, moving to the cheapest PacifiCorp/PGE node cut it 8%, and Utah was cheapest in 81% of October hours. This is also the honest reason the AI campus is shown as a 'truck that can wait', not a router.",
+   "From C, pinned-number tests: a vitest file asserts that every number on screen and in demo/script.md equals the value computed from the frozen bundle. Tuesday night's Oct 28 regeneration then fails loudly instead of letting the pitch quote Oct 27 figures.",
+   "From C, a ribbon caption: 'On 24 of 27 October days, the day's biggest price jump came at 5 or 6pm.' The jam starts at the same exit every day.",
+   "From B, for the Nucleus deck and Q&A only, not the stage: Duke-style PACE headroom (about 1.27 GW at 0.5% curtailment, every curtailed hour a June-August afternoon; the seasonal-ceiling rule gives 500 MW), and 'Pulse life drops from about 19 to about 7 years if it absorbs AI swings'. Both cover the 20% hard-tech-depth weight without adding build scope.",
+   "From B, the 12-month EIA-930 headroom run is already done (headroom.py). If Nucleus double entry is confirmed, it is a free 'we measured before we built' slide."
+  ],
+  "questions_this_judge_would_ask_on_stage": [
+   "Lasso already forecasts from load, weather and grid signals. What does this do that Lasso doesn't, and would you have to touch our isolated station network to deliver it?",
+   "Who actually charges overnight out of habit? Is your 2.9x a comparison against something any real operator does?",
+   "Who gets paid that $1M a year per 70 MW? The host is on a demand tariff, not the EDAM price, and Wattsmart pays for demand response, not arbitrage.",
+   "How wrong is the day-ahead forecast on a bad day, and what does your plan do when 6pm turns out cheaper than 1pm? What is your backtest error?",
+   "Your CO2 numbers are average generated-basis intensity for a balancing area that exports. Does shifting charging actually avoid 19 tonnes at the margin?",
+   "What happens if a second call lands while Spin is still refilling?",
+   "Does this still work in January, when the midday solar trough is shallow and the morning peak dominates?",
+   "How much of what I just saw is real data, and how much is simulated?",
+   "If Torus never buys this, who is the customer: Rocky Mountain Power, a co-op that schedules against forecasts, or a C&I host?",
+   "Does the same pipeline work for Pacific Power and PGE tomorrow, and what changes besides the node name?"
+  ],
+  "verdict": "Build Clearlane (D), take three things from RampMeter (A), and cut hard.\n\nWhy D. It is the only concept whose stage numbers already exist and reproduce. I reran the scratch scripts on the cached data and got: $1,405 vs $4,088 a day, a 2.91x ratio, -18.4 vs +18.9 t CO2, $57.54/MW-day, $14.5-17.7k per MW-year, a 3.4% reserve cost, and 75 MWh worth $2,551. Its engine is a millisecond DP in a static app with no server on the stage path, so very little can break live. It also has the two things a 3-minute pitch needs: a reversal a non-expert remembers ('a battery is only as clean as the hour it charges'; overnight is about 50% dirtier and 70% pricier on Oct 27's data), and a moment the Torus judge physically drives (the crash button).\n\nWhy not A. RampMeter has the sharper Torus insight and the best evidence, the ROWE envelope and System Critical Hours ask. But as specified it is a 12-site chance-constrained LP, a 178-day Monte Carlo backtest, 6 screens, two one-pagers and an unverified tariff. Solo, that does not reach a rehearsed state by Wednesday at 2pm.\n\nWhy not B or C. B is the best Nucleus entry. On Torus's stage, though, it puts an AI campus (the line Torus just took off its site) in front of a wear dial that can say Spin lasts 1.2 years. C builds the most crowded pattern for a sponsor that does not route compute, and its own data says routing matters least.\n\nGrafts into D:\n1. Call the nightly output an 'operating envelope with System Critical Hours' and cite Torus's June 2026 ROWE comments.\n2. Use A's 'a six-minute call is under 5% of a Pulse and one Spin tank' line in the crash beat.\n3. Make the crash show a computed contrast and cost, not a blinking light. Pause the time-lapse so the 19-second ramp is visible.\n\nNever script an unmeasured number: the '38 ms' and '$41' are placeholders today.\n\nCut D to 6 beats and rehearse to 2:45: flip cards, ribbon, race, judge crash, a 15-second AI truck, then the number.\n\nKeep these out of stage time: C's where-vs-when (Q&A card), B's headroom and Pulse-life (Nucleus deck), the live RTM tile (bonus only), and the Engineer view (Q&A only).\n\nTuesday-morning gates:\n- Ask Torus what sets Pulse charging today. If it is already midday, rename the habit lane and the race still holds.\n- Ask the organizers about double entry.\n\nFreeze the Oct 28 bundle Tuesday night, freeze code at Wednesday 2pm, and record the backup video by 3:30."
+ }
+]

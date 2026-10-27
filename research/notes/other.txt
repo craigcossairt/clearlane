@@ -1,0 +1,153 @@
+
+
+######## prior-art
+## SUMMARY
+The usual entry in this space is a carbon-aware job scheduler: you give it a job and a deadline and it returns the greenest time or region and the CO2 saved. I found at least nine nearly identical ones (GridWise AI, GreenOps Autopilot, GreenQueue, GridCarbon Guardian, Eco Router, CACO, clusy.io, VerdantFlow, CarbonHack22 entries). Research also weakens that pitch. Sukprasert et al. (EuroSys 2024) found the practical savings are modest, simple policies get most of them, and the benefit shrinks as grids get cleaner. Average and marginal carbon signals can also point in opposite directions.
+
+The serious work is already done, and the pieces are held by different players:
+- Emerald AI (with Oracle, NVIDIA and EPRI DCFlex) flexes software only: 25% for 3 hours in Phoenix, and up to 40% in under a minute in London.
+- Google flexes ML workloads under 1 GW of demand-response contracts.
+- Microsoft, OpenAI and NVIDIA smooth training power swings with GPU firmware plus rack storage.
+- Tesla smooths with Megapacks and cites Duke's 0.25% curtailment headroom.
+- Academic papers split the AI load between a battery and a supercapacitor.
+- Torus Lasso already routes each grid event between the flywheel (Spin) and the battery (Pulse).
+
+The open space is a three-way split. No public work I found co-dispatches a fast flywheel, a slower battery and the AI compute itself, with the dividing lines set by the wear cost of each resource. Torus already describes this exact problem on its data-center page (AI swings of tens of MW, sub-synchronous oscillations, Texas SB6 curtailment readiness). The pieces map like this:
+- Sub-second swings, which concentrate at 0.2-3 Hz, go to Spin.
+- Curtailment events, which average 1.7-2.5 hours in the Duke study, go to Pulse.
+- Anything longer goes to the compute: power caps priced with Emerald's public throughput-versus-cap data, or moving and deferring jobs (Option 2).
+
+That design covers Option 1 and Option 2 in one build. It also has a Utah angle: Duke's chart puts PacifiCorp East (Rocky Mountain Power's area) at about 1.5 GW of headroom at 0.5% curtailment.
+## IMPLICATIONS
+- Do not build a plain carbon-aware job router or a carbon-intensity dashboard. Judges have likely seen many, the research undercuts the savings headline, and it does not touch Torus hardware.
+- Build the combined Option 1 plus Option 2 concept as a three-way flexibility stack for an AI campus behind a Torus Station: Spin takes the fast band, Pulse the curtailment-length band, and compute flex (power caps or deferring and moving jobs) takes the rest. That needs both the flywheel and the battery by design, and it extends Torus Lasso's existing split by adding compute, rather than claiming to invent the split.
+- Make the headline insight a wear-priced cutoff: one control or slider showing battery equivalent full cycles per year, Pulse lifetime, compute throughput lost, and grid-side spectral and ramp compliance as the split points move. That is a number a Torus judge can take to a sales call.
+- Use real data where it exists and label the rest synthetic. Real: Emerald's power-cap sweep for the compute cost curve, Emerald's 1-minute SRP trace, Duke's method on PACE EIA-930 hourly data, Open-Meteo weather for stress-hour forecasts. Synthetic (labeled): a 10-100 Hz training oscillation trace with a 0.2-3 Hz fundamental, because the public traces are 1-minute (Emerald) or 100 ms (MIT Supercloud) at best.
+- Frame it in Torus and Rocky Mountain Power language: PACE headroom, Wattsmart virtual power plant events (359 in 2025, less than 1% of hours), Texas SB6 curtailment readiness, sub-synchronous oscillation, fast frequency response. The Utah headroom angle also fits the Nucleus x Startup State bounty (15% of its score is Utah impact).
+- A 44-hour build is feasible as a Python simulator plus a web dashboard: filter-based split with an optional small optimizer, cycle counting for the battery, FFT for compliance, and the Duke curtailment calculation for headroom. No hardware or live control is needed.
+## RISKS
+- Torus Lasso already routes events between Spin and Pulse. Pitching the flywheel/battery split itself as new would be wrong in front of a Torus judge; the new parts are the compute layer, wear pricing and the compliance and headroom analysis.
+- The AI Energy Management Alliance (Sep 2026) already frames flexibility as workloads plus storage plus generation, and Tesla's deck already ties batteries to Duke's 0.25% headroom. The concept is not new; only the three-way co-dispatch and the flywheel-specific analysis are.
+- The battery-wear argument has contrary evidence: Vertiv saw no degradation over 300+ hours at about 20% smoothing. An honest cycle count may show a smaller benefit than Torus's marketing claims, so present it as a measured result, not a sales pitch.
+- S4 Energy's Almelo flywheel-battery hybrid was converted to a 4-hour Tesla battery in 2025. A judge may know of hybrid flywheel projects that did not last.
+- High-frequency AI power data is scarce in public. The flywheel band will rest on synthetic data and must be labeled that way per the rules.
+- Torus marketing numbers vary across pages (10C, '20x battery power', '10x faster', 'lasts twice as long'). Quote one source per number.
+- The Tesla data-center deck is marked 'Proprietary and Confidential' even though it sits at a public Tesla URL. Cite with care, or rely on the Tesla X post and the NERC workshop slides instead.
+- Data access: WattTime absolute marginal-emissions data is free only for CAISO_NORTH, the Electricity Maps free tier is non-commercial, and the EIA API needs a free key that I did not register (bulk EIA-930 CSV downloads may avoid the key; not verified).
+## OPEN QUESTIONS
+- What is the energy capacity (kWh) of one Torus Spin unit? It sets how long the flywheel band can last and where the flywheel-to-battery cutoff can physically sit. Not found on the pages I read.
+- Is Torus's 25,000-cycle rating for full cycles, and how does Spin wear under 1-30 Hz micro-cycling?
+- Does Torus Lasso already talk to GPU or workload schedulers (Slurm, Kubernetes, GPU power capping)? If it does, the compute layer is less novel. Worth asking the Torus judge.
+- Is any public log of Rocky Mountain Power Wattsmart dispatch events available to drive a realistic demo, or must events be synthesized from PACE EIA-930 peaks?
+- Can the EIA-930 bulk CSV files for PACE through 2026 be downloaded without an API key? Not tested.
+- What are the Flex MOSAIC class definitions (A-E)? The EPRI table did not extract; it is needed to label which class a Torus plus compute site would qualify for.
+- Do the public MIT Supercloud or training-power-trace-explorer traces show the 0.2-3 Hz training oscillation clearly enough to drive the flywheel band, or is synthetic data unavoidable?
+
+
+######## tooling
+## SUMMARY
+Claude Science is real and Craig can use it. Anthropic launched it on June 30, 2026 as a beta desktop research workbench. It writes and runs Python, R and shell code in a sandbox with persistent kernels, and it has connectors, a literature-review skill and a background reviewer that flags numbers it cannot trace. Results are saved as versioned artifacts with a provenance record. It is included in Team plans but off by default: an Owner or Primary Owner has to turn it on in Organization settings > Claude Science. The current docs list Windows 11 x64 support. It is not a coding harness for a repo, so for this hackathon it fits only a side lane: checking the forecast or scheduler against historical public data, and producing traceable charts and a cited literature brief for the pitch.
+
+For the build, all five harnesses now support isolated parallel work and read AGENTS.md:
+- **Claude Code:** worktrees, subagents, dynamic workflows (16 concurrent agents by default) and cloud sessions on Team. Agent teams are experimental and do not isolate teammates in worktrees.
+- **Cursor 3:** Agents Window, worktrees, /best-of-n, cloud VMs (Premium+ or Teams plan), plus Design Mode and a browser for UI work.
+- **Codex:** managed worktrees, cloud best-of-N (1-4 attempts) and non-interactive review.
+- **Grok Build:** subagents in worktrees and workflows of 128 agents (up to 1,024).
+- **OpenCode:** any model, with built-in worktree tools since Oct 12.
+
+Vals Terminal-Bench 4.0 puts Claude Opus 5.5 first; mirrored leaderboards put Grok 4.7 well below.
+
+Recommended pattern: contract first, then fan out. In the first 3 hours one integrator commits the types and schemas, fixtures labeled as simulated, a stub API, a demo script and fast green checks. Then work splits into lanes by directory (data adapters, engine, UI, pitch). Each lane belongs to one human running 2-3 agents in separate worktrees. Integration happens about every 4 hours, merging producers before consumers, with an end-to-end demo check after each merge. Code freezes around Wed 2pm. Use Trellis, slimmed down. Its adapters for four harnesses, worktree protocol and push gate fit this setup, but its AGENTS.md is 31,892 bytes, so trim it to stay under Codex's 32 KiB cap.
+## IMPLICATIONS
+- Claude Science: Craig (if he is the Team Owner) turns it on and gives it to ONE side lane with a 30-minute setup timebox. Its deliverables are a backtest of the forecast or scheduler on historical public data, 2-3 provenance-traced charts for the deck, and a cited literature brief on flywheel frequency response and data-center flexibility. Keep it off the critical path, and drop it if setup stalls. It draws on the same Team usage as Claude Code.
+- Harness roles:
+- Claude Code (Opus 5.5) is the orchestrator and integrator and owns the engine lane (congestion score, forecast, scheduling or dispatch optimizer), plus final review.
+- Cursor owns the UI and demo lane (Design Mode, browser checks, /best-of-n for 2-3 dashboard variants).
+- Codex owns the data adapters and tests: one adapter per source, `codex cloud exec --attempts 2-4` overnight, and `codex review` as the cross-family reviewer on Claude-written engine PRs.
+- Grok Build reviews and researches: a workflow PR review before each integration merge and /deep-research for pitch facts. Keep it off the critical path.
+- OpenCode is overflow only, for when a vendor's rate limit hits.
+- Hour 0-3 (Mon night), one integrator commits a contract before anyone fans out:
+- shared types and JSON schemas for the core objects (e.g. GridSignal {region, ts, price, carbon_intensity, load, congestion_score, source, simulated}, Job or Asset, Recommendation or DispatchPlan);
+- fixture files labeled simulated;
+- a stub API that returns the fixtures;
+- a written 3-minute demo script;
+- GREEN_COMMANDS limited to fast typecheck plus unit tests (under about 60 seconds).
+Every lane branches from that commit.
+- Use mock data first. The UI and engine build against fixtures from hour 3, and a DATA_MODE=fixture|cached|live switch moves to real data. Capture a cached snapshot of real data Tuesday night, and make that cached mode the default for judging, so a failed live API cannot sink the demo.
+- Lanes by directory, each with a single owner:
+- contracts/: integrator only;
+- data/: one file per source;
+- engine/: forecast and optimizer;
+- app/: the UI;
+- pitch/ and demo/.
+Each human runs at most 2-3 agents at once, each in its own worktree and branch named lane/harness/task. Review capacity, not agent count, is the limit.
+- Merge-conflict rules:
+- contract changes come only from the integrator, as a separate PR merged first and announced with the exact diff (vague heads-up warnings were shown not to help);
+- dependency and lockfile changes go only through the integrator;
+- no shared registry or 'god' files: one file per feature, auto-discovered;
+- small PRs, and agents never push to another agent's branch.
+- Integration trains run about every 4 hours (e.g. Tue 9am, 1pm, 5pm, 9pm; Wed 9am, noon). Each merges in producer-to-consumer order (contracts, data, engine, UI), then runs the end-to-end demo script against fixtures, so main is always demoable. Code freezes Wed ~2pm with bug fixes only after that, a backup demo video is recorded by ~3:30pm, and the team rehearses before the 5pm judging.
+- Use Trellis, slimmed down:
+- keep AGENTS.md (trimmed to the hackathon's own facts, contracts, lane map and commands), the CLAUDE.md import, the Claude/Cursor/Grok/Codex adapters, worktree.md and the pre-push gate;
+- delete brain/, daily-brief, launch-check and the other skills that do not apply;
+- keep combined AGENTS.md under 32 KiB for Codex, and fix the Git Bash path on Windows;
+- branch-claim leases are optional: worth keeping if several agent sessions share one git identity on one machine, skippable if the lane/harness/task naming rule is enforced.
+- Do not build the plan on Claude Code agent teams (experimental, no worktree isolation, resume issues). Use plain worktree sessions or agent view, plus dynamic workflows only for fan-out research or review.
+- Spread parallel load across vendors so no single plan's limits throttle the critical path, since agent teams and workflows multiply token use.
+## RISKS
+- Claude Science is in beta, its Windows support is newer than launch, setup needs about 5 GB and several minutes, and only an Owner or Primary Owner can enable it. Its usage competes with Claude Code on the same Team plan.
+- Cloud agents (Cursor, Codex, Claude Code cloud) need the repo on GitHub and an environment set up. Cursor cloud needs a Premium+ or Teams plan. First-time setup on hackathon night can eat hours.
+- Running more agents than the humans can review moves the bottleneck to integration. Semantic conflicts can merge cleanly and still break behavior, so every integration merge needs an end-to-end check.
+- Codex silently cuts off project instructions past 32 KiB, and Trellis's AGENTS.md is already at 31,892 bytes.
+- On Windows, hook configs that call a bare `bash` can resolve to WSL and fail in confusing ways. OpenCode has no Trellis hook adapter, so only the git pre-push gate guards it.
+- The benchmark numbers come partly from third-party mirrors (benchlm). The official tbench.ai board did not render for me, and the harness-to-task fits are my judgment, not measurements.
+- The arXiv coordination result is a preprint with hand-built scenarios and small samples. It supports the principle but does not give a precise effect size.
+- Live public data APIs can fail or rate-limit during judging, so the demo needs a cached-data fallback.
+## OPEN QUESTIONS
+- Is Craig an Owner or Primary Owner of the Claude Team org? Only that role can turn on Claude Science.
+- Which Cursor plan does the team have (cloud agents need Premium+ or Teams), which SuperGrok or X tier for Grok Build, and which ChatGPT plan for Codex cloud?
+- How many humans are on the team, which OS does each use, and which harness does each prefer?
+- Do the hackathon rules require a public or open-source repo, and is starting from a template (Trellis) allowed? Cloud agents need the repo on GitHub.
+- Stack choice (TypeScript/Next vs Python) decides the contract format and the GREEN_COMMANDS.
+- What does Torus define as winning? Sponsors set their own criteria, and that should shape which lane gets the most effort.
+
+
+######## trellis-eval
+## SUMMARY
+Recommendation: use a stripped subset of Trellis. Take its guardrail hooks and harness adapters and write a new ~50-line AGENTS.md of your own. Do not use the full template. The model for that AGENTS.md is the one Craig wrote for his last hackathon, 3 days ago. That repo (C:/Users/Craig Cossairt/Code/ai-visibility-check, Codex DevDay, code freeze Oct 24) had a 31-line AGENTS.md with a lanes table that gave each of Codex, Cursor, Grok Build and Claude Code a branch, the files it owns and a done-when line, and one command to run before pushing.
+
+What Trellis is good for: one set of canonical hook scripts covers Claude, Cursor, Grok and Codex. They block edits to .env, secrets and lock files, format edited files, and inject git context at session start. That matters here because the data lane will hold API keys in .env. The rest is a poor fit for 44 hours:
+- The 468-line AGENTS.md tells every agent to stop and confirm test seams before writing any test, to open draft PRs reviewed in a fresh context and by a second model, to attach before/after media to every PR, and to run the claim/lease protocol.
+- The branch-claim check in the pre-push hook is on by default. It goes to the network on every push and blocks when it cannot tell.
+- The 1,244-line hooks-ci.yml runs Linux and Windows jobs. Its steps assume the full template, so removing files without editing the workflow turns it red.
+
+Setup time (my estimate, not measured): full template with all four harnesses wired and checked on Windows, 45-75 minutes. Stripped subset, 20-30 minutes. Plain repo, 10-15 minutes, but then nothing enforces the rules.
+
+Trellis does not assume a stack, so Python plus TypeScript works. On this PC, though, ruff and black are not installed, so Python formatting quietly does nothing until ruff is. Prettier runs only if it is a project devDependency. A WSL bash.exe exists, so the Cursor and Grok hook files need Git Bash's full path.
+
+Craig's own history cuts both ways. start-school ran full Trellis v1.3.1 with the push gate on and recorded 173 commits and 55 merges in about 23 hours. So the full template does not block speed, but the recent multi-harness hackathon used the lighter lanes pattern.
+## IMPLICATIONS
+- Recommended path: a stripped subset. Do not click 'Use this template'. That would copy all 124 files plus .trellis/manifest and hooks-ci.yml, and pruning would then turn CI red. Instead, create a plain repo and copy the guardrail subset from the local trellis checkout.
+- KEEP these files from C:/Users/Craig Cossairt/Code/trellis: .claude/settings.json (delete the UserPromptSubmit brain block); .claude/hooks/block-sensitive-files.sh, format-on-edit.sh, hook-file-path.sh, session-start.sh; bin/run-claude-hook.sh; .cursor/hooks.json (delete beforeSubmitPrompt); .cursor/rules/project.mdc (delete the verify-green sentence); .grok/config.toml; .grok/hooks/hooks.json (delete UserPromptSubmit); .codex/hooks.json, .codex/hooks.py, .codex/README.md (no edits); .claude/skills/grill-design and .claude/skills/launch-check, plus their routers in .cursor/skills/ and .agents/skills/; .gitattributes (forces LF on .sh, which matters on Windows); .gitignore; .env.example; CLAUDE.md; DESIGN.md; docs/decision-log.md and docs/common-gotchas.md (clear the example rows).
+- DROP: .githooks/, bin/verify-green.sh, bin/install-git-hooks.sh, bin/claim-branch.sh, bin/check-*.sh, bin/trellis-*.sh, bin/validate-codex.py, bin/tests/, .github/** (hooks-ci, PR template, copilot), brain/, examples/, .trellis/, SETUP.md, README.md (write your own), CREDITS.md (put one credit line in the README instead), LICENSE (choose your own), .mcp.json.example, GEMINI.md, docs/methodology/**, the other docs/*.md files, .claude/commands/** (tdd, bug-report and worktree hard-wire seam confirmation and the claim protocol), .claude/agents/security-reviewer.md, and the other 10 skills with their routers.
+- Steps (Git Bash): (1) cd '/c/Users/Craig Cossairt/Code' && gh repo create craigcossairt/<name> --private --clone && cd <name> (flip to public for judging if needed); T='/c/Users/Craig Cossairt/Code/trellis'. (2) mkdir -p .claude/hooks .claude/skills bin .cursor/rules .cursor/skills .grok/hooks .codex .agents/skills docs; then cp "$T"/.claude/hooks/{block-sensitive-files.sh,format-on-edit.sh,hook-file-path.sh,session-start.sh} .claude/hooks/; cp "$T"/.claude/settings.json .claude/; cp -r "$T"/.claude/skills/{grill-design,launch-check} .claude/skills/; cp -r "$T"/.cursor/skills/{grill-design,launch-check} .cursor/skills/; cp -r "$T"/.agents/skills/{grill-design,launch-check} .agents/skills/; cp "$T"/bin/run-claude-hook.sh bin/; cp "$T"/.cursor/hooks.json .cursor/; cp "$T"/.cursor/rules/project.mdc .cursor/rules/; cp "$T"/.grok/config.toml .grok/; cp "$T"/.grok/hooks/hooks.json .grok/hooks/; cp "$T"/.codex/{hooks.json,hooks.py,README.md} .codex/; cp "$T"/{.gitattributes,.gitignore,.env.example,CLAUDE.md,DESIGN.md} .; cp "$T"/docs/{decision-log.md,common-gotchas.md} docs/.
+- Steps, continued: (3) Remove the brain entries from .claude/settings.json, .cursor/hooks.json and .grok/hooks/hooks.json. In the Cursor and Grok JSON, replace the leading `bash` with `\"C:/Program Files/Git/bin/bash.exe\"`. Skip this edit, and keep bare bash, if any teammate runs Cursor or Grok on a Mac. (4) Run `uv tool install ruff` and add prettier as a devDependency, or formatting does nothing. If you use uv or pnpm, add `uv\\.lock$|pnpm-lock\\.yaml$` to LOCKS in block-sensitive-files.sh. (5) Replace .env.example with one line per key the data lane needs. Add .venv/, .next/ and the data cache folder to .gitignore. Edit the Quick References lines in session-start.sh so they point at AGENTS.md.
+- Steps, continued: (6) Write a ~50-line AGENTS.md on the ai-visibility-check model: what it is; stack; a lanes table (harness, branch <harness>/<lane>, owned paths, done-when); Claude Code integrates and merges; one verify command before every push; keys from env only; free/open data only; every number on screen says what it counts and is labeled SIMULATED where it is; a DEMO_MODE=replay that reads cached fixtures so the stage demo never depends on a live API. Add an explicit hackathon-mode line: no seam-confirmation stops, no draft-PR review ritual, no before/after media; tests only for the scoring/routing core. (7) Optional: a ~20-line .github/workflows/ci.yml that runs pytest plus the TS typecheck/test/build on PRs, in place of the push gate.
+- Steps, continued: (8) Commit and push main. Trust the hooks in each harness: Cursor workspace trust, Grok /hooks-trust, Codex trust the project and review the 4 definitions in /hooks. In each harness, ask the agent to edit a dummy .env and confirm the hook blocks it; an agent declining in prose does not prove the hook ran. (9) Create one worktree per lane, e.g. git worktree add ../<name>-codex -b codex/<lane>, and start each harness in its own worktree.
+- If Craig would rather take the full template: leave GREEN_COMMANDS empty (push gate off), delete bin/claim-branch.sh (pre-push treats its absence as off) along with its two suites, delete .github/workflows/hooks-ci.yml, and add a hackathon-mode override at the top of AGENTS.md that suspends the TDD, PR-review, before/after-media and claim rules. That is more editing than the subset path and still loads a 468-line rule file into every session.
+- Pitch angle: 'four coding agents in parallel lanes, under the open-source Trellis guardrails' is a credible line about engineering method for judges who say they weigh engineering skill.
+## RISKS
+- Committing the Windows Git Bash path into .cursor/hooks.json and .grok/hooks/hooks.json breaks those hooks for any teammate on a Mac. Committing bare `bash` risks WSL on this PC.
+- Cursor and Grok fail open if block-sensitive-files.sh is missing or misnamed (run-claude-hook.sh returns allow). A copy mistake would silently disable the .env guard there, so the deliberate-violation check in each harness is required.
+- Codex edit hooks cover only apply_patch. Shell writes get past the sensitive-file check, and any edit to .codex/hooks.json needs re-trust in /hooks.
+- Full-template risk: the claim layer is on by default and blocks pushes when offline, when user.email is unset, or when a human teammate's commits are on the same feature branch. Agents may lose time on bypass variables.
+- Full-template risk: if Trellis is pruned without editing hooks-ci.yml, a public repo shows red CI to judges (the missing CREDITS.md or recommended-tooling.md step exits 1; the claim-branch suite steps are unconditional).
+- Full-template risk: the 468-line AGENTS.md tells every agent to stop and confirm test seams, open draft PRs with second-model review, and attach before/after media. Across 4 agents this could cost hours.
+- Two TDD/learn workflows are installed at user level (mattpocock-skills and gstack in Craig's plugin set), and Trellis's own docs flag them as colliding with its /tdd and /learn. Dropping .claude/commands/tdd.md in the subset removes that collision inside the repo.
+- Setup-time numbers are estimates, not measurements.
+## OPEN QUESTIONS
+- Are there human teammates, and on which OS and harness? That decides whether to commit the Git Bash path and whether the claim check matters.
+- Do the hackathon rules require a public repo, or a repo link, for judging?
+- Which stack: Python (uv or poetry) backend plus a TS frontend (npm, pnpm or bun)? That sets the formatter installs and the lock-file patterns.
+- Does Craig remember the full-Trellis start-school sprint as fast or as slow? The commit counts show throughput but not friction.
+- Should the subset ship a tiny app CI workflow, or rely only on the AGENTS.md pre-push command as ai-visibility-check did?

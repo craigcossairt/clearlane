@@ -1,0 +1,43 @@
+hours 8759  window 2025-10-26 01:00:00 -> 2026-10-26 00:00:00  cleaned 1 bad hours  peak 10173 MW at 2026-07-20 17:00:00
+
+=== ceiling rule: annual ===
+ rate 0.25%: headroom 1,016 MW | curtailed hours 93 | events 32 | mean dur 2.91 h | max dur 8 h | hours needing <=50% curtail 88% | largest event energy 5,263 MWh
+   months {'Jul': 66, 'Aug': 27}
+   hour-ending local {13: 5, 14: 9, 15: 11, 16: 15, 17: 19, 18: 21, 19: 12, 20: 1}
+ rate 0.50%: headroom 1,265 MW | curtailed hours 184 | events 47 | mean dur 3.91 h | max dur 11 h | hours needing <=50% curtail 90% | largest event energy 7,489 MWh
+   months {'Jun': 9, 'Jul': 124, 'Aug': 51}
+   hour-ending local {12: 3, 13: 8, 14: 15, 15: 28, 16: 27, 17: 34, 18: 37, 19: 26, 20: 4, 21: 1, 22: 1}
+ rate 1.00%: headroom 1,616 MW | curtailed hours 311 | events 58 | mean dur 5.36 h | max dur 12 h | hours needing <=50% curtail 88% | largest event energy 11,368 MWh
+   months {'Jun': 25, 'Jul': 187, 'Aug': 99}
+   hour-ending local {11: 3, 12: 8, 13: 19, 14: 36, 15: 41, 16: 46, 17: 49, 18: 47, 19: 38, 20: 17, 21: 4, 22: 3}
+
+=== ceiling rule: seasonal ===
+ rate 0.25%: headroom 359 MW | curtailed hours 61 | events 24 | mean dur 2.54 h | max dur 7 h | hours needing <=50% curtail 70% | largest event energy 1,342 MWh
+   months {'Dec': 23, 'Jan': 21, 'Feb': 2, 'May': 9, 'Jul': 6}
+   hour-ending local {8: 2, 9: 3, 10: 3, 11: 3, 12: 1, 13: 3, 14: 5, 16: 3, 17: 5, 18: 9, 19: 8, 20: 10, 21: 3, 22: 2, 23: 1}
+ rate 0.50%: headroom 500 MW | curtailed hours 155 | events 52 | mean dur 2.98 h | max dur 14 h | hours needing <=50% curtail 83% | largest event energy 2,773 MWh
+   months {'Dec': 55, 'Jan': 59, 'Feb': 7, 'Mar': 2, 'May': 21, 'Jul': 11}
+   hour-ending local {7: 1, 8: 4, 9: 6, 10: 8, 11: 8, 12: 8, 13: 5, 14: 6, 15: 8, 16: 11, 17: 8, 18: 27, 19: 24, 20: 14, 21: 11, 22: 4, 23: 2}
+ rate 1.00%: headroom 649 MW | curtailed hours 328 | events 94 | mean dur 3.49 h | max dur 18 h | hours needing <=50% curtail 84% | largest event energy 4,967 MWh
+   months {'Nov': 3, 'Dec': 114, 'Jan': 132, 'Feb': 25, 'Mar': 4, 'May': 27, 'Jul': 19, 'Aug': 1, 'Oct': 3}
+   hour-ending local {0: 1, 7: 3, 8: 15, 9: 17, 10: 22, 11: 18, 12: 19, 13: 17, 14: 13, 15: 15, 16: 17, 17: 22, 18: 45, 19: 37, 20: 33, 21: 21, 22: 10, 23: 3}
+
+new load 300 MW (annual): rate 0.023% | curtailed hours 5 | events 3 | mean dur 1.67 h | max dur 3 h | max event energy 564 MWh | max curtail depth 300 MW
+
+new load 300 MW (seasonal): rate 0.184% | curtailed hours 41 | events 17 | mean dur 2.41 h | max dur 7 h | max event energy 1,034 MWh | max curtail depth 300 MW
+
+new load 902 MW (annual): rate 0.171% | curtailed hours 61 | events 22 | mean dur 2.77 h | max dur 8 h | max event energy 4,355 MWh | max curtail depth 902 MW
+
+new load 902 MW (seasonal): rate 2.576% | curtailed hours 868 | events 160 | mean dur 5.42 h | max dur 19 h | max event energy 9,481 MWh | max curtail depth 902 MW
+
+new load 2,602 MW (annual): rate 3.003% | curtailed hours 827 | events 101 | mean dur 8.19 h | max dur 15 h | max event energy 24,795 MWh | max curtail depth 2,602 MW
+
+new load 2,602 MW (seasonal): rate 26.322% | curtailed hours 5758 | events 226 | mean dur 25.48 h | max dur 2564 h | max event energy 3,586,234 MWh | max curtail depth 2,602 MW
+
+300 MW campus slice of 902 MW cohort (annual ceiling): per-event (hours, MWh, peak MW):
+   [(4, 291, 124), (1, 15, 15), (1, 16, 16), (2, 143, 134), (3, 167, 96), (3, 287, 105), (5, 587, 209), (2, 22, 20), (2, 40, 23), (8, 1448, 300), (6, 363, 108), (2, 36, 19), (1, 77, 77), (2, 302, 204), (2, 75, 67), (1, 1, 1), (1, 10, 10), (1, 3, 3), (5, 314, 80), (3, 27, 20), (3, 220, 84), (3, 55, 54)]
+   Pulse 25 MW / 50 MWh (0.5C): covers 16% of curtailed energy (4498 MWh/yr); residual to compute 3761 MWh/yr
+   Pulse 50 MW / 100 MWh (0.5C): covers 29% of curtailed energy (4498 MWh/yr); residual to compute 3211 MWh/yr
+   Pulse 75 MW / 150 MWh (0.5C): covers 40% of curtailed energy (4498 MWh/yr); residual to compute 2695 MWh/yr
+   Pulse 100 MW / 200 MWh (0.5C): covers 50% of curtailed energy (4498 MWh/yr); residual to compute 2249 MWh/yr
+   Pulse 150 MW / 300 MWh (0.5C): covers 65% of curtailed energy (4498 MWh/yr); residual to compute 1567 MWh/yr

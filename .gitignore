@@ -1,0 +1,25 @@
+# Secrets: never commit real values
+.env
+.env.*
+!.env.example
+.mcp.json
+*.pem
+*.key
+
+# Dependencies and build output
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.vite/
+coverage/
+
+# Tool output that is regenerated, not reviewed
+tools/out/
+
+# Local agent state
+.claude/settings.local.json
+
+# OS noise
+.DS_Store
+Thumbs.db

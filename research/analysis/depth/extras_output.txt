@@ -1,0 +1,19 @@
+902 MW cohort, ceiling 10173 MW: 22 events
+  2026-07-20 13:00:00 HE -> 2026-07-20 20:00:00 HE: 8 h, 4,355 MWh, peak 902 MW (300 MW campus slice: 1,448 MWh)
+  2026-07-13 15:00:00 HE -> 2026-07-13 19:00:00 HE: 5 h, 1,766 MWh, peak 627 MW (300 MW campus slice: 587 MWh)
+  2026-07-21 14:00:00 HE -> 2026-07-21 19:00:00 HE: 6 h, 1,092 MWh, peak 324 MW (300 MW campus slice: 363 MWh)
+  2026-08-10 13:00:00 HE -> 2026-08-10 17:00:00 HE: 5 h, 943 MWh, peak 241 MW (300 MW campus slice: 314 MWh)
+  2026-07-31 17:00:00 HE -> 2026-07-31 18:00:00 HE: 2 h, 908 MWh, peak 614 MW (300 MW campus slice: 302 MWh)
+  2026-07-06 16:00:00 HE -> 2026-07-06 19:00:00 HE: 4 h, 874 MWh, peak 374 MW (300 MW campus slice: 291 MWh)
+
+Oct 27 DA LMP PACE: mean $38.22, min $21.38, max $55.78
+  floor 40%->55%: wastes 10.8 MW avg = 259 MWh/day = $3.62M/yr at Oct 27 DA mean $38.22; Spin power needed falls to 75%
+  floor 40%->55%: wastes 10.8 MW avg = 259 MWh/day = $2.93M/yr at July 2026 DA mean $31.01; Spin power needed falls to 75%
+  floor 40%->70%: wastes 21.6 MW avg = 518 MWh/day = $7.23M/yr at Oct 27 DA mean $38.22; Spin power needed falls to 50%
+  floor 40%->70%: wastes 21.6 MW avg = 518 MWh/day = $5.87M/yr at July 2026 DA mean $31.01; Spin power needed falls to 50%
+  floor 40%->85%: wastes 32.4 MW avg = 778 MWh/day = $10.85M/yr at Oct 27 DA mean $38.22; Spin power needed falls to 25%
+  floor 40%->85%: wastes 32.4 MW avg = 778 MWh/day = $8.80M/yr at July 2026 DA mean $31.01; Spin power needed falls to 25%
+
+Pulse 100 MW/200 MWh, 2 h charge at $21.46 avg, 2 h discharge at $55.62 avg, RTE 0.90 (assumed): $5,718 for Oct 27
+100 MW: 13 of 22 events need no GPU flex; total hours 61
+150 MW: 17 of 22 events need no GPU flex; total hours 61

@@ -1,0 +1,464 @@
+<title>Clearlane Build Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f6f5f1; --surface:#ffffff; --surface-2:#efede7; --ink:#1b1c1e; --muted:#5a5d63; --line:#dedbd3;
+  --clear:#1d8457; --shoulder:#b97d0c; --jam:#bf3a29; --solar:#d99a00; --accent:#1c5bb8;
+  --clear-soft:#e3f2ea; --jam-soft:#f8e6e2; --shoulder-soft:#f6eedb;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#111316; --surface:#191c20; --surface-2:#20242a; --ink:#ebeae6; --muted:#a2a6ad; --line:#2d3239;
+    --clear:#3cbf84; --shoulder:#e2a73c; --jam:#ee6b58; --solar:#f0c04c; --accent:#7ea9ff;
+    --clear-soft:#16291f; --jam-soft:#2e1a17; --shoulder-soft:#2b2414;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#111316; --surface:#191c20; --surface-2:#20242a; --ink:#ebeae6; --muted:#a2a6ad; --line:#2d3239;
+  --clear:#3cbf84; --shoulder:#e2a73c; --jam:#ee6b58; --solar:#f0c04c; --accent:#7ea9ff;
+  --clear-soft:#16291f; --jam-soft:#2e1a17; --shoulder-soft:#2b2414;
+}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 "IBM Plex Sans",system-ui,sans-serif;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:32px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{line-height:1.2;margin:0}
+h1{font-size:clamp(34px,6vw,52px);font-weight:700;letter-spacing:-0.02em}
+h2{font-size:24px;font-weight:600;letter-spacing:-0.01em}
+h3{font-size:16px;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:0.9em}
+section{display:flex;flex-direction:column;gap:16px}
+.lede{font-size:19px;color:var(--muted);max-width:720px}
+.status{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--muted);font-size:14px}
+.status b{color:var(--ink);font-weight:600}
+.road{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--shoulder) 0 33%,var(--clear) 33% 70%,var(--shoulder) 70% 72%,var(--jam) 72% 96%,var(--shoulder) 96%)}
+.verdict{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--clear);border-radius:10px;padding:20px 22px;display:flex;flex-direction:column;gap:12px}
+.verdict p.big{font-size:18px;font-weight:500}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.chartbox{overflow-x:auto}
+.chartbox svg{display:block;width:100%;min-width:560px;height:auto}
+.grid{stroke:var(--line);stroke-width:1}
+.ax{fill:var(--muted);font:11px "IBM Plex Sans",system-ui,sans-serif}
+.ax.lbl{font-weight:600;fill:var(--ink)}
+.b-clear{fill:var(--clear)} .b-shoulder{fill:var(--shoulder)} .b-jam{fill:var(--jam)}
+.call{fill:var(--ink);font:600 12px "IBM Plex Mono",ui-monospace,monospace}
+.solar-area{fill:var(--solar);opacity:.22}
+.solar-line{fill:none;stroke:var(--solar);stroke-width:2}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.caption{font-size:13px;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.tile .n{font:600 26px/1.15 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:-0.02em}
+.tile .n small{font-size:15px;color:var(--muted);font-weight:500}
+.tile p{font-size:13.5px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.cards .card p{font-size:14px}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-weight:600;background:var(--surface-2);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.t{font-family:"IBM Plex Mono",ui-monospace,monospace;white-space:nowrap;color:var(--muted);font-size:13px}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.node{flex:1 1 150px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;font-size:13.5px}
+.node b{font-size:14px}
+.node .who{color:var(--muted);font-size:12.5px}
+.node.real{border-top:3px solid var(--clear)} .node.derived{border-top:3px solid var(--accent)}
+.arrow{align-self:center;color:var(--muted);font-size:18px}
+@media (max-width:640px){.arrow{display:none}.node{flex-basis:100%}}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.keep{border-top:3px solid var(--clear)} .drop{border-top:3px solid var(--jam)} .fix{border-top:3px solid var(--shoulder)}
+.cls{font:500 12px "IBM Plex Mono",ui-monospace,monospace;white-space:nowrap}
+.cls.real{color:var(--clear)} .cls.sim{color:var(--jam)} .cls.pub{color:var(--accent)} .cls.asm{color:var(--shoulder)} .cls.der{color:var(--muted)}
+.day{display:flex;flex-direction:column;gap:8px}
+.never{background:var(--clear-soft);border-radius:10px;padding:14px 16px;font-size:14px}
+ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.ask{background:var(--shoulder-soft);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.src{font-size:13.5px;color:var(--muted)}
+.src li{word-break:break-word}
+</style>
+
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:14px">
+  <h1>Clearlane</h1>
+  <p class="lede">Build plan for the Torus bounty, Energy × AI Infrastructure, at the Hard Tech Hackathon. Code freeze Wed Oct 28 at 2pm, judging at 5pm MT.</p>
+  <div class="road" aria-hidden="true"></div>
+  <div class="status"><span>Drafted <b>Mon Oct 26, 10:40pm MT</b></span><span>Status <b>waiting on your go to scaffold the repo</b></span></div>
+</header>
+
+<section>
+  <h2>The call</h2>
+  <div class="verdict">
+    <p class="big">Build Option 1, “Rush hour for electrons,” as the spine. Option 2 overlaps only through its “when” half, so it rides along as one closing card: in Utah, compute should follow the sun in time, not in space.</p>
+    <p>Clearlane is a day planner for Torus-style stations on Utah’s grid. It fills up in the midday clear lane, stays off the road in the 6pm jam, and keeps Spin ready for Rocky Mountain Power’s calls, all inside an hourly operating envelope RMP can audit.</p>
+  </div>
+  <div class="two">
+    <div class="card">
+      <h3>Why Option 1 leads</h3>
+      <ul>
+        <li>Torus earns on utility-dispatched storage: 359 RMP calls in 2025, up from 137 in 2024.</li>
+        <li>Its CTO already describes the grid as a freeway at 5pm on a Friday.</li>
+        <li>In June 2026 Torus asked Utah regulators to standardize operating envelopes and define System Critical Hours. Clearlane exports that artifact.</li>
+        <li>It won the concept tally at 8.15 against 7.03, 6.44 and 5.95, and the Torus-lens judge’s grafts are folded in.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why Option 2 is only a card</h3>
+      <ul>
+        <li>About nine near-identical carbon-aware job routers already exist; a EuroSys 2024 study found their savings modest.</li>
+        <li>Torus does not route compute, and its data-center pages return 404 as of Oct 26.</li>
+        <li>In October, shifting a block of load in time saved 40-41%; shifting it to another node saved 8%. PACE was the cheapest node in 81% of hours.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Utah’s rush hour is 6pm, and the clear lane is midday</h2>
+  <div class="card">
+    <div class="chartbox">
+      <svg viewBox="0 0 720 296" role="img" aria-label="PACE day-ahead price for Oct 27 by hour, lowest at $21.38 in the 3pm hour and highest at $55.78 at 6pm, with the solar forecast peaking around 2.2 GW at midday and falling to zero by 7pm">
+<line class="grid" x1="48" x2="708" y1="176.0" y2="176.0"/>
+<text class="ax" x="42" y="180.0" text-anchor="end">$0</text>
+<line class="grid" x1="48" x2="708" y1="126.0" y2="126.0"/>
+<text class="ax" x="42" y="130.0" text-anchor="end">$20</text>
+<line class="grid" x1="48" x2="708" y1="76.0" y2="76.0"/>
+<text class="ax" x="42" y="80.0" text-anchor="end">$40</text>
+<line class="grid" x1="48" x2="708" y1="26.0" y2="26.0"/>
+<text class="ax" x="42" y="30.0" text-anchor="end">$60</text>
+<rect class="b-shoulder" x="51.0" y="65.6" width="21.5" height="110.4" rx="2"><title>1am: $44.17/MWh (shoulder)</title></rect>
+<rect class="b-shoulder" x="78.5" y="68.5" width="21.5" height="107.5" rx="2"><title>2am: $43.01/MWh (shoulder)</title></rect>
+<rect class="b-shoulder" x="106.0" y="87.3" width="21.5" height="88.7" rx="2"><title>3am: $35.50/MWh (shoulder)</title></rect>
+<rect class="b-shoulder" x="133.5" y="87.4" width="21.5" height="88.6" rx="2"><title>4am: $35.44/MWh (shoulder)</title></rect>
+<rect class="b-shoulder" x="161.0" y="87.4" width="21.5" height="88.6" rx="2"><title>5am: $35.43/MWh (shoulder)</title></rect>
+<rect class="b-shoulder" x="188.5" y="65.8" width="21.5" height="110.2" rx="2"><title>6am: $44.09/MWh (shoulder)</title></rect>
+<rect class="b-shoulder" x="216.0" y="65.1" width="21.5" height="110.9" rx="2"><title>7am: $44.35/MWh (shoulder)</title></rect>
+<rect class="b-shoulder" x="243.5" y="64.2" width="21.5" height="111.8" rx="2"><title>8am: $44.73/MWh (shoulder)</title></rect>
+<rect class="b-clear" x="271.0" y="104.5" width="21.5" height="71.5" rx="2"><title>9am: $28.61/MWh (clear)</title></rect>
+<rect class="b-clear" x="298.5" y="117.9" width="21.5" height="58.1" rx="2"><title>10am: $23.23/MWh (clear)</title></rect>
+<rect class="b-clear" x="326.0" y="120.7" width="21.5" height="55.3" rx="2"><title>11am: $22.12/MWh (clear)</title></rect>
+<rect class="b-clear" x="353.5" y="121.1" width="21.5" height="54.9" rx="2"><title>noon: $21.97/MWh (clear)</title></rect>
+<rect class="b-clear" x="381.0" y="122.1" width="21.5" height="53.9" rx="2"><title>1pm: $21.55/MWh (clear)</title></rect>
+<rect class="b-clear" x="408.5" y="121.7" width="21.5" height="54.3" rx="2"><title>2pm: $21.71/MWh (clear)</title></rect>
+<rect class="b-clear" x="436.0" y="122.5" width="21.5" height="53.5" rx="2"><title>3pm: $21.38/MWh (clear)</title></rect>
+<rect class="b-clear" x="463.5" y="120.8" width="21.5" height="55.2" rx="2"><title>4pm: $22.08/MWh (clear)</title></rect>
+<rect class="b-shoulder" x="491.0" y="90.9" width="21.5" height="85.1" rx="2"><title>5pm: $34.03/MWh (shoulder)</title></rect>
+<rect class="b-jam" x="518.5" y="36.6" width="21.5" height="139.4" rx="2"><title>6pm: $55.78/MWh (jam)</title></rect>
+<rect class="b-jam" x="546.0" y="37.4" width="21.5" height="138.6" rx="2"><title>7pm: $55.45/MWh (jam)</title></rect>
+<rect class="b-jam" x="573.5" y="37.4" width="21.5" height="138.6" rx="2"><title>8pm: $55.44/MWh (jam)</title></rect>
+<rect class="b-jam" x="601.0" y="39.6" width="21.5" height="136.4" rx="2"><title>9pm: $54.57/MWh (jam)</title></rect>
+<rect class="b-jam" x="628.5" y="40.8" width="21.5" height="135.2" rx="2"><title>10pm: $54.10/MWh (jam)</title></rect>
+<rect class="b-jam" x="656.0" y="44.9" width="21.5" height="131.1" rx="2"><title>11pm: $52.42/MWh (jam)</title></rect>
+<rect class="b-shoulder" x="683.5" y="60.7" width="21.5" height="115.3" rx="2"><title>midnight: $46.11/MWh (shoulder)</title></rect>
+<text class="call" x="446.8" y="116.5" text-anchor="middle">$21.38</text>
+<text class="call" x="529.3" y="30.6" text-anchor="middle">$55.78</text>
+<line class="grid" x1="48" x2="708" y1="266.0" y2="266.0"/>
+<line class="grid" x1="48" x2="708" y1="210.0" y2="210.0"/>
+<text class="ax" x="42" y="214.0" text-anchor="end">2.5 GW</text>
+<text class="ax" x="42" y="270.0" text-anchor="end">0</text>
+<path class="solar-area" d="M61.8,266.0 L61.8,266.0 L89.3,266.0 L116.8,266.0 L144.3,266.0 L171.8,266.0 L199.3,266.0 L226.8,266.0 L254.3,252.7 L281.8,222.5 L309.3,216.4 L336.8,217.8 L364.3,219.2 L391.8,219.4 L419.3,218.0 L446.8,217.0 L474.3,219.9 L501.8,243.9 L529.3,265.2 L556.8,266.0 L584.3,266.0 L611.8,266.0 L639.3,266.0 L666.8,266.0 L694.3,266.0 L694.3,266.0 Z"/>
+<polyline class="solar-line" points="61.8,266.0 89.3,266.0 116.8,266.0 144.3,266.0 171.8,266.0 199.3,266.0 226.8,266.0 254.3,252.7 281.8,222.5 309.3,216.4 336.8,217.8 364.3,219.2 391.8,219.4 419.3,218.0 446.8,217.0 474.3,219.9 501.8,243.9 529.3,265.2 556.8,266.0 584.3,266.0 611.8,266.0 639.3,266.0 666.8,266.0 694.3,266.0"/>
+<text class="ax lbl" x="52" y="204.0">PACE solar forecast</text>
+<text class="ax lbl" x="52" y="14">Day-ahead price, $/MWh</text>
+<text class="ax" x="61.8" y="286" text-anchor="middle">1am</text>
+<text class="ax" x="199.3" y="286" text-anchor="middle">6am</text>
+<text class="ax" x="364.3" y="286" text-anchor="middle">noon</text>
+<text class="ax" x="529.3" y="286" text-anchor="middle">6pm</text>
+<text class="ax" x="694.3" y="286" text-anchor="middle">midnight</text>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--clear)"></i>Clear lane, at or under $29.98</span>
+      <span><i class="sw" style="background:var(--shoulder)"></i>Shoulder</span>
+      <span><i class="sw" style="background:var(--jam)"></i>Jam, at or over $47.18</span>
+      <span><i class="sw" style="background:var(--solar);opacity:.6"></i>Solar forecast</span>
+    </div>
+    <p class="caption">Oct 27 PACE day-ahead price by hour ending, Mountain time (CAISO OASIS PRC_LMP DAM, node ELAP_PACE-APND), with the PACE solar forecast (CAISO EDAM). Clear is the cheapest quarter of the day’s price range and jam the priciest quarter. Hover a bar for its value.</p>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="n">$58.41 <small>vs $20.06</small></div><p>Value per MW-day of a midday timetable against a fixed overnight schedule, for a 1 MW / 2 MWh battery at Oct 27 prices (0.88 round-trip efficiency assumed).</p></div>
+    <div class="tile"><div class="n">$4,088 <small>vs $1,405</small></div><p>The same comparison per day at the 70 MW MOU scale. This is value to RMP’s system at day-ahead prices, not Torus revenue.</p></div>
+    <div class="tile"><div class="n">24 <small>of 27</small></div><p>October days whose largest upward price step landed in the 5pm or 6pm hour (median step $15.10). July is messier, so the backtest runs May 1 to Oct 27.</p></div>
+    <div class="tile"><div class="n">4.6%</div><p>Share of a Pulse that one 5.5-minute RMP call uses at 0.5C. The calls need power, not energy, so Spin can hold the reserve and Pulse keeps its schedule.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>The insight, in four lines</h3>
+    <ul>
+      <li>Oct 27: the five overnight hours from 1am average $38.71/MWh; 9am to 5pm averages $22.83. Solar drops from 2,056 MW at 4pm to 36 MW at 6pm and net load climbs 3,654 MW, so price jumps 2.6 times.</li>
+      <li>Cheap and clean line up. In October the priciest 10% of hours were 85.1% fossil; the cheapest 10% were 39.8%. At 70 MW the overnight schedule adds about 18.4 t of CO2 a day and the timetable avoids about 18.9 t (average emissions from EIA, not marginal).</li>
+      <li>The 359 calls in 2025 add up to about 33 hours, 0.38% of the year. Holding the reserve inside the battery instead of in Spin costs about 3.4% of value, or misses calls.</li>
+      <li>A price-only plan misses between 14% and 77% of 2025-pattern calls. Which end applies depends only on whether Torus’s event heatmap is in Mountain time or UTC, and the source does not say.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>How it ties to Torus</h2>
+  <div class="cards">
+    <div class="card"><h3>Spin</h3><p>Gets the job its published specs fit (10C, 25,000 cycles, 12-minute discharge and recharge): the reserve for RMP calls, sized to the enrolled kW at 0.1 kWh per kW.</p></div>
+    <div class="card"><h3>Pulse</h3><p>Runs the timetable at a wear price calibrated to its 7,500 cycles over 25 years, about 300 a year, with a cycle meter on screen. A fixed nightly cycle uses 365.</p></div>
+    <div class="card"><h3>Lasso</h3><p>Already forecasts load, dispatches in under 250 ms and routes between Spin and Pulse. Not advertised: a timetable keyed to EDAM day-ahead prices, and an exportable envelope. Both could enter through its API as one more grid signal.</p></div>
+    <div class="card"><h3>Wattsmart and RMP</h3><p>Torus is one of two approved commercial vendors (30 kW to 1.2 MW, IEEE 2030.5). 2025: 359 events, 19 s ramp against a 30 s target, 102% delivered against a 90-100% band.</p></div>
+    <div class="card"><h3>The June 2026 ask</h3><p>Torus asked Utah regulators to credit controlled and scheduled dispatch, to standardize utility-directed operating envelopes, and to define System Critical Hours. Clearlane is a working example with a backtest behind it.</p></div>
+    <div class="card"><h3>Hosts</h3><p>Demand charges are set by a single 15- or 30-minute interval. The host lane caps Pulse charging and Spin refills under the host’s 15-minute ceiling, so the grid plan never sets a new host peak.</p></div>
+  </div>
+  <p class="caption">Guardrails on stage: stations are “simulated Torus-style” with no logos; the overnight schedule is never called Torus practice; anything Torus does not publish is “not advertised,” never “missing.”</p>
+</section>
+
+<section>
+  <h2>What the judges see: six beats in 2:45</h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>Time</th><th>Beat</th><th>On screen and the line that lands</th></tr></thead>
+    <tbody>
+      <tr><td class="t">0:00-0:25</td><td>Traffic report</td><td>24 hours drawn as a road. “Net load climbs 3,654 megawatts in three hours and the price jumps 2.6 times by 6pm. Torus’s CTO calls it a freeway at 5pm on a Friday. Clearlane is the traffic app.”</td></tr>
+      <tr><td class="t">0:25-0:55</td><td>The race</td><td>Off-peak rule against a simulated Torus-style station on Clearlane, in a 15-second time-lapse. $20 against $58 a MW-day; the host meter stays under its ceiling.</td></tr>
+      <tr><td class="t">0:55-1:40</td><td>The crash</td><td>An RMP call lands at 6:40pm on a station already discharging. Spin answers alone and refills under the host ceiling; a battery-only ghost misses. A second press during the refill shows the shortfall instead of hiding it.</td></tr>
+      <tr><td class="t">1:40-2:00</td><td>Re-plan</td><td>The rest of the day redraws from both batteries’ actual state, labeled with milliseconds measured live. The cycle meter stays under 0.82 a day.</td></tr>
+      <tr><td class="t">2:00-2:25</td><td>Envelope and proof</td><td>The hourly operating envelope with System Critical Hours shaded, then the three-policy backtest from May 1 to Oct 27.</td></tr>
+      <tr><td class="t">2:25-2:45</td><td>Scale and close</td><td>A fleet slider from 70 MW to the 500 MW ceiling, captioned “assumes the fleet does not move prices.” Then the Option 2 line: a simulated AI campus that moves 25 MW for three hours saves about $2,551 a day. “Fill up when the road is clear, and keep Spin ready for the crash.”</td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">Every stage number is read from <code>public/derived/numbers.json</code>, so the Tuesday-night refresh to Oct 28 prices updates the app and the deck together.</p>
+</section>
+
+<section>
+  <h2>Architecture</h2>
+  <div class="flow">
+    <div class="node real"><b>CAISO OASIS and EIA</b><span>Prices, load, solar and wind forecasts, hourly CO2. Free, no keys.</span></div>
+    <span class="arrow">→</span>
+    <div class="node"><b>prep/</b><span>Python 3.13 stdlib, run with <code>python -I</code>.</span><span class="who">Codex</span></div>
+    <span class="arrow">→</span>
+    <div class="node real"><b>public/data/</b><span>Committed day bundles, May-Oct history, Torus-published facts.</span></div>
+    <span class="arrow">→</span>
+    <div class="node"><b>engine/</b><span>Pure TypeScript: lanes, 15-minute DP, crash, re-plan, envelope, backtest.</span><span class="who">Claude Code</span></div>
+    <span class="arrow">→</span>
+    <div class="node derived"><b>public/derived/</b><span>numbers.json, backtest.json, envelope.</span></div>
+    <span class="arrow">→</span>
+    <div class="node"><b>app/ and pitch/</b><span>Vite + React 18, hand-drawn SVG; deck and one-pagers.</span><span class="who">Cursor, Grok Build</span></div>
+  </div>
+  <div class="two">
+    <div class="card">
+      <h3>The engine</h3>
+      <ul>
+        <li>A 15-minute dynamic program over Pulse state of charge.</li>
+        <li>Spin reserved for RMP calls at the enrolled kW.</li>
+        <li>The host’s 15-minute demand ceiling as a hard constraint.</li>
+        <li>A wear price that lands Pulse near 300 cycles a year.</li>
+        <li>Three policies compared: the off-peak rule, a price-only timetable, and Clearlane.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What runs live on stage</h3>
+      <ul>
+        <li>The day’s solve, the crash and the re-plan, each timed with <code>performance.now()</code>.</li>
+        <li>The envelope export and the time-zone toggle.</li>
+        <li><code>DATA_MODE=snapshot</code> by default: nothing on stage needs the network.</li>
+        <li>The same engine code runs in the browser and in the node CLIs that pin the numbers.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Lanes</h2>
+  <p>One harness per lane, one branch per lane, each touching only the paths it owns. Contracts come first and producers merge before consumers: data, then engine, then UI, then pitch. Each lane’s paste-ready first prompt goes into <code>docs/lanes/</code> during the scaffold.</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>Lane</th><th>Harness</th><th>Branch</th><th>Owns</th><th>Done when</th></tr></thead>
+    <tbody>
+      <tr><td>Integration</td><td>Claude Code, main checkout</td><td class="t">main</td><td>Root files, contracts/, research/, demo/, harness config</td><td>Every train merges green in order; the six beats run offline from the <code>v1-stage</code> tag; backup video and deck PDF on the laptop and a USB stick by Wed 3:30pm.</td></tr>
+      <tr><td>Engine</td><td>Claude Code, second session in a worktree</td><td class="t">claude/engine</td><td>engine/, public/derived/</td><td>Every pinned Oct 27 number passes to the cent; one mutation per constraint fails loud; solve and re-plan print measured times.</td></tr>
+      <tr><td>Data and cross-family review</td><td>Codex</td><td class="t">codex/data</td><td>prep/, public/data/, api/</td><td>Bundles and history committed and schema-tested; Oct 27 matches the research CSV to the cent; the Tuesday-night refresh exits non-zero without changes when OASIS fails; engine review posted at each train.</td></tr>
+      <tr><td>UI</td><td>Cursor</td><td class="t">cursor/ui</td><td>app/</td><td>All six beats run from the keyboard; readable at 1920×1080 from the back of a room and at 375px; no runtime network request in snapshot mode.</td></tr>
+      <tr><td>Review and pitch</td><td>Grok Build, off the critical path</td><td class="t">grok/pitch</td><td>pitch/ (review-only elsewhere)</td><td>Deck, host and RMP one-pagers, and Q&amp;A, with every number a key from numbers.json; tariff research verified with URLs or marked not verified; judge drill graded by Tue 11pm.</td></tr>
+      <tr><td>Science (optional)</td><td>Claude Science</td><td class="t">science/brief</td><td>science/</td><td>Three SVG charts, a cited two-page brief, and an independent cross-check of five pinned numbers. Cut at Tue 1pm if nothing has landed.</td></tr>
+      <tr><td>Overflow</td><td>OpenCode</td><td class="t">opencode/tools</td><td>tools/, plus tickets the integrator hands over</td><td>The offline check prints PASS on main and FAIL when a fake external URL is planted; projector screenshots of all six beats.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Trellis: use a stripped subset</h2>
+  <p>Yes to Trellis’s guard hooks, no to its process machinery. The hooks protect secrets and formatting across four harnesses in about 30 minutes of setup. The 1,244-line hooks CI, branch leases and 468-line AGENTS.md exist for a shared repo that lives for months, not a 42-hour build. The replacement AGENTS.md is about 50 lines, modeled on the lanes file from your Codex DevDay repo.</p>
+  <div class="two">
+    <div class="card keep"><h3>Keep</h3><ul>
+      <li>Sensitive-file block, format-on-edit and session-start hooks, with the Claude settings that wire them (minus the brain prompt hook).</li>
+      <li>The Cursor, Grok Build and Codex hook adapters.</li>
+      <li><code>.gitattributes</code>, <code>.gitignore</code>, <code>.env.example</code>, <code>CLAUDE.md</code>, <code>DESIGN.md</code>.</li>
+      <li>A decision log and a gotchas file.</li>
+    </ul></div>
+    <div class="card drop"><h3>Drop</h3><ul>
+      <li>The git pre-push hooks, verify-green and the branch-claim scripts.</li>
+      <li>The GitHub workflows, including the 1,244-line hooks CI.</li>
+      <li>The brain, the examples, <code>.trellis/</code> and the command library.</li>
+      <li>The 468-line AGENTS.md.</li>
+    </ul></div>
+    <div class="card fix"><h3>Fix during the scaffold</h3><ul>
+      <li>Point the Cursor and Grok hook JSON at Git Bash by full path: this PC also has WSL’s <code>bash.exe</code>, which would run the hooks in the wrong shell.</li>
+      <li>Install ruff with uv and prettier as a dev dependency.</li>
+      <li>Prove each harness blocks a <code>.env</code> edit with one deliberate test edit.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section>
+  <h2>Claude Science</h2>
+  <div class="card">
+    <p>Useful, but only as an optional side lane that never sits on the critical path. It needs you to be a Team Owner to enable it (Windows 11 is supported), and setup is capped at 30 minutes.</p>
+    <ul>
+      <li>Three projector-ready charts: the backtest spread by policy, October price against CO2 by hour, and the hour of each day’s largest price step in October against July.</li>
+      <li>A two-page cited brief, “Why Utah’s rush hour moved to 6pm,” that doubles as a leave-behind for judges.</li>
+      <li>An independent re-derivation of five pinned numbers from raw data, a second check beside the Codex review: $20.06 and $58.41, the 24-of-27 count, 85.1% and 39.8% fossil, the 3,654.5 MW climb, and the backtest median.</li>
+    </ul>
+    <p class="caption">Cut at the Tue 1pm checkpoint if it has produced nothing. The deck then uses engine-drawn charts and skips the brief.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Schedule</h2>
+  <p class="caption">Mountain time. Six integration trains; nothing merges between them, and nothing merges overnight.</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>When</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td class="t">Mon 10:45pm</td><td>On your go, scaffold the repo from the Trellis subset (30-minute cap): research copied out of the scratchpad, lanes AGENTS.md, contracts v0, the Oct 27 fixture, lane prompts in <code>docs/lanes/</code>.</td></tr>
+      <tr><td class="t">Mon 11:20pm</td><td>Open a session per lane and paste its prompt. Codex starts the May-Oct history fetch (about 28 OASIS calls at 5 s spacing); Engine starts the DP and pinned tests; Cursor builds the shell on the fixture; Grok reviews contracts.</td></tr>
+      <tr><td class="t">Tue 12:00am</td><td>Resolve contract questions; v1 becomes the freeze candidate.</td></tr>
+      <tr><td class="t">Tue 12:30am</td><td>Sleep until 7am. Only fetches and tests run overnight.</td></tr>
+      <tr><td class="t">Tue 7:30am</td><td>You send the Torus and organizer questions below.</td></tr>
+      <tr><td class="t">Tue 9:00am</td><td>Train 1. Freeze contracts. Merge data, engine, then UI shell. Exit: the race runs on real data.</td></tr>
+      <tr><td class="t">Tue 1:00pm</td><td>Train 2 and cut checkpoint 1. Crash end to end? Backtest numbers exist? If either is red, cut items 1-3.</td></tr>
+      <tr><td class="t">Tue 5:00pm</td><td>Train 3 and cut checkpoint 2. All six beats clickable? Deck reading numbers.json? If not, cut items 4-7. Rough rehearsal at 7:30pm.</td></tr>
+      <tr><td class="t">Tue 9:00pm</td><td>Train 4 and feature freeze.</td></tr>
+      <tr><td class="t">Tue 9:15-10pm</td><td>Oct 28 day-ahead prices post around 9:16pm. Refresh, regenerate the backtest and numbers, re-pin. Hard stop at 10pm: if OASIS fails, stay on Oct 27 and label it. Then two timed rehearsals.</td></tr>
+      <tr><td class="t">Wed 9am, noon</td><td>Train 5 (fixes only) and Train 6 (copy and polish only). Rehearsals 3 and 4 between them.</td></tr>
+      <tr><td class="t">Wed 2:00pm</td><td>Code freeze: tag <code>v1-stage</code>, offline check, airplane-mode run, projector check. Backup video and deck PDF by 3:30pm.</td></tr>
+      <tr><td class="t">Wed 5:00pm</td><td>Judging.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="card">
+      <h3>Cut list, applied in order at the checkpoints</h3>
+      <ol>
+        <li>The live real-time price tile</li>
+        <li>The Claude Science lane</li>
+        <li>The interactive where-vs-when card (becomes a static slide)</li>
+        <li>The interactive PACE headroom card (becomes a static slide)</li>
+        <li>The second-by-second crash trace</li>
+        <li>The time-zone toggle animation</li>
+        <li>Host dollars (stay in kW)</li>
+        <li>The backtest window, down to Jul 1-Oct 27</li>
+        <li>The Oct 28 regeneration</li>
+        <li>The envelope copy button</li>
+      </ol>
+    </div>
+    <div class="never"><b>Never cut:</b> the race; the crash with Spin answering first and the re-plan; the source label on every number; the pinned-number tests; the backup video.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Real, published, simulated, assumed</h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>What</th><th>Class</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>PACE day-ahead prices, load, solar and wind forecasts</td><td class="cls real">REAL</td><td>CAISO OASIS</td></tr>
+      <tr><td>Hourly CO2 and fuel mix</td><td class="cls real">REAL, average</td><td>EIA-930, EIA PACE.xlsx</td></tr>
+      <tr><td>Spin and Pulse specs, 2025 Wattsmart record, 70 MW MOU and 500 MW ceiling</td><td class="cls pub">TORUS-PUBLISHED</td><td>torus.co product, case study and news pages</td></tr>
+      <tr><td>Stations, call times and sizes, host load and ceiling, the AI campus</td><td class="cls sim">SIMULATED</td><td>Labeled on screen; calls sampled from the 2025 counts with a fixed seed</td></tr>
+      <tr><td>Round-trip efficiency 0.88, call size for the battery-only contrast, export limit, demand charge rate</td><td class="cls asm">ASSUMPTION</td><td>Not Torus specs; tariff stays in kW unless verified Tuesday</td></tr>
+      <tr><td>Event heatmap time zone</td><td class="cls asm">UNKNOWN</td><td>The source states none; the crash card shows both readings</td></tr>
+      <tr><td>Lanes, System Critical Hours, envelope, backtest, net load</td><td class="cls der">DERIVED</td><td>The engine and prep</td></tr>
+      <tr><td>Re-plan time</td><td class="cls real">MEASURED LIVE</td><td>Browser timer on stage</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Questions to send Tuesday morning</h2>
+  <div class="two">
+    <div class="card">
+      <h3>For Torus</h3>
+      <ol>
+        <li>What sets the Pulse charging window today?</li>
+        <li>How does Spin refill after a call, and is the refill capped by the host’s demand?</li>
+        <li>What time zone is the 2025 event heatmap in?</li>
+        <li>Who sets the reserve kW for a Wattsmart site?</li>
+        <li>How is event delivery baselined: against scheduled output or the meter?</li>
+        <li>Do sites export to the grid?</li>
+        <li>Could Lasso take an external operating envelope through its API?</li>
+        <li>May we quote the published specs on stage?</li>
+        <li>Is System Critical Hours defined anywhere yet?</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>For the organizers</h3>
+      <ol>
+        <li>May we also enter the Nucleus × Startup State $10K bounty, and does it need a separate submission?</li>
+        <li>Does the repo have to be public for judging?</li>
+        <li>Is starting from our own template allowed?</li>
+      </ol>
+      <p class="caption">Angela Smith, Nucleus COO, also sits on the Torus panel, so one added slide on PACE headroom (about 1,265 MW of new flexible load fits under the last year’s peak at 0.5% curtailment) earns its place either way.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Risks</h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>The “off-peak overnight habit” is a strawman if Torus already schedules midday.</td><td>Ask Torus first thing; never present it as Torus practice; the backtest also beats a price-only timetable.</td></tr>
+      <tr><td>Overclaiming about Torus.</td><td>“Not advertised,” never “Torus lacks.” Grok reviews every train for it.</td></tr>
+      <tr><td>Average vs marginal CO2.</td><td>A caveat line on every CO2 card; never lead with CO2.</td></tr>
+      <tr><td>The price-taker assumption fails at scale (500 MW is about 8% of the Oct 27 PACE peak).</td><td>A caption on the scale slider.</td></tr>
+      <tr><td>OASIS fails Tuesday night, or Oct 28 is a weak day.</td><td>Hard stop at 10pm; stay on Oct 27 labeled with its date; anchor on the backtest and the October pattern.</td></tr>
+      <tr><td>An engine bug on stage.</td><td>Pinned tests against the Python reference, a mutation per constraint, freeze at 2pm, the backup video.</td></tr>
+      <tr><td>Laptop, projector or Wi-Fi failure.</td><td>Offline build, USB copy, the Mac as a second machine, the backup video.</td></tr>
+      <tr><td>Solo fatigue.</td><td>Protected sleep both nights and hard cut checkpoints at 1pm and 5pm Tuesday.</td></tr>
+      <tr><td>The research sits in a temp folder that could be cleared.</td><td>Copy it into the repo in the first 40 minutes.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="ask">
+    <h2>Decisions for you</h2>
+    <ol>
+      <li><b>Go to scaffold</b> the repo at <code>C:\Users\Craig Cossairt\Code\clearlane</code> tonight.</li>
+      <li>Are you a Team Owner, so Claude Science can be enabled? If not, that lane is cut now.</li>
+      <li>Human teammates: none, one or two? The lanes regroup for each case; you present and sleep both nights regardless.</li>
+      <li>Public repo and license (MIT suggested). Keys stay out of git so it can go public any time.</li>
+      <li>Open on Oct 28 as “today” (recommended, real and fresh) or the cached Oct 27 example.</li>
+      <li>Approve the Torus questions; I draft, you send.</li>
+      <li>Spend 30 minutes Tuesday verifying the RMP commercial tariff, or stay in kW.</li>
+      <li>Deploy the optional live price tile on Vercel, or skip it (first on the cut list).</li>
+      <li>Run a quick name check on “Clearlane” before it goes on a slide.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <h2>Sources</h2>
+  <ul class="src">
+    <li>Torus Station, Spin, Pulse, Lasso and Wattsmart pages: <a href="https://www.torus.co">torus.co</a></li>
+    <li>Torus CTO and CISO on the rush-hour grid: <a href="https://www.torus.co/news/the-dispatch-security-isnt-a-feature-its-how-we-work">The Dispatch: security isn’t a feature</a></li>
+    <li>Torus comments to Utah regulators, June 2026: <a href="https://rowesternenergy.org/wp-content/uploads/2026/06/Consolidated-Spring-Workshop-Comments_06222026.pdf">ROWE consolidated spring workshop comments</a></li>
+    <li>CAISO OASIS day-ahead prices, load and EDAM wind and solar forecasts: <a href="https://oasis.caiso.com">oasis.caiso.com</a></li>
+    <li>EIA-930 hourly balance: <a href="https://www.eia.gov/electricity/gridmonitor/sixMonthFiles/EIA930_BALANCE_2026_Jul_Dec.csv">six-month CSV</a>; PACE hourly CO2: <a href="https://www.eia.gov/electricity/gridmonitor/knownissues/xls/PACE.xlsx">PACE.xlsx</a></li>
+    <li>AI campus flexibility shape: <a href="https://arxiv.org/abs/2507.00909">arXiv 2507.00909</a></li>
+    <li>Value and CO2 math: <code>research/scratch-demo-story/habit.py</code> on the Oct 27 snapshot, run and checked this session.</li>
+  </ul>
+</section>
+
+</div>

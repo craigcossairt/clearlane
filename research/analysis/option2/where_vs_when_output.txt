@@ -1,0 +1,141 @@
+
+===== Oct 1-27 2026 (nodes: PACE, PACW, PGE, SP15) =====
+hours with all nodes: 648
+share of hours where PACE/PACW(/PGE) are within $1/MWh of each other: 25.2%
+cheapest node share of hours: {'PACE': '62%', 'SP15': '29%', 'PGE': '2%', 'PACW': '6%'}
+HB(MDT)  PACE mean  cross-node spread incl SP15 (mean)  spread excl SP15 (mean)
+   0     39.5     17.0      8.1
+   1     37.4     24.0      7.1
+   2     36.2     18.4      6.5
+   3     35.2     16.4      5.5
+   4     35.4     14.9      4.2
+   5     36.7     14.4      4.5
+   6     41.1     12.7      4.5
+   7     43.1     18.3      4.7
+   8     40.4     13.5      8.6
+   9     31.1     14.3      8.4
+  10     29.2     15.2      7.1
+  11     28.4     14.6      6.5
+  12     29.2     13.5      6.1
+  13     29.5     13.7      5.9
+  14     29.4     13.6      6.3
+  15     30.1     14.7      7.2
+  16     30.2     16.9      9.8
+  17     38.3     19.3     13.0
+  18     56.3     21.7     11.7
+  19     49.8     33.2     18.6
+  20     46.6     26.9     16.8
+  21     45.6     20.3     11.7
+  22     44.7     20.5     11.1
+  23     43.1     18.2     10.7
+days: 27; median within-PACE daily max-min (time shift): $23.5
+  median saving at PACE's priciest hour by moving to cheapest node (space shift, incl SP15): $1.8
+  ... excluding SP15 (EDAM PacifiCorp/PGE only): $0.1
+  4h block, avg $/MWh: baseline evening PACE 48.1 -> space: 42.8  (saving 11%)
+  4h block, avg $/MWh: baseline evening PACE 48.1 -> time: 28.5  (saving 41%)
+  4h block, avg $/MWh: baseline evening PACE 48.1 -> both: 20.8  (saving 57%)
+  hours where cheapest node == cleanest BA: 126/576 = 22%
+  HB(MDT) mean derived CI g/kWh by BA:
+    3 {'PACE': 566, 'PACW': 356, 'PGE': 459, 'CISO': 323}
+    9 {'PACE': 443, 'PACW': 278, 'PGE': 460, 'CISO': 201}
+    12 {'PACE': 383, 'PACW': 251, 'PGE': 462, 'CISO': 158}
+    15 {'PACE': 378, 'PACW': 254, 'PGE': 460, 'CISO': 166}
+    18 {'PACE': 520, 'PACW': 281, 'PGE': 454, 'CISO': 259}
+    20 {'PACE': 555, 'PACW': 286, 'PGE': 453, 'CISO': 295}
+    22 {'PACE': 561, 'PACW': 325, 'PGE': 455, 'CISO': 300}
+  PACE congestion share of |LMP|: 6.9%
+
+===== Oct 1-27 2026 (EDAM PacifiCorp+PGE only) (nodes: PACE, PACW, PGE) =====
+hours with all nodes: 648
+share of hours where PACE/PACW(/PGE) are within $1/MWh of each other: 25.2%
+cheapest node share of hours: {'PACE': '81%', 'PGE': '6%', 'PACW': '12%'}
+HB(MDT)  PACE mean  cross-node spread incl SP15 (mean)  spread excl SP15 (mean)
+   0     39.5      8.1      8.1
+   1     37.4      7.1      7.1
+   2     36.2      6.5      6.5
+   3     35.2      5.5      5.5
+   4     35.4      4.2      4.2
+   5     36.7      4.5      4.5
+   6     41.1      4.5      4.5
+   7     43.1      4.7      4.7
+   8     40.4      8.6      8.6
+   9     31.1      8.4      8.4
+  10     29.2      7.1      7.1
+  11     28.4      6.5      6.5
+  12     29.2      6.1      6.1
+  13     29.5      5.9      5.9
+  14     29.4      6.3      6.3
+  15     30.1      7.2      7.2
+  16     30.2      9.8      9.8
+  17     38.3     13.0     13.0
+  18     56.3     11.7     11.7
+  19     49.8     18.6     18.6
+  20     46.6     16.8     16.8
+  21     45.6     11.7     11.7
+  22     44.7     11.1     11.1
+  23     43.1     10.7     10.7
+days: 27; median within-PACE daily max-min (time shift): $23.5
+  median saving at PACE's priciest hour by moving to cheapest node (space shift, incl SP15): $0.1
+  ... excluding SP15 (EDAM PacifiCorp/PGE only): $0.1
+  4h block, avg $/MWh: baseline evening PACE 48.1 -> space: 44.4  (saving 8%)
+  4h block, avg $/MWh: baseline evening PACE 48.1 -> time: 28.5  (saving 41%)
+  4h block, avg $/MWh: baseline evening PACE 48.1 -> both: 27.9  (saving 42%)
+  hours where cheapest node == cleanest BA: 86/576 = 15%
+  HB(MDT) mean derived CI g/kWh by BA:
+    3 {'PACE': 566, 'PACW': 356, 'PGE': 459}
+    9 {'PACE': 443, 'PACW': 278, 'PGE': 460}
+    12 {'PACE': 383, 'PACW': 251, 'PGE': 462}
+    15 {'PACE': 378, 'PACW': 254, 'PGE': 460}
+    18 {'PACE': 520, 'PACW': 281, 'PGE': 454}
+    20 {'PACE': 555, 'PACW': 286, 'PGE': 453}
+    22 {'PACE': 561, 'PACW': 325, 'PGE': 455}
+  PACE congestion share of |LMP|: 6.9%
+
+===== Jul 1-30 2026 (nodes: PACE, PACW, SP15) =====
+hours with all nodes: 720
+share of hours where PACE/PACW(/PGE) are within $1/MWh of each other: 46.9%
+cheapest node share of hours: {'PACE': '40%', 'PACW': '37%', 'SP15': '23%'}
+HB(MDT)  PACE mean  cross-node spread incl SP15 (mean)  spread excl SP15 (mean)
+   0     36.4     11.8      2.7
+   1     28.4     17.6      2.6
+   2     27.6     16.0      3.0
+   3     26.0     14.7      3.6
+   4     25.6     13.4      2.4
+   5     26.4     12.9      2.7
+   6     28.1     13.3      2.4
+   7     21.6     17.7      1.7
+   8     19.0     11.0      1.6
+   9     19.6      9.7      2.1
+  10     20.6      8.8      1.5
+  11     21.7     10.2      4.0
+  12     23.8      7.6      2.2
+  13     26.5      7.5      2.5
+  14     30.9      9.9      4.8
+  15     33.6     11.1      6.1
+  16     36.6     11.9      6.8
+  17     35.1     10.6      5.8
+  18     38.6     11.4      6.4
+  19     44.8     13.0      5.7
+  20     46.7     14.3      3.8
+  21     44.0     12.2      2.7
+  22     40.7     13.9      3.3
+  23     42.3     11.7      4.0
+days: 30; median within-PACE daily max-min (time shift): $27.2
+  median saving at PACE's priciest hour by moving to cheapest node (space shift, incl SP15): $4.1
+  ... excluding SP15 (EDAM PacifiCorp/PGE only): $3.0
+  4h block, avg $/MWh: baseline evening PACE 41.3 -> space: 35.7  (saving 13%)
+  4h block, avg $/MWh: baseline evening PACE 41.3 -> time: 20.0  (saving 51%)
+  4h block, avg $/MWh: baseline evening PACE 41.3 -> both: 18.1  (saving 56%)
+  hours where cheapest node == cleanest BA: 221/719 = 31%
+  HB(MDT) mean derived CI g/kWh by BA:
+    3 {'PACE': 607, 'PACW': 283, 'CISO': 228}
+    9 {'PACE': 409, 'PACW': 248, 'CISO': 132}
+    12 {'PACE': 396, 'PACW': 252, 'CISO': 123}
+    15 {'PACE': 424, 'PACW': 255, 'CISO': 129}
+    18 {'PACE': 462, 'PACW': 248, 'CISO': 154}
+    20 {'PACE': 557, 'PACW': 266, 'CISO': 225}
+    22 {'PACE': 559, 'PACW': 274, 'CISO': 236}
+  PACE congestion share of |LMP|: 0.8%
+
+PACE mean net load (demand - wind - solar) by HB MDT, Oct 1-25:
+{0: 3663, 1: 3699, 2: 3589, 3: 3595, 4: 3668, 5: 3790, 6: 3949, 7: 3896, 8: 3485, 9: 3026, 10: 2862, 11: 2737, 12: 2755, 13: 2779, 14: 2719, 15: 2762, 16: 2905, 17: 3406, 18: 3823, 19: 4024, 20: 4060, 21: 3969, 22: 3862, 23: 3808}

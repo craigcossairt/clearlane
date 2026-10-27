@@ -1,0 +1,57 @@
+
+===== Oct 1-27 2026, EDAM PacifiCorp+PGE (23 days, 4-hour block, nodes ['PACE', 'PACW', 'PGE']) =====
+  stay: PACE 5-9pm                                 $ 48.3/MWh (  +0% cost)    520 g/kWh (  +0% CO2)  Utah share 100%
+  time only (cheapest 4h in PACE)                  $ 29.0/MWh ( +40% cost)    392 g/kWh ( +25% CO2)  Utah share 100%
+  space only, price (same hours, cheapest node)    $ 44.2/MWh (  +8% cost)    437 g/kWh ( +16% CO2)  Utah share 62%
+  space only, carbon (same hours, cleanest BA)     $ 56.7/MWh ( -17% cost)    277 g/kWh ( +47% CO2)  Utah share 0%
+  both, price-min                                  $ 28.3/MWh ( +41% cost)    368 g/kWh ( +29% CO2)  Utah share 89%
+  both, carbon-min                                 $ 43.0/MWh ( +11% cost)    229 g/kWh ( +56% CO2)  Utah share 4%
+  both, price + $25/t CO2                          $ 28.8/MWh ( +40% cost)    294 g/kWh ( +44% CO2)  Utah share 51%
+  both, price + $50/t CO2                          $ 29.4/MWh ( +39% cost)    274 g/kWh ( +47% CO2)  Utah share 40%
+  both, price + $100/t CO2                         $ 30.9/MWh ( +36% cost)    252 g/kWh ( +52% CO2)  Utah share 23%
+  both, price + $200/t CO2                         $ 32.1/MWh ( +33% cost)    243 g/kWh ( +53% CO2)  Utah share 11%
+  hours PACE cheaper AND dirtier than PACW: 456/576; median break-even carbon price $31/t CO2 (p25 $5, p75 $84)
+    HB3: median $26/t over 22 hours
+    HB12: median $39/t over 21 hours
+    HB18: median $64/t over 12 hours
+    HB20: median $84/t over 17 hours
+
+===== Oct 1-27 2026, incl SP15 (CISO carbon) (23 days, 4-hour block, nodes ['PACE', 'PACW', 'PGE', 'SP15']) =====
+  stay: PACE 5-9pm                                 $ 48.3/MWh (  +0% cost)    520 g/kWh (  +0% CO2)  Utah share 100%
+  time only (cheapest 4h in PACE)                  $ 29.0/MWh ( +40% cost)    392 g/kWh ( +25% CO2)  Utah share 100%
+  space only, price (same hours, cheapest node)    $ 42.9/MWh ( +11% cost)    404 g/kWh ( +22% CO2)  Utah share 58%
+  space only, carbon (same hours, cleanest BA)     $ 57.8/MWh ( -20% cost)    237 g/kWh ( +54% CO2)  Utah share 0%
+  both, price-min                                  $ 21.8/MWh ( +55% cost)    259 g/kWh ( +50% CO2)  Utah share 50%
+  both, carbon-min                                 $ 26.1/MWh ( +46% cost)    149 g/kWh ( +71% CO2)  Utah share 0%
+  both, price + $25/t CO2                          $ 22.4/MWh ( +54% cost)    200 g/kWh ( +62% CO2)  Utah share 25%
+  both, price + $50/t CO2                          $ 23.1/MWh ( +52% cost)    181 g/kWh ( +65% CO2)  Utah share 14%
+  both, price + $100/t CO2                         $ 24.4/MWh ( +49% cost)    158 g/kWh ( +70% CO2)  Utah share 5%
+  both, price + $200/t CO2                         $ 25.5/MWh ( +47% cost)    150 g/kWh ( +71% CO2)  Utah share 1%
+  hours PACE cheaper AND dirtier than PACW: 456/576; median break-even carbon price $31/t CO2 (p25 $5, p75 $84)
+    HB3: median $26/t over 22 hours
+    HB12: median $39/t over 21 hours
+    HB18: median $64/t over 12 hours
+    HB20: median $84/t over 17 hours
+
+===== Jul 1-30 2026, PACE/PACW/SP15 (29 days, 4-hour block, nodes ['PACE', 'PACW', 'SP15']) =====
+  stay: PACE 5-9pm                                 $ 42.0/MWh (  +0% cost)    494 g/kWh (  +0% CO2)  Utah share 100%
+  time only (cheapest 4h in PACE)                  $ 20.4/MWh ( +51% cost)    443 g/kWh ( +10% CO2)  Utah share 100%
+  space only, price (same hours, cheapest node)    $ 36.6/MWh ( +13% cost)    280 g/kWh ( +43% CO2)  Utah share 19%
+  space only, carbon (same hours, cleanest BA)     $ 44.2/MWh (  -5% cost)    177 g/kWh ( +64% CO2)  Utah share 0%
+  both, price-min                                  $ 18.8/MWh ( +55% cost)    307 g/kWh ( +38% CO2)  Utah share 45%
+  both, carbon-min                                 $ 26.3/MWh ( +37% cost)    124 g/kWh ( +75% CO2)  Utah share 0%
+  both, price + $25/t CO2                          $ 19.3/MWh ( +54% cost)    204 g/kWh ( +59% CO2)  Utah share 2%
+  both, price + $50/t CO2                          $ 19.9/MWh ( +53% cost)    189 g/kWh ( +62% CO2)  Utah share 0%
+  both, price + $100/t CO2                         $ 22.7/MWh ( +46% cost)    148 g/kWh ( +70% CO2)  Utah share 0%
+  both, price + $200/t CO2                         $ 25.6/MWh ( +39% cost)    125 g/kWh ( +75% CO2)  Utah share 0%
+  hours PACE cheaper AND dirtier than PACW: 398/719; median break-even carbon price $2/t CO2 (p25 $0, p75 $18)
+    HB3: median $7/t over 22 hours
+    HB12: median $2/t over 20 hours
+    HB18: median $25/t over 7 hours
+    HB20: median $0/t over 8 hours
+
+PACE DA price jump HB17->HB18 MDT in Oct: median $10.8, n=27
+Traceback (most recent call last):
+  File "C:\Users\Craig Cossairt\AppData\Local\Temp\claude\C--Users-Craig-Cossairt-Bloom\5949fb18-8d0b-4731-a708-73a6ce2e61d5\scratchpad\research\scratch-opt2\carbon_tradeoff.py", line 88, in <module>
+    best = max(range(len(ts)-1), key=lambda i: lmp[ts[i+1]]["PACE"] - lmp[ts[i]]["PACE"])
+ValueError: max() iterable argument is empty

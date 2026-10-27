@@ -1,0 +1,26 @@
+{
+  "$schema_comment": "Cursor hooks. Logic lives once in .claude/hooks/; bin/run-claude-hook.sh adapts payload and verdict shapes. Git Bash is called by full path because a bare bash on this PC resolves to WSL. Trust the workspace so project hooks load.",
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "\"C:/Program Files/Git/bin/bash.exe\" bin/run-claude-hook.sh cursor session-start",
+        "timeout": 15
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "\"C:/Program Files/Git/bin/bash.exe\" bin/run-claude-hook.sh cursor block-sensitive-files",
+        "matcher": "Write|StrReplace|Delete",
+        "timeout": 10,
+        "failClosed": true
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "\"C:/Program Files/Git/bin/bash.exe\" bin/run-claude-hook.sh cursor format-on-edit",
+        "timeout": 30
+      }
+    ]
+  }
+}
