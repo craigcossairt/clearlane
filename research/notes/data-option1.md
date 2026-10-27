@@ -30,7 +30,7 @@ Recommended stack: CAISO OASIS fetched from a server (it sends no CORS headers, 
 - EDAM has only about 6 months of PACE day-ahead history (from 2026-05-01). Longer price history must come from real-time WEIM prices.
 - No public feeder or hosting-capacity data was found for Rocky Mountain Power. Any feeder-congestion view is simulated and must say so (rules allow labeled simulation).
 - Open-Meteo's free API is non-commercial with CC BY 4.0 attribution. Fine for a hackathon; credit it on screen.
-- Tooling: the Parallel Search free tier and Firecrawl keyless daily limits were hit mid-task, so official Electricity Maps and gridstatus.io pricing pages could not be read and those claims stay unverified. Firecrawl's limit notice: You've reached Firecrawl's daily limit without an account. Sign up free for 1,000 credits a month: https://firecrawl.dev/k/xh18wps89b6n
+- Tooling: the Parallel Search free tier and Firecrawl keyless daily limits were hit mid-task, so official Electricity Maps and gridstatus.io pricing pages could not be read and those claims stay unverified.
 ## OPEN QUESTIONS
 - When exactly does CAISO publish day-ahead (EDAM) results each day? This sets when to schedule Tuesday's pre-fetch of Wednesday's data. Observed only: Oct 27 data was available by about 8:16pm PT Oct 26, and the wind/solar file was published 9:10am PT.
 - Official Electricity Maps free-tier terms in 2026 (zones, history, forecasts). Only third-party summaries were readable.

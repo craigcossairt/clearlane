@@ -163,7 +163,6 @@
   "Approve sending the Tuesday questions to Torus (mentor table or event channel; Nicole Witmyer runs Torus events): how Spin refills, the heatmap time zone, who sets the reserve kW, how event delivery is baselined, whether sites export, and whether Lasso accepts an external envelope. I can draft them; you send them.",
   "Spend 30 minutes Tue (Grok lane) verifying RMP Schedules 6, 6A and 8? If verified, add the 'tariff and market clocks disagree' framing and host dollars. If not, stay in kW.",
   "Deploy the optional api/rtm.ts on Vercel for the live tile, or skip it? It is first on the cut list either way.",
-  "Run a quick name check on 'Clearlane' (search and USPTO) before it goes on a slide.",
-  "Tooling note: Firecrawl's keyless daily limit was hit during the tariff lookup. 'You've reached Firecrawl's daily limit without an account. Sign up free for 1,000 credits a month: https://firecrawl.dev/k/xh18wps89b6n'"
+  "Run a quick name check on 'Clearlane' (search and USPTO) before it goes on a slide."
  ]
 }

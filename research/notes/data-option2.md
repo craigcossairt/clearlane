@@ -20,7 +20,6 @@ Things to avoid:
 
 Label every chart REAL, DERIVED or SIMULATED.
 
-You've reached Firecrawl's daily limit without an account. Sign up free for 1,000 credits a month: https://firecrawl.dev/k/xh18wps89b6n
 ## IMPLICATIONS
 - Option 2 is fully feasible on free data in 44 hours. The no-key core is EIA-930 bulk CSV (where is clean, by hour, for each balancing authority) plus Open-Meteo (when the sun will be up, 72 h ahead). Neither needs an account, and both were tested tonight.
 - Best overlap with Torus: frame the build as 'Compute follows the sun, and Torus keeps it from rocking the grid'. Layer 1 (hours): a router that moves deferrable AI jobs across regions and times and shows carbon saved. Layer 2 (seconds): once the jobs land in Utah (PACE, Rocky Mountain Power territory), replay real 10 Hz GPU power traces scaled to cluster size, then simulate a flywheel absorbing the 0.2-3 Hz swings and holding the grid draw flat to a ramp-rate limit. This uses both bounty options and ties directly to Torus Spin and its PacifiCorp relationship.
