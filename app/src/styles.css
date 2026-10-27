@@ -535,3 +535,44 @@ td {
 .crash-beat [data-slot="second-call"] {
   margin: 0;
 }
+
+/* Beat 5: Copy JSON keeps one width for all three labels (stacked, only one visible). */
+.copy-btn {
+  display: inline-grid;
+  align-self: flex-start;
+}
+.copy-btn > span {
+  grid-area: 1 / 1;
+}
+.copy-btn > span.off {
+  visibility: hidden;
+}
+.envelope-beat .envelope-table td,
+.envelope-beat .envelope-table th {
+  padding: 0 10px;
+  font-size: 18px;
+}
+.envelope-beat .envelope-table .num {
+  font-size: 18px;
+}
+.envelope-beat tr.critical {
+  background: color-mix(in srgb, var(--jam) 18%, transparent);
+}
+.cards.three {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.envelope-beat .scroll {
+  max-height: none;
+}
+.envelope-beat .envelope-table td {
+  line-height: 1.1;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.envelope-beat .envelope-table .num,
+.envelope-beat .envelope-table .num * {
+  font-size: 18px;
+}
+.envelope-beat .envelope-table .chip {
+  font-size: 12px;
+}
