@@ -49,6 +49,7 @@ Critical Hours. Data flows `prep/` (Python) -> `public/data/` (REAL) -> `engine/
 ## Coordination
 
 GitHub Issues on `craigcossairt/clearlane` are the task board: labels `lane:*`, `tier:core|stretch-1|stretch-2|moonshot`,
-`status:blocked`; milestones are the trains. Comment "claimed by <harness>" when you start an issue and link the PR
-when you finish. Blocked: add `status:blocked`, say what you need, take the next issue. At each train, post a status
-comment on your lane's pinned tracking issue and rebase on `main`.
+`status:blocked`, `status:needs-review`; milestones are the trains. Your queue: `gh issue list --label lane:<lane> --state open`.
+Comment "claimed by <harness>" when you start an issue and link the PR when you finish. Blocked: add `status:blocked`,
+say what you need, take the next issue. At each train, post one status comment on your lane's tracking issue
+("Lane: <lane> status", label `tracking`) and rebase on `origin/main`.
