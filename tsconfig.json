@@ -15,8 +15,9 @@
     "types": ["node", "vite/client"],
     "paths": {
       "@contracts/*": ["./contracts/*"],
+      "@engine": ["./engine/src/index.ts"],
       "@engine/*": ["./engine/src/*"]
     }
   },
-  "include": ["contracts", "engine", "app/src", "tools", "vite.config.ts", "vitest.config.ts"]
+  "include": ["contracts", "engine", "app/src", "api", "tools", "vite.config.ts", "vitest.config.ts"]
 }

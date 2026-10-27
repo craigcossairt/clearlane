@@ -13,7 +13,9 @@
     "test": "vitest run --passWithNoTests",
     "check": "npm run typecheck && npm run test && npm run build",
     "check:py": "python -I -m unittest discover -s prep/tests -t .",
-    "check:all": "npm run check && npm run check:py",
+    "check:pitch": "node tools/check-lane.mjs pitch",
+    "check:science": "node tools/check-lane.mjs science",
+    "check:all": "npm run check && npm run check:py && npm run check:pitch && npm run check:science",
     "format": "prettier --write ."
   },
   "dependencies": {

@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["engine/test/**/*.test.ts", "app/src/**/*.test.{ts,tsx}", "tools/**/*.test.ts"],
+    include: ["engine/test/**/*.test.ts", "app/src/**/*.test.{ts,tsx}", "tools/**/*.test.ts", "api/**/*.test.ts"],
     environment: "node",
   },
 });
