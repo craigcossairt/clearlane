@@ -1,49 +1,3 @@
-:root {
-  color-scheme: dark;
-  --bg: #111316;
-  --surface: #191c20;
-  --surface-2: #20242a;
-  --ink: #ebeae6;
-  --muted: #a2a6ad;
-  --line: #2d3239;
-  --accent: #7ea9ff;
-  --clear: #3cbf84;
-  --clear-soft: #16291f;
-  --shoulder: #e2a73c;
-  --shoulder-soft: #2b2414;
-  --jam: #ee6b58;
-  --jam-soft: #2e1a17;
-  --solar: #f0c04c;
-  --figure: clamp(40px, 4vw, 64px);
-  --body: 18px;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color-scheme: light;
-    --bg: #f6f5f1;
-    --surface: #ffffff;
-    --surface-2: #efede7;
-    --ink: #1b1c1e;
-    --muted: #5a5d63;
-    --line: #dedbd3;
-    --accent: #1c5bb8;
-    --clear: #1d8457;
-    --clear-soft: #e3f2ea;
-    --shoulder: #b97d0c;
-    --shoulder-soft: #f6eedb;
-    --jam: #bf3a29;
-    --jam-soft: #f8e6e2;
-    --solar: #d99a00;
-  }
-}
-
-@media (min-width: 1200px) {
-  :root {
-    --body: 24px;
-  }
-}
-
 * {
   box-sizing: border-box;
 }
@@ -54,7 +8,6 @@ body {
   height: 100%;
   background: var(--bg);
   color: var(--ink);
-  overflow-x: hidden;
 }
 
 body {
@@ -176,7 +129,7 @@ h2 {
   border-radius: 999px;
   border: 1px solid var(--line);
   font-family: ui-monospace, monospace;
-  font-size: 0.62rem;
+  font-size: 18px;
   letter-spacing: 0.03em;
   vertical-align: middle;
   text-decoration: none;
@@ -185,10 +138,13 @@ h2 {
 }
 
 .num {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 4px;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
 }
 
 .cards,
@@ -352,7 +308,7 @@ td {
 .qa {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -392,5 +348,144 @@ td {
   * {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Number states: each looks different, none shows 0. */
+.num-loading .num-placeholder {
+  display: inline-block;
+  width: 100%;
+  min-height: 1em;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+
+.num-not-computed {
+  border: 2px dashed var(--muted);
+  border-radius: 6px;
+  padding: 0 6px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.num-unavailable {
+  border: 2px dotted var(--shoulder);
+  border-radius: 6px;
+  padding: 0 6px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.num-failed {
+  border: 2px solid var(--jam);
+  border-radius: 6px;
+  padding: 0 6px;
+  color: var(--jam);
+}
+
+/* The 1920x1080 stage frame, scaled uniformly from the top left and letterboxed on --bg. */
+.viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.frame {
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+}
+
+.viewport.phone {
+  position: static;
+  overflow: visible;
+}
+
+.viewport.phone .frame {
+  width: auto;
+  height: auto;
+  transform: none !important;
+}
+
+.stub-slot {
+  display: inline-block;
+  min-width: 34ch;
+  min-height: 1.4em;
+}
+
+.stub-banner {
+  border: 2px solid var(--shoulder);
+  border-radius: 6px;
+  padding: 0 8px;
+  color: var(--shoulder);
+}
+
+.legend-line {
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.slot-clock {
+  display: inline-block;
+  min-width: 12ch;
+}
+
+.copy-btn {
+  min-width: 12ch;
+}
+
+.heatmaps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.heat {
+  margin: 0;
+}
+
+.keymap {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+
+.keymap dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.failed-state {
+  border: 2px solid var(--jam);
+  border-radius: 10px;
+  padding: 24px;
+  margin: 24px;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --body: 18px;
+  }
+
+  .heatmaps {
+    grid-template-columns: 1fr;
+  }
+
+  .stub-slot {
+    min-width: 0;
+  }
+
+  svg {
+    max-width: 100%;
+    height: auto;
   }
 }

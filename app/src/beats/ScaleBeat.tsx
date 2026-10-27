@@ -1,73 +1,98 @@
-import { Inline, Num } from "../Provenance";
-import { scaleDay, type StageModel } from "../engineClient";
+import { Num, useNumber } from "../components/Num";
+import { COPY } from "../copy";
+import { scaleUsdPerDay } from "../engineClient";
+import { grouped, usdDay } from "../format";
+import type { BeatProps } from "./types";
 
-export function ScaleBeat({
-  stage,
-  fleetMw,
-  onFleet,
-}: {
-  stage: StageModel;
-  fleetMw: number;
-  onFleet: (mw: number) => void;
-}) {
-  const mou = stage.number("mou_mw");
-  const ceiling = stage.number("mou_ceiling_mw");
+/** Beat 6 (core 9 only starts here). Slider ends come from mou_70mw and torus_500mw. */
+export function ScaleBeat({ fleetMw, onFleet }: BeatProps) {
+  const min = useNumber("mou_70mw");
+  const max = useNumber("torus_500mw");
+  const ready = Boolean(min && max && fleetMw !== null);
   return (
     <section className="beat" aria-labelledby="beat-scale">
       <h2 id="beat-scale">Scale</h2>
       <p>
-        Fleet size <Inline n={liveMw(stage, fleetMw)} /> MW. The top of the
-        slider is the MOU ceiling, not installed capacity.
+        Fleet size{" "}
+        {ready && fleetMw !== null ? (
+          <Num
+            value={fleetMw}
+            display={`${grouped(fleetMw, 0)} MW`}
+            prov="SIMULATED"
+            source="fleet slider, between mou_70mw and torus_500mw"
+          />
+        ) : (
+          <Num k="mou_70mw" />
+        )}
+        . The top of the slider is the {COPY.mouCeiling}: <Num k="torus_500mw" />
+        .
       </p>
       <input
         className="slider"
         type="range"
-        min={mou.value}
-        max={ceiling.value}
-        value={fleetMw}
+        min={min?.value ?? 0}
+        max={max?.value ?? 0}
+        value={fleetMw ?? 0}
+        disabled={!ready}
         aria-label="Fleet size in MW"
         onChange={(event) => onFleet(Number(event.target.value))}
       />
-      <p className="muted">Assumes the fleet does not move prices.</p>
-      <div className="cards">
-        <article className="card">
-          <h3>Fixed off-peak rule</h3>
-          <Num n={scaleDay(stage.number("fixed_usd_mw_day"), fleetMw)} />
-          <p>per day, value to RMP&apos;s system at day-ahead prices.</p>
-        </article>
-        <article className="card">
-          <h3>Clearlane timetable</h3>
-          <Num n={scaleDay(stage.number("clearlane_usd_mw_day"), fleetMw)} />
-          <p>per day, value to RMP&apos;s system at day-ahead prices.</p>
-        </article>
+      <p className="muted">{COPY.priceTaker}.</p>
+      <div className="cards" data-slot="scale-cards">
+        <ScaleCard title={COPY.fixedLabel} perMwKey="fixed_usd_mw_day" fleetMw={fleetMw} />
+        <ScaleCard
+          title={COPY.clearlaneLabel}
+          perMwKey="clearlane_usd_mw_day"
+          fleetMw={fleetMw}
+        />
       </div>
-      <article className="card">
+      <p>
+        At the MOU size, the off-peak rule adds <Num k="co2_added_70" /> of{" "}
+        <span data-copy-ok="CO2 is the gas's name">CO2</span> a day and the timetable avoids <Num k="co2_avoided_70" />. Per MW-day:{" "}
+        <Num k="co2_fixed_t_per_mw_day" /> and{" "}
+        <Num k="co2_timetable_t_per_mw_day" />. {COPY.co2Caveat}
+      </p>
+      <article className="card" data-slot="close-card">
         <h3>Simulated AI campus, in time</h3>
         <p>
-          A simulated campus moves <Inline n={stage.number("campus_mwh")} /> MWh
-          into the cheap midday hours on this day. Value to the system at
-          day-ahead prices: <Inline n={stage.number("campus_usd")} />.
+          A simulated campus moves <Num k="campus_mwh" /> into the cheap midday
+          hours. Value to the system at day-ahead prices:{" "}
+          <Num k="campus_usd" />.
         </p>
         <p className="muted">
-          Simulated. A carbon input for this kind of shift is not advertised.
-          This is not a Torus data-center product.
+          {COPY.simulated} This is not a Torus data-center product.
         </p>
+        <p>{COPY.closeLine1}</p>
+        <p>{COPY.closeLine2}</p>
       </article>
     </section>
   );
 }
 
-function liveMw(stage: StageModel, mw: number) {
-  const base = stage.number("mou_mw");
-  const atAgreement = Math.round(mw) === Math.round(base.value);
-  return {
-    ...base,
-    value: mw,
-    display: String(Math.round(mw)),
-    unit: "MW",
-    prov: atAgreement ? base.prov : "DERIVED",
-    source: atAgreement
-      ? base.source
-      : "slider on the published agreement and ceiling",
-  };
+function ScaleCard({
+  title,
+  perMwKey,
+  fleetMw,
+}: {
+  title: string;
+  perMwKey: string;
+  fleetMw: number | null;
+}) {
+  const perMw = useNumber(perMwKey);
+  const value =
+    perMw && fleetMw !== null ? scaleUsdPerDay(perMw.value, fleetMw) : null;
+  return (
+    <article className="card">
+      <h3>{title}</h3>
+      <Num
+        value={value}
+        display={value === null ? "" : usdDay(value)}
+        prov="DERIVED"
+        source={`engine scaleUsdPerDay(${perMwKey}, fleet MW)`}
+        reason={`${perMwKey} or the fleet size is not computed`}
+        width={8}
+      />
+      <p>per day, {COPY.valueToSystem}.</p>
+    </article>
+  );
 }

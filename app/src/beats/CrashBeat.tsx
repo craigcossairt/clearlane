@@ -1,89 +1,122 @@
-import type { CrashResult, Provenance, StageNumber } from "@contracts/types";
-import { Inline } from "../Provenance";
-import type { StageModel } from "../engineClient";
+import type { CrashResult } from "@contracts/types";
+import { Num } from "../components/Num";
+import { COPY } from "../copy";
+import { TORUS_FILE } from "../data";
+import { heatmapReadings } from "../engineClient";
+import { grouped } from "../format";
+import type { BeatProps } from "./types";
 
-export function CrashBeat({
-  stage,
-  result,
-  ghost,
-  second,
-  heatmap,
-}: {
-  stage: StageModel;
-  result: CrashResult | null;
-  ghost: CrashResult | null;
-  second: CrashResult | null;
-  heatmap: "mt" | "utc";
-}) {
-  const shown = second ?? result;
-  const counts = heatmap === "mt" ? stage.heatmapMt : stage.heatmapUtc;
-  const max = Math.max(...counts, 1);
+const CRASH_SOURCE = "engineClient.crash (stub)";
+
+/** Beat 3 (core 6 only starts here). Live results are SIMULATED; Torus facts come from keys. */
+export function CrashBeat({ live, call }: BeatProps) {
+  const shown = call.second ?? call.first;
+  const byHour = live.torus?.events_2025_by_hour.value ?? null;
+  const readings = byHour ? heatmapReadings(byHour) : null;
   return (
     <section className="beat" aria-labelledby="beat-crash">
       <h2 id="beat-crash">The call</h2>
-      <div className="banner reserved">
+      <div className="banner" data-slot="call-banner">
         {shown ? (
           <p>
-            Rocky Mountain Power call:{" "}
-            <Inline n={stage.number("enrolled_kw")} /> kW now. Simulated. About
-            five and a half minutes.
+            Simulated Rocky Mountain Power call: <Num k="enrolled_kw" /> kW
+            now. A call of about five and a half minutes.
           </p>
         ) : (
           <p>
-            Press C during the day to drop a Rocky Mountain Power call. This
-            space stays put either way.
+            Press C to drop a simulated Rocky Mountain Power call. This space
+            stays put either way.
           </p>
         )}
       </div>
       <div className="race">
-        <Trace title="Simulated Torus-style station" result={shown} />
-        <Trace title="Battery-only plan" result={ghost} />
+        <Trace title={COPY.clearlaneLabel} result={shown} slot="call-inset" />
+        <Trace title={COPY.priceOnlyLabel} result={call.ghost} slot="call-ghost" />
       </div>
-      {second ? (
+      <p data-slot="second-call">
+        {call.second ? (
+          <>
+            Second press inside the refill window. Shortfall{" "}
+            <Live value={call.second.shortfall_kwh} unit="kWh" digits={1} />.
+          </>
+        ) : (
+          "A second press during the refill shows any shortfall here."
+        )}
+      </p>
+      <article className="card published">
+        <h3>Published record, separate from this simulation</h3>
         <p>
-          Second press inside the refill window. Shortfall{" "}
-          <Inline n={tagged(second.shortfall_kwh, "kWh", 1)} />.
+          <Num k="rmp_events_2025" /> events (Torus, RMP case study). Ramp{" "}
+          <Num k="rmp_event_ramp_s" /> against a{" "}
+          <Num k="rmp_event_ramp_target_s" /> target. Delivered{" "}
+          <Num k="rmp_event_target_pct" /> against a{" "}
+          <Num k="rmp_event_band_min_pct" /> to{" "}
+          <Num k="rmp_event_band_max_pct" /> band.
         </p>
-      ) : null}
-      <article className="card">
-        <h3>Published 2025 record, separate from this simulation</h3>
-        <p>
-          <Inline n={stage.number("events_2025")} /> events. Ramp{" "}
-          <Inline n={stage.number("ramp_s")} /> s against a{" "}
-          <Inline n={stage.number("ramp_target_s")} /> s target. Delivered{" "}
-          <Inline n={stage.number("delivered_pct")} />% against a{" "}
-          <Inline n={stage.number("delivered_band_lo")} /> to{" "}
-          <Inline n={stage.number("delivered_band_hi")} />% band.
-        </p>
-        <p className="muted">
-          {heatmap === "mt"
-            ? "Reading the 2025 heatmap as Mountain time. The source states no time zone."
-            : "Reading the 2025 heatmap as UTC, drawn on a Mountain axis (UTC-6). That shift is our assumption."}
-        </p>
-        <div className="bar-row" aria-hidden="true">
-          {counts.map((count, hour) => (
-            <i
-              key={hour}
-              className="lane-shoulder"
-              style={{ height: `${(count / max) * 100}%` }}
-            />
-          ))}
-        </div>
+        <p className="muted">{COPY.heatmapNote}</p>
+        {readings ? (
+          <div className="heatmaps">
+            <Heat label={COPY.heatmapMountain} counts={readings.mountain} />
+            <Heat label={COPY.heatmapUtc} counts={readings.utc} />
+          </div>
+        ) : (
+          <p className="unavailable">
+            {COPY.unavailable}: {TORUS_FILE} is missing
+          </p>
+        )}
       </article>
     </section>
+  );
+}
+
+function Heat({ label, counts }: { label: string; counts: number[] }) {
+  const max = Math.max(...counts, 1);
+  return (
+    <figure className="heat">
+      <figcaption>{label}</figcaption>
+      <div className="bar-row" aria-hidden="true">
+        {counts.map((count, hour) => (
+          <i
+            key={hour}
+            className="lane-shoulder"
+            style={{ height: `${(count / max) * 100}%` }}
+          />
+        ))}
+      </div>
+    </figure>
+  );
+}
+
+function Live({
+  value,
+  unit,
+  digits,
+}: {
+  value: number;
+  unit: string;
+  digits: number;
+}) {
+  return (
+    <Num
+      value={value}
+      display={`${grouped(value, digits)} ${unit}`}
+      prov="SIMULATED"
+      source={CRASH_SOURCE}
+    />
   );
 }
 
 function Trace({
   title,
   result,
+  slot,
 }: {
   title: string;
   result: CrashResult | null;
+  slot: string;
 }) {
-  const points = result ? downsample(result) : "";
   return (
-    <article className="panel">
+    <article className="panel" data-slot={slot}>
       <h3>{title}</h3>
       <svg
         className="trace"
@@ -95,53 +128,37 @@ function Trace({
         <polyline
           fill="none"
           stroke="var(--jam)"
-          strokeWidth={2}
-          points={points}
+          strokeWidth={3}
+          points={result ? tracePoints(result) : ""}
         />
       </svg>
       {result ? (
         <p className="muted">
-          Delivered <Inline n={tagged(result.delivered_pct, "%", 0)} />. Spin{" "}
-          <Inline n={tagged(result.spin_kwh, "kWh", 1)} />. Pulse{" "}
-          <Inline n={tagged(result.pulse_kwh, "kWh", 1)} />.
+          Delivered <Live value={result.delivered_pct} unit="%" digits={0} />.
+          Spin <Live value={result.spin_kwh} unit="kWh" digits={1} />. Pulse{" "}
+          <Live value={result.pulse_kwh} unit="kWh" digits={1} />.
         </p>
       ) : (
-        <p className="unavailable">No call yet. Empty, not zero.</p>
+        <p className="unavailable">No call yet. {COPY.emptyNotZero}</p>
       )}
     </article>
   );
 }
 
-function tagged(value: number, unit: string, digits: number): StageNumber {
-  return {
-    key: "crash_trace",
-    value,
-    unit,
-    display:
-      unit === "%"
-        ? `${value.toFixed(digits)}%`
-        : `${value.toFixed(digits)} ${unit}`,
-    prov: "SIMULATED" satisfies Provenance,
-    source: "app/src/stub/crash.ts",
-    as_of_mt: "2026-10-27",
-  };
-}
-
-function downsample(result: CrashResult): string {
+/** Drawing only: every fifth second of Spin kW, scaled to the trace's own peak. */
+function tracePoints(result: CrashResult): string {
   const rows = result.trace.filter((row) => row.t_s % 5 === 0);
-  const last = rows[rows.length - 1];
-  const maxT = last?.t_s || 1;
+  const maxT = rows[rows.length - 1]?.t_s || 1;
   const maxKw = Math.max(
-    ...rows.map((row) =>
-      Math.max(row.requested_kw, Math.abs(row.spin_kw), Math.abs(row.pulse_kw)),
+    ...rows.map((r) =>
+      Math.max(r.requested_kw, Math.abs(r.spin_kw), Math.abs(r.pulse_kw)),
     ),
     1,
   );
   return rows
-    .map((row) => {
-      const x = 8 + (row.t_s / maxT) * 300;
-      const y = 100 - (Math.abs(row.spin_kw) / maxKw) * 80;
-      return `${x},${y}`;
-    })
+    .map(
+      (r) =>
+        `${8 + (r.t_s / maxT) * 300},${100 - (Math.abs(r.spin_kw) / maxKw) * 80}`,
+    )
     .join(" ");
 }

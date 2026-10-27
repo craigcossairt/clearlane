@@ -1,47 +1,52 @@
 import { useState } from "react";
-import { clock, mwFromKw } from "../format";
-import { Chip } from "../Provenance";
-import type { StageModel } from "../engineClient";
+import { Num } from "../components/Num";
+import { hourLabel } from "../components/Time";
+import { COPY } from "../copy";
+import { envelope as solveEnvelope } from "../engineClient";
+import { mwFromKw } from "../format";
+import type { BeatProps } from "./types";
 
-export function EnvelopeBeat({
-  stage,
-  fleetMw,
-  backtest,
-  heatmap,
-}: {
-  stage: StageModel;
-  fleetMw: number;
-  backtest: boolean;
-  heatmap: "mt" | "utc";
-}) {
-  const envelope = stage.envelopeKw(fleetMw * 1000);
+const ENVELOPE_SOURCE = "engineClient.envelope (stub)";
+
+/** Beat 5 (core 8 only starts here). */
+export function EnvelopeBeat({ live, fleetMw, backtest }: BeatProps) {
   const [copyNote, setCopyNote] = useState("Copy JSON");
-  const criticalHours = envelope.hours.filter((hour) => hour.system_critical).length;
+  const fleetKw = (fleetMw ?? 0) * 1000;
+  const envelope =
+    fleetMw === null
+      ? null
+      : solveEnvelope(live.bundle, live.plans.clearlane, live.site, fleetKw);
   return (
     <section className="beat" aria-labelledby="beat-envelope">
       <h2 id="beat-envelope">{backtest ? "Backtest" : "Envelope"}</h2>
       {backtest ? (
-        <div className="cards">
-          {(["fixed_overnight", "price_only", "clearlane"] as const).map((policy) => (
-            <article className="card" key={policy}>
-              <h3>{label(policy)}</h3>
-              <p className="unavailable">P10 to P90 unavailable until the engine backtest is on this build.</p>
-              <p className="unavailable">
-                Calls unanswerable, {heatmap === "mt" ? "Mountain reading" : "UTC reading"}, unavailable until that
-                backtest lands.
-              </p>
-            </article>
-          ))}
+        <div className="cards" data-slot="backtest-bands">
+          {[COPY.fixedLabel, COPY.priceOnlyLabel, COPY.clearlaneLabel].map(
+            (title) => (
+              <article className="card" key={title}>
+                <h3>{title}</h3>
+                <p>
+                  Days beating the off-peak rule <Num k="share_days_beating" />.
+                </p>
+                <p>
+                  Window <Num k="backtest_days" /> days. Calls unanswerable are
+                  shown {COPY.heatmapMountain} and {COPY.heatmapUtc} once the
+                  backtest is computed.
+                </p>
+              </article>
+            ),
+          )}
         </div>
-      ) : (
+      ) : envelope ? (
         <>
-          <p>{envelope.sch_rule} A working example, not a filing.</p>
           <p>
-            System Critical Hours this day: {criticalHours}
-            <Chip prov="DERIVED" source="app/src/stub/lanes.ts" />. Reserve {mwFromKw(envelope.fleet_kw)}
-            <Chip prov="SIMULATED" source="app/src/stub/envelope.ts" />.
+            {COPY.schLabel}: <Num k="sch_hours_today" /> today.{" "}
+            <span data-copy-ok="engine sch_rule text and schema id">
+              {envelope.sch_rule} Schema {envelope.schema}.
+            </span>{" "}
+            A working example, not a filing.
           </p>
-          <div className="scroll">
+          <div className="scroll" data-detail="">
             <table>
               <thead>
                 <tr>
@@ -53,21 +58,31 @@ export function EnvelopeBeat({
               </thead>
               <tbody>
                 {envelope.hours.map((hour, index) => (
-                  <tr key={hour.ts_utc} className={hour.system_critical ? "critical" : undefined}>
-                    <td>{clock(index)}</td>
+                  <tr
+                    key={hour.ts_utc}
+                    className={hour.system_critical ? "critical" : undefined}
+                  >
+                    <td>
+                      <span data-time="">{hourLabel(index)}</span>
+                    </td>
                     <td>{hour.system_critical ? "yes" : "no"}</td>
                     <td>
-                      {mwFromKw(hour.planned_kw)}
-                      <Chip prov="DERIVED" source="app/src/stub/envelope.ts" />
+                      <Num
+                        value={hour.planned_kw}
+                        display={mwFromKw(hour.planned_kw)}
+                        prov="DERIVED"
+                        source={ENVELOPE_SOURCE}
+                      />
                     </td>
-                    <td>{hour.reason}</td>
+                    <td data-copy-ok="engine reason text">{hour.reason}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <button
-            className="ghost-btn"
+            className="ghost-btn copy-btn"
+            data-slot="copy-json"
             type="button"
             onClick={() => {
               const text = JSON.stringify(envelope, null, 2);
@@ -84,13 +99,12 @@ export function EnvelopeBeat({
             {copyNote}
           </button>
         </>
+      ) : (
+        <p className="num-not-computed">
+          The envelope needs the fleet size, which is{" "}
+          {COPY.notComputed}.
+        </p>
       )}
     </section>
   );
-}
-
-function label(policy: string): string {
-  if (policy === "fixed_overnight") return "Fixed off-peak rule";
-  if (policy === "price_only") return "Battery-only plan";
-  return "Clearlane";
 }

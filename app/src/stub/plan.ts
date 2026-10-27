@@ -10,10 +10,14 @@ import {
   DISCHARGE_HOURS,
   FIXED_CHARGE_HOURS,
   RTE,
-  referenceRace,
   TIMETABLE_CHARGE_HOURS,
 } from "./reference";
-import { hostLoadKw } from "./site";
+
+/** Per-MW value and CO2 for a stub plan, passed in by engineClient from the engine's referenceRace. */
+export interface PlanValue {
+  usdPerMwDay: number;
+  co2TPerMwDay: number;
+}
 
 const ONE_WAY = Math.sqrt(RTE);
 
@@ -51,13 +55,11 @@ export function buildPlan(
   hours: HourSignal[],
   site: Site,
   policy: Policy,
+  value: PlanValue | null,
 ): BuiltPlan {
   const started = performance.now();
   const lanes = lanesFor(hours);
-  const race =
-    policy === "price_only"
-      ? null
-      : referenceRace(hours, chargeHours(policy), DISCHARGE_HOURS);
+  const race = policy === "price_only" ? null : value;
   const keepSpin = policy === "clearlane";
   const intervals: PlanInterval[] = [];
   let pulseSoc = 0;
@@ -81,7 +83,7 @@ export function buildPlan(
       );
     }
     const spinKw = 0;
-    const meter = hostLoadKw(hour) + pulseKw + spinKw;
+    const meter = (site.host_load_kw_15m[i] ?? 0) + pulseKw + spinKw;
     intervals.push({
       i,
       ts_utc: new Date(Date.parse(row.ts_utc) + (i % 4) * 15 * 60 * 1000)

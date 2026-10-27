@@ -1,57 +1,73 @@
 import type { Plan } from "@contracts/types";
-import { clock } from "../format";
-import { Inline, Num } from "../Provenance";
-import type { StageModel } from "../engineClient";
+import { Num } from "../components/Num";
+import { hourLabel } from "../components/Time";
+import { COPY } from "../copy";
+import type { BeatProps } from "./types";
 
-export function Race({ stage, hour }: { stage: StageModel; hour: number }) {
+/**
+ * Beat 2 (core 5 only starts here). The end cards read only the reference set:
+ * fixed_usd_mw_day, clearlane_usd_mw_day, race_ratio, fixed_70, clearlane_70,
+ * fixed_rule_charge_usd_mwh and timetable_charge_usd_mwh. CO2, the MOU size and the cycle
+ * lines sit on other beats.
+ */
+export function Race({ live, hour }: BeatProps) {
   const done = hour >= 24;
-  const left = stage.plans.fixed_overnight;
-  const right = stage.plans.clearlane;
   return (
     <section className="beat" aria-labelledby="beat-race">
       <h2 id="beat-race">The race</h2>
       <p className="muted">
-        {done
-          ? "End of the day."
-          : `Hour ${clock(Math.min(23, Math.floor(hour)))}.`}{" "}
+        <span data-slot="race-clock" className="slot-clock">
+          {done ? (
+            "End of the day."
+          ) : (
+            <span data-time="">
+              {hourLabel(Math.min(23, Math.floor(hour)))}
+            </span>
+          )}
+        </span>{" "}
         Space plays the day. The left station is our baseline, not Torus
         practice.
       </p>
       <div className="race">
         <Station
-          plan={left}
-          title="Battery on the off-peak rule"
+          plan={live.plans.fixed_overnight}
+          title={COPY.fixedLabel}
           hour={hour}
           spin={false}
-          stage={stage}
+          live={live}
         />
         <Station
-          plan={right}
-          title="Simulated Torus-style station on Clearlane"
+          plan={live.plans.clearlane}
+          title={COPY.clearlaneLabel}
           hour={hour}
           spin
-          stage={stage}
+          live={live}
         />
       </div>
-      <div className="cards reserved">
+      <div className="cards" data-slot="race-end-cards">
         {done ? (
           <>
-            <EndCard
-              stage={stage}
-              title="Fixed off-peak rule"
-              perMw="fixed_usd_mw_day"
-              day="fixed_70"
-              co2="co2_added_70"
-              co2Words="added"
-            />
-            <EndCard
-              stage={stage}
-              title="Clearlane timetable"
-              perMw="clearlane_usd_mw_day"
-              day="clearlane_70"
-              co2="co2_avoided_70"
-              co2Words="avoided"
-            />
+            <article className="card">
+              <h3>{COPY.fixedLabel}</h3>
+              <Num k="fixed_usd_mw_day" width={8} />
+              <p className="muted">per MW-day</p>
+              <Num k="fixed_70" width={8} />
+              <p>per day at the MOU size, {COPY.valueToSystem}.</p>
+              <p>
+                Charges at <Num k="fixed_rule_charge_usd_mwh" /> per MWh.
+              </p>
+            </article>
+            <article className="card">
+              <h3>{COPY.clearlaneLabel}</h3>
+              <Num k="clearlane_usd_mw_day" width={8} />
+              <p className="muted">per MW-day</p>
+              <Num k="clearlane_70" width={8} />
+              <p>per day at the MOU size, {COPY.valueToSystem}.</p>
+              <p>
+                Charges at <Num k="timetable_charge_usd_mwh" /> per MWh.{" "}
+                <Num k="race_ratio" /> the off-peak rule.
+              </p>
+            </article>
           </>
         ) : (
           <p className="muted">
@@ -68,25 +84,24 @@ function Station({
   title,
   hour,
   spin,
-  stage,
+  live,
 }: {
   plan: Plan;
   title: string;
   hour: number;
   spin: boolean;
-  stage: StageModel;
+  live: BeatProps["live"];
 }) {
   const index = Math.min(95, Math.floor(hour * 4));
   const row = plan.intervals[index];
-  const pulseCap = stage.site.station.pulse_kwh;
-  const spinCap = stage.site.station.spin_kwh;
+  // Bar widths only (a share of capacity); no value is printed from them.
   const pulsePct = row
-    ? Math.min(100, (row.pulse_soc_kwh / pulseCap) * 100)
+    ? Math.min(100, (row.pulse_soc_kwh / live.site.station.pulse_kwh) * 100)
     : 0;
   const spinPct =
-    !spin || !row ? 0 : Math.min(100, (row.spin_soc_kwh / spinCap) * 100);
-  const today = stage.number("cycles_today");
-  const budget = stage.number("cycle_budget_day");
+    !spin || !row
+      ? 0
+      : Math.min(100, (row.spin_soc_kwh / live.site.station.spin_kwh) * 100);
   return (
     <article className="panel">
       <h3>{title}</h3>
@@ -105,11 +120,7 @@ function Station({
           <b style={{ width: `${pulsePct}%` }} />
         </span>
       </p>
-      <Meter plan={plan} hour={hour} ceiling={stage.site.host_ceiling_kw} />
-      <p>
-        Today <Inline n={today} /> cycles, against a day budget of{" "}
-        <Inline n={budget} />.
-      </p>
+      <Meter plan={plan} hour={hour} ceiling={live.site.host_ceiling_kw} />
     </article>
   );
 }
@@ -125,18 +136,14 @@ function Meter({
 }) {
   const last = Math.min(95, Math.floor(hour * 4));
   const shown = plan.intervals.slice(0, last + 1);
-  const peak = Math.max(ceiling, ...shown.map((row) => row.meter_kw), 1);
+  const peak = Math.max(ceiling, ...shown.map((r) => r.meter_kw), 1);
   const points = shown
-    .map((row) => {
-      const x = (row.i / 95) * 280 + 8;
-      const y = 78 - (row.meter_kw / peak) * 64;
-      return `${x},${y}`;
-    })
+    .map((r) => `${(r.i / 95) * 280 + 8},${78 - (r.meter_kw / peak) * 64}`)
     .join(" ");
   const yCeiling = 78 - (ceiling / peak) * 64;
   return (
     <>
-      <p className="muted">Host meter. The dashed line is the ceiling.</p>
+      <p className="muted">Host meter, in kW. The dashed line is the ceiling.</p>
       <svg
         className="trace"
         viewBox="0 0 300 90"
@@ -155,45 +162,11 @@ function Meter({
         <polyline
           fill="none"
           stroke="var(--accent)"
-          strokeWidth={2}
+          strokeWidth={3}
           vectorEffect="non-scaling-stroke"
           points={points}
         />
       </svg>
     </>
-  );
-}
-
-function EndCard({
-  stage,
-  title,
-  perMw,
-  day,
-  co2,
-  co2Words,
-}: {
-  stage: StageModel;
-  title: string;
-  perMw: string;
-  day: string;
-  co2: string;
-  co2Words: string;
-}) {
-  const mou = stage.number("mou_mw");
-  return (
-    <article className="card">
-      <h3>{title}</h3>
-      <Num n={stage.number(perMw)} />
-      <p className="muted">per MW-day</p>
-      <Num n={stage.number(day)} />
-      <p>
-        per day at <Inline n={mou} /> MW, value to RMP&apos;s system at
-        day-ahead prices.
-      </p>
-      <p>
-        <Inline n={stage.number(co2)} /> t/day {co2Words}. Average-emissions
-        estimate (EIA hourly); marginal emissions can differ.
-      </p>
-    </article>
   );
 }
