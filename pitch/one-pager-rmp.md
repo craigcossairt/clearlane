@@ -18,7 +18,7 @@ Lasso could take the file as one more grid signal. Whether it does is not advert
 
 On the reference day, a battery on our fixed off-peak rule is worth `{fixed_usd_mw_day}` per MW-day. The Clearlane timetable is worth `{clearlane_usd_mw_day}` per MW-day, about `{race_ratio}` the off-peak rule.
 
-At `{mou_mw}`, that is `{fixed_70}` a day against `{clearlane_70}` a day. Those figures assume every MW behaves like the reference station and the fleet does not move prices.
+At `{mou_70mw}`, that is `{fixed_70}` a day against `{clearlane_70}` a day. Those figures assume every MW behaves like the reference station and the fleet does not move prices.
 
 This is value to RMP's system at day-ahead prices. It is not Torus revenue, not a host bill cut, and not a settlement.
 
@@ -26,6 +26,6 @@ CO2 is estimated, using average emissions for PacifiCorp East, not marginal: the
 
 ## The call
 
-Spin, sized to the enrolled kW, covers one call of about five and a half minutes. A second call inside the refill window is the case the crash card shows, including any shortfall.
+Spin, sized to the enrolled kW, covers one call of {crash_call_minutes}. A second call inside the refill window is the case the crash card shows, including any shortfall.
 
 The 2025 heatmap states no time zone. We show both readings: `{calls_answered_pct_mt}` answered as Mountain time, `{calls_answered_pct_utc}` as UTC.

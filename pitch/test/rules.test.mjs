@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { renameSync, writeFileSync, readFileSync } from "node:fs";
+import { existsSync, renameSync, writeFileSync, readFileSync } from "node:fs";
 import test from "node:test";
 import { catalogFindings, formatFinding, lintText, parseFacts, resolveInput, resolveText } from "../lib/rules.mjs";
 
@@ -136,7 +136,9 @@ test("an absolute facts path is not joined onto the repo", () => {
 });
 
 test("current pitch copy exits 0 and fixtures are skipped", () => {
-  const run = spawnSync(process.execPath, ["pitch/resolve.mjs"], { encoding: "utf8" });
+  const facts = ["docs/FACTS.md", "../clearlane/docs/FACTS.md"].find((path) => existsSync(path));
+  assert.ok(facts, "FACTS.md not found");
+  const run = spawnSync(process.execPath, ["pitch/resolve.mjs", "--facts", facts], { encoding: "utf8" });
   assert.equal(run.status, 0, run.stderr);
   assert.ok(!run.stderr.includes("skip-me"));
   assert.match(run.stdout, /unresolved: /);

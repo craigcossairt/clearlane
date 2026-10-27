@@ -97,10 +97,12 @@ export function parseFacts(text) {
       continue;
     }
     if (!/^[a-z][a-z0-9_]*$/.test(cells[0])) continue;
+    const status = cells[7] ?? "";
+    if (!/\b(?:PENDING-ENGINE|UNCHECKED|CONFLICT|VERIFIED)\b/.test(status)) continue;
     rows.set(cells[0], {
       claim: cells[1] ?? "",
       value: cells[2] ?? "",
-      status: cells[7] ?? cells[cells.length - 1] ?? "",
+      status,
     });
   }
   return { rows, sayInstead };
