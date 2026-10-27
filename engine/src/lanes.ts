@@ -49,8 +49,13 @@ export function schFromPrices(
   p: number[],
   netLoad: number[] | null,
 ): SystemCriticalHours {
-  const proxy = netLoad === null;
-  const t = top4(netLoad ?? p);
+  // an incomplete or non-finite net-load series counts as unavailable
+  const usable =
+    netLoad !== null &&
+    netLoad.length === p.length &&
+    netLoad.every(Number.isFinite);
+  const proxy = !usable;
+  const t = top4(usable ? netLoad : p);
   const jam = lanesFromPrices(p).flatMap((l, h) => (l === "jam" ? [h] : []));
   return {
     hours: [...new Set([...t, ...jam])].sort((a, b) => a - b),

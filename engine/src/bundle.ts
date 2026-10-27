@@ -32,6 +32,11 @@ export function validateBundle(b: Bundle): string[] {
   if (b.hours.length !== HOURS)
     errors.push(`expected ${HOURS} hours, got ${b.hours.length}`);
   b.hours.forEach((h, i) => {
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(h.ts_utc)) {
+      errors.push(
+        `hour ${i}: ts_utc ${h.ts_utc} is not UTC ISO 8601 ending in Z`,
+      );
+    }
     if (!Number.isFinite(h.lmp_usd_mwh))
       errors.push(`hour ${i}: lmp_usd_mwh is not finite`);
     if (

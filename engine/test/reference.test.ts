@@ -110,8 +110,16 @@ describe("a second day", () => {
     const p = b.hours.map((h) => h.lmp_usd_mwh);
     const d2 = redated(b, 1, [...p.slice(12), ...p.slice(0, 12)]);
     const r = referenceRace(d2);
-    // midday HB 9-17 of the new day holds old HB 21-23 and 0-5; the 3 cheapest are old HB 3, 4, 5 -> new 15, 16, 17
-    expect(r.timetable.charge_hb).toEqual([15, 16, 17]);
-    expect(option2Shift(d2).from_hb).toEqual([6, 7, 8]);
+    // expected hours come from d2's own prices: the 3 cheapest of HB 9-17 and the 3 priciest of the day
+    const q = d2.hours.map((h) => h.lmp_usd_mwh);
+    const pick = (hs: number[], dir: 1 | -1) =>
+      [...hs]
+        .sort((x, y) => dir * (q[x]! - q[y]!) || x - y)
+        .slice(0, 3)
+        .sort((x, y) => x - y);
+    const all = Array.from({ length: 24 }, (_, h) => h);
+    expect(r.timetable.charge_hb).toEqual(pick(all.slice(9, 18), 1));
+    expect(option2Shift(d2).from_hb).toEqual(pick(all, -1));
+    expect(option2Shift(d2).from_hb).toEqual([6, 7, 8]); // old HB 18-20 moved 12 hours
   });
 });
