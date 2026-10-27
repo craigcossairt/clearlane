@@ -59,3 +59,5 @@ export {
 } from "./backtest";
 export type { BacktestDayRow, BacktestOpts, BacktestRun } from "./backtest";
 export { mean, pctl, percentile } from "./stats";
+export { calibrateWear } from "./wear";
+export type { WearCalibration, WearOpts } from "./wear";

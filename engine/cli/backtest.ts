@@ -1,21 +1,22 @@
 // Writes public/derived/backtest.json and backtest_days.json: all three policies on every day of the window.
 // Usage: npx tsx engine/cli/backtest.ts [--hist file] [--torus file] [--wear W] [--seed N] [--out backtest.json]
+// Without --wear, W is calibrated: the smallest W keeping clearlane within 300 Pulse cycles a year.
 // Solve times are MEASURED and printed, never stored. Exit 2 names a missing input; no partial file.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import type { HistDay, TorusPublished } from "../../contracts/types";
 import { DEFAULT_SEED, runBacktest, validateBacktest } from "../src/backtest";
 import { stableJson } from "../src/json";
-import { DEFAULT_WEAR_USD_MWH } from "../src/policies";
 import { percentile } from "../src/stats";
 import { defaultSite } from "../src/site";
+import { calibrateWear } from "../src/wear";
 import { argValue } from "./args";
 
 const histFile =
   argValue("--hist") ?? "public/data/hist_2026-05-01_2026-10-27.json";
 const torusFile = argValue("--torus") ?? "public/data/torus_published.json";
 const out = argValue("--out") ?? "public/derived/backtest.json";
-const wear = Number(argValue("--wear") ?? DEFAULT_WEAR_USD_MWH);
+const wearArg = argValue("--wear");
 const seed = Number(argValue("--seed") ?? DEFAULT_SEED);
 
 for (const f of [histFile, torusFile]) {
@@ -24,7 +25,10 @@ for (const f of [histFile, torusFile]) {
     process.exit(2);
   }
 }
-if (!Number.isFinite(wear) || !Number.isInteger(seed)) {
+if (
+  (wearArg !== undefined && !Number.isFinite(Number(wearArg))) ||
+  !Number.isInteger(seed)
+) {
   console.error("--wear must be a number and --seed an integer");
   process.exit(2);
 }
@@ -33,6 +37,20 @@ const torus = JSON.parse(readFileSync(torusFile, "utf8")) as TorusPublished;
 
 const site = defaultSite();
 const t0 = performance.now();
+let wear: number;
+if (wearArg !== undefined) {
+  wear = Number(wearArg);
+  console.log(`W ${wear} $/MWh from --wear (not calibrated)`);
+} else {
+  const cal = calibrateWear(hist, site);
+  wear = cal.wear_usd_mwh;
+  console.log(
+    `calibrated W ${wear.toFixed(2)} $/MWh: clearlane ${cal.cycles_per_yr.toFixed(1)} cycles a year ` +
+      `(budget ${cal.budget}); at W 10: ${cal.cycles_at_10.toFixed(1)}; ` +
+      `${cal.monotone ? "monotone" : "NOT monotone, refined inside the first feasible $0.50 step"}; ` +
+      `${cal.evaluations} evaluations${cal.feasible ? "" : "; INFEASIBLE at the top of the bracket"}`,
+  );
+}
 const run = runBacktest(hist, site, {
   wear_usd_mwh: wear,
   seed,
