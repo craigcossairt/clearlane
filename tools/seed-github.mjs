@@ -107,7 +107,7 @@ for (const it of issues) {
   if (!deps.length || DRY) continue;
   const n = existing.get(it.title);
   const body = gh(["issue", "view", String(n), "--json", "body", "-q", ".body"]);
-  if (body.includes("Depends on:")) continue;
+  if (/^Depends on: #/m.test(body)) continue; // a prose "Depends on:" heading in the body is not the link line
   gh(["issue", "edit", String(n), "--body-file", "-"], { input: `${body}\n\nDepends on: ${deps.map((d) => `#${d}`).join(", ")}` });
 }
 console.log(`done: ${existing.size} issues on the board`);
