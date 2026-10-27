@@ -1,4 +1,10 @@
-import type { Bundle, StageNumber, TorusPublished } from "@contracts/types";
+import type {
+  BacktestResult,
+  Bundle,
+  Envelope,
+  StageNumber,
+  TorusPublished,
+} from "@contracts/types";
 
 /**
  * The only module that reads JSON files. Everything is bundled at build time with eager
@@ -83,4 +89,63 @@ export function torusSourceUrl(
 ): string {
   const found = torus?.sources?.find((s) => s.id === sourceId);
   return found?.url ?? sourceId;
+}
+
+export const BACKTEST_FILE = "public/derived/backtest.json";
+
+export interface EnvelopeFile {
+  envelope: Envelope;
+  /** The file's exact text, for Copy JSON. */
+  raw: string;
+  file: string;
+}
+
+export interface DerivedFiles {
+  /** Keyed by operating_day_mt. */
+  envelopes: Record<string, EnvelopeFile>;
+  /** null: backtest.json is not computed yet. */
+  backtest: { result: BacktestResult; file: string } | null;
+  /** Files that exist but would not parse. */
+  failed: string[];
+}
+
+/** Pure assembly from raw-text glob maps, so tests can feed fixture files. */
+export function assembleDerived(raw: Record<string, unknown>): DerivedFiles {
+  const out: DerivedFiles = { envelopes: {}, backtest: null, failed: [] };
+  for (const [key, text] of Object.entries(raw)) {
+    const file = repoPath(key);
+    if (typeof text !== "string") continue;
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      out.failed.push(file);
+      continue;
+    }
+    const schema = (parsed as { schema?: string } | null)?.schema;
+    if (schema === "clearlane.envelope/v1") {
+      const envelope = parsed as Envelope;
+      out.envelopes[envelope.operating_day_mt] = { envelope, raw: text, file };
+    } else if (schema === "clearlane.backtest/v1") {
+      out.backtest = { result: parsed as BacktestResult, file };
+    } else {
+      out.failed.push(file);
+    }
+  }
+  return out;
+}
+
+let derivedCache: DerivedFiles | null = null;
+/** Envelope and backtest files, bundled as raw text at build time (no runtime request). */
+export function loadDerivedFiles(): DerivedFiles {
+  derivedCache ??= assembleDerived(
+    import.meta.glob(
+      [
+        "../../public/derived/envelope_*.json",
+        "../../public/derived/backtest.json",
+      ],
+      { eager: true, query: "?raw", import: "default" },
+    ),
+  );
+  return derivedCache;
 }
