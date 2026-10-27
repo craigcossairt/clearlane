@@ -32,3 +32,5 @@ export { buildPlan, schFlags } from "./plan";
 export type { Schedule } from "./plan";
 export { SECOND_CALL_OFFSET_S, scriptedCalls, simulateCall } from "./crash";
 export type { CallResult } from "./crash";
+export { crash, replanFrom, stateAfterCalls } from "./replan";
+export type { CrashOutcome, Replan, ReplanState } from "./replan";
