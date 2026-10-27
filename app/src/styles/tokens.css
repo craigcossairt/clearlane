@@ -1,0 +1,57 @@
+/* DESIGN.md tokens, nothing else. Dark is the default; light follows prefers-color-scheme;
+   ?theme=dark|light sets data-theme on <html> and wins over both. tokens.test.ts compares
+   these values with the DESIGN.md table. Surfaces and lines are mixes of these tokens. */
+:root {
+  color-scheme: dark;
+  --bg: #111316;
+  --ink: #ebeae6;
+  --muted: #a2a6ad;
+  --accent: #7ea9ff;
+  --clear: #3cbf84;
+  --clear-soft: #16291f;
+  --shoulder: #e2a73c;
+  --shoulder-soft: #2b2414;
+  --jam: #ee6b58;
+  --jam-soft: #2e1a17;
+  --solar: #f0c04c;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #f6f5f1;
+    --ink: #1b1c1e;
+    --muted: #5a5d63;
+    --accent: #1c5bb8;
+    --clear: #1d8457;
+    --clear-soft: #e3f2ea;
+    --shoulder: #b97d0c;
+    --shoulder-soft: #f6eedb;
+    --jam: #bf3a29;
+    --jam-soft: #f8e6e2;
+    --solar: #d99a00;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f5f1;
+  --ink: #1b1c1e;
+  --muted: #5a5d63;
+  --accent: #1c5bb8;
+  --clear: #1d8457;
+  --clear-soft: #e3f2ea;
+  --shoulder: #b97d0c;
+  --shoulder-soft: #f6eedb;
+  --jam: #bf3a29;
+  --jam-soft: #f8e6e2;
+  --solar: #d99a00;
+}
+
+:root {
+  --surface: color-mix(in srgb, var(--ink) 5%, var(--bg));
+  --surface-2: color-mix(in srgb, var(--ink) 9%, var(--bg));
+  --line: color-mix(in srgb, var(--ink) 16%, var(--bg));
+  --figure: 40px;
+  --body: 24px;
+}
