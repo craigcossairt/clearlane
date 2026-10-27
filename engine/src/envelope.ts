@@ -121,6 +121,10 @@ export function validateEnvelope(x: unknown): string[] {
   } else {
     o.hours.forEach((h, i) => {
       const at = `hour ${i}`;
+      if (!h || typeof h !== "object") {
+        e.push(`${at}: not an object`);
+        return;
+      }
       if (typeof h.ts_utc !== "string" || !h.ts_utc.endsWith("Z"))
         e.push(`${at}: ts_utc is not UTC`);
       if (typeof h.system_critical !== "boolean")

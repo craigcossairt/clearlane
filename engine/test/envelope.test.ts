@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -117,6 +117,11 @@ describe("validateEnvelope rejects", () => {
         hours: e.hours.map((h, i) => (i ? h : { ...h, planned_kw: 9999 })),
       })),
     ).not.toEqual([]));
+  it("a null hour, without throwing", () =>
+    expect(
+      bad((e) => ({ ...e, hours: [null, ...e.hours.slice(1)] })),
+    ).toContain("hour 0: not an object"));
+
   it("an em dash", () =>
     expect(
       bad((e) => ({ ...e, sch_rule: `a ${String.fromCharCode(0x2014)} b` })),
@@ -155,6 +160,23 @@ describe("engine/cli/envelope.ts", () => {
     expect(a).toBe(readFileSync(join(d2, "envelope_2026-10-27.json"), "utf8"));
     expect(a.endsWith("}\n")).toBe(true);
     expect(a).not.toContain("\r");
+  });
+
+  it.each([
+    ["null", "null"],
+    ["a bundle with no hours", '{"schema":"clearlane.bundle/v1"}'],
+    ["string hours", '{"schema":"clearlane.bundle/v1","hours":"x"}'],
+    ["a null hour", '{"schema":"clearlane.bundle/v1","hours":[null]}'],
+  ])("exits 2 on %s", (_, text) => {
+    const f = join(mkdtempSync(join(tmpdir(), "bad-")), "b.json");
+    writeFileSync(f, text);
+    let code = 0;
+    try {
+      run([f]);
+    } catch (err) {
+      code = (err as { status: number }).status;
+    }
+    expect(code).toBe(2);
   });
 
   it("exits 2 on a missing bundle", () => {
