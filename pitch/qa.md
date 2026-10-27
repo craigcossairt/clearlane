@@ -1,6 +1,6 @@
 # Judge Q&A
 
-Answers are at most two sentences. A number is a `{key}` or it is not said. The Tuesday-night drill appends grades below the line.
+Answers are at most two sentences. A number is a placeholder or it is not said. The Tuesday-night drill appends grades below the line.
 
 ## Isn't this what Lasso already does?
 

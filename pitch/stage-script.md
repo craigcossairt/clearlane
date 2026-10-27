@@ -1,6 +1,6 @@
 # Stage script
 
-About two minutes and forty-five seconds. Operating day on screen the whole time. Every result is a `{key}`.
+About two minutes and forty-five seconds. Operating day on screen the whole time. Every result is a placeholder.
 
 ## Beat 1, traffic report (0:00 to 0:25)
 
