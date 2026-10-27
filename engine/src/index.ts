@@ -9,3 +9,7 @@ export type {
   RaceLeg,
   ReferenceRace,
 } from "./reference";
+export { solveDp } from "./dp";
+export type { DpInput, DpResult } from "./dp";
+export { callShare, dpHourly, hourlyUnanswerable, rotateLeft, snapshotHour } from "./hourly";
+export type { HourlyOpts } from "./hourly";
