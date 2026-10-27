@@ -120,3 +120,29 @@ describe("export floor", () => {
 
 // Printed by the first run of this file; the PR quotes it.
 const GHOST_PCT = "6.36";
+
+describe("a call in a charging interval", () => {
+  it("lets Pulse stop charging and discharge at its full rating", () => {
+    const iv = clear.intervals.find(
+      (x) => x.pulse_kw > 1 && x.pulse_soc_kwh > site.station.pulse_kwh / 2,
+    )!;
+    expect(iv).toBeDefined();
+    // a small Spin forces Pulse to carry the call
+    const weakSpin: Site = {
+      ...site,
+      station: { ...site.station, spin_kw: 1, spin_kwh: 0.1 },
+    };
+    const call: CrashEvent = {
+      ...first,
+      id: "charging",
+      start_utc: iv.ts_utc,
+      duration_s: 120,
+      requested_kw: 2 * site.station.pulse_kw,
+    };
+    const r = simulateCall(clear, weakSpin, call);
+    const deepest = Math.min(...r.trace.map((p) => p.pulse_kw));
+    // the old cap (rating less the planned charge) stops at 2 * planned - rating
+    expect(deepest).toBeLessThan(2 * iv.pulse_kw - site.station.pulse_kw - 1);
+    expect(deepest).toBeGreaterThanOrEqual(-site.station.pulse_kw - 1e-6);
+  });
+});
