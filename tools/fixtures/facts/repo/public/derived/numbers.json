@@ -1,0 +1,7 @@
+[
+  { "key": "alpha_verified", "value": 1, "unit": "$/MWh", "display": "$1.00", "prov": "DERIVED", "source": "fixture", "as_of_mt": "2026-10-27" },
+  { "key": "beta_verified", "value": 2.5, "unit": "$/MWh", "display": "$2.50", "prov": "DERIVED", "source": "fixture", "as_of_mt": "2026-10-27" },
+  { "key": "gamma_pending", "value": 3, "unit": "$/MW-day", "display": "$3.00", "prov": "DERIVED", "source": "fixture", "as_of_mt": "2026-10-27" },
+  { "key": "eps_conflict", "value": 5.6, "unit": "min", "display": "5.6", "prov": "TORUS_PUBLISHED", "source": "fixture", "as_of_mt": "2026-10-27" },
+  { "key": "orphan_key", "value": 4, "unit": "x", "display": "4.0x", "prov": "DERIVED", "source": "fixture", "as_of_mt": "2026-10-27" }
+]
