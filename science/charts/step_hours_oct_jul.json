@@ -1,0 +1,87 @@
+{
+  "chart": "step_hours_oct_jul",
+  "class": "DERIVED",
+  "definition": "largest p[h] - p[h-1], h = 1..23, Mountain day from 06:00Z, ties to the earliest h",
+  "inputs": [
+    {
+      "path": "research/analysis/option2/jul/20260630_20260730_PRC_LMP_DAM_20261026_20_37_57_v12.csv",
+      "sha256": "016421c4429a87e35491aa55aeb0679c86f8f050caf49d09cb2591dfb7a53eaa"
+    },
+    {
+      "path": "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+      "sha256": "3ab4dddb82383e8c15b47b290dd2c7ea09a46bdcd3787ed6981f8d11b6f16010"
+    }
+  ],
+  "july": {
+    "counts_by_hb": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      5,
+      1,
+      3,
+      1,
+      6,
+      7,
+      3,
+      0,
+      0,
+      1
+    ],
+    "first_day": "2026-07-01",
+    "hb13_to_20": 28,
+    "last_day": "2026-07-30",
+    "median_step": 10.09922,
+    "n_days": 30
+  },
+  "labels": {
+    "july": "July: 28 of 30 between HB 1pm and 8pm",
+    "october": "24 of 27 October days: HB 5pm or 6pm"
+  },
+  "node": "ELAP_PACE-APND",
+  "october": {
+    "counts_by_hb": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "first_day": "2026-10-01",
+    "hb17_or_18": 24,
+    "last_day": "2026-10-27",
+    "median_step": 15.09984,
+    "n_days": 27
+  },
+  "script": "science/chart_step_hours.py"
+}
