@@ -1,0 +1,10 @@
+{
+  "keys": {
+    "solve_live": { "unit": "ms", "prov": "MEASURED" },
+    "keys_live": { "unit": "ms", "prov": "MEASURED" },
+    "clash_live": { "unit": "ms", "prov": "MEASURED" },
+    "no_row_live": { "unit": "ms", "prov": "MEASURED" },
+    "engine_pending": { "unit": "$/MW-day", "prov": "DERIVED" },
+    "stored_ok": { "unit": "$/MWh", "prov": "DERIVED" }
+  }
+}

@@ -79,14 +79,27 @@ export function extractStageKeys(text) {
   return out;
 }
 
+/** Keys whose prov is MEASURED in pitch/keys.json (the catalog pitch/resolve.mjs reads). Empty when the file is absent. */
+export function measuredKeysFromCatalog(catalog) {
+  const keys = catalog?.keys;
+  if (!keys || typeof keys !== "object") return new Set();
+  return new Set(Object.entries(keys).filter(([, e]) => e?.prov === "MEASURED").map(([k]) => k));
+}
+
 /**
- * The five checks. numbers is StageNumber[] or null when numbers.json is missing.
+ * The six checks. numbers is StageNumber[] or null when numbers.json is missing.
  * uses is a Map of key -> list of files that use it.
+ * measuredKeys is the set of keys pitch/keys.json marks prov MEASURED. A key is
+ * MEASURED when keys.json says so or its FACTS row has Class MEASURED. MEASURED
+ * keys are live-only (timed on the demo machine, never stored), so they pass
+ * check 2 whatever their status, and check 6 fails one that is also in numbers.json.
  */
-export function checkFacts({ facts, numbers, uses, allowPending = false }) {
+export function checkFacts({ facts, numbers, uses, allowPending = false, measuredKeys = new Set() }) {
   const findings = [];
   const add = (level, check, key, message) => findings.push({ level, check, key, message });
   const byKey = new Map((numbers ?? []).map((n) => [n.key, n]));
+  // A MEASURED key needs a FACTS row; a key with no row stays a check 2 failure.
+  const isMeasured = (key) => facts.has(key) && (measuredKeys.has(key) || facts.get(key).cls === "MEASURED");
 
   if (numbers === null) {
     add("WARN", 0, "", "numbers.json missing (public/derived/numbers.json not built); checks 1, 3 and 4 skipped, copy checks still run");
@@ -99,7 +112,7 @@ export function checkFacts({ facts, numbers, uses, allowPending = false }) {
   for (const [key, files] of uses) {
     const where = files.join(", ");
     const row = facts.get(key);
-    if (!byKey.has(key) && row?.status !== "VERIFIED") {
+    if (!byKey.has(key) && row?.status !== "VERIFIED" && !isMeasured(key)) {
       const why = row ? `FACTS status ${row.status}` : "no FACTS row";
       if (allowPending && numbers === null && row?.status === "PENDING-ENGINE") {
         add("WARN", 2, key, `{${key}} in ${where}: PENDING-ENGINE and numbers.json not built (allowed by --allow-pending)`);
@@ -117,6 +130,10 @@ export function checkFacts({ facts, numbers, uses, allowPending = false }) {
     for (const row of facts.values()) {
       const n = byKey.get(row.key);
       if (!n) continue;
+      if (isMeasured(row.key)) {
+        add("FAIL", 6, row.key, `${row.key}: MEASURED is live-only, but numbers.json also has a row for it (display "${n.display}")`);
+        continue;
+      }
       if (row.status === "VERIFIED" && row.value.trim() !== String(n.display).trim()) {
         add("WARN", 3, row.key, `${row.key}: VERIFIED value "${row.value}" differs from numbers.json display "${n.display}"`);
       }
@@ -181,7 +198,17 @@ export function runFactsCheck({ root, numbersFile, allowPending = false }) {
     for (const key of extractStageKeys(readFileSync(stageKeys, "utf8"))) use(key, stageKeys);
   }
 
-  return { findings: checkFacts({ facts, numbers, uses, allowPending }) };
+  let measuredKeys = new Set();
+  const catalogPath = join(root, "pitch", "keys.json");
+  if (existsSync(catalogPath)) {
+    try {
+      measuredKeys = measuredKeysFromCatalog(JSON.parse(readFileSync(catalogPath, "utf8")));
+    } catch (e) {
+      throw new CouldNotRun(`cannot parse ${catalogPath}: ${e.message}`);
+    }
+  }
+
+  return { findings: checkFacts({ facts, numbers, uses, allowPending, measuredKeys }) };
 }
 
 /** One line per finding, then the summary line, and the exit code. */
