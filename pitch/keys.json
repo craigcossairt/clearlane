@@ -1,22 +1,6 @@
 {
-  "note": "Each key names a FACTS row. source numbers is a placeholder until public/derived/numbers.json exists. source facts is the exact FACTS wording. Split keys are named fact_part.",
+  "note": "Each key is a FACTS row name. source numbers is a placeholder until public/derived/numbers.json exists. source facts is the exact FACTS wording. CONFLICT rows are written with the FACTS say-instead sentence, not as a {key}.",
   "keys": {
-    "overnight_avg": {
-      "fact": "overnight_avg",
-      "source": "numbers",
-      "unit": "$/MWh",
-      "prov": "DERIVED",
-      "display": "{overnight_avg}",
-      "note": "1am to 6am average only. Never a charge price. Oct 27 window is $38.71."
-    },
-    "midday_avg": {
-      "fact": "midday_avg",
-      "source": "numbers",
-      "unit": "$/MWh",
-      "prov": "DERIVED",
-      "display": "{midday_avg}",
-      "note": "9am to 5pm average only. Never a charge price. Oct 27 window is $22.83."
-    },
     "fixed_rule_charge_usd_mwh": {
       "fact": "fixed_rule_charge_usd_mwh",
       "source": "numbers",
@@ -57,45 +41,21 @@
       "display": "{peak_over_trough}",
       "note": "Show 2.6x. Raw value is 2.609x."
     },
-    "oct_step_hour_days_at_5_or_6": {
+    "oct_step_hour_days": {
       "fact": "oct_step_hour_days",
       "source": "numbers",
       "unit": "days",
       "prov": "DERIVED",
-      "display": "{oct_step_hour_days_at_5_or_6}",
-      "note": "24 days whose largest step landed in HB 5pm or HB 6pm."
+      "display": "{oct_step_hour_days}",
+      "note": "FACTS value is 24 of 27; median step $15.1. Largest step landed in HB 5pm or HB 6pm."
     },
-    "oct_step_hour_days_total": {
-      "fact": "oct_step_hour_days",
-      "source": "numbers",
-      "unit": "days",
-      "prov": "DERIVED",
-      "display": "{oct_step_hour_days_total}",
-      "note": "27 October days, Oct 1-27."
-    },
-    "fossil_priciest_oct_priciest": {
+    "fossil_priciest_oct": {
       "fact": "fossil_priciest_oct",
       "source": "numbers",
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{fossil_priciest_oct_priciest}",
-      "note": "85.1% fossil in the priciest tenth of October hours."
-    },
-    "fossil_priciest_oct_cheapest": {
-      "fact": "fossil_priciest_oct",
-      "source": "numbers",
-      "unit": "%",
-      "prov": "DERIVED",
-      "display": "{fossil_priciest_oct_cheapest}",
-      "note": "39.8% fossil in the cheapest tenth of October hours."
-    },
-    "net_load_climb_mw": {
-      "fact": "net_load_climb_mw",
-      "source": "numbers",
-      "unit": "MW",
-      "prov": "DERIVED",
-      "display": "{net_load_climb_mw}",
-      "note": "Show 3,655 or about 3,650. Raw value is 3,654.5 MW."
+      "display": "{fossil_priciest_oct}",
+      "note": "FACTS value is 85.1% vs 39.8%, priciest tenth versus cheapest tenth."
     },
     "fixed_usd_mw_day": {
       "fact": "fixed_usd_mw_day",
@@ -193,14 +153,6 @@
       "display": "{spin_kwh_per_kw}",
       "note": "Show 0.1 kWh/kW."
     },
-    "rmp_events_2025": {
-      "fact": "rmp_events_2025",
-      "source": "numbers",
-      "unit": "events",
-      "prov": "TORUS_PUBLISHED",
-      "display": "{rmp_events_2025}",
-      "note": "Show 359 from the RMP case study. Do not say more than 360."
-    },
     "lasso_dispatch_ms": {
       "fact": "lasso_dispatch_ms",
       "source": "numbers",
@@ -233,14 +185,6 @@
       "display": "{torus_pulse_cycles}",
       "note": "Show 7,500."
     },
-    "torus_lifespan_yr": {
-      "fact": "torus_lifespan_yr",
-      "source": "numbers",
-      "unit": "years",
-      "prov": "TORUS_PUBLISHED",
-      "display": "{torus_lifespan_yr}",
-      "note": "Show 25 years. Station lifespan, not a Pulse life."
-    },
     "pulse_cycle_budget": {
       "fact": "pulse_cycle_budget",
       "source": "numbers",
@@ -256,14 +200,6 @@
       "prov": "TORUS_PUBLISHED",
       "display": "{mou_70mw}",
       "note": "Show 70 MW. The demand-response agreement Torus says it filled."
-    },
-    "torus_500mw": {
-      "fact": "torus_500mw",
-      "source": "numbers",
-      "unit": "MW",
-      "prov": "TORUS_PUBLISHED",
-      "display": "{torus_500mw}",
-      "note": "Show 500 MW. The sentence says an MOU for up to that amount, not installed capacity."
     },
     "share_days_beating": {
       "fact": "share_days_beating",
@@ -297,21 +233,13 @@
       "display": "{clearlane_p90}",
       "note": "Pending the backtest."
     },
-    "calls_answered_pct_mt": {
+    "calls_answered_pct": {
       "fact": "calls_answered_pct",
       "source": "numbers",
       "unit": "%",
       "prov": "SIMULATED",
-      "display": "{calls_answered_pct_mt}",
-      "note": "Mountain reading of the 2025 heatmap. The chart states no time zone."
-    },
-    "calls_answered_pct_utc": {
-      "fact": "calls_answered_pct",
-      "source": "numbers",
-      "unit": "%",
-      "prov": "SIMULATED",
-      "display": "{calls_answered_pct_utc}",
-      "note": "UTC reading of the 2025 heatmap. Shift is 6 hours under MDT and 7 under MST."
+      "display": "{calls_answered_pct}",
+      "note": "One display for both heatmap readings. The chart states no time zone. Name Mountain and UTC in the display. UTC shift is 6 hours under MDT and 7 under MST."
     },
     "campus_usd": {
       "fact": "campus_usd",
@@ -321,21 +249,13 @@
       "display": "{campus_usd}",
       "note": "Simulated Oct 27 campus shift, $2,551/day. Not a Torus product."
     },
-    "time_vs_space_oct_time": {
+    "time_vs_space_oct": {
       "fact": "time_vs_space_oct",
       "source": "numbers",
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{time_vs_space_oct_time}",
-      "note": "41% saved by moving a four-hour block in time. Stage may say about 40 percent."
-    },
-    "time_vs_space_oct_space": {
-      "fact": "time_vs_space_oct",
-      "source": "numbers",
-      "unit": "%",
-      "prov": "DERIVED",
-      "display": "{time_vs_space_oct_space}",
-      "note": "8% saved by moving the same block across EDAM nodes."
+      "display": "{time_vs_space_oct}",
+      "note": "FACTS value is 41% vs 8%, time then place."
     },
     "pace_cheapest_share": {
       "fact": "pace_cheapest_share",
@@ -385,61 +305,21 @@
       "display": "{load_peak_oct27_mw}",
       "note": "Oct 27 day-ahead peak forecast, 6,024 MW."
     },
-    "mou_share_of_peak_oct27": {
+    "mou_share_of_peak": {
       "fact": "mou_share_of_peak",
       "source": "numbers",
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{mou_share_of_peak_oct27}",
-      "note": "8.3% of the Oct 27 peak forecast. The stage may say about 8%."
+      "display": "{mou_share_of_peak}",
+      "note": "FACTS value is 8.3%; 4.9%. Operating-day peak, then the 16-month peak."
     },
-    "mou_share_of_peak_16mo": {
-      "fact": "mou_share_of_peak",
-      "source": "numbers",
-      "unit": "%",
-      "prov": "DERIVED",
-      "display": "{mou_share_of_peak_16mo}",
-      "note": "4.9% of the 16-month EIA peak. Not the stage slider."
-    },
-    "calls_unanswerable_price_only_mt": {
+    "calls_unanswerable_price_only": {
       "fact": "calls_unanswerable_price_only",
       "source": "numbers",
       "unit": "%",
       "prov": "DERIVED",
-      "display": "{calls_unanswerable_price_only_mt}",
-      "note": "77% of 2025 call times, heatmap read as Mountain time."
-    },
-    "calls_unanswerable_price_only_utc_mdt": {
-      "fact": "calls_unanswerable_price_only",
-      "source": "numbers",
-      "unit": "%",
-      "prov": "DERIVED",
-      "display": "{calls_unanswerable_price_only_utc_mdt}",
-      "note": "52% of 2025 call times, heatmap read as UTC with a 6-hour MDT shift."
-    },
-    "calls_unanswerable_price_only_utc_mst": {
-      "fact": "calls_unanswerable_price_only",
-      "source": "numbers",
-      "unit": "%",
-      "prov": "DERIVED",
-      "display": "{calls_unanswerable_price_only_utc_mst}",
-      "note": "43% of 2025 call times, heatmap read as UTC with a 7-hour MST shift."
-    },
-    "calls_missed_range_pct": {
-      "fact": "calls_missed_range_pct",
-      "source": "facts",
-      "unit": "%",
-      "prov": "DERIVED",
-      "display": "43% to 77%",
-      "note": "Say this range. Do not say 14% to 77%."
-    },
-    "crash_call_minutes": {
-      "fact": "crash_call_minutes",
-      "source": "facts",
-      "unit": "minutes",
-      "prov": "TORUS_PUBLISHED",
-      "display": "about five and a half minutes",
-      "note": "Raw measurement is about 5.6 min. Not a six-minute call."
+      "display": "{calls_unanswerable_price_only}",
+      "note": "FACTS value is 77% / 52% / 43%. Mountain, then UTC with MDT, then UTC with MST. Do not say 14% to 77%."
     },
     "peak_hour_mt": {
       "fact": "peak_hour_mt",

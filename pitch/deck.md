@@ -16,13 +16,13 @@ Notes: on stage, this slide, then the live demo, then the close. Every slide bet
 
 ## 2. Utah's rush hour is 6pm
 
-Ribbon of the operating day. Three numbers: 1am to 6am average `{overnight_avg}`, 9am to 5pm average `{midday_avg}`, 6pm price `{peak_price}`.
+Ribbon of the operating day. Three numbers: overnight average, 1am to 6am, $38.71; midday average, 9am to 5pm, $22.83; 6pm price `{peak_price}`.
 
 The day's low was `{price_min_oct27}`. The 6pm hour was `{peak_over_trough}` that low.
 
-Caption: the biggest price jump landed at 5pm or 6pm on `{oct_step_hour_days_at_5_or_6}` of `{oct_step_hour_days_total}` October days.
+Caption: the biggest price jump landed at 5pm or 6pm on `{oct_step_hour_days}`.
 
-Line: in October the cheapest hours were also the cleanest on PacifiCorp East (Utah, Wyoming, Idaho): `{fossil_priciest_oct_cheapest}` fossil in the cheapest tenth of hours, `{fossil_priciest_oct_priciest}` in the priciest tenth. Estimated from EIA fuel mix, not marginal emissions.
+Line: in October on PacifiCorp East (Utah, Wyoming, Idaho), the priciest tenth of hours versus the cheapest tenth was `{fossil_priciest_oct}` fossil. Estimated from EIA fuel mix, not marginal emissions.
 
 ## 3. Live demo
 
@@ -30,9 +30,9 @@ Six beats, about two minutes and forty-five seconds. Traffic report, race, crash
 
 ## 4. Power, not energy
 
-A call of {crash_call_minutes}, answered at `{torus_pulse_c_rating}` by Pulse alone, uses `{pulse_share_per_call}` of a Pulse.
+A call of about five and a half minutes, answered at `{torus_pulse_c_rating}` by Pulse alone, uses `{pulse_share_per_call}` of a Pulse.
 
-`{rmp_events_2025}` events in 2025 (Torus, RMP case study) add up to `{call_hours_2025}`.
+359 events in 2025 (Torus, RMP case study) add up to `{call_hours_2025}`.
 
 Spin at `{torus_spin_c_rating}` holds `{spin_kwh_per_kw}`, enough for one call, and refills in about six minutes under the host's ceiling. Six minutes is our reading of Torus's published twelve-minute discharge and recharge.
 
@@ -42,9 +42,9 @@ Backtest, May 1 to Oct 27, three policies. P10 to P90 of dollars per MW-day: Cle
 
 Share of days Clearlane beat the fixed off-peak rule: `{share_days_beating}`.
 
-Cycles per year against the `{pulse_cycle_budget}` budget. That budget divides Torus's published `{torus_pulse_cycles}` Pulse cycles by the Station lifespan of `{torus_lifespan_yr}`. The Station life is Torus's figure. Applying it to Pulse is our assumption.
+Cycles per year against the `{pulse_cycle_budget}` budget. That budget divides Torus's published `{torus_pulse_cycles}` Pulse cycles by the Station lifespan 25 years. The Station life is Torus's figure. Applying it to Pulse is our assumption.
 
-Calls answered under both heatmap readings: `{calls_answered_pct_mt}` read as Mountain time, `{calls_answered_pct_utc}` read as UTC. The chart states no time zone.
+Calls answered under both heatmap readings: `{calls_answered_pct}`. The chart states no time zone, so the card shows the Mountain reading and the UTC reading.
 
 ## 6. The envelope Torus asked for
 
@@ -62,15 +62,15 @@ Value to RMP's system at day-ahead prices, not Torus revenue. RMP's customers ca
 
 ## 8. Compute follows the sun, in time
 
-Moving a four-hour evening block in time saved about `{time_vs_space_oct_time}`. Moving it across EDAM nodes saved about `{time_vs_space_oct_space}`. PacifiCorp East was the cheapest of those nodes in `{pace_cheapest_share}` of October hours.
+Moving a four-hour evening block saved `{time_vs_space_oct}` in time versus across EDAM nodes. PacifiCorp East was the cheapest of those nodes in `{pace_cheapest_share}` of October hours.
 
 A simulated campus shift on the operating day: `{campus_usd}` a day. Simulated. Not a Torus data-center product. Those pages were offline as of Oct 26, 2026.
 
 ## 9. Scale, and the caveat
 
-`{mou_70mw}` is the demand-response agreement Torus says it filled. `{torus_500mw}` is an MOU for up to that amount, not installed capacity.
+`{mou_70mw}` is the demand-response agreement Torus says it filled. The larger agreement is an MOU for up to 500 MW, not installed capacity.
 
-The ceiling is about `{mou_share_of_peak_oct27}` of the operating day's peak load forecast (`{load_peak_oct27_mw}`). The slider says the fleet is assumed not to move prices. That assumption gets weaker as the fleet grows.
+The ceiling is `{mou_share_of_peak}` of peak load: the operating day's forecast (`{load_peak_oct27_mw}`), then the 16-month peak. The slider says the fleet is assumed not to move prices. That assumption gets weaker as the fleet grows.
 
 ## 10. What is real
 

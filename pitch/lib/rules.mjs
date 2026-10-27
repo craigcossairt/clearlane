@@ -10,6 +10,11 @@ export const MEASURED_DISPLAY = "[read from screen]";
 
 /** Each regex masks a span that is not a stage result. Longest tokens first. */
 export const ALLOWLIST = [
+  { name: "overnight-window", re: /\$38\.71/g, reason: "FACTS say-instead: label $38.71 as the overnight average, 1am to 6am" },
+  { name: "midday-window", re: /\$22\.83/g, reason: "FACTS say-instead: label $22.83 as the midday average, 9am to 5pm" },
+  { name: "net-load-climb", re: /\b3,655\b/g, reason: "FACTS say-instead for net_load_climb_mw: show 3,655" },
+  { name: "rmp-events", re: /\b359 events in 2025\b/g, reason: "FACTS say-instead for rmp_events_2025" },
+  { name: "mou-ceiling", re: /an MOU for up to 500 MW/g, reason: "FACTS say-instead for torus_500mw, always a ceiling" },
   { name: "url", re: /https?:\/\/\S+/g, reason: "a source URL is not a result" },
   { name: "ieee", re: /IEEE\s*2030\.5/g, reason: "IEEE 2030.5 is a standard name" },
   { name: "schema", re: /clearlane\.[a-z0-9-]+\/v\d+/g, reason: "clearlane.envelope/v1 is a schema name" },

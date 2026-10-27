@@ -9,9 +9,8 @@ const catalog = JSON.parse(readFileSync(new URL("../keys.json", import.meta.url)
 const keys = catalog.keys;
 
 function factsPath() {
-  const candidates = ["docs/FACTS.md", "../clearlane/docs/FACTS.md"];
-  const found = candidates.find((path) => existsSync(path));
-  assert.ok(found, "FACTS.md not found next to this repo or in docs/");
+  const found = "docs/FACTS.md";
+  assert.ok(existsSync(found), "FACTS.md not found in docs/");
   return found;
 }
 

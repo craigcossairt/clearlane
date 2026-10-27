@@ -26,6 +26,6 @@ CO2 is estimated, using average emissions for PacifiCorp East, not marginal: the
 
 ## The call
 
-Spin, sized to the enrolled kW, covers one call of {crash_call_minutes}. A second call inside the refill window is the case the crash card shows, including any shortfall.
+Spin, sized to the enrolled kW, covers one call of about five and a half minutes. A second call inside the refill window is the case the crash card shows, including any shortfall.
 
-The 2025 heatmap states no time zone. We show both readings: `{calls_answered_pct_mt}` answered as Mountain time, `{calls_answered_pct_utc}` as UTC.
+The 2025 heatmap states no time zone. We show both readings in `{calls_answered_pct}`: Mountain time and UTC.

@@ -100,6 +100,9 @@ test("hand-typed results fail and allowlisted tokens pass", () => {
   assert.ok(rulesIn("Count 359.").includes("hand-bare"));
   const clean = rulesIn("On Oct 27 at 6pm, beat 0:25, Schedule 6, Option 1, Train 2, IEEE 2030.5, clearlane.envelope/v1, 1920x1080, docket 26-035-T08. See https://example.com/a.");
   assert.deepEqual(clean.filter((r) => r.startsWith("hand-")), []);
+  const labeled = rulesIn("The overnight average, 1am to 6am, was $38.71 and the midday average, 9am to 5pm, was $22.83. Net load climbs 3,655 MW. 359 events in 2025. The larger agreement is an MOU for up to 500 MW.");
+  assert.deepEqual(labeled.filter((r) => r.startsWith("hand-")), []);
+  assert.ok(rulesIn("Worth $4.").includes("hand-dollar"));
 });
 
 test("year allowlist", () => {
@@ -136,8 +139,8 @@ test("an absolute facts path is not joined onto the repo", () => {
 });
 
 test("current pitch copy exits 0 and fixtures are skipped", () => {
-  const facts = ["docs/FACTS.md", "../clearlane/docs/FACTS.md"].find((path) => existsSync(path));
-  assert.ok(facts, "FACTS.md not found");
+  const facts = "docs/FACTS.md";
+  assert.ok(existsSync(facts), "FACTS.md not found");
   const run = spawnSync(process.execPath, ["pitch/resolve.mjs", "--facts", facts], { encoding: "utf8" });
   assert.equal(run.status, 0, run.stderr);
   assert.ok(!run.stderr.includes("skip-me"));
