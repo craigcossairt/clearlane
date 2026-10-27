@@ -174,6 +174,6 @@ export function simulateCall(
 }
 
 // A call's start time, recovered from its trace length and end.
-function startOf(r: CallResult): string {
+export function startOf(r: CallResult): string {
   return addSeconds(r.spin_full_again_utc, -r.trace.length);
 }
