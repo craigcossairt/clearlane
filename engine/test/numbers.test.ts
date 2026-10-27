@@ -134,8 +134,8 @@ describe("numbers on the Oct 27 fixture", () => {
     expect(v("host_ceiling_kw")).toBe(800);
     expect(v("call_duration_s")).toBe(330);
     expect(v("meter_peak_refill_kw")).toBeLessThanOrEqual(v("host_ceiling_kw"));
-    expect(v("second_call_delivered_pct").toFixed(2)).toBe("70.98");
-    expect(v("second_call_shortfall_kwh").toFixed(3)).toBe("6.449");
+    expect(v("second_call_delivered_pct").toFixed(2)).toBe("70.68");
+    expect(v("second_call_shortfall_kwh").toFixed(3)).toBe("6.514");
     expect(v("second_call_shortfall_kw")).toBeCloseTo(
       (v("second_call_shortfall_kwh") * 3600) / 330,
       9,

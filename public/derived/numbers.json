@@ -532,7 +532,7 @@
   },
   {
     "key": "second_call_delivered_pct",
-    "value": 70.97805248609333,
+    "value": 70.68490150110436,
     "unit": "%",
     "display": "71%",
     "prov": "SIMULATED",
@@ -541,18 +541,18 @@
   },
   {
     "key": "second_call_shortfall_kw",
-    "value": 70.35623639734916,
+    "value": 71.06690545186788,
     "unit": "kW (mean over the call)",
-    "display": "70",
+    "display": "71",
     "prov": "SIMULATED",
     "source": "engine/src/replan.ts + contracts/fixtures/bundle_2026-10-27.json",
     "as_of_mt": "2026-10-27"
   },
   {
     "key": "second_call_shortfall_kwh",
-    "value": 6.449321669757007,
+    "value": 6.5144663330878885,
     "unit": "kWh",
-    "display": "6.4",
+    "display": "6.5",
     "prov": "SIMULATED",
     "source": "engine/src/replan.ts + contracts/fixtures/bundle_2026-10-27.json",
     "as_of_mt": "2026-10-27"
