@@ -101,15 +101,31 @@ describe("beat 3 call", () => {
     expect(second.shortfall_kwh).toBeGreaterThan(0);
   });
 
-  it("keeps the published panel apart from the simulated result and shows both heatmap readings", () => {
+  it("keeps the published panel apart from the simulated result", () => {
     const { container } = renderCall({ first, ghost, second: null });
     const pub = container.querySelector(".card.published")!;
     const sim = container.querySelector('[data-slot="call-result"]')!;
     expect(pub).not.toBe(sim);
     expect(pub.contains(sim)).toBe(false);
-    if (data.torus) {
-      expect(pub.textContent).toContain("if Mountain time");
-      expect(pub.textContent).toContain("if UTC");
-    }
+  });
+
+  it("renders only the Mountain heatmap reading, with the Torus provenance line", () => {
+    expect(data.torus).not.toBeNull();
+    const { container } = renderCall({ first, ghost, second: null });
+    const pub = container.querySelector(".card.published")!;
+    const heats = pub.querySelectorAll("figure.heat");
+    expect(heats).toHaveLength(1);
+    expect(heats[0]!.querySelector("figcaption")!.textContent).toBe(
+      "Published calls by hour of day, Mountain time",
+    );
+    // The bars are the published counts in Mountain hour order, not rotated.
+    const byHour = data.torus!.events_2025_by_hour.value;
+    const bars = [...heats[0]!.querySelectorAll(".bar-row i")].map(
+      (i) => (i as HTMLElement).style.height,
+    );
+    const max = Math.max(...byHour);
+    expect(bars).toEqual(byHour.map((c) => `${(c / max) * 100}%`));
+    expect(pub.textContent).toContain("Hours in Mountain time, confirmed by Torus.");
+    expect(pub.textContent).not.toMatch(/UTC|both readings|no time zone/i);
   });
 });

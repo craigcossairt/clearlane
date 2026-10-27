@@ -19,7 +19,6 @@ import {
   lanes as engineLanes,
   option2Shift as engineOption2Shift,
   referenceRace,
-  rotateLeft,
   scaleUsdPerDay as engineScaleUsdPerDay,
   systemCriticalHours,
 } from "@engine";
@@ -163,13 +162,10 @@ export function option2Shift(bundle: Bundle): Option2Shift {
 }
 
 /**
- * Torus's 2025 heatmap states no time zone, so both readings are shown. Index i of each result
- * is Mountain hour beginning i. Read as UTC under daylight time, chart hour h is Mountain hour
- * h - 6, so Mountain hour i reads chart hour i + 6.
+ * Torus's 2025 heatmap is in Mountain time (Torus, message to Craig Cossairt, Oct 27 2026), so
+ * index i is Mountain hour beginning i and the counts are shown as published. The UTC readings
+ * survive only as a sensitivity check in docs/FACTS.md and never reach the stage.
  */
-export function heatmapReadings(byHour: number[]): {
-  mountain: number[];
-  utc: number[];
-} {
-  return { mountain: [...byHour], utc: rotateLeft(byHour, 6) };
+export function heatmapMountain(byHour: number[]): number[] {
+  return [...byHour];
 }

@@ -106,6 +106,24 @@ describe("beat 5 envelope and backtest", () => {
     expect(container.querySelector("tbody")).toBeNull();
   });
 
+  it("each backtest card shows calls missed from the Mountain-time key only", () => {
+    const { container } = renderBeat({ backtest: true });
+    const cards = [...container.querySelectorAll("article.card[data-policy]")];
+    expect(cards).toHaveLength(3);
+    for (const card of cards) {
+      const policy = card.getAttribute("data-policy");
+      expect(card.querySelector(`[data-num="calls_missed_by_policy_${policy}_mt"]`)).toBeTruthy();
+      expect(card.querySelector('[data-num*="_utc"]')).toBeNull();
+      expect(card.textContent).not.toContain("UTC");
+    }
+  });
+
+  it("calls the envelope a format Clearlane proposes", () => {
+    const { container } = renderBeat({});
+    expect(COPY.workingExample).toContain("a format Clearlane proposes");
+    expect(container.textContent).toContain(COPY.workingExample);
+  });
+
   it("without backtest.json the backtest card says not computed yet, never zeros", () => {
     const { container } = renderBeat({ backtest: true, derived: assembleDerived({}) });
     const slot = container.querySelector('[data-slot="backtest-bands"]')!;

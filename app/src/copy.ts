@@ -122,7 +122,7 @@ export const COPY = {
   envelopeOtherDay: "the envelope file describes",
   envelopeStageDay: ", not the stage day",
   schemaWord: "Schema",
-  workingExample: "A working example, not a filing.",
+  workingExample: "The envelope is a format Clearlane proposes: a working example, not a filing.",
   schShort: "critical",
   colHour: "Hour",
   colReserve: "Reserve",
@@ -139,7 +139,7 @@ export const COPY = {
   bandP90: ", high (P90) ",
   cyclesYear: "Pulse cycles a year",
   budgetWord: "budget.",
-  callsUnanswerable: "Calls it could not answer,",
+  callsUnanswerable: "Calls it could not answer, hours in Mountain time:",
   daysBeating: "Days beating the off-peak rule",
   ceilingBreaches: "Host ceiling breaches",
   replanTitle: "Re-plan",
@@ -151,10 +151,8 @@ export const COPY = {
     "Pulse state of charge across the day: the morning plan, dashed, and the re-plan from the call, solid",
   replanLegend:
     "Dashed: Pulse state of charge as planned this morning. Solid: the re-plan from the call (red line). Space plays on from the call minute.",
-  heatmapMountain: "if Mountain time",
-  heatmapUtc: "if UTC",
-  heatmapNote:
-    "Torus's heatmap of its published events states no time zone, so both readings are shown.",
+  heatmapMountain: "Published calls by hour of day, Mountain time",
+  heatmapNote: "Hours in Mountain time, confirmed by Torus.",
   simulated: "Simulated.",
   emptyNotZero: "Empty, not zero.",
 } as const;

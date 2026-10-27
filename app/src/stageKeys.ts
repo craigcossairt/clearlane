@@ -41,7 +41,15 @@ export const STAGE_KEYS: Record<number, readonly string[]> = {
     "rmp_event_band_max_pct",
   ],
   4: ["pulse_cycle_budget", "cycles_today"],
-  5: ["share_days_beating", "backtest_days", "sch_hours_today"],
+  5: [
+    "share_days_beating",
+    "backtest_days",
+    "sch_hours_today",
+    // Backtest card: calls missed with the heatmap read as Mountain time (Torus, Oct 27 2026).
+    "calls_missed_by_policy_fixed_overnight_mt",
+    "calls_missed_by_policy_price_only_mt",
+    "calls_missed_by_policy_clearlane_mt",
+  ],
   6: [
     "mou_70mw",
     "torus_500mw",
