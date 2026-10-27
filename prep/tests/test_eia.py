@@ -80,9 +80,42 @@ def write_synthetic_workbook(path: pathlib.Path) -> None:
     add_row(1, HEADERS, set(range(1, len(HEADERS) + 1)))
     day = date(2025, 7, 1)
     rows = [
-        ["PACE", excel_serial(datetime(2025, 7, 1, 7, tzinfo=timezone.utc)), str((day - date(1899, 12, 30)).days), "1", "4500", "4400", "4200", "100", "0.5", "0.6"],
-        ["PACE", excel_serial(datetime(2025, 7, 1, 8, tzinfo=timezone.utc)), str((day - date(1899, 12, 30)).days), "2", "4600", "4550", "4300", "", "", ""],
-        ["PACE", excel_serial(datetime(2025, 7, 2, 7, tzinfo=timezone.utc)), str((day + timedelta(days=1) - date(1899, 12, 30)).days), "1", "4700", "4650", "4400", "110", "0.55", "0.65"],
+        [
+            "PACE",
+            excel_serial(datetime(2025, 7, 1, 7, tzinfo=timezone.utc)),
+            str((day - date(1899, 12, 30)).days),
+            "1",
+            "4500",
+            "4400",
+            "4200",
+            "100",
+            "0.5",
+            "0.6",
+        ],
+        [
+            "PACE",
+            excel_serial(datetime(2025, 7, 1, 8, tzinfo=timezone.utc)),
+            str((day - date(1899, 12, 30)).days),
+            "2",
+            "4600",
+            "4550",
+            "4300",
+            "",
+            "",
+            "",
+        ],
+        [
+            "PACE",
+            excel_serial(datetime(2025, 7, 2, 7, tzinfo=timezone.utc)),
+            str((day + timedelta(days=1) - date(1899, 12, 30)).days),
+            "1",
+            "4700",
+            "4650",
+            "4400",
+            "110",
+            "0.55",
+            "0.65",
+        ],
     ]
     shared_cols = {1}
     for number, values in enumerate(rows, 2):
@@ -102,7 +135,18 @@ class EiaExtractTest(unittest.TestCase):
             out_meta = temp / "extract.meta.json"
             write_synthetic_workbook(workbook)
             result = subprocess.run(
-                [sys.executable, "-I", str(ROOT / "prep" / "eia.py"), "--extract", "--workbook", str(workbook), "--out", str(out_csv), "--meta", str(out_meta)],
+                [
+                    sys.executable,
+                    "-I",
+                    str(ROOT / "prep" / "eia.py"),
+                    "--extract",
+                    "--workbook",
+                    str(workbook),
+                    "--out",
+                    str(out_csv),
+                    "--meta",
+                    str(out_meta),
+                ],
                 cwd=ROOT,
                 capture_output=True,
                 text=True,
@@ -127,7 +171,6 @@ class EiaExtractTest(unittest.TestCase):
             self.assertEqual(metadata["first_utc_start"], "2025-07-01T06:00:00Z")
             self.assertEqual(metadata["last_utc_start"], "2025-07-02T06:00:00Z")
 
-    @unittest.skipUnless(SOURCE.is_file(), f"local-only workbook missing: {SOURCE}")
     def test_committed_extract_pins_october_co2_profile_and_metadata(self):
         with CSV_PATH.open(newline="", encoding="utf-8") as stream:
             rows = list(csv.DictReader(stream))
@@ -138,16 +181,41 @@ class EiaExtractTest(unittest.TestCase):
         for row in oct_rows:
             grouped.setdefault(int(row["hour_ending"]), []).append(float(row["co2_gen_lb_kwh"]) * 453.592)
         expected = {
-            1: 697, 2: 697, 3: 695, 4: 694, 5: 698, 6: 704, 7: 709, 8: 698,
-            9: 623, 10: 534, 11: 485, 12: 461, 13: 455, 14: 450, 15: 443, 16: 446,
-            17: 464, 18: 531, 19: 629, 20: 673, 21: 676, 22: 682, 23: 684, 24: 693,
+            1: 697,
+            2: 697,
+            3: 695,
+            4: 694,
+            5: 698,
+            6: 704,
+            7: 709,
+            8: 698,
+            9: 623,
+            10: 534,
+            11: 485,
+            12: 461,
+            13: 455,
+            14: 450,
+            15: 443,
+            16: 446,
+            17: 464,
+            18: 531,
+            19: 629,
+            20: 673,
+            21: 676,
+            22: 682,
+            23: 684,
+            24: 693,
         }
         self.assertEqual({hour: round(statistics.mean(values)) for hour, values in grouped.items()}, expected)
         metadata = json.loads(META_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(metadata["workbook_sha256"], hashlib.sha256(SOURCE.read_bytes()).hexdigest())
         self.assertEqual(metadata["row_count"], len(rows))
         self.assertEqual(metadata["last_co2_utc_start"], "2026-10-26T05:00:00Z")
         self.assertIn("file time", metadata["workbook_file_time_kind"])
+
+    @unittest.skipUnless(SOURCE.is_file(), f"local-only workbook missing: {SOURCE}")
+    def test_extract_metadata_matches_local_workbook_hash(self):
+        metadata = json.loads(META_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(metadata["workbook_sha256"], hashlib.sha256(SOURCE.read_bytes()).hexdigest())
 
 
 if __name__ == "__main__":
