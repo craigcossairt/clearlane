@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "question": "Is the left station what Torus does at night?",
+    "answer": "No. It is a battery on a fixed off-peak rule, our baseline for the race. It is not Torus practice. The right station is a simulated Torus-style station on Clearlane."
+  },
+  {
+    "id": "2",
+    "question": "Who receives the dollars on the end card?",
+    "answer": "They are value to RMP's system at day-ahead prices. The fleet view assumes the fleet does not move those prices."
+  },
+  {
+    "id": "3",
+    "question": "Are the stations on screen real Torus sites?",
+    "answer": "No. They are simulated Torus-style stations. Day-ahead prices and forecasts are public CAISO data for PacifiCorp East. Anything simulated or assumed carries a chip."
+  },
+  {
+    "id": "4",
+    "question": "What is a System Critical Hour?",
+    "answer": "Our proposal: the day's four highest net-load hours, plus every jam hour. Torus asked for a definition of System Critical Hours in its June 2026 comments to ROWE. This envelope is a working example, not a filing."
+  },
+  {
+    "id": "5",
+    "question": "Is the carbon figure marginal emissions?",
+    "answer": "No. It is an average-emissions estimate from EIA hourly data for PacifiCorp East. Marginal emissions can differ."
+  },
+  {
+    "id": "6",
+    "question": "Does the slider show installed capacity?",
+    "answer": "No. The top of the slider is the MOU ceiling, not installed capacity. The view assumes the fleet does not move prices."
+  }
+]
