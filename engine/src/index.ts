@@ -42,7 +42,20 @@ export {
   dayStartMs,
   hourWeights,
   mountainOffsetH,
+  READINGS,
   sampleCalls,
   weekdayIndex,
 } from "./events";
 export type { Reading, SampleOpts } from "./events";
+export {
+  BACKTEST_WINDOW,
+  DEFAULT_SEED,
+  POLICIES,
+  clearlaneCyclesPerYr,
+  histBundle,
+  runBacktest,
+  validateBacktest,
+  windowDays,
+} from "./backtest";
+export type { BacktestDayRow, BacktestOpts, BacktestRun } from "./backtest";
+export { mean, pctl, percentile } from "./stats";

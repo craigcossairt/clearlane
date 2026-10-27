@@ -1,12 +1,13 @@
 // SIMULATED RMP calls shaped like the published 2025 heatmap. The heatmap states no time zone, so
-// every result is computed under two readings: Mountain ("mt") and UTC ("utc", MT hour h takes the
-// label for h + 6 under MDT).
+// every result is computed under each reading: Mountain ("mt"), UTC shifted by the day's own offset
+// ("utc", MT hour h takes the label for h + 6 under MDT) and UTC shifted at UTC-7 ("utc_mst").
 import type { CrashEvent } from "@contracts/types";
 import { isoUtc } from "./bundle";
 const CALL_DURATION_S = 330; // call_duration_s (ASSUMPTION); same value as engine/src/inputs.ts
 import { mulberry32, poisson, weighted } from "./rng";
 
-export type Reading = "mt" | "utc";
+export type Reading = "mt" | "utc" | "utc_mst";
+export const READINGS: Reading[] = ["mt", "utc", "utc_mst"];
 
 export interface SampleOpts {
   seed: number;
@@ -59,7 +60,8 @@ export function sampleCalls(days: string[], o: SampleOpts): CrashEvent[] {
   const meanW = o.by_weekday.reduce((a, w) => a + w, 0) / o.by_weekday.length;
   const out: CrashEvent[] = [];
   for (const day of days) {
-    const weights = hourWeights(o.by_hour, o.reading, mountainOffsetH(day));
+    const offset = o.reading === "utc_mst" ? 7 : mountainOffsetH(day);
+    const weights = hourWeights(o.by_hour, o.reading, offset);
     const n = poisson(rng, (rate * o.by_weekday[weekdayIndex(day)]!) / meanW);
     const starts: number[] = [];
     for (let k = 0; k < n; k++) {
