@@ -30,9 +30,44 @@ if [ -z "$HARNESS" ] || [ -z "$HOOK_ID" ]; then
   exit 0
 fi
 
-SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+# No $(...) here: each spawn costs about 1.5s on the Windows build PC and Cursor's pre-edit
+# hook fails closed at 10s (see .claude/hooks/sensitive-path.sh). cd in this shell instead.
+case ${BASH_SOURCE[0]} in
+  */*) SCRIPT_DIR=${BASH_SOURCE[0]%/*} ;;
+  *) SCRIPT_DIR=. ;;
+esac
+CDPATH='' cd -- "$SCRIPT_DIR/.." >/dev/null 2>&1 || exit 0
+ROOT=$PWD
 export CLAUDE_PROJECT_DIR="$ROOT"
+
+# Pre-edit fast path: the whole check in this shell, no temp files and no nested bash.
+if [ "$HOOK_ID" = "block-sensitive-files" ]; then
+  PAYLOAD=""
+  IFS= read -r -d '' PAYLOAD || true
+  if [ ! -f "$ROOT/.claude/hooks/sensitive-path.sh" ]; then
+    echo "run-claude-hook.sh: missing $ROOT/.claude/hooks/sensitive-path.sh" >&2
+    [ "$HARNESS" = cursor ] && printf '{"permission":"allow"}'
+    [ "$HARNESS" = grok ] && printf '{"decision":"allow"}'
+    exit 0
+  fi
+  # shellcheck source=../.claude/hooks/sensitive-path.sh
+  . "$ROOT/.claude/hooks/sensitive-path.sh"
+  if [ -n "$PAYLOAD" ] && sensitive_reason "$PAYLOAD"; then
+    R=${SENSITIVE_REASON//\\/\\\\}
+    R=${R//\"/\\\"}
+    case "$HARNESS" in
+      cursor) printf '{"permission":"deny","user_message":"%s","agent_message":"%s"}' "$R" "$R" ;;
+      grok) printf '{"decision":"deny","reason":"%s"}' "$R" ;;
+    esac
+    printf '%s\n' "$SENSITIVE_REASON" >&2
+    exit 2
+  fi
+  case "$HARNESS" in
+    cursor) printf '{"permission":"allow"}' ;;
+    grok) printf '{"decision":"allow"}' ;;
+  esac
+  exit 0
+fi
 
 case "$HOOK_ID" in
   session-start)         TARGET="$ROOT/.claude/hooks/session-start.sh" ;;
