@@ -205,6 +205,39 @@ describe("a second stage day", () => {
   });
 });
 
+describe("edge days", () => {
+  it("leaves out peak_over_trough when the trough is at or below zero", () => {
+    for (const low of [0, -4]) {
+      const b0 = loadFixture();
+      const p = b0.hours.map((h) => h.lmp_usd_mwh);
+      p[p.indexOf(Math.min(...p))] = low;
+      const n = buildNumbers(
+        { ...inputs, bundle: redated(b0, 2, p), bundle_path: "z.json" },
+        reg,
+      );
+      expect(validateNumbers(n, reg)).toEqual([]);
+      expect(n.some((x) => x.key === "peak_over_trough")).toBe(false);
+      expect(n.find((x) => x.key === "price_min_oct27")!.value).toBe(low);
+    }
+  });
+
+  it("leaves out the history keys when no October day is in the file", () => {
+    const july: HistDay[] = [
+      {
+        operating_day_mt: "2026-07-01",
+        lmp_usd_mwh: Array(24).fill(30),
+        co2_g_kwh: Array(24).fill(null),
+      },
+    ];
+    const n = buildNumbers(
+      { ...inputs, hist: { data: july, path: "h.json" } },
+      reg,
+    );
+    expect(validateNumbers(n, reg)).toEqual([]);
+    expect(n.some((x) => x.key.startsWith("oct_step_"))).toBe(false);
+  });
+});
+
 describe("backtest and history keys", () => {
   const bt: BacktestResult = {
     schema: "clearlane.backtest/v1",
