@@ -187,7 +187,8 @@ export function buildNumbers(
   const hi = Math.max(...p);
   add("price_min_oct27", lo, "$/MWh", usd(lo), bsrc);
   add("peak_price", hi, "$/MWh", usd(hi), bsrc);
-  add("peak_over_trough", hi / lo, "x", times(hi / lo), bsrc);
+  // a ratio over a zero or negative trough means nothing: leave the key out
+  if (lo > 0) add("peak_over_trough", hi / lo, "x", times(hi / lo), bsrc);
   add(
     "peak_hour_mt",
     p.indexOf(hi),
@@ -713,23 +714,33 @@ export function buildNumbers(
     );
     const s = stepHourDays(oct.map((d) => d.lmp_usd_mwh));
     const hsrc = src("numbers", inp.hist.path);
-    add(
-      "oct_step_hour_days_at_5_or_6",
-      s.days,
-      "days",
-      num(s.days),
-      hsrc,
-      "2026-10-27",
-    );
-    add("oct_step_hour_days_total", s.n, "days", num(s.n), hsrc, "2026-10-27");
-    add(
-      "oct_step_median_usd",
-      s.median_usd,
-      "$/MWh",
-      usd(s.median_usd, 1),
-      hsrc,
-      "2026-10-27",
-    );
+    // no full October day: no median to take, so the keys are left out like a missing input
+    if (s.n > 0) {
+      add(
+        "oct_step_hour_days_at_5_or_6",
+        s.days,
+        "days",
+        num(s.days),
+        hsrc,
+        "2026-10-27",
+      );
+      add(
+        "oct_step_hour_days_total",
+        s.n,
+        "days",
+        num(s.n),
+        hsrc,
+        "2026-10-27",
+      );
+      add(
+        "oct_step_median_usd",
+        s.median_usd,
+        "$/MWh",
+        usd(s.median_usd, 1),
+        hsrc,
+        "2026-10-27",
+      );
+    }
   }
 
   // October research facts, recomputed from the committed CSVs

@@ -7,8 +7,8 @@ import type {
   Site,
 } from "@contracts/types";
 import { INTERVAL_S, INTERVALS, prices } from "./bundle";
-import { simulateCall } from "./crash";
-import type { CallResult } from "./crash";
+import { priorChain, simulateCall, startOf } from "./crash";
+import type { CallResult, Priors } from "./crash";
 import type { SchMode } from "./lanes";
 import {
   DP_FLOOR_LEVEL,
@@ -233,16 +233,14 @@ export function crash(
   site: Site,
   b: Bundle,
   event: CrashEvent,
-  prior?: CrashResult,
+  priors?: Priors,
   opts: { sch_mode?: SchMode } = {},
 ): CrashOutcome {
-  const call = simulateCall(plan, site, event, prior);
-  const calls = prior
-    ? [
-        { event: priorEvent(prior), result: prior },
-        { event, result: call },
-      ]
-    : [{ event, result: call }];
+  const call = simulateCall(plan, site, event, priors);
+  const calls = [
+    ...priorChain(priors).map((r) => ({ event: priorEvent(r), result: r })),
+    { event, result: call },
+  ];
   const state = stateAfterCalls(plan, site, calls);
   const rp = replanFrom(plan, site, b, state, opts.sch_mode);
   return {
@@ -256,10 +254,9 @@ export function crash(
 // A prior call's event, recovered from its result (start from trace length; 330 s calls by default).
 function priorEvent(r: CallResult): CrashEvent {
   const callS = r.trace.filter((p) => p.requested_kw > 0 || p.t_s === 0).length;
-  const start = Date.parse(r.spin_full_again_utc) - r.trace.length * 1000;
   return {
     id: r.event_id,
-    start_utc: new Date(start).toISOString().replace(".000Z", "Z"),
+    start_utc: startOf(r),
     duration_s: callS,
     requested_kw: Math.max(...r.trace.map((p) => p.requested_kw)),
     prov: "SIMULATED",
