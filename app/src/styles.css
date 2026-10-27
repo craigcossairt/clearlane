@@ -519,3 +519,19 @@ td {
   grid-column: 1 / -1;
   margin: 0;
 }
+
+/* Beat 3: fit the call, both traces and both cards inside the 1080px frame. */
+.crash-beat {
+  gap: 8px;
+}
+.crash-beat .trace {
+  height: 96px;
+}
+.crash-beat .panel p,
+.crash-beat .card p {
+  margin: 4px 0;
+}
+.crash-beat .crash-legend,
+.crash-beat [data-slot="second-call"] {
+  margin: 0;
+}
