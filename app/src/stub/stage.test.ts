@@ -6,6 +6,7 @@ import {
   defaultSite,
   scriptedCalls,
   solve,
+  STUB_ACTIVE,
 } from "../engineClient";
 
 const data = loadStageData();
@@ -55,15 +56,16 @@ describe("engine client on the Oct 27 fixture", () => {
     expect(ghost.shortfall_kwh).toBeGreaterThan(0);
   });
 
-  it("keeps the host meter at or under the ceiling in every interval", () => {
-    for (const policy of ["fixed_overnight", "price_only", "clearlane"] as const) {
+  // price_only is the "Battery-only plan": no Spin reserve and no host ceiling, by design.
+  it("keeps the host meter at or under the ceiling in every interval (ceiling-aware policies)", () => {
+    for (const policy of ["fixed_overnight", "clearlane"] as const) {
       for (const row of solve(bundle, site, policy).intervals) {
         expect(row.meter_kw).toBeLessThanOrEqual(site.host_ceiling_kw);
       }
     }
   });
 
-  it("fails loudly instead of typing Torus values when torus_published.json is absent", () => {
+  it.runIf(STUB_ACTIVE)("stub only: fails loudly instead of typing Torus values when torus_published.json is absent", () => {
     expect(() => crash(clearlane, site, calls.first, null)).toThrow(/torus_published\.json/);
   });
 });

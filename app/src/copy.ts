@@ -33,6 +33,26 @@ export const COPY = {
     "Clearlane: fill up when the road is clear, and keep Spin ready for the crash.",
 
   axisCaption: "hour beginning, Mountain time",
+  ribbonTitle: "Traffic report",
+  ribbonSubtitle:
+    "Day-ahead price for PacifiCorp East, colored by lane: clear when power is cheap, jammed after the evening step.",
+  ribbonAria:
+    "Twenty-four hours of day-ahead price, each hour labeled Clear, Shoulder or Jam, with solar forecast and net load",
+  ribbonLegendBars: "Bars: day-ahead price, colored and labeled by lane",
+  ribbonLegendSolar: "Gold area: solar forecast, scaled to its own peak",
+  ribbonLegendNet: "Ink line: net load, scaled to its own peak",
+  ribbonPeak1: "Price jumps",
+  ribbonPeak2: "by the peak hour,",
+  ribbonFrom: "from",
+  ribbonTo: "to",
+  ribbonMw: "MW",
+  ribbonNet: "Net load climbs",
+  ribbonSolar: "as the solar forecast falls from",
+  ribbonLanes1: "Clear means a price at or under",
+  ribbonLanes2: "; jam means at or over",
+  ribbonLanes3: ". In October the evening price step landed in the same hour on",
+  ribbonOf: "of",
+  ribbonStep: "days.",
   heatmapMountain: "if Mountain time",
   heatmapUtc: "if UTC",
   heatmapNote:
