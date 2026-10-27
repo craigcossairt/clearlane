@@ -9,3 +9,13 @@ export type {
   RaceLeg,
   ReferenceRace,
 } from "./reference";
+export { mulberry32, poisson, weighted } from "./rng";
+export type { Rng } from "./rng";
+export {
+  dayStartMs,
+  hourWeights,
+  mountainOffsetH,
+  sampleCalls,
+  weekdayIndex,
+} from "./events";
+export type { Reading, SampleOpts } from "./events";
