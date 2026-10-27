@@ -544,10 +544,11 @@ Afterwards, check GitHub's secret-scanning alerts for the repo, and post the res
 - **Flow:** the engine CLIs write `public/derived/numbers.json`. FACTS registers every key under the same name. UI renders keys with `<Num k>`, and Pitch resolves `{key}`.
 - **`tools/facts-check.mjs`** runs these checks:
   1. every `numbers.json` key has a FACTS row (FAIL if not);
-  2. every `{key}` in `pitch/**/*.md`, `demo/**/*.md` and `README.md`, and every key in `app/src/stageKeys.ts`, resolves in `numbers.json` or in a VERIFIED FACTS row (FAIL if not);
+  2. every `{key}` in `pitch/**/*.md`, `demo/**/*.md` and `README.md`, and every key in `app/src/stageKeys.ts`, resolves in `numbers.json` or in a VERIFIED FACTS row, or is a MEASURED key (`prov: "MEASURED"` in `pitch/keys.json`, or Class MEASURED on its FACTS row), which is live-only and needs no value (FAIL if none of these holds);
   3. a VERIFIED row whose value disagrees with `numbers.json` `display` (WARN, listing both);
   4. a PENDING-ENGINE row whose key now exists (WARN: update its status);
-  5. a CONFLICT key used in judge copy (WARN, quoting the row's "say instead" wording).
+  5. a CONFLICT key used in judge copy (WARN, quoting the row's "say instead" wording);
+  6. a MEASURED key that `numbers.json` also holds (FAIL: MEASURED is live-only, the same rule `pitch/resolve.mjs` applies).
 
   Exit codes: 0 PASS, 1 FAIL, 2 could not run. Test it with a vitest on a small fixture.
 - **Upkeep:**

@@ -3,9 +3,11 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
+  checkFacts,
   extractCopyKeys,
   extractStageKeys,
   formatReport,
+  measuredKeysFromCatalog,
   parseFacts,
   runFactsCheck,
   type Finding,
@@ -227,5 +229,94 @@ describe("facts-check.mjs CLI", () => {
     );
     expect(r.status).toBe(2);
     expect(r.stderr).toMatch(/FACTS\.md/);
+  });
+});
+
+describe("MEASURED keys are live-only", () => {
+  const measuredRepo = fileURLToPath(
+    new URL("./fixtures/facts-measured/repo", import.meta.url),
+  );
+  const measuredNoNumbers = fileURLToPath(
+    new URL("./fixtures/facts-measured/repo/public/derived/absent.json", import.meta.url),
+  );
+
+  it("reads MEASURED keys from the pitch/keys.json prov field", () => {
+    expect([
+      ...measuredKeysFromCatalog({
+        keys: {
+          a: { prov: "MEASURED" },
+          b: { prov: "DERIVED" },
+          c: { prov: "measured" },
+          d: {},
+        },
+      }),
+    ]).toEqual(["a"]);
+    expect(measuredKeysFromCatalog(undefined).size).toBe(0);
+    expect(measuredKeysFromCatalog({}).size).toBe(0);
+  });
+
+  it("check 2: a MEASURED key passes whatever its status, by FACTS class or by keys.json prov", () => {
+    for (const numbersFile of [undefined, measuredNoNumbers]) {
+      const { findings } = runFactsCheck({ root: measuredRepo, numbersFile });
+      for (const key of ["solve_live", "keys_live"]) {
+        expect(find(findings, "FAIL", 2, key), key).toHaveLength(0);
+        expect(findings.filter((f) => f.key === key), key).toHaveLength(0);
+      }
+    }
+  });
+
+  it("check 2: a key that is not MEASURED still fails, and so does a keys.json MEASURED key with no FACTS row", () => {
+    const { findings } = runFactsCheck({ root: measuredRepo });
+    for (const key of ["engine_pending", "engine_unchecked"]) {
+      expect(find(findings, "FAIL", 2, key), key).toHaveLength(1);
+    }
+    const [noRow] = find(findings, "FAIL", 2, "no_row_live");
+    expect(noRow?.message).toContain("no FACTS row");
+  });
+
+  it("check 6: FAIL when a MEASURED key is also in numbers.json, and no other check fires for it", () => {
+    const { findings } = runFactsCheck({ root: measuredRepo });
+    const [f] = find(findings, "FAIL", 6, "clash_live");
+    expect(f?.message).toContain("MEASURED is live-only");
+    expect(f?.message).toContain("12 ms");
+    expect(findings.filter((x) => x.key === "clash_live")).toHaveLength(1);
+  });
+
+  it("counts exactly the expected findings with numbers.json", () => {
+    const { findings } = runFactsCheck({ root: measuredRepo });
+    expect(findings.filter((f) => f.level === "FAIL")).toHaveLength(4);
+    expect(findings.filter((f) => f.level === "WARN")).toHaveLength(0);
+  });
+
+  it("without numbers.json there is no collision to find and the other keys keep failing", () => {
+    const { findings } = runFactsCheck({ root: measuredRepo, numbersFile: measuredNoNumbers });
+    expect(findings.filter((f) => f.check === 6)).toHaveLength(0);
+    expect(
+      findings.filter((f) => f.level === "FAIL").map((f) => f.key).sort(),
+    ).toEqual(["engine_pending", "engine_unchecked", "no_row_live"]);
+  });
+
+  it("--allow-pending leaves MEASURED keys silent and still downgrades only the PENDING-ENGINE one", () => {
+    const { findings } = runFactsCheck({
+      root: measuredRepo,
+      numbersFile: measuredNoNumbers,
+      allowPending: true,
+    });
+    expect(find(findings, "WARN", 2, "engine_pending")).toHaveLength(1);
+    expect(find(findings, "FAIL", 2, "engine_unchecked")).toHaveLength(1);
+    expect(findings.filter((f) => f.key === "solve_live" || f.key === "keys_live")).toHaveLength(0);
+  });
+
+  it("checkFacts takes MEASURED from the FACTS class alone when no keys.json set is given", () => {
+    const facts = parseFacts(
+      "| live_one | c | ms | MEASURED | s | live only | 1 | PENDING-ENGINE |\n| not_live | c | ms | DERIVED | s | C1 | 1 | PENDING-ENGINE |",
+    );
+    const uses = new Map([
+      ["live_one", ["pitch/x.md"]],
+      ["not_live", ["pitch/x.md"]],
+    ]);
+    const findings = checkFacts({ facts, numbers: [], uses });
+    expect(find(findings, "FAIL", 2, "live_one")).toHaveLength(0);
+    expect(find(findings, "FAIL", 2, "not_live")).toHaveLength(1);
   });
 });

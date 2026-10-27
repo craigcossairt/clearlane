@@ -17,7 +17,7 @@ export interface FactRow {
 
 export interface Finding {
   level: "FAIL" | "WARN";
-  /** 1 to 5 per integration.md section 6.9; 0 for numbers.json missing. */
+  /** 1 to 5 per integration.md section 6.9; 6 for a MEASURED key also in numbers.json; 0 for numbers.json missing. */
   check: number;
   key: string;
   message: string;
@@ -33,7 +33,10 @@ export function checkFacts(input: {
   numbers: Pick<StageNumber, "key" | "display">[] | null;
   uses: Map<string, string[]>;
   allowPending?: boolean;
+  /** Keys pitch/keys.json marks prov MEASURED; a FACTS row of Class MEASURED counts too. */
+  measuredKeys?: Set<string>;
 }): Finding[];
+export function measuredKeysFromCatalog(catalog: unknown): Set<string>;
 export function judgeCopyFiles(root: string): string[];
 export function runFactsCheck(input: { root: string; numbersFile?: string; allowPending?: boolean }): {
   findings: Finding[];
