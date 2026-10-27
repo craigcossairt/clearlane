@@ -73,6 +73,43 @@ The tolerance section above is unchanged since its hash was logged (sha256 aa20b
 - Dependency #38 (data lane reference oracles) was still open. This check does not use the oracles,
   so it went ahead.
 
+## Tolerances for #107: backtest and history (written before computing)
+
+Written Tue Oct 27 2026 about 5:45pm MT by a stand-in science session, before any #107 number was
+computed. Reads before this section: the `BacktestResult` summary in `public/derived/backtest.json`
+(it was plotted, not recomputed, for #106), the first three rows of `public/derived/backtest_days.json`
+and the first row of the hist file, to learn their layout. One by-hand check of the May 2 fixed
+overnight value was done to confirm the rule reading below.
+
+Definitions, from `contracts/types.ts`, `docs/lanes/engine.md` section 6.4, `docs/plan/synthesis.json`
+and `backtest.json` only (no engine code read):
+
+- fixed_overnight: starts at 0 kWh, charges evenly over HB 1 to 4 to full (500 kWh stored), discharges
+  evenly over HB 18 and 19 to 0; no DP and no Spin. Per MW this is the reference race: sell
+  2 x sqrt(0.88) MWh at the mean HB 18 to 19 price, buy 2 / sqrt(0.88) MWh at the mean HB 1 to 4 price.
+- price_only: an independent stdlib DP (`science/dp.py`). 96 fifteen-minute steps, each hourly price held
+  for 4 steps; 41 levels of 12.5 kWh (Pulse 500 kWh); sqrt(0.88) on each leg; charge at the meter at most
+  `pulse_kw` 250 kW; discharge at the meter at most `min(pulse_kw, host + export_limit_kw)` with export
+  limit 0 and host load from `public/derived/site_default.json`; no wear, no host ceiling, no SCH rule,
+  no Spin; start at level 2 (25 kWh) and end at or above it. Value per MW-day = sum of price x grid MWh,
+  divided by 0.25 MW.
+- Percentiles: nearest-rank and linear interpolation (Hyndman-Fan type 7) are both computed; the one
+  `backtest.json` used is named. `share_days_beating` counts strictly greater than fixed_overnight.
+
+| Check | Pinned | Tolerance | Test | A mismatch would mean |
+|---|---|---|---|---|
+| backtest_fixed_overnight (P10, P50, P90, mean) | `backtest.json` fixed_overnight | $0.01/MW-day each, under the method that matches | abs diff | the rule reading (hours, swing, RTE split) or the day set differs |
+| backtest_fixed_overnight (per day) | `backtest_days.json` fixed_overnight | $0.01/MW-day every day; max abs diff reported | max abs diff | same, on a named day |
+| backtest_price_only_p50 | `backtest.json` price_only P50 | $0.01/MW-day | abs diff | the DP spec, the limits, the start and end level, or the price hold differs |
+| backtest_price_only (per day) | `backtest_days.json` price_only | $0.01/MW-day every day; max abs diff and count over reported | max abs diff | same, on a named day |
+| percentile_method | engine.md says linear (numpy default) | the matching method is the one within $0.01 on all three fixed_overnight percentiles | equality | the engine used another method |
+| backtest_dominance | clearlane P10, P50, P90 at or below price_only's | each `<=` (no tolerance) | inequality | the clearlane plan is not feasible for the price-only problem, or the value accounting differs |
+| clearlane_p50 | FACTS $39.21; numbers.json 39.2137 | recomputed from `backtest_days.json` clearlane rows: within $0.01 of `backtest.json`, rounds equal to $39.21; at or below the science price_only P50 | abs diff | the summary does not come from the per-day file, or the percentile method differs |
+| share_days_beating | FACTS 96%; numbers.json 95.5307 | recomputed from per-day values, strict greater than: within 0.01 percentage point; rounds equal at 0 dp | abs diff | tie rule or day set differs |
+| backtest_days | FACTS 179; missing 2026-05-01 | days exact; missing list exact; from the hist file and raw OASIS (a day without 24 prices) | equality | the window or the 24-hour rule differs |
+| hist_vs_raw_prices | raw OASIS, ELAP_PACE-APND | every hour of May 1 to 23, Jul 1 to 30, Oct 1 to 27 within $0.00001; hours compared reported | max abs diff | node, LMP type, Mountain-day grouping or rounding differs |
+| bundle_oct27_hb0 | raw 30.21857 (crosscheck item 13; the issue's "$30.22857" is that item's typo) | within the bundle's stored precision of 30.21857 (cents: 30.22) and not 46.11 | abs diff | the bundle borrowed Oct 28's hour |
+
 ## Results
 
 <!-- results:start -->
