@@ -1,6 +1,7 @@
 // contracts/types.ts
-// Clearlane shared contracts v1. Frozen at Train 1 (Tue Oct 27 2026, 1:45am MT).
-// After the freeze, only the Integration lane changes this file.
+// Clearlane shared contracts v1. FROZEN at Train 1 (scheduled Tue Oct 27 2026 1:45am MT; landed with #20).
+// After the freeze, only the Integration lane changes this file, and only by adding optional fields or new types,
+// so every v1 consumer still validates. Field names below never change.
 // Units are in field names. Times are ISO 8601. *_utc fields end in "Z".
 // Every interval is identified by its START time in UTC. Mountain time is for display only.
 // MDT = UTC-6 until Nov 1 2026, so the whole backtest window (May 1 to Oct 27) is UTC-6.
@@ -66,6 +67,17 @@ export interface HistDay {   // public/data/hist_2026-05-01_2026-10-27.json is H
   co2_g_kwh: (number | null)[];    // 24, EIA observed average (REAL); null if missing
 }
 
+export interface HistMeta {   // public/data/hist_<start>_<end>.meta.json, the sidecar of a HistDay[] file
+  schema: "clearlane.hist_meta/v1";
+  window: { start_mt: string; end_mt: string };   // Mountain operating days, inclusive
+  days: number;                                    // days present in the HistDay[] file
+  missing_days: { day: string; hours_present: number; reason: string }[]; // left out, never filled
+  co2_null_hours: Record<string, number[]>;        // day -> hours (beginning, MT) with null CO2; only days that have any
+  sources: SourceRef[];
+  fetched_utc: string;
+  notes: string[];
+}
+
 export interface TorusPublished {  // public/data/torus_published.json
   events_2025_total: Tagged<number>;               // 359
   events_2025_by_hour: Tagged<number[]>;           // 24 counts, index 0 = 12am; source states no time zone
@@ -79,9 +91,13 @@ export interface TorusPublished {  // public/data/torus_published.json
   spin_discharge_recharge_min: Tagged<number>;     // 12
   pulse_c_rate: Tagged<number>;                    // 0.5
   pulse_cycle_life: Tagged<number>;                // 7500
-  pulse_life_yr: Tagged<number>;                   // 25
+  pulse_life_yr: Tagged<number>;                   // 25. This is the Station lifespan Torus publishes, used as an
+                                                   // ASSUMPTION for Pulse's calendar life. The 300-cycles-a-year budget
+                                                   // (7500 / 25) therefore rests on that ASSUMPTION.
   mou_mw: Tagged<number>;                          // 70
   mou_ceiling_mw: Tagged<number>;                  // 500
+  sources?: SourceRef[];                           // one per distinct Torus URL
+  notes?: string[];                                // plain words, e.g. what the heatmap does not state
 }
 
 // ---------- engine inputs ----------
@@ -158,6 +174,7 @@ export interface CrashResult {
   spin_kwh: number;
   pulse_kwh: number;
   shortfall_kwh: number;         // 0 unless a second call lands inside Spin's refill window
+  refill_source?: "grid" | "pulse"; // where Spin's refill came from; absent means grid (ff_spin_refill_source)
   spin_full_again_utc: string;
   meter_peak_during_refill_kw: number; // must be <= host_ceiling_kw
   trace: CrashTracePoint[];      // 1 s resolution, from call start until Spin is full again
@@ -190,7 +207,11 @@ export interface PolicyStats {
   usd_per_mw_day: Pctl;
   co2_t_per_mw_day: Pctl;          // + avoided, average emissions
   pulse_cycles_per_yr: number;
-  calls_unanswerable_pct: { heatmap_as_mt: number; heatmap_as_utc: number };
+  calls_unanswerable_pct: {        // the 2025 heatmap states no time zone, so every reading is kept
+    heatmap_as_mt: number;         // hours read as Mountain local time
+    heatmap_as_utc: number;        // hours read as UTC, shifted to Mountain at UTC-6 (MDT)
+    heatmap_as_utc_mst: number;    // hours read as UTC, shifted at UTC-7 (MST); the 43% in "43% to 77%"
+  };
   host_ceiling_breaches: number;   // count of 15-minute intervals over the ceiling
   days_beating_fixed_overnight_pct: number;
 }
@@ -201,6 +222,16 @@ export interface BacktestResult {
   wear_usd_mwh: number;            // calibrated so clearlane uses <= 300 cycles/yr
   seed: number;                    // call-sampler seed
   policies: PolicyStats[];
+}
+
+export interface BacktestDay {     // public/derived/backtest_days.json is BacktestDay[]: one row per day and policy
+  operating_day_mt: string;
+  policy: Policy;
+  usd_per_mw_day: number;          // grid value at DA prices, gross of wear
+  co2_t_per_mw_day: number;        // + avoided, average emissions
+  pulse_cycles: number;            // full-equivalent
+  host_ceiling_breaches: number;
+  beats_fixed_overnight: boolean;  // usd_per_mw_day above fixed_overnight's on the same day
 }
 
 export interface StageNumber {

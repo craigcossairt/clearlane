@@ -9,8 +9,8 @@
       "ts_utc": "2026-10-27T06:00:00Z",
       "local_mt": "2026-10-27T00:00-06:00",
       "hour_mt": 0,
-      "lmp_usd_mwh": 46.11,
-      "mcc_usd_mwh": -1.09,
+      "lmp_usd_mwh": 30.22,
+      "mcc_usd_mwh": -0.71,
       "load_fcst_mw": 5142.0,
       "solar_fcst_mw": 0.0,
       "wind_fcst_mw": 1380.78,
@@ -19,9 +19,9 @@
       "co2_kind": "eia_profile_avg_30d",
       "prov": {
         "lmp": "REAL",
-        "load": "REAL",
-        "solar": "REAL",
-        "wind": "REAL",
+        "load": "ASSUMPTION",
+        "solar": "ASSUMPTION",
+        "wind": "ASSUMPTION",
         "co2": "DERIVED"
       }
     },
@@ -490,7 +490,7 @@
     {
       "node": "ELAP_PACW-APND",
       "lmp_usd_mwh": [
-        47.01,
+        36.56,
         46.57,
         43.78,
         37.89,
@@ -519,7 +519,7 @@
     {
       "node": "ELAP_PGE-APND",
       "lmp_usd_mwh": [
-        47.0,
+        36.56,
         46.56,
         43.78,
         37.89,
@@ -548,7 +548,7 @@
     {
       "node": "TH_SP15_GEN-APND",
       "lmp_usd_mwh": [
-        48.27,
+        50.37,
         44.77,
         44.25,
         43.43,
@@ -597,7 +597,7 @@
   ],
   "notes": [
     "FIXTURE built by tools/make_fixture.py from research/data/pace_snapshot_2026-10-27.csv; the Data lane's bundle replaces it.",
-    "hours [0] (MT) are borrowed from 2026-10-28 00:00 MT: the snapshot starts at 01:00 MT.",
+    "hours [0] (MT): prices (PACE LMP and MCC, and the peer LMPs) are from CAISO OPR_DT 2026-10-26 HE 24 (research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv); load, solar and wind are not cached for that hour, so they are borrowed from 2026-10-28 00:00 MT and tagged ASSUMPTION.",
     "co2_g_kwh is the Oct 1-25 2026 EIA-930 PACE hour-of-day mean, shifted from hour ending to hour beginning."
   ]
 }
