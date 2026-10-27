@@ -80,7 +80,10 @@ class HistoryBuildTest(unittest.TestCase):
         labels = [day["operating_day_mt"] for day in days]
         missing = [row["day"] for row in meta["missing_days"]]
         self.assertEqual(meta["schema"], "clearlane.hist_meta/v1")
+        self.assertEqual(meta["days"], len(days))
         self.assertEqual(labels, sorted(labels))
+        self.assertEqual(len(labels), len(set(labels)))
+        self.assertEqual(missing, sorted(missing))
         self.assertEqual(len(labels) + len(missing), 180)
         self.assertIn("2026-05-01", missing)
         may1 = next(row for row in meta["missing_days"] if row["day"] == "2026-05-01")
