@@ -18,3 +18,21 @@ jobs:
           python-version: "3.13"
       - run: npm ci
       - run: npm run check:all
+  offline:
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: node tools/offline-check.mjs --browser chromium
+      - name: Self-test catches a planted external URL
+        run: |
+          node tools/offline-check.mjs --browser chromium --plant | tee plant.log
+          grep -q "^SELF-TEST OK$" plant.log
