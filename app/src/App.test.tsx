@@ -81,6 +81,15 @@ function redate(src: StageData, from: string, to: string): StageData {
   };
 }
 
+// The May to Oct history and its backtest end on Oct 27 whatever day is on stage, so their file
+// name and window are not a trace of the old stage day. Everything else must move to the new day.
+const HIST_FILE = /hist_\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}/g;
+const BACKTEST_WINDOW =
+  /(<span data-time="">\d{4}-\d{2}-\d{2}<\/span>\s*to\s*)<span data-time="">\d{4}-\d{2}-\d{2}<\/span>/g;
+function stageDayText(html: string): string {
+  return html.replace(HIST_FILE, "hist_window").replace(BACKTEST_WINDOW, "$1<span>window end</span>");
+}
+
 describe("day switch", () => {
   it("renders a bundle re-dated to Oct 28 with no trace of Oct 27", () => {
     const oct28 = redate(data, "2026-10-27", "2026-10-28");
@@ -88,8 +97,10 @@ describe("day switch", () => {
       const { container, unmount } = render(
         <App data={oct28} now={NOW} search={`?beat=${beat.id}&step=end&motion=off`} />,
       );
-      const html = container.innerHTML;
+      const html = stageDayText(container.innerHTML);
       expect(html, `beat ${beat.id} renders the day`).not.toContain("failed-state");
+      const header = container.querySelector("header")?.textContent;
+      expect(header, `beat ${beat.id} header`).toContain("Oct 28, 2026");
       expect(html, `beat ${beat.id}`).not.toMatch(/Oct 27|2026-10-27|10\/27/);
       unmount();
     }
