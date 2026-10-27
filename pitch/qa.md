@@ -4,7 +4,7 @@ Answers are at most two sentences. A number is a placeholder or it is not said. 
 
 ## Isn't this what Lasso already does?
 
-Lasso forecasts and dispatches, and that is Torus-published. A day-ahead timetable keyed to EDAM prices, and an exportable envelope, are not advertised, and Lasso could take both as one more grid signal.
+Lasso forecasts and dispatches, and that is Torus-published. A day-ahead timetable keyed to EDAM prices, and an exportable envelope, are not advertised, and the envelope is a format Clearlane proposes.
 
 ## Who gets the `{clearlane_70}` a day?
 
@@ -36,7 +36,7 @@ Torus publishes `{torus_pulse_cycles}` Pulse cycles, and the Station lifespan is
 
 ## How do you know when the calls happen?
 
-The 2025 heatmap gives counts by hour and states no time zone, so we run both readings. A battery chasing price alone could not answer `{calls_unanswerable_price_only_utc_mst}` to `{calls_unanswerable_price_only_mt}` of those call times, depending on how the heatmap's hours are read.
+Torus's 2025 heatmap gives counts by hour, in Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). A battery chasing price alone could not answer `{calls_unanswerable_price_only_mt}` of those call times.
 
 ## Is Utah allowed to cycle these daily?
 
@@ -64,7 +64,7 @@ Partly, and it depends on the schedule. Schedule 6 has no on-peak window, Schedu
 
 ## What would you need from Torus?
 
-Four things: how Spin refills, how delivery is baselined, whether sites export, and whether Lasso accepts an external envelope. Then a pilot at a few Wattsmart sites.
+Three things: how Spin refills, how delivery is baselined, and whether sites export; Torus does not know whether Lasso's API accepts an outside envelope (Torus, message to Craig Cossairt, Oct 27 2026). Then a pilot of the envelope, a format Clearlane proposes, at a few Wattsmart sites.
 
 ---
 

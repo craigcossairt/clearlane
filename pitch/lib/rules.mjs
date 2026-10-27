@@ -46,7 +46,16 @@ export const BANNED = [
   { name: "july-count", re: /27 of 30/i },
   { name: "prices-post", re: /prices post at/i },
   { name: "evening-calls", re: /most calls in the evening/i },
+  // Torus answered on Oct 27 2026: the heatmap is Mountain time and Lasso's API is unknown.
+  { name: "old-range-43", re: /43% to 77%/i },
+  { name: "both-readings", re: /both (?:heatmap )?readings/i },
+  { name: "no-time-zone", re: /states no time zone/i },
+  { name: "lasso-accepts", re: /Lasso (?:accepts|ingests|runs|takes) (?:the|our|a|an) (?:envelope|schedule|file)/i },
+  { name: "into-lasso", re: /(?:into|feeds?|drops? into) Lasso\b/i },
 ];
+
+/** Heatmap UTC readings are a sensitivity check only and never reach the stage. */
+export const UTC_KEY = /_utc(?:_mdt|_mst)?$/;
 
 export const HYPE = ["comprehensive", "robust", "seamless", "leverage", "cutting-edge", "game-changer"];
 
@@ -186,6 +195,7 @@ function lineFindings(file, lineNo, line, ctx) {
     const key = match[1];
     if (key === "operating_day" || isMeasured(key, ctx)) continue;
     if (!ctx.keys[key]) findings.push({ file, line: lineNo, rule: "unknown-key", text: key });
+    if (UTC_KEY.test(key)) findings.push({ file, line: lineNo, rule: "utc-key", text: key });
   }
   return findings;
 }

@@ -30,10 +30,10 @@ The rest of the day is re-solved from the state of charge after the call. Re-pla
 
 An hourly envelope with System Critical Hours, reserve kW, and charge and discharge limits. The rule is our proposal. Torus asked ROWE to define the term. We found no Utah or Wyoming docket that defines it.
 
-The backtest card covers May 1 to Oct 27. Clearlane's range is `{clearlane_p10}` to `{clearlane_p90}` per MW-day. Both heatmap readings are on the card.
+The backtest card covers May 1 to Oct 27. Clearlane's range is `{clearlane_p10}` to `{clearlane_p90}` per MW-day. Calls missed, heatmap in Mountain time: Clearlane `{calls_missed_by_policy_clearlane_mt}`, the overnight rule `{calls_missed_by_policy_fixed_overnight_mt}`, price-only `{calls_missed_by_policy_price_only_mt}`.
 
 ## Beat 6, scale and close (2:25 to 2:45)
 
 The slider runs from `{mou_70mw}` MW to `{torus_500mw}` MW. The top is an MOU for up to `{torus_500mw}` MW, not installed capacity, and the fleet is assumed not to move prices.
 
-Close: fill up when the road is clear, keep Spin ready for the crash. Ask: a day-ahead envelope into Lasso at a few Wattsmart sites this winter.
+Close: fill up when the road is clear, keep Spin ready for the crash. Ask: pilot the envelope, a format Clearlane proposes, at a few Wattsmart sites this winter.

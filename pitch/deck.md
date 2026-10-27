@@ -34,7 +34,7 @@ A call of about five and a half minutes, answered at `{torus_pulse_c_rating}` by
 
 `{rmp_events_2025}` events in 2025 (Torus, RMP case study) add up to about `{call_hours_2025}`.
 
-Spin at `{torus_spin_c_rating}` holds `{spin_kwh_per_kw}` per kW, enough for one call, and refills in about six minutes under the host's ceiling. Six minutes is our reading of Torus's published twelve-minute discharge and recharge.
+Spin at `{torus_spin_c_rating}` holds `{spin_kwh_per_kw}` kWh per kW, enough for one call, and refills in about six minutes under the host's ceiling. Six minutes is our reading of Torus's published twelve-minute discharge and recharge.
 
 ## 5. Not one good day
 
@@ -44,7 +44,7 @@ Share of days Clearlane beat the fixed off-peak rule: `{share_days_beating}`.
 
 Cycles per year against the `{pulse_cycle_budget}` budget. That budget divides Torus's published `{torus_pulse_cycles}` Pulse cycles by the Station lifespan of `{torus_lifespan_yr}`. The Station life is Torus's figure. Applying it to Pulse is our assumption.
 
-Calls answered under both heatmap readings: `{calls_answered_pct_mt}` read as Mountain time, `{calls_answered_pct_utc}` read as UTC. The chart states no time zone.
+Calls missed in the backtest, with the 2025 heatmap in Mountain time (Torus, message to Craig Cossairt, Oct 27 2026): Clearlane `{calls_missed_by_policy_clearlane_mt}`, the fixed overnight rule `{calls_missed_by_policy_fixed_overnight_mt}`, price-only `{calls_missed_by_policy_price_only_mt}`. Clearlane answered `{calls_answered_pct_mt}` of simulated calls in full.
 
 ## 6. The envelope Torus asked for
 
@@ -56,7 +56,7 @@ Our System Critical Hours rule is our proposal. No Utah or Wyoming docket define
 
 ## 7. Where it plugs in
 
-Lasso forecasts from load, weather, grid signals and rate schedules, and dispatches in under `{lasso_dispatch_ms}` (Torus-published). Clearlane adds what is not advertised: a day-ahead timetable keyed to EDAM prices, and an exportable envelope, as one more grid signal.
+Lasso forecasts from load, weather, grid signals and rate schedules, and dispatches in under `{lasso_dispatch_ms}` (Torus-published). Clearlane adds what is not advertised: a day-ahead timetable keyed to EDAM prices, and an hourly envelope, a format Clearlane proposes. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026).
 
 Value to RMP's system at day-ahead prices, not Torus revenue. RMP's customers capture it today. Torus and hosts share it only if scheduled dispatch is credited.
 
@@ -70,7 +70,7 @@ A simulated campus shift on the operating day: `{campus_usd}` a day. Simulated. 
 
 `{mou_70mw}` MW is the demand-response agreement Torus says it filled. `{torus_500mw}` MW is an MOU for up to that amount, not installed capacity.
 
-The ceiling is about `{mou_share_of_peak_oct27}` of the operating day's peak load forecast (`{load_peak_oct27_mw}`). The slider says the fleet is assumed not to move prices. That assumption gets weaker as the fleet grows.
+The ceiling is about `{mou_share_of_peak_oct27}` of the operating day's peak load forecast (`{load_peak_oct27_mw}` MW). The slider says the fleet is assumed not to move prices. That assumption gets weaker as the fleet grows.
 
 ## 10. What is real
 
@@ -83,10 +83,10 @@ The ceiling is about `{mou_share_of_peak_oct27}` of the operating day's peak loa
 | ASSUMPTION      | Round-trip efficiency, the cycle budget applied to Pulse, export limit |
 | MEASURED        | Solve time and re-plan time, timed live                                |
 
-Questions we would ask Torus: how Spin refills, how event delivery is baselined, whether sites export, and whether Lasso accepts an external envelope.
+What Torus told us (Torus, message to Craig Cossairt, Oct 27 2026): the 2025 heatmap hours are Mountain time, and all `{rmp_events_2025}` events were unplanned calls. Whether Lasso's API accepts an outside envelope is unknown to Torus too. Still open: how Spin refills, how event delivery is baselined, and whether sites export.
 
 ## 11. Close
 
 Clearlane: fill up when the road is clear, keep Spin ready for the crash.
 
-Ask: let us feed Lasso a day-ahead envelope at a few Wattsmart sites this winter.
+Ask: pilot the day-ahead envelope, a format Clearlane proposes, at a few Wattsmart sites this winter.
