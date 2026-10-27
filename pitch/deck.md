@@ -1,6 +1,6 @@
 # Clearlane deck
 
-On stage: slide 1, the live demo, then the close. The slides between are Q&A backups. Every result is a `{key}` from `public/derived/numbers.json`. Provenance sits on the key, not in a typed number.
+On stage: slide 1, the live demo, then the close. The slides between are Q&A backups. Every result is a placeholder from `public/derived/numbers.json`. Provenance sits on the key, not in a typed number.
 
 Operating day on every slide: the day in the bundle. If Tuesday's refresh misses, say the date on screen.
 
