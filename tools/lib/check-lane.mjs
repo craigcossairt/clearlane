@@ -9,7 +9,7 @@
 export function laneCommands(lane, exists) {
   if (lane === "pitch") {
     const cmds = [];
-    if (exists("pitch/test")) cmds.push(["node", ["--test", "pitch/test/"]]);
+    if (exists("pitch/test")) cmds.push(["node", ["--test", "pitch/test/**/*.test.mjs"]]);
     if (exists("pitch/resolve.mjs")) cmds.push(["node", ["pitch/resolve.mjs"]]);
     return cmds;
   }
