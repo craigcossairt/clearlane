@@ -18,6 +18,7 @@ import { crash } from "./engineClient";
 import { buildLive, callHour, runCalls } from "./live";
 import { FlagsContext, parseFlags, type FlagName } from "./flags";
 import { KEYMAP, lookup, typedIntoInput } from "./keymap";
+import { ProofDrawer, ProofKeyRow } from "./proof/ProofDrawer";
 import { dayLabel, resolveStageDay } from "./stageDay";
 import { Presenter } from "./presenter/Presenter";
 
@@ -394,9 +395,11 @@ function Stage({
                   <dd data-copy-ok="key action text">{b.label}</dd>
                 </div>
               ))}
+              <ProofKeyRow />
             </dl>
           </div>
         ) : null}
+        <ProofDrawer />
       </div>
     </div>
   );

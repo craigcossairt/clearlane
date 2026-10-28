@@ -1,0 +1,1011 @@
+// @vitest-environment jsdom
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { App } from "../App";
+import { NumbersContext } from "../components/Num";
+import { COPY } from "../copy";
+import { loadStageData } from "../data";
+import { clock } from "../format";
+import { FlagsContext, type FlagName } from "../flags";
+import { KEYMAP, lookup, RESERVED_KEYS, STRETCH_KEYMAP } from "../keymap";
+import * as F from "../test/fixtures/proof";
+import {
+  ALL_FLAGS_OFF,
+  endStateSearch,
+  expectFlagsOffStage,
+  installMatchMedia,
+  STAGE_NOW,
+} from "../test/flagsOff";
+import { ProofCard, ProofDrawer } from "./ProofDrawer";
+import {
+  assembleProof,
+  loadProofSources,
+  PROOF_FILES,
+  type ProofCardId,
+  type ProofSources,
+} from "./sources";
+
+beforeEach(installMatchMedia);
+afterEach(cleanup);
+
+const data = loadStageData();
+const ON: ReadonlySet<FlagName> = new Set(["ff_proof_drawer"]);
+const ALLOWED = "[data-num], [data-time], [data-axis], [data-copy-ok]";
+
+function renderStage(
+  beat: 1 | 2 | 3 | 4 | 5 | 6,
+  flags: ReadonlySet<FlagName>,
+) {
+  return render(
+    <App
+      data={data}
+      now={STAGE_NOW}
+      search={endStateSearch(beat)}
+      flags={flags}
+    />,
+  );
+}
+
+function renderDrawer(sources: ProofSources) {
+  return render(
+    <NumbersContext.Provider value={{ state: "ready", numbers: data.numbers }}>
+      <FlagsContext.Provider value={ON}>
+        <ProofDrawer sources={sources} />
+      </FlagsContext.Provider>
+    </NumbersContext.Provider>,
+  );
+}
+
+/** A key pressed wherever focus is, bubbling to window the way the browser sends it. */
+function press(key: string) {
+  act(() => {
+    fireEvent.keyDown(document.activeElement ?? document.body, { key });
+  });
+}
+
+const drawer = () => screen.queryByRole("dialog", { name: COPY.proofTitle });
+
+function openDrawer(): HTMLElement {
+  fireEvent.click(screen.getByRole("button", { name: COPY.proofPill }));
+  const d = drawer();
+  if (!d) throw new Error("drawer did not open");
+  return d;
+}
+
+function strayDigits(root: Element): string[] {
+  const out: string[] = [];
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const text = node.textContent ?? "";
+    if (!/\d/.test(text)) continue;
+    const parent = node.parentElement;
+    if (parent?.closest("title, style, script")) continue;
+    if (!parent?.closest(ALLOWED)) out.push(text.trim());
+  }
+  return out;
+}
+
+/** Per card: its glob key, a file of the expected shape and one of another shape. */
+const FIXTURES: Record<
+  ProofCardId,
+  { key: string; ok: string; unknown: string }
+> = {
+  stepStats: {
+    key: F.STEP_STATS_KEY,
+    ok: F.STEP_STATS_OK,
+    unknown: F.UNKNOWN_STEP_STATS,
+  },
+  backtest: {
+    key: F.BACKTEST_KEY,
+    ok: F.BACKTEST_OK,
+    unknown: F.UNKNOWN_BACKTEST,
+  },
+  intervals: {
+    key: F.INTERVALS_KEY,
+    ok: F.INTERVALS_OK,
+    unknown: F.UNKNOWN_INTERVALS,
+  },
+  callLedger: {
+    key: F.CALL_LEDGER_KEY,
+    ok: F.CALL_LEDGER_OK,
+    unknown: F.UNKNOWN_CALL_LEDGER,
+  },
+  rtReplay: {
+    key: F.RT_REPLAY_KEY,
+    ok: F.RT_REPLAY_OK,
+    unknown: F.UNKNOWN_RT_REPLAY,
+  },
+  schStudy: {
+    key: F.SCH_STUDY_KEY,
+    ok: F.SCH_STUDY_OK,
+    unknown: F.UNKNOWN_SCH_STUDY,
+  },
+  scaleCurve: {
+    key: F.SCALE_CURVE_KEY,
+    ok: F.SCALE_CURVE_OK,
+    unknown: F.UNKNOWN_SCALE_CURVE,
+  },
+  sensitivity: {
+    key: F.SENSITIVITY_KEY,
+    ok: F.SENSITIVITY_OK,
+    unknown: F.UNKNOWN_SENSITIVITY,
+  },
+  crosscheck: {
+    key: F.CROSSCHECK_KEY,
+    ok: F.CROSSCHECK_OK,
+    unknown: F.UNKNOWN_CROSSCHECK,
+  },
+};
+/** Cards whose files are on main in this build. A card wired ahead of its file is empty until it lands. */
+const ON_MAIN: ProofCardId[] = [
+  "stepStats",
+  "backtest",
+  "intervals",
+  "callLedger",
+  "rtReplay",
+  "schStudy",
+  "scaleCurve",
+  "sensitivity",
+  "crosscheck",
+];
+const IDS = Object.keys(PROOF_FILES) as ProofCardId[];
+const every = (pick: (f: (typeof FIXTURES)[ProofCardId]) => string) =>
+  Object.fromEntries(IDS.map((id) => [FIXTURES[id].key, pick(FIXTURES[id])]));
+
+describe("proof sources", () => {
+  it("a missing file is the empty state", () => {
+    const s = assembleProof({});
+    for (const id of IDS)
+      expect(s[id]).toEqual({ state: "empty", file: PROOF_FILES[id] });
+  });
+
+  it("a file that does not parse is broken", () => {
+    const s = assembleProof(every(() => F.BROKEN_TEXT));
+    for (const id of IDS) expect(s[id].state, id).toBe("broken");
+  });
+
+  it("a file of another shape is unknown, with the reason", () => {
+    const s = assembleProof(every((f) => f.unknown));
+    for (const id of IDS) {
+      const src = s[id];
+      expect(src.state, id).toBe("unknown");
+      if (src.state === "unknown")
+        expect(src.reason.length, id).toBeGreaterThan(0);
+    }
+  });
+
+  it("files of the expected shape are ok", () => {
+    const s = assembleProof(every((f) => f.ok));
+    for (const id of IDS) expect(s[id].state, id).toBe("ok");
+  });
+
+  it("every file on main parses in the shape its card reads; the rest are absent, never broken", () => {
+    const s = loadProofSources();
+    for (const id of IDS)
+      expect(s[id].state, `${id}: ${s[id].file}`).toBe(
+        ON_MAIN.includes(id) ? "ok" : "empty",
+      );
+  });
+});
+
+describe("proof drawer with every flag off", () => {
+  it("shows no pill, and P does nothing", () => {
+    renderStage(3, ALL_FLAGS_OFF);
+    expect(screen.queryByRole("button", { name: COPY.proofPill })).toBeNull();
+    press("p");
+    expect(drawer()).toBeNull();
+    expect(document.querySelector(".proof-drawer")).toBeNull();
+  });
+
+  it("leaves the six-beat snapshots and every pinned number unchanged", async () => {
+    await expectFlagsOffStage();
+  });
+});
+
+describe("proof drawer with ff_proof_drawer on", () => {
+  it("opens from the visible Proof pill", () => {
+    renderStage(1, ON);
+    openDrawer();
+    expect(drawer()).not.toBeNull();
+  });
+
+  it("P opens it over the current beat; Esc closes it and returns focus", () => {
+    renderStage(3, ON);
+    const beatButton = screen.getByRole("button", { name: "Envelope" });
+    beatButton.focus();
+    press("p");
+    expect(drawer()).not.toBeNull();
+    expect(document.body.dataset.beat).toBe("3");
+    expect(drawer()!.contains(document.activeElement)).toBe(true);
+    press("Escape");
+    expect(drawer()).toBeNull();
+    expect(document.activeElement).toBe(beatButton);
+    expect(document.body.dataset.beat).toBe("3");
+  });
+
+  it("P toggles it closed again", () => {
+    renderStage(2, ON);
+    press("P");
+    expect(drawer()).not.toBeNull();
+    press("p");
+    expect(drawer()).toBeNull();
+  });
+
+  it("beat keys do not move the stage underneath it", () => {
+    renderStage(3, ON);
+    press("p");
+    press("ArrowRight");
+    press("r");
+    press("5");
+    expect(document.body.dataset.beat).toBe("3");
+    press("Escape");
+    press("ArrowRight");
+    expect(document.body.dataset.beat).toBe("4");
+  });
+
+  it("renders one card per file on main, each with hand-written SVG and chips", () => {
+    renderStage(5, ON);
+    const d = openDrawer();
+    const cards = [...d.querySelectorAll("[data-card]")];
+    expect(cards.map((c) => c.getAttribute("data-card"))).toEqual(
+      IDS.filter((id) => ON_MAIN.includes(id)),
+    );
+    for (const card of cards) {
+      const id = card.getAttribute("data-card");
+      expect(card.getAttribute("data-card-state"), `${id} state`).toBe("ok");
+      expect(card.querySelector("svg"), `${id} svg`).not.toBeNull();
+      expect(card.querySelector(".chip"), `${id} chip`).not.toBeNull();
+    }
+  });
+
+  it("every figure in the drawer carries its provenance chip", () => {
+    renderStage(5, ON);
+    const d = openDrawer();
+    const nums = [...d.querySelectorAll('[data-num-state="ok"]')];
+    expect(nums.length).toBeGreaterThan(0);
+    for (const n of nums)
+      expect(n.querySelector(".chip"), n.textContent ?? "").not.toBeNull();
+    expect(d.querySelectorAll('[data-num-state="not-computed"]')).toHaveLength(
+      0,
+    );
+  });
+
+  it("has no digit outside a number, time, axis label or copy-ok span", () => {
+    renderStage(5, ON);
+    expect(strayDigits(openDrawer())).toEqual([]);
+  });
+
+  it("the backtest card draws each policy's P10 to P90 as a band, with the pinned Clearlane keys", () => {
+    renderStage(5, ON);
+    const card = openDrawer().querySelector('[data-card="backtest"]')!;
+    const bands = [...card.querySelectorAll("rect[data-band]")];
+    expect(bands.map((b) => b.getAttribute("data-band"))).toEqual([
+      "fixed_overnight",
+      "price_only",
+      "clearlane",
+    ]);
+    for (const b of bands)
+      expect(Number(b.getAttribute("width"))).toBeGreaterThan(0);
+    for (const k of [
+      "clearlane_p10",
+      "clearlane_p50",
+      "clearlane_p90",
+      "backtest_days",
+    ]) {
+      expect(
+        card.querySelector(`[data-num="${k}"]`)?.getAttribute("data-num-state"),
+        k,
+      ).toBe("ok");
+    }
+    expect(card.textContent).toContain(COPY.proofBaseline);
+  });
+
+  it("the ? overlay lists P while the flag is on, and only then", () => {
+    renderStage(1, ON);
+    press("?");
+    const on = screen.getByRole("dialog", { name: "Key map" });
+    expect(within(on).getByText("P")).toBeTruthy();
+    cleanup();
+    renderStage(1, ALL_FLAGS_OFF);
+    press("?");
+    const off = screen.getByRole("dialog", { name: "Key map" });
+    expect(within(off).queryByText("P")).toBeNull();
+  });
+});
+
+describe("proof card states", () => {
+  it("an absent file's card does not render", () => {
+    renderDrawer(assembleProof({ [F.CROSSCHECK_KEY]: F.CROSSCHECK_OK }));
+    const d = openDrawer();
+    expect(d.querySelector('[data-card="backtest"]')).toBeNull();
+    expect(d.querySelector('[data-card="crosscheck"]')).not.toBeNull();
+  });
+
+  it("with every file absent the drawer says so instead of showing blank cards", () => {
+    renderDrawer(assembleProof({}));
+    const d = openDrawer();
+    expect(d.querySelectorAll("[data-card]")).toHaveLength(0);
+    expect(d.textContent).toContain(COPY.proofNone);
+  });
+
+  it("broken and unknown files render distinct states that name the file", () => {
+    renderDrawer(
+      assembleProof({
+        [F.BACKTEST_KEY]: F.BROKEN_TEXT,
+        [F.CROSSCHECK_KEY]: F.UNKNOWN_CROSSCHECK,
+      }),
+    );
+    const d = openDrawer();
+    const broken = d.querySelector('[data-card="backtest"]')!;
+    const unknown = d.querySelector('[data-card="crosscheck"]')!;
+    expect(broken.getAttribute("data-card-state")).toBe("broken");
+    expect(unknown.getAttribute("data-card-state")).toBe("unknown");
+    expect(broken.textContent).toContain(COPY.proofBroken);
+    expect(unknown.textContent).toContain(COPY.proofUnknown);
+    expect(broken.textContent).toContain(PROOF_FILES.backtest);
+    expect(unknown.textContent).toContain(PROOF_FILES.crosscheck);
+    expect(broken.querySelector("svg")).toBeNull();
+  });
+
+  it("the empty state is its own state with its own words", () => {
+    render(
+      <ProofCard
+        id="backtest"
+        title="t"
+        source={{ state: "empty", file: PROOF_FILES.backtest }}
+      >
+        {() => null}
+      </ProofCard>,
+    );
+    const card = document.querySelector('[data-card="backtest"]')!;
+    expect(card.getAttribute("data-card-state")).toBe("empty");
+    expect(card.textContent).toContain(COPY.proofEmpty);
+    expect(
+      new Set([COPY.proofEmpty, COPY.proofBroken, COPY.proofUnknown]).size,
+    ).toBe(3);
+  });
+});
+
+describe("cross-check card", () => {
+  it("counts each status and shows a mismatch beside its second path", () => {
+    renderDrawer(assembleProof({ [F.CROSSCHECK_KEY]: F.CROSSCHECK_OK }));
+    const card = openDrawer().querySelector('[data-card="crosscheck"]')!;
+    const count = (status: string) =>
+      card.querySelector(`[data-status-count="${status}"] .figure`)
+        ?.textContent;
+    expect(count("match")).toBe("2");
+    expect(count("mismatch")).toBe("1");
+    expect(count("pending")).toBe("1");
+    const row = card.querySelector('[data-check="d_off"]')!;
+    expect(row.textContent).toContain("58.4053");
+    expect(row.textContent).toContain("58.4097");
+    expect(row.textContent).toContain("58.40534");
+    expect(row.textContent).toContain(COPY.proofSecondPathPasses);
+    expect(card.querySelectorAll("rect[data-status]")).toHaveLength(4);
+  });
+
+  it("says a check is the same to the cent only when both values round to the same cents", () => {
+    renderDrawer(assembleProof({ [F.CROSSCHECK_KEY]: F.CROSSCHECK_MIXED }));
+    const card = openDrawer().querySelector('[data-card="crosscheck"]')!;
+    // Science's verdict stands: every one of them is still counted outside tolerance.
+    expect(
+      card.querySelector('[data-status-count="mismatch"] .figure')?.textContent,
+    ).toBe("3");
+    const same = card.querySelector('[data-check="clearlane_usd_mw_day"]')!;
+    expect(same.querySelector("[data-same-cent]")?.textContent).toBe(
+      COPY.proofSameCent,
+    );
+    expect(figures(same)).toEqual(["58.4053", "58.4097", "0.0044"]);
+    // $20.06 against $20.07: a cent apart, so no softer wording.
+    const cent = card.querySelector('[data-check="fixed_usd_mw_day"]')!;
+    expect(cent.querySelector("[data-same-cent]")).toBeNull();
+    expect(figures(cent)).toEqual(["20.0647", "20.06513"]);
+  });
+
+  it("says why a value that is not a single number is unavailable", () => {
+    renderDrawer(assembleProof({ [F.CROSSCHECK_KEY]: F.CROSSCHECK_MIXED }));
+    const row = openDrawer().querySelector('[data-check="hb_set"]')!;
+    const values = [...row.querySelectorAll('[data-num-state="unavailable"]')];
+    expect(values).toHaveLength(2);
+    for (const v of values)
+      expect(v.textContent).toBe(
+        `${COPY.unavailable}: ${COPY.proofNotScalar} ${PROOF_FILES.crosscheck}`,
+      );
+  });
+});
+
+describe("stretch keys", () => {
+  it("P is a reserved stretch key behind ff_proof_drawer, never bound in the core map", () => {
+    const p = STRETCH_KEYMAP.find((b) => b.flag === "ff_proof_drawer");
+    expect(p?.key).toBe("p");
+    for (const b of STRETCH_KEYMAP) {
+      expect(RESERVED_KEYS as readonly string[]).toContain(b.key);
+      for (const beat of [1, 2, 3, 4, 5, 6])
+        expect(lookup(b.key, beat)).toBeNull();
+      expect(KEYMAP.some((k) => k.keys.includes(b.key))).toBe(false);
+    }
+  });
+});
+
+describe("step-stats card", () => {
+  const card = () => {
+    renderDrawer(assembleProof({ [F.STEP_STATS_KEY]: F.STEP_STATS_OK }));
+    return openDrawer().querySelector('[data-card="stepStats"]')!;
+  };
+  const days = (c: Element, month: string, hb: number) =>
+    c
+      .querySelector(`[data-hist="${month}"] rect[data-hour="${hb}"]`)
+      ?.getAttribute("data-days");
+
+  it("draws October and July step hours from per_day, only inside each window", () => {
+    const c = card();
+    expect(days(c, "october", 18)).toBe("2");
+    expect(days(c, "october", 17)).toBe("1");
+    expect(days(c, "october", 6)).toBe("1");
+    expect(days(c, "july", 14)).toBe("1");
+    // 2026-07-31 is outside the July window [07-01, 07-30].
+    expect(days(c, "july", 18)).toBe("0");
+    expect(c.querySelectorAll("[data-hist] rect[data-hour]")).toHaveLength(48);
+  });
+
+  it("shades the target hours as a band on both months", () => {
+    const c = card();
+    const bands = c.querySelectorAll('rect[data-band="target-hours"]');
+    expect(bands).toHaveLength(2);
+    for (const b of bands)
+      expect(Number(b.getAttribute("width"))).toBeGreaterThan(0);
+  });
+
+  it("shows the tests with chips: binomial k of n and p, permutation hits of draws and p", () => {
+    const c = card();
+    const fig = (sel: string) => c.querySelector(`${sel} .figure`)?.textContent;
+    expect(fig('[data-stat="october-k"]')).toBe("3");
+    expect(fig('[data-stat="october-n"]')).toBe("4");
+    expect(fig('[data-stat="october-p"]')).toBe("0.0012");
+    expect(fig('[data-stat="perm-hits"]')).toBe("3");
+    expect(fig('[data-stat="perm-draws"]')).toBe("1,000");
+    expect(fig('[data-stat="perm-p"]')).toBe("0.004");
+    expect(fig('[data-stat="repro-match"]')).toBe("2");
+    expect(fig('[data-stat="repro-total"]')).toBe("3");
+    expect(c.querySelectorAll("[data-month]")).toHaveLength(2);
+    expect(strayDigits(c)).toEqual([]);
+  });
+
+  it("writes a tiny p-value in powers of ten, never as zero", async () => {
+    const { pValue } = await import("./cards/StepStatsCard");
+    expect(pValue(7.867257622032662e-23)).toBe("7.9 × 10⁻²³");
+    expect(pValue(9.99990000099999e-6)).toBe("1.0 × 10⁻⁵");
+    expect(pValue(0.012776650692456148)).toBe("0.013");
+    expect(pValue(0.0012)).toBe("0.0012");
+  });
+});
+
+describe("every card, from fixture files", () => {
+  // Covers the cards wired ahead of their files, which the stage tests above cannot reach yet.
+  const all = () => {
+    renderDrawer(assembleProof(every((f) => f.ok)));
+    return openDrawer();
+  };
+
+  it("renders all of them in PROOF_FILES order, each with SVG and chips", () => {
+    const cards = [...all().querySelectorAll("[data-card]")];
+    expect(cards.map((c) => c.getAttribute("data-card"))).toEqual(IDS);
+    for (const card of cards) {
+      const id = card.getAttribute("data-card");
+      expect(card.getAttribute("data-card-state"), `${id} state`).toBe("ok");
+      expect(card.querySelector("svg"), `${id} svg`).not.toBeNull();
+      expect(card.querySelector(".chip"), `${id} chip`).not.toBeNull();
+    }
+  });
+
+  it("every figure has a chip and no number is missing", () => {
+    const d = all();
+    for (const n of d.querySelectorAll('[data-num-state="ok"]'))
+      expect(n.querySelector(".chip"), n.textContent ?? "").not.toBeNull();
+    expect(
+      d.querySelectorAll('[data-num]:not([data-num-state="ok"])'),
+    ).toHaveLength(0);
+  });
+
+  it("has no digit outside a number, time, axis label or copy-ok span", () => {
+    expect(strayDigits(all())).toEqual([]);
+  });
+});
+
+const figures = (el: Element | null | undefined) =>
+  [...(el?.querySelectorAll(".figure") ?? [])].map((f) => f.textContent);
+
+describe("backtest-intervals card", () => {
+  const card = () => {
+    renderDrawer(assembleProof({ [F.INTERVALS_KEY]: F.INTERVALS_OK }));
+    return openDrawer().querySelector('[data-card="intervals"]')!;
+  };
+
+  it("draws each median inside its moving-block interval, and pins Clearlane's to beat 5", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("rect[data-band]")].map((b) =>
+        b.getAttribute("data-band"),
+      ),
+    ).toEqual(["fixed_overnight", "price_only", "clearlane"]);
+    expect(c.querySelectorAll("circle[data-mean]")).toHaveLength(0);
+    const clearlane = c.querySelector('[data-policy="clearlane"]');
+    expect(
+      clearlane
+        ?.querySelector('[data-num="clearlane_p50"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    expect(figures(clearlane).slice(1)).toEqual(["$33.00", "$48.25"]);
+    // A negative end reads -$2.50, never $-2.50.
+    expect(figures(c.querySelector('[data-policy="fixed_overnight"]'))).toEqual(
+      ["$5.00", "-$2.50", "$9.00"],
+    );
+  });
+
+  it("shows the share of days beating the off-peak rule with its interval, the other resampling and the checks", () => {
+    const c = card();
+    expect(
+      c
+        .querySelector('[data-num="share_days_beating"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    const text = c.textContent ?? "";
+    for (const s of ["85%", "96%", "$32.77", "$48.90", "$1.01", "2,000", "90%"])
+      expect(text).toContain(s);
+    // The iid interval is a reference only, never shown.
+    expect(text).not.toContain("$37.50");
+    expect(text).toContain(COPY.proofPointChecks);
+  });
+});
+
+describe("RT-replay card", () => {
+  const card = (raw = F.RT_REPLAY_OK) => {
+    renderDrawer(assembleProof({ [F.RT_REPLAY_KEY]: raw }));
+    return openDrawer().querySelector('[data-card="rtReplay"]')!;
+  };
+
+  it("draws hold, re-plan and foresight net values as bands, with signed dollars", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("rect[data-band]")].map((b) =>
+        b.getAttribute("data-band"),
+      ),
+    ).toEqual(["hold", "replan", "foresight"]);
+    expect(figures(c.querySelector('[data-way="replan"]'))).toEqual([
+      "-$11.18",
+      "$18.58",
+      "$72.15",
+      "$20.43",
+    ]);
+  });
+
+  it("counts the days re-planning beat and lost to holding, the regret and the real-time evenings", () => {
+    const c = card();
+    const text = c.textContent ?? "";
+    for (const s of ["56", "123", "$19.11", "$27.16", "17", "179"])
+      expect(text).toContain(s);
+    expect(
+      c
+        .querySelector('[data-num="wear_usd_mwh"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    expect(text).toContain("value to RMP's system");
+  });
+
+  it("always shows the settlement status, with the caveat while it is unverified", () => {
+    const unverified = card();
+    expect(unverified.querySelector("[data-settlement]")?.textContent).toBe(
+      "UNVERIFIED",
+    );
+    expect(unverified.textContent).toContain(COPY.proofRtUnverified);
+    // The label comes before the first number read from the file.
+    const label = unverified.querySelector("[data-settlement]")!;
+    const firstNumber = unverified.querySelector('svg, [data-num="live"]')!;
+    expect(
+      label.compareDocumentPosition(firstNumber) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    cleanup();
+    const verified = card(F.rtReplay("VERIFIED"));
+    expect(verified.querySelector("[data-settlement]")?.textContent).toBe(
+      "VERIFIED",
+    );
+    expect(verified.textContent).not.toContain(COPY.proofRtUnverified);
+  });
+});
+
+describe("call-ledger card", () => {
+  const card = () => {
+    renderDrawer(assembleProof({ [F.CALL_LEDGER_KEY]: F.CALL_LEDGER_OK }));
+    return openDrawer().querySelector('[data-card="callLedger"]')!;
+  };
+
+  it("shows only the stage reading: one bar and one row per timetable", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("rect[data-share]")].map((b) =>
+        b.getAttribute("data-share"),
+      ),
+    ).toEqual(["fixed_overnight", "price_only", "clearlane"]);
+    expect(figures(c.querySelector('[data-policy="clearlane"]'))).toEqual([
+      "98.6%",
+      "5",
+      "17",
+      "82 kWh",
+    ]);
+    // The UTC reading is a sensitivity check the ledger marks not for stage.
+    expect(c.textContent).not.toContain("97.8%");
+    for (const n of c.querySelectorAll('[data-policy] [data-num="live"]'))
+      expect(n.getAttribute("data-prov")).toBe("SIMULATED");
+  });
+
+  it("names the band floor from the pinned Torus key and calls the replay a stress test", () => {
+    const c = card();
+    const band = c.querySelector('[data-num="rmp_event_band_min_pct"]');
+    expect(band?.getAttribute("data-num-state")).toBe("ok");
+    expect(band?.getAttribute("data-prov")).toBe("TORUS_PUBLISHED");
+    const text = c.textContent ?? "";
+    for (const s of ["359", "2.01", "2.0", "0.98"]) expect(text).toContain(s);
+    expect(text).toContain(COPY.proofLedgerStress);
+  });
+});
+
+describe("SCH study card", () => {
+  const card = (raw = F.SCH_STUDY_OK) => {
+    renderDrawer(assembleProof({ [F.SCH_STUDY_KEY]: raw }));
+    return openDrawer().querySelector('[data-card="schStudy"]')!;
+  };
+
+  it("draws each rule's lift against a dashed line at chance, Mountain reading only", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("rect[data-lift]")].map((b) =>
+        b.getAttribute("data-lift"),
+      ),
+    ).toEqual(["ours", "top6_price", "netload_p75", "top4_netload"]);
+    expect(c.querySelector("line[data-chance]")).not.toBeNull();
+    expect(figures(c.querySelector('[data-rule="ours"]'))).toEqual([
+      "6.9",
+      "25%",
+      "29%",
+      "0.88",
+    ]);
+    expect(figures(c.querySelector('[data-rule="top6_price"]'))).toEqual([
+      "6.0",
+      "22%",
+      "25%",
+      "0.90",
+      "58%",
+    ]);
+    // The UTC reading (lift 2 in the fixture) is a sensitivity check, never shown.
+    expect(c.textContent).not.toContain("2.00");
+  });
+
+  it("says it is not a call forecast while no rule beats chance, and only then", () => {
+    expect(card().textContent).toContain(COPY.proofSchNone);
+    cleanup();
+    const beats = card(F.schStudy({ topLift: 1.1 }));
+    expect(beats.querySelector("[data-sch-finding]")).toBeNull();
+    expect(beats.textContent).toContain(COPY.proofSchLead);
+  });
+
+  it("checks the stage day with the pinned key and the envelope's hours", () => {
+    const c = card();
+    expect(
+      c
+        .querySelector('[data-num="sch_hours_today"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    const times = [...c.querySelectorAll("[data-time]")].map(
+      (t) => t.textContent,
+    );
+    expect(times).toContain(clock(18));
+    expect(times).toContain(clock(23));
+    expect(c.textContent).toContain(COPY.proofSchStageMatch);
+    cleanup();
+    const off = card(F.schStudy({ status: "mismatch", hours: [17, 19] }));
+    expect(off.querySelector("[data-sch-status]")?.textContent).toBe(
+      "mismatch",
+    );
+    expect(off.textContent).not.toContain(COPY.proofSchStageMatch);
+    expect(
+      [...off.querySelectorAll("[data-time]")].map((t) => t.textContent),
+    ).toContain(clock(17));
+  });
+});
+
+describe("scale-curve card", () => {
+  const SERIES = ["fixed_overnight", "clearlane", "dp_price_only", "dp_wear10"];
+  const card = (raw = F.SCALE_CURVE_OK) => {
+    renderDrawer(assembleProof({ [F.SCALE_CURVE_KEY]: raw }));
+    return openDrawer().querySelector('[data-card="scaleCurve"]')!;
+  };
+
+  it("draws a line, a band and one point per fleet size for each timetable", () => {
+    const c = card();
+    const attr = (sel: string, a: string) =>
+      [...c.querySelectorAll(sel)].map((e) => e.getAttribute(a));
+    expect(attr("g[data-series]", "data-series")).toEqual(SERIES);
+    expect(attr("path[data-band]", "data-band")).toEqual(SERIES);
+    for (const id of SERIES)
+      expect(
+        attr(`g[data-series="${id}"] circle[data-point]`, "data-point"),
+      ).toEqual(["70", "140", "500"]);
+  });
+
+  it("starts each row at its pinned stage value, then reads the first MOU and the ceiling", () => {
+    const c = card();
+    for (const key of [
+      "fixed_usd_mw_day",
+      "clearlane_usd_mw_day",
+      "price_only_usd_mw_day",
+      "wear10_usd_mw_day",
+    ])
+      expect(
+        c.querySelector(`[data-num="${key}"]`)?.getAttribute("data-num-state"),
+      ).toBe("ok");
+    expect(figures(c.querySelector('[data-series-row="clearlane"]'))).toEqual([
+      "$58.41",
+      "$56.13",
+      "$42.12",
+      "$39.81",
+      "$44.53",
+      "72%",
+    ]);
+  });
+
+  it("names the fleet sizes from the pinned Torus keys and calls the ceiling a ceiling", () => {
+    const c = card();
+    for (const key of ["mou_70mw", "torus_500mw"]) {
+      const n = c.querySelector(`[data-num="${key}"]`);
+      expect(n?.getAttribute("data-num-state")).toBe("ok");
+      expect(n?.getAttribute("data-prov")).toBe("TORUS_PUBLISHED");
+    }
+    expect(c.textContent).toContain(COPY.mouCeiling);
+  });
+
+  it("lists inconclusive hours only when there are some", () => {
+    expect(card().querySelector("[data-hours]")).toBeNull();
+    cleanup();
+    const hours = card(
+      F.scaleCurve({ inconclusive: [18, 19] }),
+    ).querySelectorAll("[data-hours]");
+    expect(hours).toHaveLength(1);
+    expect(
+      [...hours[0]!.querySelectorAll("[data-time]")].map((t) => t.textContent),
+    ).toEqual([clock(18), clock(19)]);
+  });
+
+  it("puts the minus sign before the dollar sign", () => {
+    const c = card(F.scaleCurve({ fixedAtCeiling: -1.5 }));
+    expect(
+      figures(c.querySelector('[data-series-row="fixed_overnight"]')),
+    ).toContain("-$1.50");
+    expect(c.textContent).not.toContain("$-");
+  });
+});
+
+describe("sensitivity card", () => {
+  const card = (raw = F.SENSITIVITY_OK) => {
+    renderDrawer(assembleProof({ [F.SENSITIVITY_KEY]: raw }));
+    return openDrawer().querySelector('[data-card="sensitivity"]')!;
+  };
+  const provs = (el: Element | null | undefined) =>
+    [...(el?.querySelectorAll("[data-num]") ?? [])].map((n) =>
+      n.getAttribute("data-prov"),
+    );
+
+  it("draws one bar pair per swept input, widest swing first, and leaves out the heatmap reading", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("g[data-sens-axis]")].map((g) =>
+        g.getAttribute("data-sens-axis"),
+      ),
+    ).toEqual(["wear_usd_mwh", "rte", "export_limit_kw"]);
+    expect(
+      c.querySelectorAll('g[data-sens-axis="wear_usd_mwh"] rect[data-end]'),
+    ).toHaveLength(2);
+    expect(c.querySelector("line[data-base]")).not.toBeNull();
+    expect(c.querySelector('[data-axis-row="heatmap_reading"]')).toBeNull();
+    expect(c.textContent).not.toMatch(/UTC|heatmap/i);
+  });
+
+  it("reads each range as an assumption, then the gap at each end", () => {
+    const c = card();
+    const rte = c.querySelector('[data-axis-row="rte"]');
+    expect(figures(rte)).toEqual(["0.80", "0.92", "$33.92", "$34.49"]);
+    expect(provs(rte)).toEqual([
+      "ASSUMPTION",
+      "ASSUMPTION",
+      "DERIVED",
+      "DERIVED",
+    ]);
+    expect(
+      c.querySelector('[data-axis-row="wear_usd_mwh"]')?.textContent,
+    ).toContain(`${COPY.proofSensTimes} the calibrated wear price`);
+    expect(
+      c.querySelector('[data-axis-row="export_limit_kw"]')?.textContent,
+    ).toContain(COPY.proofSensNoChange);
+    expect(c.querySelector("[data-sens-pending]")?.textContent).toContain(
+      COPY.proofSensArchetype,
+    );
+  });
+
+  it("says where the gap closes, against the pinned wear price", () => {
+    const c = card();
+    const wear = c.querySelector('[data-be="wear_usd_mwh"]');
+    expect(figures(wear)).toEqual(["$60.92", "5.6x", "$10.95"]);
+    expect(
+      wear
+        ?.querySelector('[data-num="wear_usd_mwh"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    const rte = c.querySelector('[data-be="rte"]');
+    expect(rte?.textContent).toContain(COPY.proofSensRteNone);
+    expect(figures(rte)).toEqual(["0.50", "0.99", "$33.92", "0.78"]);
+    // The scanned range is our choice; where the gap is narrowest is what the scan found.
+    expect(provs(rte)).toEqual([
+      "ASSUMPTION",
+      "ASSUMPTION",
+      "DERIVED",
+      "DERIVED",
+    ]);
+    expect(c.querySelector('[data-be="daily_spread"]')?.textContent).toContain(
+      COPY.proofSensFlat,
+    );
+    cleanup();
+    const flipped = card(F.sensitivity({ rteFound: true, wearFound: false }));
+    expect(flipped.querySelector('[data-be="rte"]')?.textContent).toContain(
+      COPY.proofSensRteFound,
+    );
+    expect(
+      flipped.querySelector('[data-be="wear_usd_mwh"]')?.textContent,
+    ).toContain(COPY.proofSensWearNone);
+  });
+
+  it("splits the days the rule ties or wins by the day's price spread", () => {
+    const c = card();
+    expect(
+      figures(c.querySelector('[data-be="by_day_spread"]')).slice(0, 2),
+    ).toEqual(["16", "179"]);
+    const bands = c.querySelectorAll("[data-sens-band]");
+    expect(bands).toHaveLength(4);
+    expect(figures(bands[0])).toEqual(["$0", "$15", "9", "21"]);
+    expect(provs(bands[0])).toEqual([
+      "ASSUMPTION",
+      "ASSUMPTION",
+      "DERIVED",
+      "DERIVED",
+    ]);
+    expect(bands[3]?.textContent).toContain(COPY.proofSensAndOver);
+  });
+});
+
+describe("proof drawer in presenter mode", () => {
+  it("sits next to Sources in the footer, opens, and Esc hands focus back to the presenter", () => {
+    const { container } = render(
+      <App
+        data={data}
+        now={STAGE_NOW}
+        search="?ff=presenter,proof_drawer&screen=3&motion=off"
+      />,
+    );
+    const nav = container.querySelector<HTMLElement>(".p-nav")!;
+    const buttons: HTMLElement[] = [...nav.querySelectorAll("button")];
+    const sources = nav.querySelector<HTMLButtonElement>(
+      '[data-action="sources"]',
+    )!;
+    const proof = within(nav).getByRole("button", { name: COPY.proofPill });
+    expect(buttons.indexOf(proof)).toBe(buttons.indexOf(sources) + 1);
+    expect(proof.className).toContain("p-pill");
+    const where = () =>
+      `${document.body.dataset.screen}/${document.body.dataset.actions}`;
+    const start = where();
+    fireEvent.click(proof);
+    expect(drawer()).not.toBeNull();
+    press("ArrowRight");
+    expect(where()).toBe(start);
+    press("Escape");
+    expect(drawer()).toBeNull();
+    expect(document.activeElement?.getAttribute("data-mode")).toBe("presenter");
+    press("ArrowRight");
+    expect(where()).not.toBe(start);
+  });
+
+  const presenter = (extra = "") =>
+    render(
+      <App
+        data={data}
+        now={STAGE_NOW}
+        search={`?ff=presenter,proof_drawer&screen=3&motion=off${extra}`}
+      />,
+    ).container;
+  const where = () =>
+    `${document.body.dataset.screen}/${document.body.dataset.actions}`;
+  const pill = (c: HTMLElement) =>
+    within(c.querySelector<HTMLElement>(".p-nav")!).getByRole("button", {
+      name: COPY.proofPill,
+    });
+
+  it("keeps Tab inside the drawer, so Enter can never reach Back or Next behind it", () => {
+    const c = presenter();
+    const start = where();
+    fireEvent.click(pill(c));
+    const d = drawer()!;
+    for (let i = 0; i < 40; i++) {
+      const tab = fireEvent.keyDown(document.activeElement ?? d, {
+        key: "Tab",
+        shiftKey: i % 3 === 0,
+      });
+      expect(tab).toBe(false);
+      expect(d.contains(document.activeElement)).toBe(true);
+    }
+    press("Enter");
+    expect(where()).toBe(start);
+    // Shift+Tab from the drawer itself lands on its last control, Tab on its first.
+    d.focus();
+    fireEvent.keyDown(d, { key: "Tab", shiftKey: true });
+    const items = [
+      ...d.querySelectorAll<HTMLElement>(
+        'button, [href], input, [tabindex]:not([tabindex="-1"])',
+      ),
+    ];
+    expect(document.activeElement).toBe(items[items.length - 1]);
+    fireEvent.keyDown(document.activeElement!, { key: "Tab" });
+    expect(document.activeElement).toBe(items[0]);
+  });
+
+  it("closes on the clicker's PageUp or PageDown without moving the deck", () => {
+    const c = presenter();
+    const start = where();
+    for (const key of ["PageDown", "PageUp"]) {
+      fireEvent.click(pill(c));
+      expect(drawer()).not.toBeNull();
+      press(key);
+      expect(drawer()).toBeNull();
+      expect(where()).toBe(start);
+    }
+    press("PageDown");
+    expect(where()).not.toBe(start);
+  });
+
+  it("ignores a held P", () => {
+    presenter();
+    press("p");
+    expect(drawer()).not.toBeNull();
+    act(() => {
+      fireEvent.keyDown(document.activeElement ?? document.body, {
+        key: "p",
+        repeat: true,
+      });
+    });
+    expect(drawer()).not.toBeNull();
+    act(() => {
+      fireEvent.keyDown(document.activeElement ?? document.body, {
+        key: "p",
+        repeat: true,
+      });
+    });
+    expect(drawer()).not.toBeNull();
+  });
+
+  it("lists P in the presenter's own key overlay, and P does not open over it", () => {
+    const c = presenter();
+    press("?");
+    const keys = c.querySelector<HTMLElement>(".p-overlay")!;
+    const dts = [...keys.querySelectorAll("dt")].map((d) => d.textContent);
+    expect(dts).toHaveLength(5);
+    expect(dts[4]).toBe(STRETCH_KEYMAP[0]!.keyLabel);
+    press("p");
+    expect(drawer()).toBeNull();
+    press("Escape");
+    expect(c.querySelector(".p-overlay")).toBeNull();
+  });
+});

@@ -24,6 +24,7 @@ import {
   type PresenterState,
   type ScreenKey,
 } from "./model";
+import { ProofDrawer, ProofKeyRow } from "../proof/ProofDrawer";
 import { RaceScreen } from "./RaceScreen";
 import "./presenter.css";
 
@@ -570,6 +571,10 @@ export function Presenter({
             >
               {PRESENTER.sources}
             </PillButton>
+            <ProofDrawer
+              pillClassName="p-pill p-pill-quiet"
+              onClosed={refocus}
+            />
             <PillButton onClick={click(onBack)} slot="back">
               {PRESENTER.back}
             </PillButton>
@@ -602,6 +607,7 @@ export function Presenter({
                       <dd>{v}</dd>
                     </div>
                   ))}
+                  <ProofKeyRow />
                 </dl>
               </>
             ) : (

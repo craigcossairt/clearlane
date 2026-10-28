@@ -97,7 +97,7 @@ class TerritoryTest(unittest.TestCase):
             ],
         )
         self.assertEqual(meta["window"], {"start_mt": "2026-10-01", "end_mt": "2026-10-27"})
-        self.assertTrue(any("27 days" in n for n in meta["notes"]))
+        self.assertTrue(any("27 days, 26 with all 24 hours" in n for n in meta["notes"]))
         self.assertTrue(any(bt.CO2_NOTE in n for n in meta["notes"]))
 
     def test_committed_files_reproduce_from_the_source_prices(self):

@@ -348,6 +348,7 @@ export interface AxisSpec {
   high?: number | string;
   points?: (number | string)[];
   range_note: string;
+  calls_note?: string;
   pending_on?: string;
 }
 
@@ -370,6 +371,8 @@ export type AxisResult =
       resolved_usd_mwh?: { base: number; low: number; high: number };
       range_prov: "ASSUMPTION";
       range_note: string;
+      // set only where the calls column is not computed (null there means not computed, not zero)
+      calls_note?: string;
       gap_base: Gap;
       gap_low: Gap;
       gap_high: Gap;
@@ -419,7 +422,8 @@ export const AXES: AxisSpec[] = [
     unit: "archetype",
     kind: "pending",
     pending_on: "fleet roll-up #66 (closed as not planned)",
-    range_note: "needs the fleet roll-up's three host archetypes",
+    range_note:
+      "this axis will not run; #66 was closed as not planned. Host shapes are compared, on three SIMULATED archetypes, in host_frontier.json (#71), behind ff_host_frontier",
   },
   {
     key: "enrolled_kw",
@@ -492,6 +496,8 @@ export const AXES: AxisSpec[] = [
     points: [41, 81, 161],
     range_note:
       "41 states (the engine's grid), 81 and 161: nested grids, solved without calls; the re-plan after a call stays on 41",
+    calls_note:
+      "calls_unanswerable_pct_points is not computed on this axis, because the nested grids are solved without calls: null here means not computed, not zero. The base case's calls gap is in base.gap.",
   },
 ];
 
@@ -585,6 +591,7 @@ export function runAxis(
       : {}),
     range_prov: "ASSUMPTION",
     range_note: spec.range_note,
+    ...(spec.calls_note ? { calls_note: spec.calls_note } : {}),
     gap_base: gBase,
     gap_low: gLow,
     gap_high: gHigh,
@@ -709,7 +716,18 @@ export function buildSensitivity(
   const used = (ctx.marginal_co2?.bins ?? []).filter(
     (b) => b.basis === "generated" && seasons.has(b.season),
   );
-  const co2Note = `The CO2 basis axis swaps each hour's EIA average (estimated, average emissions) for the response tables' marginal estimate (DERIVED, #47: generated basis, by season and Mountain hour). Low and high set every bin to its 5th or 95th percentile at once: a stress range, not a joint confidence interval; ${used.filter((b) => b.inconclusive).length} of the ${used.length} bins the window uses are inconclusive and are used as given. The slope measures fuel-mix response, not plant heat rates. CO2 on stage stays the EIA average.`;
+  // A 5th-percentile slope can fall below zero, which no real hour emits.
+  const neg = used.filter((b) => b.lo < 0);
+  const low = neg.reduce<MarginalCo2Bin | null>(
+    (a, b) => (a === null || b.lo < a.lo ? b : a),
+    null,
+  );
+  const negNote = low
+    ? ` The low stress sets every bin to its 5th-percentile slope; ${neg.length} of the ${used.length} are below zero, down to ${low.lo.toFixed(1)} g/kWh at ${low.season} hour ${low.hour_mt}, which no real hour emits.`
+    : "";
+  const co2Note = `The CO2 basis axis swaps each hour's EIA average (estimated, average emissions) for the response tables' marginal estimate (DERIVED, #47: generated basis, by season and Mountain hour). Low and high set every bin to its 5th or 95th percentile at once: a stress range, not a joint confidence interval; ${used.filter((b) => b.inconclusive).length} of the ${used.length} bins the window uses are inconclusive and are used as given.${negNote} The slope measures fuel-mix response, not plant heat rates. CO2 on stage stays the EIA average.`;
+  const archNote =
+    "The host load archetype axis will not run; #66 was closed as not planned. Host shapes are compared, on three SIMULATED archetypes, in host_frontier.json (#71), behind ff_host_frontier.";
 
   const rteAxis = [0.8, 0.84, 0.88, 0.92];
   const scaleAxis = [0.25, 0.5, 0.75, 1, 1.25, 1.5];
@@ -769,10 +787,10 @@ export function buildSensitivity(
       "Variants with calls rerun the whole backtest: the same SIMULATED calls (same seed), each policy's day-ahead plan and Clearlane's re-plans.",
       "Break-evens, the two-way grid and the DP SoC grid use day-ahead plans only (no calls), which is exactly how the backtest's $ and CO2 are computed.",
       "The heatmap reading moves only the calls column. Mountain time is the stage reading; the UTC readings are a sensitivity check only.",
-      ...(ctx.marginal_co2 ? [co2Note] : []),
       ctx.marginal_co2
-        ? "One axis waits on work that has not landed: the host load archetype (fleet roll-up #66, closed as not planned)."
-        : "Two axes wait on work that has not landed: the host load archetype (fleet roll-up #66) and the CO2 basis (response tables #47).",
+        ? co2Note
+        : "The CO2 basis axis waits on the response tables (#47).",
+      archNote,
     ],
   };
 }

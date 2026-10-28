@@ -185,7 +185,11 @@
       "equivalent_cycles_per_yr": 299.74860335195524,
       "life_yr": 25.020967291026004,
       "life_prov": "ASSUMPTION",
-      "dwell_h_above_80pct_mean": 5.923021415270017
+      "dwell_h_above_80pct_mean": 5.923021415270017,
+      "usd_basis": "gross arbitrage, before wear",
+      "wear_usd_per_mw_day": 16.871346877764914,
+      "net_usd_per_mw_day": 34.65087594200267,
+      "net_usd_per_mw_day_vs_linear": 0
     },
     {
       "k": 1.5,
@@ -202,7 +206,11 @@
       "equivalent_cycles_per_yr": 295.301314263832,
       "life_yr": 25.397787404695567,
       "life_prov": "ASSUMPTION",
-      "dwell_h_above_80pct_mean": 6.752397579143391
+      "dwell_h_above_80pct_mean": 6.752397579143391,
+      "usd_basis": "gross arbitrage, before wear",
+      "wear_usd_per_mw_day": 16.953798997637914,
+      "net_usd_per_mw_day": 34.80499010543616,
+      "net_usd_per_mw_day_vs_linear": 0.45366809921754453
     },
     {
       "k": 2,
@@ -219,7 +227,11 @@
       "equivalent_cycles_per_yr": 289.35171089385517,
       "life_yr": 25.920012626955835,
       "life_prov": "ASSUMPTION",
-      "dwell_h_above_80pct_mean": 6.889734636871513
+      "dwell_h_above_80pct_mean": 6.889734636871513,
+      "usd_basis": "gross arbitrage, before wear",
+      "wear_usd_per_mw_day": 16.469935070248017,
+      "net_usd_per_mw_day": 35.28392113126623,
+      "net_usd_per_mw_day_vs_linear": 1.0909817473743282
     }
   ],
   "stage_day": {
@@ -350,6 +362,7 @@
     "Life is cycle life only: 7,500 over equivalent cycles a year. Calendar aging and repowering are not modeled, so a life past the Station's published 25-year lifespan means cycling is not the limit, not that Pulse lasts longer. Lead with the ranking and the dwell hours, which need no rating assumption.",
     "Depth-aware DP (segment approximation): the wear price split over 40 SoC segments, each priced by the increment of DoD^k across it with depth measured down from full; at k = 1 every multiplier is 1 and the plans are the linear ones. The piecewise-segment method follows Xu et al. 2018 (citation UNVERIFIED: the paper was not opened).",
     "Dwell: hours a day with SoC above 80% of capacity and at full, linear inside each 15-minute interval. Whether high-SoC dwell speeds Pulse aging is not modeled (UNVERIFIED).",
-    "race_full_h: habit.py's hour lists on the stage day hold the battery full from the end of the last charge hour to the start of the first discharge hour."
+    "race_full_h: habit.py's hour lists on the stage day hold the battery full from the end of the last charge hour to the start of the first discharge hour.",
+    "depth_aware_clearlane: usd_per_mw_day and usd_per_mw_day_vs_linear are gross arbitrage, before wear. wear_usd_per_mw_day is the depth-aware wear at that k (the DP's own wear term), net_usd_per_mw_day is gross minus it, and net_usd_per_mw_day_vs_linear compares with the linear Clearlane plan priced by the same depth-aware wear."
   ]
 }
