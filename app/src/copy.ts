@@ -89,6 +89,61 @@ export const COPY = {
   proofPerMwh: "per MWh.",
   proofStepRepro: "Reproduction of the pinned step-hour numbers:",
   proofChecksMatch: "checks match.",
+  proofIntervalsTitle: "How sure is the median?",
+  proofIntervalsLead:
+    "The backtest medians come from one run of days. A separate science script resamples those days in blocks, many times over, to put an interval around each median.",
+  proofIntervalsAria:
+    "For each timetable, the median value per MW-day as a tick inside its resampled interval.",
+  proofIntervalsBars: "Bars: the",
+  proofIntervalsFrom: "interval from",
+  proofIntervalsBlocks: "resamples of the days in blocks of",
+  proofIntervalsTick: "days. Tick: the median.",
+  proofMedian: "median",
+  proofIntervalWord: ", interval",
+  proofBeatPre: "Clearlane beat the off-peak rule on",
+  proofBeatPost: "of days, interval",
+  proofStationaryPre: "Stationary blocks put Clearlane's median between",
+  proofSeedPre: "; another seed moves the interval ends by at most",
+  proofPointChecks: "checks of the point values against the backtest file match.",
+
+  proofRtTitle: "Would re-planning on real-time prices help?",
+  proofRtLead:
+    "A separate replay settles each day on real-time prices three ways: holding the day-ahead plan all day, re-planning at the top of every hour, and perfect foresight, which no plan can reach and which sets the yardstick. Values are net of wear, as value to RMP's system.",
+  proofRtAria:
+    "For holding, re-planning and perfect foresight, net value per MW-day from the low day to the high day, with the middle day as a tick and the mean as a dot.",
+  proofRtHold: "Hold the day-ahead plan",
+  proofRtReplan: "Re-plan every hour",
+  proofRtForesight: "Perfect foresight",
+  proofRtDaysPre: "Re-planning beat holding on",
+  proofRtDaysMid: "days and lost on",
+  proofRtRegretPre: "Median regret against perfect foresight: holding",
+  proofRtRegretMid: ", re-planning",
+  proofRtEveningPre:
+    "Real-time evening prices fell below real-time midday prices on",
+  proofRtEveningMid: "days; day-ahead, on",
+  proofRtWearPre: "Wear is charged at",
+  proofRtSettlement: "Settlement rule:",
+  proofRtUnverified:
+    "The rule is an assumption, not yet checked against CAISO's EDAM business practice manual.",
+
+  proofLedgerTitle: "Does each timetable answer RMP's calls?",
+  proofLedgerLead:
+    "A ledger places simulated calls on the backtest days by the published heatmap, read in Mountain time, and meets each call the way each timetable would. Every call is simulated, not an RMP event record.",
+  proofLedgerAria:
+    "For each timetable, the share of calls delivered in band, from none to all of them.",
+  proofLedgerInBand: "of calls delivered in band;",
+  proofLedgerUnanswerable: "unanswerable;",
+  proofLedgerShort: "fell short,",
+  proofLedgerInAll: "in all.",
+  proofLedgerBandPre: "In band means at least",
+  proofLedgerBandPost:
+    "of the call delivered, the floor of Torus's published band; below it, a call is unanswerable.",
+  proofLedgerCallsOn: "calls on",
+  proofLedgerDaysIs: "days is",
+  proofLedgerADay: "a day, about",
+  proofLedgerTimesThe: "times the",
+  proofLedgerRate: "daily rate of",
+  proofLedgerStress: ". This is a stress replay, not a forecast.",
 
   fixedLabel: "Battery on the off-peak rule",
   clearlaneLabel: "Simulated Torus-style station on Clearlane",

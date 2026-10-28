@@ -1,46 +1,8 @@
-import type { BacktestResult, Policy, PolicyStats } from "@contracts/types";
+import type { BacktestResult, PolicyStats } from "@contracts/types";
 import { Num } from "../../components/Num";
 import { COPY } from "../../copy";
-import { usdPerMw } from "../../format";
 import { PROOF_FILES } from "../sources";
-
-const LABEL: Record<Policy, string> = {
-  fixed_overnight: COPY.fixedLabel,
-  price_only: COPY.priceOnlyLabel,
-  clearlane: COPY.clearlaneLabel,
-};
-
-const TONE: Record<Policy, string> = {
-  fixed_overnight: "var(--muted)",
-  price_only: "var(--shoulder)",
-  clearlane: "var(--clear)",
-};
-
-const W = 1000;
-const PAD_L = 24;
-const PAD_R = 40;
-const TOP = 8;
-const ROW = 92;
-const BAND = 32;
-// Tall enough for the tick labels and the axis title at the phone font size (proof.css).
-const AXIS = 104;
-
-/** Round axis ticks (steps of 1, 2 or 5 times a power of ten) that cover lo to hi. */
-export function niceTicks(lo: number, hi: number, target = 6): number[] {
-  const span = hi - lo || 1;
-  const raw = span / target;
-  const pow = 10 ** Math.floor(Math.log10(raw));
-  const step =
-    [1, 2, 5, 10].map((m) => m * pow).find((s) => s >= raw) ?? 10 * pow;
-  const first = Math.floor(lo / step) * step;
-  const last = Math.ceil(hi / step) * step;
-  const out: number[] = [];
-  for (let t = first; t <= last + step / 2; t += step)
-    out.push(Math.round(t / step) * step);
-  return out;
-}
-
-const axisUsd = (v: number) => (v < 0 ? `-$${-v}` : `$${v}`);
+import { BandChart, POLICY_LABEL, POLICY_TONE, signedUsd } from "./BandChart";
 
 /**
  * backtest.json as bands: for each timetable, P10 to P90 across the window's days, the P50 as a
@@ -49,96 +11,22 @@ const axisUsd = (v: number) => (v < 0 ? `-$${-v}` : `$${v}`);
  */
 export function BacktestSpread({ result }: { result: BacktestResult }) {
   const rows = result.policies;
-  const lo = Math.min(0, ...rows.map((p) => p.usd_per_mw_day.p10));
-  const hi = Math.max(0, ...rows.map((p) => p.usd_per_mw_day.p90));
-  const ticks = niceTicks(lo, hi);
-  const x0 = ticks[0] ?? lo;
-  const x1 = ticks[ticks.length - 1] ?? hi;
-  const sx = (v: number) =>
-    PAD_L + ((v - x0) / (x1 - x0 || 1)) * (W - PAD_L - PAD_R);
-  const plotBottom = TOP + rows.length * ROW;
-  const H = plotBottom + AXIS;
 
   return (
     <>
       <p>{COPY.proofBacktestLead}</p>
-      <svg
-        className="proof-svg"
-        viewBox={`0 0 ${W} ${H}`}
-        role="img"
-        aria-label={COPY.proofBacktestAria}
-      >
-        {ticks.map((t) => (
-          <line
-            key={t}
-            className={t === 0 ? "proof-zero" : "proof-grid"}
-            x1={sx(t)}
-            x2={sx(t)}
-            y1={TOP}
-            y2={plotBottom}
-          />
-        ))}
-        {rows.map((p, i) => {
-          const v = p.usd_per_mw_day;
-          const y = TOP + i * ROW;
-          const bandY = y + 44;
-          return (
-            <g key={p.policy}>
-              <text className="proof-row-label" x={PAD_L} y={y + 30}>
-                {LABEL[p.policy]}
-              </text>
-              <rect
-                data-band={p.policy}
-                x={sx(v.p10)}
-                y={bandY}
-                width={Math.max(2, sx(v.p90) - sx(v.p10))}
-                height={BAND}
-                rx={6}
-                fill={TONE[p.policy]}
-                fillOpacity={0.35}
-                stroke={TONE[p.policy]}
-                strokeWidth={2}
-              />
-              <line
-                data-p50={p.policy}
-                x1={sx(v.p50)}
-                x2={sx(v.p50)}
-                y1={bandY - 8}
-                y2={bandY + BAND + 8}
-                stroke="var(--ink)"
-                strokeWidth={4}
-              />
-              <circle
-                data-mean={p.policy}
-                cx={sx(v.mean)}
-                cy={bandY + BAND / 2}
-                r={8}
-                fill="var(--ink)"
-                stroke="var(--bg)"
-                strokeWidth={2}
-              />
-            </g>
-          );
-        })}
-        {ticks.map((t, i) => (
-          <text
-            key={t}
-            data-axis=""
-            className="proof-tick"
-            x={sx(t)}
-            y={plotBottom + 36}
-            // The end labels hang inward, so they never clip at the SVG's edges.
-            textAnchor={
-              i === 0 ? "start" : i === ticks.length - 1 ? "end" : "middle"
-            }
-          >
-            {axisUsd(t)}
-          </text>
-        ))}
-        <text className="proof-tick" x={W - PAD_R} y={H - 8} textAnchor="end">
-          {COPY.proofAxis}
-        </text>
-      </svg>
+      <BandChart
+        aria={COPY.proofBacktestAria}
+        rows={rows.map((p) => ({
+          id: p.policy,
+          label: POLICY_LABEL[p.policy],
+          tone: POLICY_TONE[p.policy],
+          lo: p.usd_per_mw_day.p10,
+          mid: p.usd_per_mw_day.p50,
+          hi: p.usd_per_mw_day.p90,
+          mean: p.usd_per_mw_day.mean,
+        }))}
+      />
       <p className="proof-note">{COPY.proofBandNote}</p>
       <ul className="proof-rows" data-detail="">
         {rows.map((p) => (
@@ -176,7 +64,7 @@ function PolicyRow({ stats }: { stats: PolicyStats }) {
     );
   return (
     <li data-policy={stats.policy}>
-      <strong>{LABEL[stats.policy]}</strong>:{" "}
+      <strong>{POLICY_LABEL[stats.policy]}</strong>:{" "}
       <span data-copy-ok="percentile names">{COPY.bandP10}</span>
       {pct("p10")}
       <span data-copy-ok="percentile names">{COPY.bandP50}</span>
@@ -193,7 +81,7 @@ function Live({ value }: { value: number }) {
   return (
     <Num
       value={value}
-      display={usdPerMw(value)}
+      display={signedUsd(value)}
       prov="DERIVED"
       source={PROOF_FILES.backtest}
     />

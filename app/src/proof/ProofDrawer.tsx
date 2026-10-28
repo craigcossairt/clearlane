@@ -10,7 +10,10 @@ import { COPY } from "../copy";
 import { useFlag } from "../flags";
 import { PROOF_KEY, typedIntoInput } from "../keymap";
 import { BacktestSpread } from "./cards/BacktestSpread";
+import { CallLedgerCard } from "./cards/CallLedgerCard";
 import { CrossCheckCard } from "./cards/CrossCheckCard";
+import { IntervalsCard } from "./cards/IntervalsCard";
+import { RtReplayCard } from "./cards/RtReplayCard";
 import { StepStatsCard } from "./cards/StepStatsCard";
 import {
   loadProofSources,
@@ -73,6 +76,29 @@ const CARDS: Record<ProofCardId, (s: ProofSources) => ReactNode> = {
       source={s.backtest}
     >
       {(result) => <BacktestSpread result={result} />}
+    </ProofCard>
+  ),
+  intervals: (s) => (
+    <ProofCard
+      id="intervals"
+      title={COPY.proofIntervalsTitle}
+      source={s.intervals}
+    >
+      {(data) => <IntervalsCard data={data} />}
+    </ProofCard>
+  ),
+  callLedger: (s) => (
+    <ProofCard
+      id="callLedger"
+      title={COPY.proofLedgerTitle}
+      source={s.callLedger}
+    >
+      {(data) => <CallLedgerCard data={data} />}
+    </ProofCard>
+  ),
+  rtReplay: (s) => (
+    <ProofCard id="rtReplay" title={COPY.proofRtTitle} source={s.rtReplay}>
+      {(data) => <RtReplayCard data={data} />}
     </ProofCard>
   ),
   crosscheck: (s) => (

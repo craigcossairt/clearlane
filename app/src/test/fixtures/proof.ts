@@ -142,3 +142,140 @@ export const UNKNOWN_STEP_STATS = JSON.stringify({
   schema: "clearlane.science.step_stats/v1",
   per_day: {},
 });
+
+export const INTERVALS_KEY = "../../../science/backtest_intervals.json";
+
+const byPolicy = <T,>(fixed_overnight: T, price_only: T, clearlane: T) => ({
+  fixed_overnight,
+  price_only,
+  clearlane,
+});
+
+export const INTERVALS_OK = JSON.stringify({
+  schema: "clearlane.science.backtest_intervals/v1",
+  class: "DERIVED",
+  level: 0.9,
+  block_len: 7,
+  resamples: 2000,
+  point: {
+    p50: byPolicy(5, 45, 38),
+    days_beating_fixed_overnight_pct: byPolicy(0, 100, 91),
+  },
+  bootstrap: {
+    moving_block: {
+      p50: byPolicy([-2.5, 9], [40, 52], [33, 48.25]),
+      days_beating_fixed_overnight_pct: byPolicy([0, 0], [100, 100], [85.4, 95.6]),
+    },
+    stationary: { p50: byPolicy([-3, 10], [39, 53], [32.77, 48.9]) },
+    iid: { p50: byPolicy([4, 6], [44, 46], [37.5, 38.5]) },
+  },
+  seed_stability: { moving_block: { max_endpoint_change_usd: 1.01 } },
+  point_vs_backtest_json: {
+    a: { status: "match" },
+    b: { status: "match" },
+    c: { status: "mismatch" },
+  },
+});
+
+export const UNKNOWN_INTERVALS = JSON.stringify({
+  schema: "clearlane.science.backtest_intervals/v1",
+  level: 0.9,
+  block_len: 7,
+  resamples: 2000,
+  point: { p50: { clearlane: 38 } },
+});
+
+export const RT_REPLAY_KEY = "../../../public/derived/rt_replay.json";
+
+const rtPctl = (p10: number, p50: number, p90: number, mean: number) => ({ p10, p50, p90, mean });
+
+export const rtReplay = (status = "UNVERIFIED") =>
+  JSON.stringify({
+    schema: "clearlane.rt_replay/v1",
+    flag: "ff_rt_replay",
+    window: { start_mt: "2026-05-01", end_mt: "2026-10-27", days: 179 },
+    wear_usd_mwh: 10.95,
+    settlement: { rule: "fixture", prov: "ASSUMPTION", status },
+    prov: { da_prices: "REAL", rt_prices: "REAL", site: "SIMULATED", values: "DERIVED", forecast: "ASSUMPTION" },
+    summary: {
+      days: 179,
+      net_usd_per_mw_day: {
+        hold: rtPctl(0.25, 19.17, 95.4, 34.65),
+        replan: rtPctl(-11.18, 18.58, 72.15, 20.43),
+        foresight: rtPctl(15.43, 45.6, 127.51, 66.78),
+      },
+      regret_usd_per_mw_day: {
+        hold: rtPctl(8.58, 19.11, 53.98, 32.13),
+        replan: rtPctl(10.91, 27.16, 68.35, 46.35),
+      },
+      days_replan_above_hold: 56,
+      days_replan_below_hold: 123,
+      rt_evening_below_midday_days: 17,
+      da_evening_below_midday_days: 0,
+    },
+    days: [{ operating_day_mt: "2026-05-02" }],
+  });
+
+export const RT_REPLAY_OK = rtReplay();
+
+export const UNKNOWN_RT_REPLAY = JSON.stringify({
+  schema: "clearlane.rt_replay/v1",
+  window: { start_mt: "2026-05-01", end_mt: "2026-10-27" },
+  prov: { values: "DERIVED" },
+  summary: {},
+});
+
+export const CALL_LEDGER_KEY = "../../../public/derived/call_ledger.json";
+
+const ledgerRow = (
+  reading: string,
+  policy: string,
+  share: number,
+  unanswerable: number,
+  short: number,
+  kwh: number,
+) => ({
+  reading,
+  for_stage: reading === "mt",
+  policy,
+  calls: 359,
+  delivered_at_or_above_90_pct_share: share,
+  unanswerable_calls: unanswerable,
+  shortfall_calls: short,
+  shortfall_kwh: kwh,
+});
+
+export const CALL_LEDGER_OK = JSON.stringify({
+  schema: "clearlane.call_ledger/v1",
+  flag: "ff_call_ledger",
+  prov: "SIMULATED",
+  replay_density: {
+    calls_per_reading: 359,
+    backtest_days: 179,
+    calls_per_day: 2.005586592178771,
+    rate_2025_per_day: 0.9835616438356164,
+    ratio_to_2025_rate: 2.039106145251397,
+  },
+  summary: [
+    ledgerRow("mt", "fixed_overnight", 74.09, 93, 94, 2004.13),
+    ledgerRow("mt", "price_only", 58.22, 150, 150, 3131.13),
+    ledgerRow("mt", "clearlane", 98.61, 5, 17, 82.36),
+    ledgerRow("utc", "fixed_overnight", 81.34, 67, 69, 1417.55),
+    ledgerRow("utc", "price_only", 54.04, 165, 166, 3431.77),
+    ledgerRow("utc", "clearlane", 97.77, 4, 6, 48.64),
+  ],
+  rows: [{ call_id: "ledger-mt-001" }],
+});
+
+export const UNKNOWN_CALL_LEDGER = JSON.stringify({
+  schema: "clearlane.call_ledger/v1",
+  prov: "SIMULATED",
+  replay_density: {
+    calls_per_reading: 359,
+    backtest_days: 179,
+    calls_per_day: 2,
+    rate_2025_per_day: 1,
+    ratio_to_2025_rate: 2,
+  },
+  summary: [ledgerRow("utc", "clearlane", 97.77, 4, 6, 48.64)],
+});

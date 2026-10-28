@@ -95,8 +95,13 @@ function strayDigits(root: Element): string[] {
 const FIXTURES: Record<ProofCardId, { key: string; ok: string; unknown: string }> = {
   stepStats: { key: F.STEP_STATS_KEY, ok: F.STEP_STATS_OK, unknown: F.UNKNOWN_STEP_STATS },
   backtest: { key: F.BACKTEST_KEY, ok: F.BACKTEST_OK, unknown: F.UNKNOWN_BACKTEST },
+  intervals: { key: F.INTERVALS_KEY, ok: F.INTERVALS_OK, unknown: F.UNKNOWN_INTERVALS },
+  callLedger: { key: F.CALL_LEDGER_KEY, ok: F.CALL_LEDGER_OK, unknown: F.UNKNOWN_CALL_LEDGER },
+  rtReplay: { key: F.RT_REPLAY_KEY, ok: F.RT_REPLAY_OK, unknown: F.UNKNOWN_RT_REPLAY },
   crosscheck: { key: F.CROSSCHECK_KEY, ok: F.CROSSCHECK_OK, unknown: F.UNKNOWN_CROSSCHECK },
 };
+/** Cards whose files are on main in this build. A card wired ahead of its file is empty until it lands. */
+const ON_MAIN: ProofCardId[] = ["stepStats", "backtest", "crosscheck"];
 const IDS = Object.keys(PROOF_FILES) as ProofCardId[];
 const every = (pick: (f: (typeof FIXTURES)[ProofCardId]) => string) =>
   Object.fromEntries(IDS.map((id) => [FIXTURES[id].key, pick(FIXTURES[id])]));
@@ -126,9 +131,10 @@ describe("proof sources", () => {
     for (const id of IDS) expect(s[id].state, id).toBe("ok");
   });
 
-  it("every card wired in this build reads a file that is on main and parses", () => {
+  it("every file on main parses in the shape its card reads; the rest are absent, never broken", () => {
     const s = loadProofSources();
-    for (const id of IDS) expect(s[id].state, `${id}: ${s[id].file}`).toBe("ok");
+    for (const id of IDS)
+      expect(s[id].state, `${id}: ${s[id].file}`).toBe(ON_MAIN.includes(id) ? "ok" : "empty");
   });
 });
 
@@ -192,7 +198,7 @@ describe("proof drawer with ff_proof_drawer on", () => {
     const d = openDrawer();
     const cards = [...d.querySelectorAll("[data-card]")];
     expect(cards.map((c) => c.getAttribute("data-card"))).toEqual(
-      Object.keys(PROOF_FILES),
+      IDS.filter((id) => ON_MAIN.includes(id)),
     );
     for (const card of cards) {
       const id = card.getAttribute("data-card");
@@ -389,6 +395,169 @@ describe("step-stats card", () => {
     expect(pValue(9.99990000099999e-6)).toBe("1.0 × 10⁻⁵");
     expect(pValue(0.012776650692456148)).toBe("0.013");
     expect(pValue(0.0012)).toBe("0.0012");
+  });
+});
+
+describe("every card, from fixture files", () => {
+  // Covers the cards wired ahead of their files, which the stage tests above cannot reach yet.
+  const all = () => {
+    renderDrawer(assembleProof(every((f) => f.ok)));
+    return openDrawer();
+  };
+
+  it("renders all of them in PROOF_FILES order, each with SVG and chips", () => {
+    const cards = [...all().querySelectorAll("[data-card]")];
+    expect(cards.map((c) => c.getAttribute("data-card"))).toEqual(IDS);
+    for (const card of cards) {
+      const id = card.getAttribute("data-card");
+      expect(card.getAttribute("data-card-state"), `${id} state`).toBe("ok");
+      expect(card.querySelector("svg"), `${id} svg`).not.toBeNull();
+      expect(card.querySelector(".chip"), `${id} chip`).not.toBeNull();
+    }
+  });
+
+  it("every figure has a chip and no number is missing", () => {
+    const d = all();
+    for (const n of d.querySelectorAll('[data-num-state="ok"]'))
+      expect(n.querySelector(".chip"), n.textContent ?? "").not.toBeNull();
+    expect(
+      d.querySelectorAll('[data-num]:not([data-num-state="ok"])'),
+    ).toHaveLength(0);
+  });
+
+  it("has no digit outside a number, time, axis label or copy-ok span", () => {
+    expect(strayDigits(all())).toEqual([]);
+  });
+});
+
+const figures = (el: Element | null | undefined) =>
+  [...(el?.querySelectorAll(".figure") ?? [])].map((f) => f.textContent);
+
+describe("backtest-intervals card", () => {
+  const card = () => {
+    renderDrawer(assembleProof({ [F.INTERVALS_KEY]: F.INTERVALS_OK }));
+    return openDrawer().querySelector('[data-card="intervals"]')!;
+  };
+
+  it("draws each median inside its moving-block interval, and pins Clearlane's to beat 5", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("rect[data-band]")].map((b) =>
+        b.getAttribute("data-band"),
+      ),
+    ).toEqual(["fixed_overnight", "price_only", "clearlane"]);
+    expect(c.querySelectorAll("circle[data-mean]")).toHaveLength(0);
+    const clearlane = c.querySelector('[data-policy="clearlane"]');
+    expect(
+      clearlane
+        ?.querySelector('[data-num="clearlane_p50"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    expect(figures(clearlane).slice(1)).toEqual(["$33.00", "$48.25"]);
+    // A negative end reads -$2.50, never $-2.50.
+    expect(figures(c.querySelector('[data-policy="fixed_overnight"]'))).toEqual(
+      ["$5.00", "-$2.50", "$9.00"],
+    );
+  });
+
+  it("shows the share of days beating the off-peak rule with its interval, the other resampling and the checks", () => {
+    const c = card();
+    expect(
+      c
+        .querySelector('[data-num="share_days_beating"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    const text = c.textContent ?? "";
+    for (const s of ["85%", "96%", "$32.77", "$48.90", "$1.01", "2,000", "90%"])
+      expect(text).toContain(s);
+    // The iid interval is a reference only, never shown.
+    expect(text).not.toContain("$37.50");
+    expect(text).toContain(COPY.proofPointChecks);
+  });
+});
+
+describe("RT-replay card", () => {
+  const card = (raw = F.RT_REPLAY_OK) => {
+    renderDrawer(assembleProof({ [F.RT_REPLAY_KEY]: raw }));
+    return openDrawer().querySelector('[data-card="rtReplay"]')!;
+  };
+
+  it("draws hold, re-plan and foresight net values as bands, with signed dollars", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("rect[data-band]")].map((b) =>
+        b.getAttribute("data-band"),
+      ),
+    ).toEqual(["hold", "replan", "foresight"]);
+    expect(figures(c.querySelector('[data-way="replan"]'))).toEqual([
+      "-$11.18",
+      "$18.58",
+      "$72.15",
+      "$20.43",
+    ]);
+  });
+
+  it("counts the days re-planning beat and lost to holding, the regret and the real-time evenings", () => {
+    const c = card();
+    const text = c.textContent ?? "";
+    for (const s of ["56", "123", "$19.11", "$27.16", "17", "179"])
+      expect(text).toContain(s);
+    expect(
+      c
+        .querySelector('[data-num="wear_usd_mwh"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    expect(text).toContain("value to RMP's system");
+  });
+
+  it("always shows the settlement status, with the caveat while it is unverified", () => {
+    const unverified = card();
+    expect(unverified.querySelector("[data-settlement]")?.textContent).toBe(
+      "UNVERIFIED",
+    );
+    expect(unverified.textContent).toContain(COPY.proofRtUnverified);
+    cleanup();
+    const verified = card(F.rtReplay("VERIFIED"));
+    expect(verified.querySelector("[data-settlement]")?.textContent).toBe(
+      "VERIFIED",
+    );
+    expect(verified.textContent).not.toContain(COPY.proofRtUnverified);
+  });
+});
+
+describe("call-ledger card", () => {
+  const card = () => {
+    renderDrawer(assembleProof({ [F.CALL_LEDGER_KEY]: F.CALL_LEDGER_OK }));
+    return openDrawer().querySelector('[data-card="callLedger"]')!;
+  };
+
+  it("shows only the stage reading: one bar and one row per timetable", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("rect[data-share]")].map((b) =>
+        b.getAttribute("data-share"),
+      ),
+    ).toEqual(["fixed_overnight", "price_only", "clearlane"]);
+    expect(figures(c.querySelector('[data-policy="clearlane"]'))).toEqual([
+      "98.6%",
+      "5",
+      "17",
+      "82 kWh",
+    ]);
+    // The UTC reading is a sensitivity check the ledger marks not for stage.
+    expect(c.textContent).not.toContain("97.8%");
+    for (const n of c.querySelectorAll('[data-policy] [data-num="live"]'))
+      expect(n.getAttribute("data-prov")).toBe("SIMULATED");
+  });
+
+  it("names the band floor from the pinned Torus key and calls the replay a stress test", () => {
+    const c = card();
+    const band = c.querySelector('[data-num="rmp_event_band_min_pct"]');
+    expect(band?.getAttribute("data-num-state")).toBe("ok");
+    expect(band?.getAttribute("data-prov")).toBe("TORUS_PUBLISHED");
+    const text = c.textContent ?? "";
+    for (const s of ["359", "2.01", "2.0", "0.98"]) expect(text).toContain(s);
+    expect(text).toContain(COPY.proofLedgerStress);
   });
 });
 
