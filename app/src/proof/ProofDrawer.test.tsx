@@ -402,7 +402,7 @@ describe("proof drawer in presenter mode", () => {
       />,
     );
     const nav = container.querySelector<HTMLElement>(".p-nav")!;
-    const buttons = [...nav.querySelectorAll("button")];
+    const buttons: HTMLElement[] = [...nav.querySelectorAll("button")];
     const sources = nav.querySelector<HTMLButtonElement>('[data-action="sources"]')!;
     const proof = within(nav).getByRole("button", { name: COPY.proofPill });
     expect(buttons.indexOf(proof)).toBe(buttons.indexOf(sources) + 1);
