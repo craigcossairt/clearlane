@@ -1,7 +1,7 @@
 // Usage: node tools/reproduce.mjs [--root <dir>] [--fetch] [--write-manifest] [--write-docs]
 // Re-derives every stage number offline (#32, flag off_reproduce):
 //   1. checks the SHA-256 of every public/data file against tools/manifest.sha256;
-//   2. re-runs the engine CLIs into a temp dir;
+//   2. re-runs the engine CLIs (backtest, numbers, envelope, site, replay) in a scratch copy;
 //   3. compares every public/derived JSON with the fresh one (EXCLUDED_FIELDS aside) and docs/NUMBERS.md;
 //   4. prints "REPRODUCED n/n stage numbers".
 // --fetch then re-fetches the operating day's OASIS prices and the EIA PACE workbook into ../clearlane-raw/reproduce/
@@ -132,6 +132,11 @@ engine("backtest.ts");
 engine("numbers.ts", bundle);
 engine("envelope.ts", bundle, ...(now ? ["--now", now] : []));
 engine("site.ts");
+// The real-time replay (#227) reads the RT file for the window its committed output covers.
+if (existsSync(at("public/derived/rt_replay.json"))) {
+  const w = JSON.parse(readFileSync(at("public/derived/rt_replay.json"), "utf8")).window;
+  engine("replay.ts", "--rt", `public/data/rt_${w.start_mt}_${w.end_mt}.json`);
+}
 
 // 3. Compare.
 const derived = readdirSync(at("public/derived")).filter((f) => f.endsWith(".json")).sort();
