@@ -51,7 +51,7 @@ export const COPY = {
   proofPinned: "pinned",
   proofScience: "science",
   proofSameCent:
-    "Same to the cent. They differ only past the cent, which misses the tolerance Science set before running:",
+    "Same to the cent. They differ past the cent by more than the tolerance the science script set before running:",
   proofDifference: "difference",
   proofNotScalar: "not a single number; see",
   proofSecondPath: "Second path",
