@@ -132,6 +132,35 @@ The #107 tolerance section above is unchanged since its own commit (d242552).
   Definitions came from `contracts/types.ts`, `docs/lanes/engine.md` 6.4, `docs/plan/synthesis.json`,
   `public/derived/site_default.json` and `backtest.json`.
 
+## Re-run after #213: definitions and tolerances (written before computing)
+
+Issue #218, written Wed Oct 28 2026 by a stand-in science session, before the re-run was read.
+PR #213 changed two engine definitions: Pulse cycles are now counted on stored energy (energy drawn
+out of Pulse, grid kWh divided by sqrt(0.88), divided by 500 kWh), and the wear price was re-calibrated
+by the engine's own bisection. FACTS now pins `clearlane_p50` at $38.69 and `share_days_beating` at
+91%; the pins written in the #107 tolerance table above (39.21 and 96%) are the old values and that
+table is left as written. No tolerance below is wider than the one it replaces.
+
+- The existing rows `clearlane_p50` and `share_days_beating` keep their tolerances and test; only the
+  pinned FACTS value they compare to moves, to the current FACTS value.
+- `science/dp.py` now also reports Pulse cycles for the day on stored energy, taken from the level path
+  (kWh that leaves the store, divided by 500 kWh), which is the definition in FACTS and does not
+  depend on the efficiency split. It must equal grid kWh sold divided by sqrt(0.88) divided by 500.
+- Not recomputed here, and said so: the wear price (it is bisected inside the engine so that Clearlane
+  stays at or under 300 cycles a year), Clearlane's own cycle count, and the Oct 27 site plan value
+  `clearlane_dp_usd_mw_day` with its ratio `dp_race_ratio`. All three need the engine's wear, calls and
+  re-plan, which this lane does not re-implement. The reference race rows did not change in #213.
+
+| Check | Pinned | Tolerance | Test | A mismatch would mean |
+|---|---|---|---|---|
+| clearlane_p50 | FACTS $38.69 | within $0.01 of `backtest.json` clearlane P50, rounds equal to the FACTS value at 2 dp, at or below the science price_only P50 | abs diff | the summary does not come from the per-day file, or FACTS and the backtest are out of step |
+| share_days_beating | FACTS 91% | within 0.01 percentage point of `backtest.json`; rounds equal to the FACTS value at 0 dp | abs diff | tie rule or day set differs, or FACTS and the backtest are out of step |
+| clearlane_p10_p90 (new) | FACTS $1.28 and $116.00 | each within $0.01 of `backtest.json`, each rounds equal to the FACTS value at 2 dp, each linear percentile of the per-day file | abs diff | same |
+| cycles_fixed_overnight (new) | FACTS 365 a year | 365 within 0.01 of `backtest.json` `pulse_cycles_per_yr`, and rounds equal to FACTS at 0 dp | abs diff | the count is not on stored energy for the fixed rule, or the rule does not drain the full 500 kWh |
+| cycles_price_only (new) | FACTS 625 a year | science DP mean daily cycles x 365 within 0.01 of `backtest.json`, rounds equal to FACTS at 0 dp | abs diff | the count convention, the DP, or the day set differs |
+
+Cycles a year is the mean of the daily cycle counts over the 179 backtest days times 365.
+
 ## Results
 
 <!-- results:start -->
@@ -151,8 +180,8 @@ The #107 tolerance section above is unchanged since its own commit (d242552).
 | fossil_priciest_oct | top_lmp 67.3; top_share_pct 85.1; bottom_lmp 23.0; bottom_share_pct 39.8 | top_lmp 67.33642; top_share_pct 85.08028; bottom_lmp 23.02664; bottom_share_pct 39.75382; n_hours 600; unmatched_hours 0; blank_fuel_cells 600 | LMP rounds equal at 1 dp; shares within 0.1 point | match |
 | fossil_priciest_jul | top_lmp 65.2; top_share_pct 76.3; bottom_lmp 12.9; bottom_share_pct 52.2 | top_lmp 65.19189; top_share_pct 76.28715; bottom_lmp 12.90268; bottom_share_pct 52.21035; n_hours 720; unmatched_hours 0; blank_fuel_cells 720 | LMP rounds equal at 1 dp; shares within 0.1 point | match |
 | net_load_climb_mw | hb15 604.6; hb18 4259.1; climb 3654.51 | raw_hb15 604.62; raw_hb18 4259.13; raw_climb 3654.51; snapshot_hb15 604.62; snapshot_hb18 4259.13; snapshot_climb 3654.51; max_abs_diff_raw_vs_snapshot_mw 0.0; hours_compared 24 | within 0.1 MW each; paths within 0.1 MW at every hour | match |
-| clearlane_p50 | facts 39.21; backtest_json 39.21367 | p50_linear 39.21367; p50_nearest_rank 39.21367; n 179; below_science_price_only_p50 True | 0.01 vs backtest.json; rounds equal at 2 dp; at or below the science price_only P50 | match |
-| share_days_beating | facts 96%; backtest_json 95.53073 | pct_engine_fixed 95.53073; pct_science_fixed 95.53073; days 179; ties 0 | 0.01 percentage point; rounds equal at 0 dp | match |
+| clearlane_p50 | facts 39.21; backtest_json 38.68619 | p50_linear 38.68619; p50_nearest_rank 38.68619; n 179; below_science_price_only_p50 True | 0.01 vs backtest.json; rounds equal at 2 dp; at or below the science price_only P50 | mismatch |
+| share_days_beating | facts 96%; backtest_json 91.06145 | pct_engine_fixed 91.06145; pct_science_fixed 91.06145; days 179; ties 0 | 0.01 percentage point; rounds equal at 0 dp | mismatch |
 | backtest_days | facts_days 179; backtest_json days 179; missing_days 2026-05-01 | days 179; missing_days 2026-05-01; raw_hours_on_missing 2026-05-01 23; hist_rows_not_24_finite none | exact | match |
 | hist_vs_raw_prices | raw OASIS, every hour | may hours 528; max_abs_diff 0.0; worst day 2026-05-02; hb 0; days_absent none; jul hours 720; max_abs_diff 0.0; worst day 2026-07-01; hb 0; days_absent none; oct hours 648; max_abs_diff 0.0; worst day 2026-10-01; hb 0; days_absent none | within 0.00001 every hour | match |
 | bundle_oct27_hb0 | raw 30.21857; not 46.11 | bundle_hb0 30.22; raw_hb0 30.21857; ts_utc 2026-10-27T06:00:00Z; hist_hb0 30.21857 | bundle within its cent precision of raw; not 46.11 | match |
@@ -161,7 +190,7 @@ The #107 tolerance section above is unchanged since its own commit (d242552).
 | backtest_price_only_p50 | 44.90588 | p50_linear 44.90588; p50_nearest_rank 44.90588; p10_linear 20.97331; p90_linear 133.42112; mean 60.66428; days_compared 179; days_over_0.01 0; max_abs_diff_per_day 0.0; worst_day 2026-08-19; first_days_over none | 0.01 on P50 (linear) | match |
 | backtest_dominance | clearlane <= price_only at P10, P50, P90 | violations_vs_backtest_json none; violations_vs_science_dp none; days_clearlane_above_science_price_only 0; first_such_days none | each <= | match |
 
-Scoreboard: 17 match, 6 mismatch, 0 pending.
+Scoreboard: 15 match, 8 mismatch, 0 pending.
 
 Notes:
 
