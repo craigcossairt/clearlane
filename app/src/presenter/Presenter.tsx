@@ -1,8 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { buildLive, callHour, runCalls } from "../live";
-import { CrashBeat } from "../beats/CrashBeat";
-import { EnvelopeBeat } from "../beats/EnvelopeBeat";
-import { Replan } from "../beats/Replan";
 import { Ribbon } from "../beats/Ribbon";
 import { ScaleCard } from "../beats/ScaleBeat";
 import { Chip } from "../components/Chip";
@@ -28,6 +25,9 @@ import {
 import { ProofDrawer } from "../proof/ProofDrawer";
 import { StretchKeyRows } from "../components/StretchKeyRows";
 import { RaceScreen } from "./RaceScreen";
+import { CallScreen } from "./CallScreen";
+import { BacktestLine, EnvelopeScreen } from "./EnvelopeScreen";
+import { ReplanScreen } from "./ReplanScreen";
 import "./presenter.css";
 
 /** The race replay: 24 hours in the stage's 15 seconds. */
@@ -435,7 +435,9 @@ export function Presenter({
       case "replan":
         return PRESENTER.replanHeadline;
       case "envelope":
-        return isAction(1) ? <BacktestHeadline /> : PRESENTER.envelopeHeadline;
+        return isAction(1)
+          ? PRESENTER.backtestScoreHeadline
+          : PRESENTER.envelopeHeadline;
       case "scale":
         return PRESENTER.scaleHeadline;
       case "close":
@@ -445,7 +447,7 @@ export function Presenter({
     }
   })();
   const line =
-    def.key === "envelope" && isAction(1) ? PRESENTER.backtestLine : head.line;
+    def.key === "envelope" && isAction(1) ? <BacktestLine /> : head.line;
 
   const hero = (() => {
     switch (def.key) {
@@ -471,41 +473,11 @@ export function Presenter({
       case "race":
         return <RaceScreen live={live} hour={raceHour} />;
       case "call":
-        return (
-          <CrashBeat
-            live={live}
-            hour={0}
-            call={callState}
-            backtest={false}
-            fleetMw={null}
-            onFleet={() => undefined}
-            presenter
-          />
-        );
+        return <CallScreen live={live} call={callState} />;
       case "replan":
-        return (
-          <Replan
-            live={live}
-            hour={replanHour}
-            call={callState}
-            backtest={false}
-            fleetMw={null}
-            onFleet={() => undefined}
-            presenter
-          />
-        );
+        return <ReplanScreen live={live} call={callState} hour={replanHour} />;
       case "envelope":
-        return (
-          <EnvelopeBeat
-            live={live}
-            hour={0}
-            call={EMPTY_CALL}
-            backtest={isAction(1)}
-            fleetMw={null}
-            onFleet={() => undefined}
-            presenter
-          />
-        );
+        return <EnvelopeScreen live={live} backtest={isAction(1)} />;
       case "scale":
         return (
           <ScaleHero
@@ -825,40 +797,5 @@ function CloseHero() {
         </aside>
       </div>
     </section>
-  );
-}
-
-/** "Mon D" for a Mountain day YYYY-MM-DD ("May 1"); noon-ish UTC keeps it on that date. */
-function shortDay(day: string): string {
-  return new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Denver",
-    month: "short",
-    day: "numeric",
-  }).format(new Date(`${day}T18:00:00Z`));
-}
-
-/**
- * Screen 6 after "Show the backtest": the day count through Num and the window from
- * backtest.json, so the headline never claims more days than were run (Pitch review, #217).
- */
-function BacktestHeadline() {
-  const window = useMemo(
-    () => loadDerivedFiles().backtest?.result?.window ?? null,
-    [],
-  );
-  return (
-    <>
-      {PRESENTER.backtestHeadlinePre} <Num k="backtest_days" width={3} />{" "}
-      {PRESENTER.backtestHeadlineDays}
-      {window ? (
-        <>
-          {" "}
-          <span data-time="">{shortDay(window.start_mt)}</span>{" "}
-          {PRESENTER.backtestHeadlineTo}{" "}
-          <span data-time="">{shortDay(window.end_mt)}</span>
-        </>
-      ) : null}
-      .
-    </>
   );
 }

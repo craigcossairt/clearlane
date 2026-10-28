@@ -676,7 +676,10 @@ body[data-mode="presenter"] {
 [data-mode="presenter"].phone .p-progress {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 6px;
+}
+[data-mode="presenter"] .p-score-range {
+  line-height: 1.25;
 }
 [data-mode="presenter"].phone .p-seg {
   width: 14px;
@@ -917,7 +920,10 @@ body[data-mode="presenter"] {
 }
 /* Envelope: the supporting line carries the format caveat, so the strip's intro paragraph
    gives its room to the table. */
-[data-mode="presenter"] .p-hero-envelope [data-slot="envelope-strip"] > p:first-child {
+[data-mode="presenter"]
+  .p-hero-envelope
+  [data-slot="envelope-strip"]
+  > p:first-child {
   display: none;
 }
 [data-mode="presenter"] .p-hero-envelope .copy-btn {
@@ -961,5 +967,579 @@ body[data-mode="presenter"] {
   color: var(--ink);
 }
 [data-mode="presenter"].phone .p-title-facts dt {
+  font-size: 16px;
+}
+
+/* #270: screens 4 to 6 read from the screen alone. One hero per screen (the Delivered shares,
+   the measured re-plan time, the System Critical Hours, the pass and fail marks); the rest
+   stays quiet. Text is 24px or larger at 1920; [data-detail] numbers may sit at body size. */
+[data-mode="presenter"] .p-hero-call,
+[data-mode="presenter"] .p-hero-replan,
+[data-mode="presenter"] .p-hero-envelope {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+[data-mode="presenter"] .p-call,
+[data-mode="presenter"] .p-replan,
+[data-mode="presenter"] .p-env {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+}
+[data-mode="presenter"] .p-call h3,
+[data-mode="presenter"] .p-score h3 {
+  margin: 0;
+  font-weight: 400;
+}
+[data-mode="presenter"] .p-key {
+  display: inline-block;
+  width: 36px;
+  height: 0;
+  margin-right: 12px;
+  vertical-align: middle;
+  border-top: 4px solid var(--muted);
+}
+[data-mode="presenter"] .p-key.is-planned {
+  border-top-style: dashed;
+}
+[data-mode="presenter"] .p-key.is-replanned {
+  border-top-color: var(--accent);
+  border-top-width: 5px;
+}
+[data-mode="presenter"] .p-key.is-requested {
+  height: 18px;
+  border: 0;
+  background: color-mix(in srgb, var(--muted) 35%, transparent);
+}
+[data-mode="presenter"] .p-call-base {
+  stroke: var(--line);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Screen 4: the call. */
+[data-mode="presenter"] .p-call-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 24px;
+  border-left: 4px solid var(--jam);
+  border-radius: 14px;
+  background: var(--jam-soft);
+}
+[data-mode="presenter"] .p-call-banner p {
+  margin: 0;
+}
+[data-mode="presenter"] .p-call-banner .slot-clock {
+  flex: none;
+  min-width: 330px;
+  text-align: right;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-call-traces {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+[data-mode="presenter"] .p-call-trace {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+  padding: 18px 28px 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+}
+[data-mode="presenter"] .p-call-trace.is-lead {
+  border-color: color-mix(in srgb, var(--clear) 55%, var(--line));
+}
+[data-mode="presenter"] .p-call-trace h3 {
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-call-hero {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  min-height: 112px;
+}
+[data-mode="presenter"] .p-call-pct .figure {
+  font-size: 112px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+[data-mode="presenter"] .p-call-trace.is-lead .p-call-pct .figure {
+  color: var(--clear);
+}
+[data-mode="presenter"] .p-call-trace:not(.is-lead) .p-call-pct .figure {
+  color: var(--jam);
+}
+[data-mode="presenter"] .p-call-pct-label {
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-call-svg {
+  flex: 1;
+  min-height: 140px;
+  width: 100%;
+}
+[data-mode="presenter"] .p-call-asked {
+  fill: color-mix(in srgb, var(--muted) 35%, transparent);
+  stroke: none;
+}
+[data-mode="presenter"] .p-call-spin,
+[data-mode="presenter"] .p-call-pulse {
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+[data-mode="presenter"] .p-call-spin {
+  stroke: var(--accent);
+}
+[data-mode="presenter"] .p-call-pulse {
+  stroke: var(--shoulder);
+}
+[data-mode="presenter"] .p-call-legend {
+  margin: 0;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-call-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+[data-mode="presenter"] .p-call-fact {
+  padding: 12px 24px;
+  border-left: 4px solid var(--accent);
+}
+[data-mode="presenter"] .p-call-fact.is-published {
+  border-left-color: var(--solar);
+  background: var(--surface);
+  border-radius: 0 14px 14px 0;
+}
+[data-mode="presenter"] .p-call-fact h3 {
+  font-size: 24px;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-call-fact p {
+  margin: 4px 0 0;
+  line-height: 1.35;
+}
+[data-mode="presenter"] .p-call-fact .figure {
+  font-size: 30px;
+}
+
+/* Screen 5: the re-plan. */
+[data-mode="presenter"] .p-replan-hero p {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 20px;
+}
+[data-mode="presenter"] .p-replan-lead {
+  font-size: 40px;
+}
+[data-mode="presenter"] .p-replan-ms .figure {
+  font-size: 120px;
+  font-weight: 400;
+  color: var(--clear);
+}
+[data-mode="presenter"] .p-replan-tail {
+  flex-basis: 100%;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-replan-key {
+  display: flex;
+  gap: 40px;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-replan-chart {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+[data-mode="presenter"] .p-replan-chart text {
+  font-size: 15px;
+  fill: var(--muted);
+}
+[data-mode="presenter"] .p-replan-chart .p-replan-callmark {
+  fill: var(--jam);
+}
+[data-mode="presenter"] .p-replan-chart .p-replan-note {
+  fill: var(--accent);
+}
+[data-mode="presenter"] .p-replan-cycles {
+  margin: 0;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-replan-cycles .figure {
+  font-size: 24px;
+}
+
+/* Screen 6, the envelope: twenty-four hours, the critical span marked in the jam color. */
+[data-mode="presenter"] .p-env-hours {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+[data-mode="presenter"] .p-env-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px 48px;
+}
+[data-mode="presenter"] .p-env-fact {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-env-fact-sch {
+  color: var(--ink);
+}
+[data-mode="presenter"] .p-env-big .figure {
+  font-size: 44px;
+  font-weight: 400;
+  color: var(--ink);
+}
+[data-mode="presenter"] .p-env-fact-sch .p-env-big .figure {
+  font-size: 80px;
+  color: var(--jam);
+}
+[data-mode="presenter"] .p-env-swatch {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  align-self: center;
+}
+[data-mode="presenter"] .p-env-swatch.is-draw {
+  background: var(--clear);
+}
+[data-mode="presenter"] .p-env-strip {
+  position: relative;
+  flex: 1;
+  min-height: 160px;
+  display: grid;
+  grid-template-rows: 1fr;
+  column-gap: 8px;
+  padding-top: 52px;
+  border-bottom: 2px solid var(--line);
+}
+[data-mode="presenter"] .p-env-sch-band {
+  grid-row: 1;
+  margin: -52px -4px 0;
+  border-radius: 14px 14px 0 0;
+  background: var(--jam-soft);
+  border: 2px solid var(--jam);
+  border-bottom: 0;
+}
+[data-mode="presenter"] .p-env-sch-label {
+  display: block;
+  padding: 8px 14px 0;
+  color: var(--jam);
+  white-space: nowrap;
+}
+[data-mode="presenter"] .p-env-col {
+  grid-row: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+[data-mode="presenter"] .p-env-bar {
+  display: block;
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  background: var(--clear);
+}
+[data-mode="presenter"] .p-env-axis {
+  display: grid;
+  column-gap: 8px;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-env-hours .copy-btn {
+  align-self: flex-start;
+  margin-top: 0;
+  border-radius: 999px;
+  padding: 6px 22px;
+  background: transparent;
+  border: 2px solid var(--line);
+  color: var(--muted);
+  font-size: 24px;
+}
+
+/* Screen 6, the backtest: a scorecard. Money first, then the three rules of the road. */
+[data-mode="presenter"] [data-slot="backtest-line"] {
+  display: block;
+}
+[data-mode="presenter"] [data-slot="backtest-line"] .figure {
+  font-size: 30px;
+  color: var(--ink);
+}
+[data-mode="presenter"] .p-score {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.15fr repeat(3, 1fr);
+  column-gap: 20px;
+}
+[data-mode="presenter"] .p-score-labels,
+[data-mode="presenter"] .p-score-col {
+  display: grid;
+  grid-template-rows: 80px 1.45fr repeat(3, 1fr);
+}
+[data-mode="presenter"] .p-score-col {
+  padding: 0 24px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+}
+[data-mode="presenter"] .p-score-col.is-allowed {
+  border-color: var(--clear);
+  background: var(--clear-soft);
+}
+[data-mode="presenter"] .p-score-head,
+[data-mode="presenter"] .p-score-rowlabel,
+[data-mode="presenter"] .p-score-cell {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+[data-mode="presenter"] .p-score-col .p-score-cell:last-child,
+[data-mode="presenter"] .p-score-labels .p-score-rowlabel:last-child {
+  border-bottom: 0;
+}
+[data-mode="presenter"] .p-score-head {
+  font-size: 26px;
+  line-height: 1.2;
+  align-items: flex-end;
+  padding-bottom: 10px;
+}
+[data-mode="presenter"] .p-score-rowlabel {
+  color: var(--muted);
+  flex-wrap: wrap;
+  align-content: center;
+  column-gap: 10px;
+  padding-right: 12px;
+}
+[data-mode="presenter"] .p-score-rowlabel .figure {
+  font-size: 40px;
+  color: var(--ink);
+}
+[data-mode="presenter"] .p-score-rowlabel small {
+  flex-basis: 100%;
+  font-size: 24px;
+  opacity: 0.75;
+}
+[data-mode="presenter"] .p-score-cell {
+  justify-content: space-between;
+  gap: 16px;
+}
+[data-mode="presenter"] .p-score-cell.is-money {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 10px;
+}
+[data-mode="presenter"] .p-score-money .figure {
+  font-size: 58px;
+  font-weight: 400;
+}
+[data-mode="presenter"] .p-score-bar {
+  display: block;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+[data-mode="presenter"] .p-score-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--ink);
+}
+[data-mode="presenter"] .p-score-range {
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-score-range .figure {
+  font-size: 24px;
+  font-weight: 400;
+}
+[data-mode="presenter"] .p-score-value .figure {
+  font-size: 44px;
+  font-weight: 400;
+}
+[data-mode="presenter"] .p-score-mobile-label {
+  display: none;
+}
+[data-mode="presenter"] .p-mark {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 128px;
+  padding: 4px 16px 4px 6px;
+  border-radius: 999px;
+  font-size: 26px;
+}
+[data-mode="presenter"] .p-mark-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: 700;
+}
+[data-mode="presenter"] .p-mark.is-pass {
+  color: var(--clear);
+}
+[data-mode="presenter"] .p-mark.is-pass .p-mark-icon {
+  background: var(--clear);
+  color: var(--bg);
+}
+[data-mode="presenter"] .p-mark.is-fail {
+  color: var(--jam);
+  background: var(--jam-soft);
+}
+[data-mode="presenter"] .p-mark.is-fail .p-mark-icon {
+  background: var(--jam);
+  color: var(--bg);
+}
+[data-mode="presenter"] .p-mark.is-baseline {
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-mark.is-baseline .p-mark-icon {
+  border: 2px solid var(--line);
+}
+
+/* Phone: one column; each scorecard column carries its own row labels. */
+[data-mode="presenter"].phone .p-call-traces,
+[data-mode="presenter"].phone .p-call-facts,
+[data-mode="presenter"].phone .p-score {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+[data-mode="presenter"].phone .p-call-banner {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+[data-mode="presenter"].phone .p-call-banner .slot-clock {
+  min-width: 0;
+  text-align: left;
+}
+[data-mode="presenter"].phone .p-call-trace {
+  padding: 14px 16px;
+}
+[data-mode="presenter"].phone .p-call-hero {
+  min-height: 64px;
+}
+[data-mode="presenter"].phone .p-call-pct .figure {
+  font-size: 56px;
+}
+[data-mode="presenter"].phone .p-call-svg {
+  flex: none;
+  min-height: 0;
+  height: 120px;
+}
+[data-mode="presenter"].phone .p-call-fact h3,
+[data-mode="presenter"].phone .p-call-fact .figure,
+[data-mode="presenter"].phone .p-score-value .figure,
+[data-mode="presenter"].phone .p-score-rowlabel .figure,
+[data-mode="presenter"].phone [data-slot="backtest-line"] .figure {
+  font-size: 18px;
+}
+[data-mode="presenter"].phone .p-replan-lead {
+  font-size: 22px;
+}
+[data-mode="presenter"].phone .p-replan-ms .figure {
+  font-size: 56px;
+}
+[data-mode="presenter"].phone .p-replan-chart {
+  flex: none;
+  height: 200px;
+}
+[data-mode="presenter"].phone .p-replan-key {
+  flex-direction: column;
+  gap: 6px;
+}
+[data-mode="presenter"].phone .p-env-facts {
+  flex-direction: column;
+  gap: 8px;
+}
+[data-mode="presenter"].phone .p-env-big .figure {
+  font-size: 24px;
+}
+[data-mode="presenter"].phone .p-env-fact-sch .p-env-big .figure {
+  font-size: 44px;
+}
+[data-mode="presenter"].phone .p-env-strip {
+  flex: none;
+  height: 200px;
+  column-gap: 2px;
+  padding-top: 76px;
+}
+[data-mode="presenter"].phone .p-env-sch-band {
+  margin-top: -76px;
+}
+[data-mode="presenter"].phone .p-env-sch-label {
+  padding: 4px 6px 0;
+  font-size: 14px;
+  white-space: normal;
+}
+[data-mode="presenter"].phone .p-env-axis {
+  column-gap: 2px;
+  font-size: 14px;
+}
+[data-mode="presenter"].phone .p-score-labels {
+  display: none;
+}
+[data-mode="presenter"].phone .p-score-col {
+  display: flex;
+  flex-direction: column;
+  padding: 0 14px 6px;
+  border-color: var(--line);
+}
+[data-mode="presenter"].phone .p-score-head {
+  padding: 10px 0;
+  font-size: 20px;
+}
+[data-mode="presenter"].phone .p-score-cell {
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+[data-mode="presenter"].phone .p-score-cell.is-money {
+  flex-wrap: nowrap;
+}
+[data-mode="presenter"].phone .p-score-col,
+[data-mode="presenter"].phone .p-score-cell,
+[data-mode="presenter"].phone .p-score-cell > * {
+  min-width: 0;
+}
+[data-mode="presenter"].phone .p-score-mobile-label {
+  display: block;
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 16px;
+}
+[data-mode="presenter"].phone .p-score-money .figure {
+  font-size: 40px;
+}
+[data-mode="presenter"].phone .p-mark {
+  min-width: 0;
+  font-size: 18px;
+}
+[data-mode="presenter"].phone .p-mark-icon {
+  width: 28px;
+  height: 28px;
   font-size: 16px;
 }

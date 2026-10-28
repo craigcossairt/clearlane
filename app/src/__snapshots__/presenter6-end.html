@@ -44,132 +44,208 @@
 </nav>
 <main class="p-main">
 <header class="p-head">
-<h1 class="p-headline" data-slot="headline">Backtested on <span class="num num-ok" data-num="backtest_days" data-prov="DERIVED" data-num-state="ok" style="min-width: 3ch;">
+<h1 class="p-headline" data-slot="headline">Battery-only is worth more on paper. Clearlane is the plan a host and RMP would allow.</h1>
+<div class="p-subrow">
+<p class="p-line">
+<span data-detail="" data-slot="backtest-line">Backtested on <span class="num num-ok" data-num="backtest_days" data-prov="DERIVED" data-num-state="ok" style="min-width: 3ch;">
 <span class="figure">179</span>
 <abbr class="chip chip-derived" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> days, <span data-time="">May 1</span> to <span data-time="">Oct 27</span>.</h1>
-<div class="p-subrow">
-<p class="p-line">Each policy run on every day of the history with full data, beside the off-peak rule.</p>
+</span> days, <span data-time="">May 1</span> to <span data-time="">Oct 27</span>. Clearlane beats the off-peak rule on <span class="num num-ok" data-num="share_days_beating" data-prov="DERIVED" data-num-state="ok" style="min-width: 3ch;">
+<span class="figure">91%</span>
+<abbr class="chip chip-derived" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> of days.</span>
+</p>
 <div class="p-actions">
 <button type="button" class="p-pill" data-action="action-backtest">Show the envelope</button>
 </div>
 </div>
 </header>
 <div class="p-hero p-hero-envelope">
-<section class="beat envelope-beat" aria-labelledby="beat-envelope">
-<h2 id="beat-envelope">Backtest</h2>
-<p>Window: <span class="num num-ok" data-num="backtest_days" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">179</span>
-<abbr class="chip chip-derived" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> days, <span data-time="">2026-05-01</span> to <span data-time="">2026-10-27</span> Missing days: <span data-time="">2026-05-01 </span>. Share of days Clearlane beats the off-peak rule: <span class="num num-ok" data-num="share_days_beating" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">91%</span>
-<abbr class="chip chip-derived" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>.</p>
-<div class="cards three" data-slot="backtest-bands">
-<article class="card" data-policy="fixed_overnight">
-<h3>Battery on the off-peak rule</h3>
-<p>
-<span data-copy-ok="percentile names">Low (P10) </span>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">$-14.26</span>
-<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> <span data-copy-ok="percentile names">, middle (P50) </span>
+<section class="beat envelope-beat p-env" aria-label="Backtest">
+<div class="p-score" data-slot="backtest-bands">
+<div class="p-score-labels">
+<span class="p-score-head">
+</span>
+<span class="p-score-rowlabel is-money">Typical day per MW, on paper</span>
+<span class="p-score-rowlabel">Battery wear: cycles a year, budget <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 3ch;">
+<span class="figure">300</span>
+<abbr class="chip chip-derived" title="https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</span>
+<span class="p-score-rowlabel">Times it broke the host's meter ceiling</span>
+<span class="p-score-rowlabel">RMP calls it could not answer<small>Pass: fewer than the off-peak rule</small>
+</span>
+</div>
+<article class="p-score-col" data-policy="fixed_overnight">
+<h3 class="p-score-head">Battery on the off-peak rule</h3>
+<div class="p-score-cell is-money">
+<span class="p-score-mobile-label">Typical day per MW, on paper</span>
+<span class="p-score-money">
 <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">$7.75</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> <span data-copy-ok="percentile names">, high (P90) </span>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+<span class="p-score-bar" aria-hidden="true">
+<i style="width: 17.26059179303439%;">
+</i>
+</span>
+<span class="p-score-range" data-detail="">Most days between <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$-14.26</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> and <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">$57.18</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> per MW-day</p>
-<p>Pulse cycles a year <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+</div>
+<div class="p-score-cell" data-rule="wear">
+<span class="p-score-mobile-label">Battery wear: cycles a year, budget</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">365</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> against a <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">300</span>
-<abbr class="chip chip-derived" title="https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> budget.</p>
-<p>Calls it could not answer, hours in Mountain time: <span class="num num-ok" data-num="calls_missed_by_policy_fixed_overnight_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">23%</span>
-<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
-</span>.</p>
-<p>Days beating the off-peak rule <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0%</span>
-<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>. Host ceiling breaches <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+<span class="p-mark is-fail">
+<span class="p-mark-icon" aria-hidden="true">✕</span>Fail</span>
+</div>
+<div class="p-score-cell" data-rule="ceiling">
+<span class="p-score-mobile-label">Times it broke the host's meter ceiling</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">0</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>.</p>
+</span>
+</span>
+<span class="p-mark is-pass">
+<span class="p-mark-icon" aria-hidden="true">✓</span>Pass</span>
+</div>
+<div class="p-score-cell" data-rule="calls">
+<span class="p-score-mobile-label">RMP calls it could not answer</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="calls_missed_by_policy_fixed_overnight_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">23%</span>
+<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span>
+</span>
+<span class="p-mark is-baseline">
+<span class="p-mark-icon" aria-hidden="true">–</span>Baseline</span>
+</div>
 </article>
-<article class="card" data-policy="price_only">
-<h3>Battery-only plan</h3>
-<p>
-<span data-copy-ok="percentile names">Low (P10) </span>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">$20.97</span>
-<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> <span data-copy-ok="percentile names">, middle (P50) </span>
+<article class="p-score-col" data-policy="price_only">
+<h3 class="p-score-head">Battery-only plan</h3>
+<div class="p-score-cell is-money">
+<span class="p-score-mobile-label">Typical day per MW, on paper</span>
+<span class="p-score-money">
 <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">$44.91</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> <span data-copy-ok="percentile names">, high (P90) </span>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+<span class="p-score-bar" aria-hidden="true">
+<i style="width: 100%;">
+</i>
+</span>
+<span class="p-score-range" data-detail="">Most days between <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$20.97</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> and <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">$133.42</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> per MW-day</p>
-<p>Pulse cycles a year <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+</div>
+<div class="p-score-cell" data-rule="wear">
+<span class="p-score-mobile-label">Battery wear: cycles a year, budget</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">625</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> against a <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">300</span>
-<abbr class="chip chip-derived" title="https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> budget.</p>
-<p>Calls it could not answer, hours in Mountain time: <span class="num num-ok" data-num="calls_missed_by_policy_price_only_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">40%</span>
-<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
-</span>.</p>
-<p>Days beating the off-peak rule <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">100%</span>
-<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>. Host ceiling breaches <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+<span class="p-mark is-fail">
+<span class="p-mark-icon" aria-hidden="true">✕</span>Fail</span>
+</div>
+<div class="p-score-cell" data-rule="ceiling">
+<span class="p-score-mobile-label">Times it broke the host's meter ceiling</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">2,040</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>.</p>
+</span>
+</span>
+<span class="p-mark is-fail">
+<span class="p-mark-icon" aria-hidden="true">✕</span>Fail</span>
+</div>
+<div class="p-score-cell" data-rule="calls">
+<span class="p-score-mobile-label">RMP calls it could not answer</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="calls_missed_by_policy_price_only_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">40%</span>
+<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span>
+</span>
+<span class="p-mark is-fail">
+<span class="p-mark-icon" aria-hidden="true">✕</span>Fail</span>
+</div>
 </article>
-<article class="card" data-policy="clearlane">
-<h3>Simulated Torus-style station on Clearlane</h3>
-<p>
-<span data-copy-ok="percentile names">Low (P10) </span>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">$1.28</span>
-<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> <span data-copy-ok="percentile names">, middle (P50) </span>
+<article class="p-score-col is-allowed" data-policy="clearlane">
+<h3 class="p-score-head">Simulated Torus-style station on Clearlane</h3>
+<div class="p-score-cell is-money">
+<span class="p-score-mobile-label">Typical day per MW, on paper</span>
+<span class="p-score-money">
 <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">$38.69</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> <span data-copy-ok="percentile names">, high (P90) </span>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+<span class="p-score-bar" aria-hidden="true">
+<i style="width: 86.14949420766068%;">
+</i>
+</span>
+<span class="p-score-range" data-detail="">Most days between <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$1.28</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> and <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">$116.00</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> per MW-day</p>
-<p>Pulse cycles a year <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+</div>
+<div class="p-score-cell" data-rule="wear">
+<span class="p-score-mobile-label">Battery wear: cycles a year, budget</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">300</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> against a <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">300</span>
-<abbr class="chip chip-derived" title="https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> budget.</p>
-<p>Calls it could not answer, hours in Mountain time: <span class="num num-ok" data-num="calls_missed_by_policy_clearlane_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">1%</span>
-<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
-</span>.</p>
-<p>Days beating the off-peak rule <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">91%</span>
-<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>. Host ceiling breaches <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span>
+</span>
+<span class="p-mark is-pass">
+<span class="p-mark-icon" aria-hidden="true">✓</span>Pass</span>
+</div>
+<div class="p-score-cell" data-rule="ceiling">
+<span class="p-score-mobile-label">Times it broke the host's meter ceiling</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">0</span>
 <abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>.</p>
+</span>
+</span>
+<span class="p-mark is-pass">
+<span class="p-mark-icon" aria-hidden="true">✓</span>Pass</span>
+</div>
+<div class="p-score-cell" data-rule="calls">
+<span class="p-score-mobile-label">RMP calls it could not answer</span>
+<span class="p-score-value">
+<span class="num num-ok" data-num="calls_missed_by_policy_clearlane_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">1%</span>
+<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span>
+</span>
+<span class="p-mark is-pass">
+<span class="p-mark-icon" aria-hidden="true">✓</span>Pass</span>
+</div>
 </article>
 </div>
 </section>
