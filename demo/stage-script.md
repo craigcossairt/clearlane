@@ -49,8 +49,8 @@ Every value on screen is a `{key}` from `public/derived/numbers.json`, shown wit
 
 - **Keys:** E for the envelope, then B for the backtest card.
 - **Expect:** `data-beat="5"`, `data-state="ready"` with the envelope, then the backtest card open.
-- **On screen:** `{sch_hours_today}`, `{share_days_beating}`, `{clearlane_p50}`, `{backtest_days}`, `{calls_answered_pct}` (both heatmap readings), `{clearlane_dp_usd_mw_day}` labeled as the engine's plan.
-- **The judge must see:** an hourly operating envelope with System Critical Hours, then May 1 to Oct 27 across three policies.
+- **On screen:** `{sch_hours_today}`, `{share_days_beating}`, `{clearlane_p50}`, `{backtest_days}`, `{calls_answered_pct_mt}` (hours in Mountain time, confirmed by Torus), `{clearlane_dp_usd_mw_day}` labeled as the engine's plan.
+- **The judge must see:** an hourly operating envelope with System Critical Hours (a format Clearlane proposes; never say Lasso accepts it), then May 1 to Oct 27 across three policies.
 - **Video timestamp:** 2:00.
 
 ## Beat 6, scale and close (2:25 to 2:45)

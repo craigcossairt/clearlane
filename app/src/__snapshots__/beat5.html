@@ -1,0 +1,144 @@
+<div class="viewport">
+<div class="frame stage" style="transform: scale(0.5333333333333333);">
+<header class="top">
+<h1>Clearlane</h1>
+<p>Today <span data-time="">Tue, Oct 27, 2026</span>
+</p>
+<p data-copy-ok="CAISO node id">ELAP_PACE-APND</p>
+<p>Snapshot, fetched <span data-time="">11:07am</span> MT</p>
+<p class="stub-slot" data-slot="stub-banner">
+</p>
+</header>
+<p class="legend-line">REAL: measured market data. DERIVED: computed from it. SIMULATED: our model, not a real site. TORUS PUBLISHED: from Torus's own pages. ASSUMPTION: a stated input. MEASURED: timed live on this laptop.</p>
+<nav class="beats" aria-label="Beats">
+<button type="button">Traffic report</button>
+<button type="button">Race</button>
+<button type="button">Call</button>
+<button type="button">Re-plan</button>
+<button type="button" aria-current="true">Envelope</button>
+<button type="button">Scale</button>
+</nav>
+<main class="main">
+<section class="beat envelope-beat" aria-labelledby="beat-envelope">
+<h2 id="beat-envelope">Backtest</h2>
+<p>Window: <span class="num num-ok" data-num="backtest_days" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">179</span>
+<abbr class="chip chip-derived" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> days, <span data-time="">2026-05-01</span> to <span data-time="">2026-10-27</span> Missing days: <span data-time="">2026-05-01 </span>. Share of days Clearlane beats the off-peak rule: <span class="num num-ok" data-num="share_days_beating" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">96%</span>
+<abbr class="chip chip-derived" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>.</p>
+<div class="cards three" data-slot="backtest-bands">
+<article class="card" data-policy="fixed_overnight">
+<h3>Battery on the off-peak rule</h3>
+<p>
+<span data-copy-ok="percentile names">Low (P10) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$-14.26</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> <span data-copy-ok="percentile names">, middle (P50) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$7.75</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> <span data-copy-ok="percentile names">, high (P90) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$57.18</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> per MW-day</p>
+<p>Pulse cycles a year <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">342</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> against a <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">300</span>
+<abbr class="chip chip-derived" title="https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> budget.</p>
+<p>Calls it could not answer, hours in Mountain time: <span class="num num-ok" data-num="calls_missed_by_policy_fixed_overnight_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">23%</span>
+<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span>.</p>
+<p>Days beating the off-peak rule <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">0%</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>. Host ceiling breaches <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">0</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>.</p>
+</article>
+<article class="card" data-policy="price_only">
+<h3>Battery-only plan</h3>
+<p>
+<span data-copy-ok="percentile names">Low (P10) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$20.97</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> <span data-copy-ok="percentile names">, middle (P50) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$44.91</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> <span data-copy-ok="percentile names">, high (P90) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$133.42</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> per MW-day</p>
+<p>Pulse cycles a year <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">587</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> against a <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">300</span>
+<abbr class="chip chip-derived" title="https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> budget.</p>
+<p>Calls it could not answer, hours in Mountain time: <span class="num num-ok" data-num="calls_missed_by_policy_price_only_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">40%</span>
+<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span>.</p>
+<p>Days beating the off-peak rule <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">100%</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>. Host ceiling breaches <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">2,040</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>.</p>
+</article>
+<article class="card" data-policy="clearlane">
+<h3>Simulated Torus-style station on Clearlane</h3>
+<p>
+<span data-copy-ok="percentile names">Low (P10) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$8.71</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> <span data-copy-ok="percentile names">, middle (P50) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$39.21</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> <span data-copy-ok="percentile names">, high (P90) </span>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$116.20</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> per MW-day</p>
+<p>Pulse cycles a year <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">299</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> against a <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">300</span>
+<abbr class="chip chip-derived" title="https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span> budget.</p>
+<p>Calls it could not answer, hours in Mountain time: <span class="num num-ok" data-num="calls_missed_by_policy_clearlane_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">1%</span>
+<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span>.</p>
+<p>Days beating the off-peak rule <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">96%</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>. Host ceiling breaches <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">0</span>
+<abbr class="chip chip-derived" title="public/derived/backtest.json" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>.</p>
+</article>
+</div>
+</section>
+</main>
+<footer class="foot">
+<p>Press ? for the key map.</p>
+</footer>
+</div>
+</div>
