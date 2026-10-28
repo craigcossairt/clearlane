@@ -61,7 +61,7 @@ As shown on the "Meet the judges" slide (s2):
 
 ## 5. Judging criteria
 
-- **Torus bounty: not stated.** No slide in hand gives Torus criteria or weights. s6 says each sponsor defines winning.
+- **Torus bounty: not stated.** No slide in hand gives Torus criteria or weights. s6 says each sponsor defines winning. Organizer question 1 (section 7): no answer recorded as of Tue 6:22pm MT, so the section 8 rubric stands.
 - **"Clarity of insight."** The research notes name it as a criterion (research/notes/torus-cases-a.md, tooling.findings.md). No slide in hand shows it (UNVERIFIED).
 - **The only weights on any slide** belong to the Nucleus x Startup State bounty (s4), which we are not entering. They are recorded here only so nobody mistakes them for Torus's: progress beyond concept 30%, path to reality 25%, hard tech depth 20%, Utah impact 15%, team and pitch 10%. Do not put them in the deck.
 
@@ -87,7 +87,9 @@ Ask the organizers, or Nicole Witmyer for the Torus items:
 5. Which judges score the Torus bounty?
 6. Can we get the Torus bounty text in writing, so we can quote the two options exactly?
 
-The product questions for Torus are in research/TORUS.md, Section 9.
+**Answers.** No answer to questions 1 to 6 is recorded in the repo or on #1 as of Tue 6:22pm MT, so the section 6 rows stand as "Not stated". Record any answer here with who, when and channel, and update section 6.
+
+The product questions for Torus are in research/TORUS.md, Section 9. Torus answered four of them (questions 2, 3, 8 and 10) by message to Craig Cossairt on Oct 27 2026; the answers are recorded there.
 
 ---
 

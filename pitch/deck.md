@@ -16,7 +16,7 @@ Notes: on stage, this slide, then the live demo, then the close. Every slide bet
 
 ## 2. Utah's rush hour is 6pm
 
-Ribbon of the operating day. Three numbers: overnight average `{overnight_avg}`, midday average `{midday_avg}`, 6pm price `{peak_price}`.
+Ribbon of the operating day. Three numbers: 1am to 6am average `{overnight_avg}`, 9am to 5pm average `{midday_avg}`, 6pm price `{peak_price}`. These are window averages, not what any schedule paid.
 
 The day's low was `{price_min_oct27}`. The 6pm hour was `{peak_over_trough}` that low.
 
@@ -52,7 +52,7 @@ An hourly envelope beside three asks from Torus's June 2026 comments to ROWE: cr
 
 Source: https://rowesternenergy.org/wp-content/uploads/2026/06/Consolidated-Spring-Workshop-Comments_06222026.pdf
 
-Our System Critical Hours rule is our proposal. No Utah or Wyoming docket defines the term. See `pitch/research-tariff.md`.
+Our System Critical Hours rule is our proposal. We found no Utah or Wyoming docket that defines it. The envelope is a format Clearlane proposes. See `pitch/research-tariff.md`.
 
 ## 7. Where it plugs in
 
@@ -68,7 +68,7 @@ A simulated campus shift on the operating day: `{campus_usd}` a day. Simulated. 
 
 ## 9. Scale, and the caveat
 
-`{mou_70mw}` MW is the demand-response agreement Torus says it filled. `{torus_500mw}` MW is an MOU for up to that amount, not installed capacity.
+`{mou_70mw}` MW is the demand-response agreement Torus says it filled. `{torus_500mw}` MW is an MOU for up to that amount, not installed capacity. At that ceiling the reference timetable is `{clearlane_500}` a day against `{fixed_500}` for the off-peak rule, as value to RMP's system at day-ahead prices.
 
 The ceiling is about `{mou_share_of_peak_oct27}` of the operating day's peak load forecast (`{load_peak_oct27_mw}` MW). The slider says the fleet is assumed not to move prices. That assumption gets weaker as the fleet grows.
 

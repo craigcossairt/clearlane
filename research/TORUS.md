@@ -355,6 +355,23 @@ Craig sends these Tue Oct 27 at about 9:00am MT, via the mentor table or the eve
 9. Did the June ROWE comments have a Utah or Wyoming counterpart, and is System Critical Hours defined in any filing there yet?
 10. May we quote published Spin and Pulse specs and the 2025 event data on stage, with attribution, beside "simulated Torus-style" stations?
 
+### Answers
+
+Torus answered four questions by message to Craig Cossairt on Oct 27 2026. The individual is not named in this repo. `docs/FACTS.md` section "Torus answers (Oct 27 2026)" lists every row each answer changed.
+
+| # | Answer | Who, when, channel | FACTS row |
+|---|---|---|---|
+| 1 | No answer recorded as of Tue 6:22pm MT. | | |
+| 2 | All 359 events in 2025 were unplanned calls; none were scheduled peak or congestion dispatches. | Torus, Oct 27 2026, message to Craig Cossairt | `rmp_events_2025_unplanned` |
+| 3 | The heatmap is in Mountain time. The stage shows the Mountain reading only; UTC readings are a sensitivity check. | Torus, Oct 27 2026, message to Craig Cossairt | `heatmap_readings` |
+| 4 | No answer recorded as of Tue 6:22pm MT. | | |
+| 5 | No answer recorded as of Tue 6:22pm MT. | | |
+| 6 | No answer recorded as of Tue 6:22pm MT. | | |
+| 7 | No answer recorded as of Tue 6:22pm MT. | | |
+| 8 | Torus does not know whether Lasso's API can accept an external day-ahead schedule or hourly envelope. Say "a format Clearlane proposes". | Torus, Oct 27 2026, message to Craig Cossairt | `lasso_external_schedule_api` |
+| 9 | No answer recorded as of Tue 6:22pm MT. | | |
+| 10 | Yes, with attribution, beside clearly labeled simulated stations. It does not cover Torus logos. | Torus, Oct 27 2026, message to Craig Cossairt | `torus_quote_permission` |
+
 ---
 
 ## 10. Contradictions and gaps on Torus's own pages

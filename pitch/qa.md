@@ -1,73 +1,227 @@
 # Judge Q&A
 
-Answers are at most two sentences. A number is a placeholder or it is not said. The Tuesday-night drill appends grades below the line.
+Cards are grouped by the judge most likely to ask. Every answer is two sentences or fewer, every number is a key, and every card names its source. Judges and affiliations are from `docs/JUDGING.md`.
 
-## Isn't this what Lasso already does?
+## Ryan Byrd, former CTO of Entrata, Aptive and Pattern (depth and correctness)
 
-Lasso forecasts and dispatches, and that is Torus-published. A day-ahead timetable keyed to EDAM prices, and an exportable envelope, are not advertised, and the envelope is a format Clearlane proposes.
+### Why a DP and not machine learning?
 
-## Who gets the `{clearlane_70}` a day?
+Judge: Ryan Byrd
 
-Nobody, as revenue. It is value to RMP's system at day-ahead prices, and Torus and hosts share it only if a program credits scheduled dispatch.
+A: Day-ahead prices are known the evening before, so the price leg needs no forecast, and an exact plan over the day's steps is auditable. It solves in `{solve_ms}` on this machine, and forecasting the host stays Lasso's job.
 
-## Is the reference day cherry-picked?
+Source: FACTS `solve_ms`, `lasso_inputs`
 
-The backtest card covers May 1 to Oct 27 and shows `{clearlane_p10}` to `{clearlane_p90}`. October is the clean case, with the biggest jump at 5pm or 6pm on `{oct_step_hour_days_at_5_or_6}` of `{oct_step_hour_days_total}` days.
+### Why is the engine's own plan worth less than the race card?
 
-## Why not charge overnight?
+Judge: Ryan Byrd
 
-On the reference day the overnight hours averaged `{overnight_avg}` and the midday hours averaged `{midday_avg}`. Estimated average CO2 for PacifiCorp East was about `{co2_overnight_avg}` overnight and `{co2_midday_avg}` at midday.
+A: They are two plans: the race card is the hourly reference timetable at `{clearlane_usd_mw_day}` per MW-day, and the engine's 15-minute plan is `{clearlane_dp_usd_mw_day}`. Every fleet figure on stage is built from the reference, and no card mixes the two.
 
-## What if the call lands during the jam?
+Source: FACTS `clearlane_usd_mw_day`, `clearlane_dp_usd_mw_day`
 
-The call needs power, and Spin sized to the enrolled kW covers one call of about five and a half minutes. A second call inside the refill window is the shortfall the card shows.
+### Average or marginal emissions?
 
-## Does midday charging blow up the demand charge?
+Judge: Ryan Byrd
 
-The planner treats the host's 15-minute ceiling as a hard constraint, and the meter line does not cross `{host_ceiling_kw}`. We show kW because the rider-adjusted tariff dollars are not what we claim.
+A: Average: EIA hourly generated-basis CO2 for PacifiCorp East (Utah, Wyoming, Idaho), and the card says "estimated, using average emissions". We do not lead with CO2, because marginal emissions can differ.
 
-## Average or marginal emissions?
+Source: FACTS `co2_overnight_avg`, `co2_midday_avg`
 
-Average: EIA hourly generated-basis CO2 for PacifiCorp East, and the card says so. We do not lead with CO2.
+### What does this do to Pulse's cycle life?
 
-## What does this do to cycle life?
+Judge: Ryan Byrd
 
-Torus publishes `{torus_pulse_cycles}` Pulse cycles, and the Station lifespan is `{torus_lifespan_yr}`, so our budget is `{pulse_cycle_budget}` a year. Applying the Station life to Pulse is our assumption, and the meter shows the day's cycles against it.
+A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A busy day like the one on screen uses `{cycles_today}` cycles, and the meter shows it.
 
-## How do you know when the calls happen?
+Source: FACTS `wear_usd_mwh`, `pulse_cycle_budget`, `torus_pulse_cycles`, `torus_lifespan_yr`, `cycles_today`
 
-Torus's 2025 heatmap gives counts by hour, in Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). A battery chasing price alone could not answer `{calls_unanswerable_price_only_mt}` of those call times.
+### How do you know when the calls happen?
 
-## Is Utah allowed to cycle these daily?
+Judge: Ryan Byrd
 
-Not verified from the tariff sheets we read. The envelope and the ROWE ask are where that question belongs, not a claim.
+A: Torus's 2025 heatmap gives counts by hour, and Torus told us the hours are Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). A battery chasing price alone could not answer `{calls_unanswerable_price_only_mt}` of those call times.
 
-## What is real and what is simulated?
+Source: FACTS `calls_unanswerable_price_only_mt`, `rmp_heatmap_by_hour`
 
-Prices, forecasts and CO2 come from CAISO and EIA. Specs and the 2025 counts are Torus-published, and the stations, host load and call times are simulated.
+### What happens if a second call comes during the refill?
 
-## Does a `{torus_500mw}` MW MOU ceiling move the price?
+Judge: Ryan Byrd
 
-Probably, at the top of the slider: the ceiling is about `{mou_share_of_peak_oct27}` of the day's peak forecast of `{load_peak_oct27_mw}`. The slider says the fleet is assumed not to move prices, and `{torus_500mw}` MW is an MOU ceiling, not installed capacity.
+A: Spin answers the first call, then refills under the host's ceiling. A second press inside that window shows the shortfall, `{second_call_shortfall_kw}` kW on average over the call, on the card.
 
-## Why a DP and not machine learning?
+Source: FACTS `second_call_shortfall_kw`
 
-Day-ahead prices are known the evening before, so the price leg needs no forecast. An exact plan over the day's steps is auditable, and forecasting the host stays Lasso's job.
+### Isn't this just arbitrage?
 
-## What about data centers?
+Judge: Ryan Byrd
 
-The same engine moves a simulated block in time, worth `{campus_usd}` on the reference day. In October, time-shifting beat place-shifting, about `{time_vs_space_oct_time}` against `{time_vs_space_oct_space}`.
+A: The price leg is, worth `{clearlane_usd_mw_day}` per MW-day against `{fixed_usd_mw_day}` for a fixed off-peak rule. The rest is keeping Spin ready for RMP's calls, which price alone does not do: in the backtest a price-only plan misses `{calls_missed_by_policy_price_only_mt}` of calls and Clearlane `{calls_missed_by_policy_clearlane_mt}`.
 
-## Do Utah's tariffs agree with the market?
+Source: FACTS `clearlane_usd_mw_day`, `fixed_usd_mw_day`, `calls_missed_by_policy_price_only_mt`, `calls_missed_by_policy_clearlane_mt`
 
-Partly, and it depends on the schedule. Schedule 6 has no on-peak window, Schedule 6A's on-peak is 6pm to 10pm, and Schedule 8's summer on-peak starts at 3pm, so the hours do not match the market's 6pm jump on every sheet.
+## Angela Smith, COO of Nucleus Fund (path to reality)
 
-## What would you need from Torus?
+### Is the reference day cherry-picked?
 
-Three things: how Spin refills, how delivery is baselined, and whether sites export; Torus does not know whether Lasso's API accepts an outside envelope (Torus, message to Craig Cossairt, Oct 27 2026). Then a pilot of the envelope, a format Clearlane proposes, at a few Wattsmart sites.
+Judge: Angela Smith
+
+A: The backtest card covers May 1 to Oct 27, `{backtest_days}` days, with Clearlane between `{clearlane_p10}` and `{clearlane_p90}` per MW-day. October is the clean case, with the biggest price jump at 5pm or 6pm on `{oct_step_hour_days_at_5_or_6}` of `{oct_step_hour_days_total}` days.
+
+Source: FACTS `backtest_days`, `clearlane_p10`, `clearlane_p90`, `oct_step_hour_days`
+
+### Is Utah allowed to cycle these daily?
+
+Judge: Angela Smith
+
+A: We found no Utah rule on it in the tariff sheets we read, and we make no claim either way. Torus's June 2026 ROWE comments ask for credit for scheduled dispatch and standards for operating envelopes, which is where that question gets settled.
+
+Source: `pitch/research-tariff.md`; https://rowesternenergy.org/wp-content/uploads/2026/06/Consolidated-Spring-Workshop-Comments_06222026.pdf
+
+### Do Utah's tariffs agree with the market?
+
+Judge: Angela Smith
+
+A: Partly, and it depends on the schedule: Schedule 6 has no on-peak window, Schedule 6A's on-peak is 6pm to 10pm weekdays, and Schedule 8's summer on-peak starts at 3pm. So the tariff hours do not match the market's 6pm jump on every sheet.
+
+Source: `pitch/research-tariff.md` (Rocky Mountain Power tariff sheets)
+
+### What is real and what is simulated?
+
+Judge: Angela Smith
+
+A: Prices, forecasts and CO2 come from CAISO and EIA, and the Spin and Pulse specs and 2025 event counts are Torus-published, quoted with Torus's permission. The stations, host load and call times are simulated Torus-style, and solve times are measured live.
+
+Source: FACTS `torus_quote_permission`; deck slide 10
+
+### Who defines System Critical Hours?
+
+Judge: Angela Smith
+
+A: Nobody yet: Torus asked ROWE for a transparent definition, and we found no Utah or Wyoming docket that defines it. Our rule is our proposal, and the envelope marks `{sch_hours_today}` such hours on the day on screen.
+
+Source: FACTS `sch_hours_today`; `pitch/research-tariff.md`
+
+## Nicole Witmyer, Strategic Events Leader at Torus (fit with Torus and Lasso)
+
+### Isn't this what Lasso already does?
+
+Judge: Nicole Witmyer
+
+A: Lasso forecasts and dispatches in under `{lasso_dispatch_ms}`, and that is Torus-published. A day-ahead timetable keyed to EDAM prices and an hourly envelope are not advertised, and the envelope is a format Clearlane proposes.
+
+Source: FACTS `lasso_dispatch_ms`, `lasso_inputs`; `research/TORUS.md` section 7
+
+### How sure are you this is not already inside Lasso?
+
+Judge: Nicole Witmyer
+
+A: We are not sure, so we say "not advertised", from Torus's own pages. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026).
+
+Source: `research/TORUS.md` section 7; FACTS `lasso_external_schedule_api`
+
+### What did Torus tell you?
+
+Judge: Nicole Witmyer
+
+A: That the 2025 heatmap hours are Mountain time, that all `{rmp_events_2025}` events in 2025 were unplanned calls, and that we may quote the published Spin and Pulse specs and event data with attribution. Whether Lasso's API takes an outside envelope is unknown to Torus too (Torus, message to Craig Cossairt, Oct 27 2026).
+
+Source: FACTS `rmp_events_2025_unplanned`, `torus_quote_permission`, `lasso_external_schedule_api`
+
+### What if the call lands during the jam?
+
+Judge: Nicole Witmyer
+
+A: The call needs power, not energy, and Spin sized to the enrolled kW covers one call of about five and a half minutes. Pulse keeps its plan, and the rest of the day is re-solved from the state of charge after the call.
+
+Source: FACTS `call_duration_s`, `enrolled_kw`
+
+### Does midday charging blow up the host's demand charge?
+
+Judge: Nicole Witmyer
+
+A: The planner treats the host's 15-minute ceiling as a hard limit, and the meter stays under `{host_ceiling_kw}` kW. We show kW, not dollars, because a host bill cut is not what we claim.
+
+Source: FACTS `host_ceiling_kw`; `pitch/research-tariff.md`
+
+### Does Torus earn the money on the race card?
+
+Judge: Nicole Witmyer
+
+A: No: it is value to RMP's system at day-ahead prices, not Torus revenue and not a host bill cut. Torus and hosts share it only if a program credits scheduled dispatch.
+
+Source: FACTS `clearlane_70`
+
+## Scott Holley, Executive Director, Lassonde Center at the U of U (Utah impact)
+
+### Why not charge overnight?
+
+Judge: Scott Holley
+
+A: On the day on screen the fixed off-peak rule charged at `{fixed_rule_charge_usd_mwh}` and the timetable at `{timetable_charge_usd_mwh}`. Estimated, using average emissions, PacifiCorp East ran about `{co2_overnight_avg}` overnight and `{co2_midday_avg}` at midday.
+
+Source: FACTS `fixed_rule_charge_usd_mwh`, `timetable_charge_usd_mwh`, `co2_overnight_avg`, `co2_midday_avg`
+
+### What about data centers?
+
+Judge: Scott Holley
+
+A: The same engine moves a simulated campus block in time, worth `{campus_usd}` a day on the day on screen. In October, moving in time saved about `{time_vs_space_oct_time}` and moving across EDAM nodes about `{time_vs_space_oct_space}`.
+
+Source: FACTS `campus_usd`, `time_vs_space_oct`
+
+### What does Utah get out of this?
+
+Judge: Scott Holley
+
+A: Batteries that fill when the grid is clear, stay off the road in the 6pm jam, and still answer Rocky Mountain Power's calls: Clearlane misses `{calls_missed_by_policy_clearlane_mt}` in the backtest. At `{mou_70mw}` MW that is `{clearlane_70}` a day of value to RMP's system at day-ahead prices.
+
+Source: FACTS `calls_missed_by_policy_clearlane_mt`, `mou_70mw`, `clearlane_70`
+
+## Tanner Potter, Partner at Kickstart (market and ask)
+
+### Who gets the `{clearlane_70}` a day?
+
+Judge: Tanner Potter
+
+A: Nobody, as revenue: it is value to RMP's system at day-ahead prices. Torus and hosts share it only if a program credits scheduled dispatch.
+
+Source: FACTS `clearlane_70`
+
+### Does a `{torus_500mw}` MW ceiling move the price?
+
+Judge: Tanner Potter
+
+A: Probably, at the top of the slider: the ceiling is about `{mou_share_of_peak_oct27}` of the day's peak forecast of `{load_peak_oct27_mw}` MW. The slider says the fleet is assumed not to move prices, and `{torus_500mw}` MW is an MOU for up to that amount, not installed capacity.
+
+Source: FACTS `mou_share_of_peak_oct27`, `load_peak_oct27_mw`, `torus_500mw`
+
+### What would you need from Torus?
+
+Judge: Tanner Potter
+
+A: Three things: how Spin refills, how event delivery is baselined, and whether sites export. Then a pilot of the envelope, a format Clearlane proposes, at a few Wattsmart sites this winter.
+
+Source: FACTS `lasso_external_schedule_api`
+
+### What is the ask?
+
+Judge: Tanner Potter
+
+A: A pilot of the day-ahead envelope at a few Wattsmart sites this winter. Torus's interest in that is our assumption, so it is an ask, not an agreement.
+
+Source: `docs/lanes/pitch.md` section 5 (close)
+
+### Will you keep building this?
+
+Judge: Tanner Potter
+
+A: Craig answers this one live.
+
+Source: none (Craig's call)
 
 ---
 
 ## Drill
 
-Not run. Due Tue 10pm MT, after the deck is the copy of record. Grades land here.
+Not run yet. Grades land here Tuesday night.
