@@ -75,6 +75,12 @@ export const FLAGS = {
     description:
       "Number lineage: every provenance chip opens to its source, date, class and cross-check",
   },
+  ff_presenter: {
+    default: false,
+    lanes: ["ui"],
+    description:
+      "Presenter mode: eight click-through screens with visible buttons, in a charcoal and off-white style",
+  },
   ff_price_impact: {
     default: false,
     lanes: ["engine"],
