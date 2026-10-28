@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import type { Provenance } from "@contracts/types";
 import { COPY } from "../copy";
 import { useFlag } from "../flags";
 import { LINEAGE_KEY } from "../keymap";
-import { openLineage } from "../stretch/lineage";
+import { listenForLineageKeys, openLineage } from "../stretch/lineage";
 
 /** Chip text names the class, so color is never the only signal. */
 export function chipText(prov: Provenance): string {
@@ -35,7 +36,35 @@ export function Chip({
         {chipText(prov)}
       </abbr>
     );
-  // ff_lineage (#91): the chip is a control that opens where its number comes from.
+  return (
+    <LineageChip
+      prov={prov}
+      source={source}
+      asOf={asOf}
+      numKey={numKey}
+      display={display}
+      title={title}
+    />
+  );
+}
+
+/** ff_lineage (#91): the chip is a control that opens where its number comes from. */
+function LineageChip({
+  prov,
+  source,
+  asOf,
+  numKey,
+  display,
+  title,
+}: {
+  prov: Provenance;
+  source: string;
+  asOf?: string;
+  numKey?: string;
+  display?: string;
+  title: string;
+}) {
+  useEffect(listenForLineageKeys, []);
   return (
     <abbr
       className={`chip chip-${prov.toLowerCase()}`}

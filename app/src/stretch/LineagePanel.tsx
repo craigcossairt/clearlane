@@ -1,18 +1,30 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { Provenance, TorusPublished } from "@contracts/types";
 import { chipText } from "../components/Chip";
 import { NumbersContext } from "../components/Num";
 import { mtDate } from "../components/Time";
 import { COPY } from "../copy";
 import { TORUS_FILE } from "../data";
-import { useFlag } from "../flags";
+import { FlagsContext, useFlag } from "../flags";
 import { LINEAGE_KEY } from "../keymap";
-import { statusLabel } from "../proof/cards/CrossCheckCard";
+import {
+  CheckDetail,
+  checkSameToTheCent,
+  statusLabel,
+} from "../proof/cards/CrossCheckCard";
 import { trapTab } from "../proof/ProofDrawer";
 import {
   loadProofSources,
   PROOF_FILES,
   type CrossCheck,
+  type CrossCheckRow,
 } from "../proof/sources";
 import {
   FACTS_FILE,
@@ -102,6 +114,14 @@ function LineageOn({
   const wasOpen = useRef(false);
   const from = useRef<HTMLElement | null>(null);
   const panel = useRef<HTMLDivElement>(null);
+  // The panel's own values carry plain chips: a lineage opened from inside it would replace the
+  // panel under the reader.
+  const flags = useContext(FlagsContext);
+  const inside = useMemo(() => {
+    const s = new Set(flags);
+    s.delete(LINEAGE_KEY.flag);
+    return s;
+  }, [flags]);
 
   const show = useCallback((next: ChipInfo, el: HTMLElement) => {
     from.current = el;
@@ -195,7 +215,9 @@ function LineageOn({
             {COPY.lineageClose}
           </button>
         </header>
-        <LineageRows lineage={lineage} facts={facts} />
+        <FlagsContext.Provider value={inside}>
+          <LineageRows lineage={lineage} facts={facts} />
+        </FlagsContext.Provider>
       </div>
     </div>
   );
@@ -301,29 +323,7 @@ export function LineageRows({
         <>
           <dt>{COPY.lineageCross}</dt>
           <dd data-lineage-cross={l.cross.row.status}>
-            {COPY.lineageCrossLead}{" "}
-            <strong>{statusLabel(l.cross.row.status)}</strong>.
-            {l.cross.row.tolerance ? (
-              <>
-                {" "}
-                {COPY.proofTolerance}{" "}
-                <span data-copy-ok="tolerance text from the cross-check file">
-                  {l.cross.row.tolerance}
-                </span>
-                .
-              </>
-            ) : null}
-            {l.cross.row.second_path?.passes_tolerance === true &&
-            l.cross.row.second_path.source ? (
-              <>
-                {" "}
-                {COPY.proofSecondPath} {COPY.proofFrom}{" "}
-                <span data-copy-ok="second path source">
-                  {l.cross.row.second_path.source}
-                </span>
-                : {COPY.proofSecondPathPasses}.
-              </>
-            ) : null}{" "}
+            <CrossLine row={l.cross.row} />{" "}
             <code data-copy-ok="file path">{PROOF_FILES.crosscheck}</code>
           </dd>
         </>
@@ -337,6 +337,51 @@ export function LineageRows({
         </>
       ) : null}
     </dl>
+  );
+}
+
+/**
+ * Science's verdict from crosscheck.json. A check outside its tolerance reads as it does in the
+ * proof drawer: same to the cent first where both values round to the same cents, otherwise the
+ * verdict first; then both values and the second path.
+ */
+function CrossLine({ row }: { row: CrossCheckRow }) {
+  if (row.status === "mismatch")
+    return (
+      <>
+        {COPY.lineageCrossLead}{" "}
+        {checkSameToTheCent(row) ? null : (
+          <>
+            <strong>{statusLabel(row.status)}</strong>.{" "}
+          </>
+        )}
+        <CheckDetail row={row} />
+      </>
+    );
+  return (
+    <>
+      {COPY.lineageCrossLead} <strong>{statusLabel(row.status)}</strong>.
+      {row.tolerance ? (
+        <>
+          {" "}
+          {COPY.proofTolerance}{" "}
+          <span data-copy-ok="tolerance text from the cross-check file">
+            {row.tolerance}
+          </span>
+          .
+        </>
+      ) : null}
+      {row.second_path?.passes_tolerance === true && row.second_path.source ? (
+        <>
+          {" "}
+          {COPY.proofSecondPath} {COPY.proofFrom}{" "}
+          <span data-copy-ok="second path source">
+            {row.second_path.source}
+          </span>
+          : {COPY.proofSecondPathPasses}.
+        </>
+      ) : null}
+    </>
   );
 }
 

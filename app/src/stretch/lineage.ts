@@ -202,21 +202,27 @@ export function lineageMounted(): boolean {
 
 type KeyHandler = (event: KeyboardEvent) => void;
 let keyHandler: KeyHandler | null = null;
+let listening = false;
+const onWindowKey = (event: KeyboardEvent) => keyHandler?.(event);
 
 /**
- * The panel's keys go through one window capture listener, added when this module first loads.
- * Chip.tsx imports this module, so the listener is in place before any component mounts, and the
- * panel sees each key before the stage, the presenter, the proof drawer or a lazily loaded layer
- * such as the fleet board, whatever order their code arrives in. With no panel mounted (the flag
- * off) it does nothing.
+ * The panel's keys go through one window capture listener. The first chip to mount with the flag
+ * on adds it, before any lazily loaded layer (the fleet board, or the panel itself) adds its own,
+ * so an open panel sees each key first whatever order their code arrives in. With the flag off no
+ * chip calls this, and the stage carries no listener.
  */
-if (typeof window !== "undefined") {
-  window.addEventListener("keydown", (event) => keyHandler?.(event), true);
+export function listenForLineageKeys(): void {
+  if (listening) return;
+  listening = true;
+  window.addEventListener("keydown", onWindowKey, true);
 }
 
-/** The mounted panel hands its key handler here, and null when it unmounts. */
+/** The mounted panel hands its key handler here; null, as it unmounts, also removes the listener. */
 export function setLineageKeys(fn: KeyHandler | null): void {
   keyHandler = fn;
+  if (fn || !listening) return;
+  listening = false;
+  window.removeEventListener("keydown", onWindowKey, true);
 }
 
 export const LINEAGE_CHIP = ".chip[data-lineage]";

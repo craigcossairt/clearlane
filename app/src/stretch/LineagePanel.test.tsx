@@ -17,7 +17,11 @@ import { loadStageData } from "../data";
 import type { FlagName } from "../flags";
 import { LINEAGE_KEY } from "../keymap";
 import { SCREENS } from "../presenter/model";
-import { statusLabel } from "../proof/cards/CrossCheckCard";
+import {
+  checkSameToTheCent,
+  sameToTheCent,
+  statusLabel,
+} from "../proof/cards/CrossCheckCard";
 import { loadProofSources, type CrossCheck } from "../proof/sources";
 import {
   expectFlagsOffStage,
@@ -62,6 +66,8 @@ function strayDigits(root: Element): string[] {
 }
 
 const panel = () => document.querySelector<HTMLElement>(".lineage-panel");
+const figures = (el: Element) =>
+  [...el.querySelectorAll(".figure")].map((f) => f.textContent);
 const press = (key: string, init: KeyboardEventInit = {}) =>
   act(() => {
     fireEvent.keyDown(document.activeElement ?? document.body, {
@@ -213,7 +219,11 @@ describe("number lineage data (#91)", () => {
       if (line) {
         listed++;
         expect(shown?.getAttribute("data-lineage-cross")).toBe(line.row.status);
-        expect(shown?.textContent).toContain(statusLabel(line.row.status));
+        // A miss finer than a cent is worded as the drawer words it; every other row names
+        // science's verdict.
+        if (line.row.status === "mismatch" && checkSameToTheCent(line.row))
+          expect(shown?.querySelector("[data-same-cent]")).not.toBeNull();
+        else expect(shown?.textContent).toContain(statusLabel(line.row.status));
       } else {
         expect(shown, n.key).toBeNull();
         expect(c.textContent).not.toContain(COPY.lineageCross);
@@ -223,6 +233,68 @@ describe("number lineage data (#91)", () => {
     expect(listed).toBeGreaterThan(0);
     expect(crossCheckFor("clearlane_p50", cross)?.row.status).toBe("match");
     expect(crossCheckFor("clearlane_70", cross)?.row.status).toBe("mismatch");
+  });
+
+  it("leads with the drawer's same-to-the-cent wording where science agrees at the cents", () => {
+    const dd = rowsFor("clearlane_usd_mw_day", {
+      state: "loading",
+    }).querySelector<HTMLElement>("[data-lineage-cross]")!;
+    // Science's verdict stands; only the wording that leads changes.
+    expect(dd.getAttribute("data-lineage-cross")).toBe("mismatch");
+    expect(dd.querySelector("[data-same-cent]")?.textContent).toBe(
+      COPY.proofSameCent,
+    );
+    const text = dd.textContent!;
+    expect(
+      text.startsWith(`${COPY.lineageCrossLead} ${COPY.proofSameCent}`),
+    ).toBe(true);
+    expect(text).not.toContain(COPY.proofStatusMismatch);
+    // Ours, science's, the difference, then the second path, which passes.
+    expect(figures(dd)).toEqual(["58.4053", "58.4097", "0.0044", "58.40534"]);
+    expect(text.indexOf(COPY.proofSecondPathPasses)).toBeGreaterThan(0);
+    expect(text.indexOf(COPY.proofSecondPathPasses)).toBeLessThan(
+      text.indexOf(COPY.proofTolerance),
+    );
+  });
+
+  it("keeps science's verdict first where the values differ at the cent, with the second path next", () => {
+    for (const key of ["clearlane_70", "fixed_usd_mw_day"]) {
+      const dd = rowsFor(key, { state: "loading" }).querySelector<HTMLElement>(
+        "[data-lineage-cross]",
+      )!;
+      const text = dd.textContent!;
+      expect(dd.querySelector("[data-same-cent]"), key).toBeNull();
+      expect(
+        text.startsWith(`${COPY.lineageCrossLead} ${COPY.proofStatusMismatch}`),
+        key,
+      ).toBe(true);
+      expect(text.indexOf(COPY.proofSecondPathPasses), key).toBeLessThan(
+        text.indexOf(COPY.proofTolerance),
+      );
+      cleanup();
+    }
+  });
+
+  it("uses the drawer's same-to-the-cent test for every check outside tolerance", () => {
+    let mismatches = 0;
+    for (const n of numbers) {
+      const line = crossCheckFor(n.key, cross);
+      if (line?.row.status !== "mismatch") continue;
+      mismatches++;
+      const dd = rowsFor(n.key, { state: "loading" }).querySelector(
+        "[data-lineage-cross]",
+      )!;
+      const pinned = line.row.pinned?.facts;
+      const science = line.row.science;
+      expect(!!dd.querySelector("[data-same-cent]"), n.key).toBe(
+        sameToTheCent(
+          typeof pinned === "number" ? pinned : null,
+          typeof science === "number" ? science : null,
+        ),
+      );
+      cleanup();
+    }
+    expect(mismatches).toBeGreaterThanOrEqual(6);
   });
 
   it("never shows a missing or pending check as passed", () => {
@@ -411,6 +483,29 @@ describe("number lineage on the stage (#91, ff_lineage)", () => {
     expect(document.activeElement).toBe(chip);
     press("Escape");
     expect(board()).toBeNull();
+  });
+
+  it("keeps the chips inside the panel plain, so a value there opens nothing", async () => {
+    render(
+      <App
+        data={data}
+        now={STAGE_NOW}
+        search="?ff=lineage&beat=2&step=end&motion=off"
+      />,
+    );
+    await mounted();
+    keyedChip(document, "clearlane_usd_mw_day").focus();
+    press("i");
+    const inner = [...panel()!.querySelectorAll<HTMLElement>(".chip")];
+    expect(inner.length).toBeGreaterThan(1);
+    for (const c of inner) {
+      expect(c.hasAttribute("data-lineage")).toBe(false);
+      expect(c.hasAttribute("tabindex")).toBe(false);
+    }
+    fireEvent.click(inner.at(-1)!);
+    expect(panel()!.querySelector("[data-lineage-key]")?.textContent).toBe(
+      "clearlane_usd_mw_day",
+    );
   });
 
   it("works in presenter mode, and the clicker's PageDown closes it without turning the screen", async () => {
