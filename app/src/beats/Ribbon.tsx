@@ -1,7 +1,7 @@
 import type { HourSignal, Lane } from "@contracts/types";
 import { Num } from "../components/Num";
 import { hourLabel } from "../components/Time";
-import { COPY } from "../copy";
+import { COPY, PRESENTER } from "../copy";
 import type { BeatProps } from "./types";
 
 export const LANE_WORD: Record<Lane, string> = {
@@ -36,7 +36,7 @@ const TICK_Y = 208;
  * never from typed hours. Every hour cell carries its lane word, so color is never the only
  * signal. Hour 0 is drawn as the bundle has it (see bundle.notes); hours are never reordered.
  */
-export function Ribbon({ live }: BeatProps) {
+export function Ribbon({ live, presenter }: BeatProps) {
   const hours = live.bundle.hours;
   // Chart scaling only: each series is drawn against its own peak. No value is shown from this.
   const maxPrice = Math.max(...hours.map((h) => h.lmp_usd_mwh), 1);
@@ -135,21 +135,34 @@ export function Ribbon({ live }: BeatProps) {
         <span>{COPY.ribbonLegendSolar}</span>
         <span>{COPY.ribbonLegendNet}</span>
       </div>
-      <p className="ribbon-caption" data-slot="ribbon-caption">
-        {COPY.ribbonPeak1} <Num k="peak_over_trough" /> {COPY.ribbonPeak2}{" "}
-        <Num k="peak_hour_mt" /> ({COPY.ribbonFrom} <Num k="price_min_oct27" />{" "}
-        {COPY.ribbonTo} <Num k="peak_price" />
-        ). {COPY.ribbonNet} <Num k="net_load_climb_mw" /> {COPY.ribbonMw}{" "}
-        {COPY.ribbonSolar} <Num k="solar_4pm_to_6pm_mw_4pm" /> {COPY.ribbonTo}{" "}
-        <Num k="solar_4pm_to_6pm_mw_6pm" /> {COPY.ribbonMw}.
-      </p>
-      <p className="ribbon-caption" data-slot="ribbon-lanes">
-        {COPY.ribbonLanes1} <Num k="lane_clear_max_usd" />
-        {COPY.ribbonLanes2} <Num k="lane_jam_min_usd" />
-        {COPY.ribbonLanes3} <span data-time="">{STEP_HOURS_LABEL}</span>{" "}
-        {COPY.ribbonOn} <Num k="oct_step_hour_days_at_5_or_6" /> {COPY.ribbonOf}{" "}
-        <Num k="oct_step_hour_days_total" /> {COPY.ribbonStep}
-      </p>
+      {presenter ? (
+        // Presenter mode (#271): one sentence with the jump that matters; the full caption
+        // stays on the stage.
+        <p className="ribbon-caption" data-slot="ribbon-caption">
+          {PRESENTER.trafficPeak1} <Num k="peak_over_trough" />{" "}
+          {PRESENTER.trafficPeak2} <Num k="peak_hour_mt" />{" "}
+          {PRESENTER.trafficPeak3}
+        </p>
+      ) : (
+        <>
+          <p className="ribbon-caption" data-slot="ribbon-caption">
+            {COPY.ribbonPeak1} <Num k="peak_over_trough" /> {COPY.ribbonPeak2}{" "}
+            <Num k="peak_hour_mt" /> ({COPY.ribbonFrom}{" "}
+            <Num k="price_min_oct27" /> {COPY.ribbonTo} <Num k="peak_price" />
+            ). {COPY.ribbonNet} <Num k="net_load_climb_mw" /> {COPY.ribbonMw}{" "}
+            {COPY.ribbonSolar} <Num k="solar_4pm_to_6pm_mw_4pm" />{" "}
+            {COPY.ribbonTo} <Num k="solar_4pm_to_6pm_mw_6pm" /> {COPY.ribbonMw}.
+          </p>
+          <p className="ribbon-caption" data-slot="ribbon-lanes">
+            {COPY.ribbonLanes1} <Num k="lane_clear_max_usd" />
+            {COPY.ribbonLanes2} <Num k="lane_jam_min_usd" />
+            {COPY.ribbonLanes3} <span data-time="">{STEP_HOURS_LABEL}</span>{" "}
+            {COPY.ribbonOn} <Num k="oct_step_hour_days_at_5_or_6" />{" "}
+            {COPY.ribbonOf} <Num k="oct_step_hour_days_total" />{" "}
+            {COPY.ribbonStep}
+          </p>
+        </>
+      )}
     </section>
   );
 }
