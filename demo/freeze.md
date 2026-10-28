@@ -73,7 +73,7 @@ Craig builds the deck on his machine (`node pitch/build.mjs`, PDFs in `pitch/out
 ```bash
 pdftotext -layout pitch/out/deck.pdf - > "$TEMP/deck.txt"
 grep -c "{[a-z0-9_]*}" "$TEMP/deck.txt"   # unresolved keys: must be 0
-grep -cP "\x{2014}" "$TEMP/deck.txt"              # em dashes: must be 0
+grep -c $'\u2014' "$TEMP/deck.txt"               # em dashes: must be 0
 grep -ci "nucleus" "$TEMP/deck.txt"       # Nucleus slide: must be 0
 grep -c "Oct <day>" "$TEMP/deck.txt"      # operating day: at least 1
 ```
