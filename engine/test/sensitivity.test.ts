@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { FLAGS } from "@contracts/flags";
 import type {
   BacktestResult,
   HistDay,
@@ -272,7 +273,7 @@ describe.skipIf(!existsSync(repoPath(SENS)))(
   "public/derived/sensitivity.json",
   () => {
     let cached: Sensitivity | undefined;
-  const sens = () => (cached ??= JSON.parse(read(SENS)) as Sensitivity);
+    const sens = () => (cached ??= JSON.parse(read(SENS)) as Sensitivity);
 
     it("names the flag and reproduces the base gap from backtest.json", () => {
       expect(sens().schema).toBe("clearlane.sensitivity/v1");
@@ -335,7 +336,9 @@ describe.skipIf(!existsSync(repoPath(SENS)))(
     it("the two-way grid holds the base case at RTE 0.88 and scale 1", () => {
       const i = sens().two_way.rte.indexOf(0.88);
       const j = sens().two_way.price_scale.indexOf(1);
-      expect(sens().two_way.usd_gap[i]![j]).toBe(sens().base.gap.usd_per_mw_day);
+      expect(sens().two_way.usd_gap[i]![j]).toBe(
+        sens().base.gap.usd_per_mw_day,
+      );
     });
 
     it("has no em dash or en dash", () => {
@@ -347,6 +350,9 @@ describe.skipIf(!existsSync(repoPath(SENS)))(
 );
 
 describe("flag off (ff_sensitivity): core outputs are byte-identical", () => {
+  it("is registered and off by default", () =>
+    expect(FLAGS.ff_sensitivity.default).toBe(false));
+
   it("no core module or core CLI imports the sensitivity sweep", () => {
     const core = [
       ...readdirSync(repoPath("engine/src"))
