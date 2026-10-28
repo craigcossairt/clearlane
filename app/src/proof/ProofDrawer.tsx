@@ -14,6 +14,7 @@ import { CallLedgerCard } from "./cards/CallLedgerCard";
 import { CrossCheckCard } from "./cards/CrossCheckCard";
 import { IntervalsCard } from "./cards/IntervalsCard";
 import { RtReplayCard } from "./cards/RtReplayCard";
+import { ScaleCurveCard } from "./cards/ScaleCurveCard";
 import { SchStudyCard } from "./cards/SchStudyCard";
 import { StepStatsCard } from "./cards/StepStatsCard";
 import {
@@ -105,6 +106,15 @@ const CARDS: Record<ProofCardId, (s: ProofSources) => ReactNode> = {
   schStudy: (s) => (
     <ProofCard id="schStudy" title={COPY.proofSchTitle} source={s.schStudy}>
       {(data) => <SchStudyCard data={data} />}
+    </ProofCard>
+  ),
+  scaleCurve: (s) => (
+    <ProofCard
+      id="scaleCurve"
+      title={COPY.proofScaleTitle}
+      source={s.scaleCurve}
+    >
+      {(data) => <ScaleCurveCard data={data} />}
     </ProofCard>
   ),
   crosscheck: (s) => (

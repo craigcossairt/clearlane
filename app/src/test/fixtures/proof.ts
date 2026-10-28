@@ -132,10 +132,19 @@ export const STEP_STATS_OK = JSON.stringify({
     },
   },
   months: {
-    "2026-07": { days: 3, modal_hb: [14, 18, 19], count_at_mode: 1, median_step: 6 },
+    "2026-07": {
+      days: 3,
+      modal_hb: [14, 18, 19],
+      count_at_mode: 1,
+      median_step: 6,
+    },
     "2026-10": { days: 4, modal_hb: [18], count_at_mode: 2, median_step: 13.5 },
   },
-  reproduction: { a: { status: "match" }, b: { status: "match" }, c: { status: "mismatch" } },
+  reproduction: {
+    a: { status: "match" },
+    b: { status: "match" },
+    c: { status: "mismatch" },
+  },
 });
 
 export const UNKNOWN_STEP_STATS = JSON.stringify({
@@ -145,7 +154,7 @@ export const UNKNOWN_STEP_STATS = JSON.stringify({
 
 export const INTERVALS_KEY = "../../../science/backtest_intervals.json";
 
-const byPolicy = <T,>(fixed_overnight: T, price_only: T, clearlane: T) => ({
+const byPolicy = <T>(fixed_overnight: T, price_only: T, clearlane: T) => ({
   fixed_overnight,
   price_only,
   clearlane,
@@ -164,7 +173,11 @@ export const INTERVALS_OK = JSON.stringify({
   bootstrap: {
     moving_block: {
       p50: byPolicy([-2.5, 9], [40, 52], [33, 48.25]),
-      days_beating_fixed_overnight_pct: byPolicy([0, 0], [100, 100], [85.4, 95.6]),
+      days_beating_fixed_overnight_pct: byPolicy(
+        [0, 0],
+        [100, 100],
+        [85.4, 95.6],
+      ),
     },
     stationary: { p50: byPolicy([-3, 10], [39, 53], [32.77, 48.9]) },
     iid: { p50: byPolicy([4, 6], [44, 46], [37.5, 38.5]) },
@@ -187,7 +200,12 @@ export const UNKNOWN_INTERVALS = JSON.stringify({
 
 export const RT_REPLAY_KEY = "../../../public/derived/rt_replay.json";
 
-const rtPctl = (p10: number, p50: number, p90: number, mean: number) => ({ p10, p50, p90, mean });
+const rtPctl = (p10: number, p50: number, p90: number, mean: number) => ({
+  p10,
+  p50,
+  p90,
+  mean,
+});
 
 export const rtReplay = (status = "UNVERIFIED") =>
   JSON.stringify({
@@ -196,7 +214,13 @@ export const rtReplay = (status = "UNVERIFIED") =>
     window: { start_mt: "2026-05-01", end_mt: "2026-10-27", days: 179 },
     wear_usd_mwh: 10.95,
     settlement: { rule: "fixture", prov: "ASSUMPTION", status },
-    prov: { da_prices: "REAL", rt_prices: "REAL", site: "SIMULATED", values: "DERIVED", forecast: "ASSUMPTION" },
+    prov: {
+      da_prices: "REAL",
+      rt_prices: "REAL",
+      site: "SIMULATED",
+      values: "DERIVED",
+      forecast: "ASSUMPTION",
+    },
     summary: {
       days: 179,
       net_usd_per_mw_day: {
@@ -282,7 +306,12 @@ export const UNKNOWN_CALL_LEDGER = JSON.stringify({
 
 export const SCH_STUDY_KEY = "../../../science/sch_study.json";
 
-const schRules = <T,>(ours: T, top6_price: T, netload_p75: T, top4_netload: T) => ({
+const schRules = <T>(
+  ours: T,
+  top6_price: T,
+  netload_p75: T,
+  top4_netload: T,
+) => ({
   ours,
   top6_price,
   netload_p75,
@@ -293,7 +322,9 @@ const mountain = (coverage: number, budget: number, lift: number) => ({
   utc: { coverage: 0.5, budget: 0.25, lift: 2 },
 });
 
-export const schStudy = (opts: { topLift?: number; status?: string; hours?: number[] } = {}) =>
+export const schStudy = (
+  opts: { topLift?: number; status?: string; hours?: number[] } = {},
+) =>
   JSON.stringify({
     schema: "clearlane.science.sch_study/v1",
     class: "DERIVED",
@@ -305,7 +336,11 @@ export const schStudy = (opts: { topLift?: number; status?: string; hours?: numb
       mountain(0.2249, 0.25, 0.8995),
       mountain(0.1548, 0.1667, 0.9289),
     ),
-    jaccard_vs_ours: { netload_p75: 0.29, top4_netload: 0.58, top6_price: 0.5844 },
+    jaccard_vs_ours: {
+      netload_p75: 0.29,
+      top4_netload: 0.58,
+      top6_price: 0.5844,
+    },
     oct27: {
       status: opts.status ?? "match",
       envelope_system_critical_hb: opts.hours ?? [18, 19, 20, 21, 22, 23],
@@ -320,4 +355,82 @@ export const UNKNOWN_SCH_STUDY = JSON.stringify({
   season: { days: 177, first: "2026-05-02", last: "2026-10-25" },
   mean_per_day: schRules(6.88, 6, 6, 4),
   overlap: { ours: mountain(0.25, 0.29, 0.88) },
+});
+
+export const SCALE_CURVE_KEY = "../../../public/derived/scale_curve.json";
+
+const scalePoint = (
+  fleet_mw: number,
+  usd: number,
+  lo: number,
+  hi: number,
+  pct: number,
+) => ({
+  fleet_mw,
+  usd_per_mw_day: usd,
+  band_low_usd_per_mw_day: lo,
+  band_high_usd_per_mw_day: hi,
+  usd_per_day: usd * fleet_mw,
+  pct_of_price_taker: pct,
+});
+
+const scaleSeries = (
+  id: string,
+  key: string,
+  taker: number,
+  points: ReturnType<typeof scalePoint>[],
+) => ({
+  id,
+  price_taker_keys: [key],
+  price_taker_usd_per_mw_day: taker,
+  inconclusive_traded_hb: [],
+  points,
+});
+
+export const scaleCurve = (
+  opts: { inconclusive?: number[]; fixedAtCeiling?: number } = {},
+) => {
+  const fixed500 = opts.fixedAtCeiling ?? 6.99;
+  return JSON.stringify({
+    schema: "clearlane.scale_curve/v1",
+    prov: "DERIVED",
+    fleet_mw: [70, 140, 500],
+    slopes: {
+      clamped_hb: [],
+      inconclusive_hb: opts.inconclusive ?? [],
+      hours: [],
+    },
+    series: [
+      scaleSeries("fixed_overnight", "fixed_usd_mw_day", 20.06, [
+        scalePoint(70, 18.23, 17.94, 18.54, 90.9),
+        scalePoint(140, 16.4, 15.81, 17.01, 81.8),
+        scalePoint(500, fixed500, fixed500 - 2, fixed500 + 2, 34.8),
+      ]),
+      scaleSeries("clearlane", "clearlane_usd_mw_day", 58.41, [
+        scalePoint(70, 56.13, 55.8, 56.46, 96.1),
+        scalePoint(140, 53.85, 53.2, 54.52, 92.2),
+        scalePoint(500, 42.12, 39.81, 44.53, 72.1),
+      ]),
+      scaleSeries("dp_price_only", "price_only_usd_mw_day", 65.79, [
+        scalePoint(70, 62.41, 61.97, 62.9, 94.9),
+        scalePoint(140, 59.95, 59.18, 60.78, 91.1),
+        scalePoint(500, 51.72, 50.52, 53.15, 78.6),
+      ]),
+      scaleSeries("dp_wear10", "wear10_usd_mw_day", 57.54, [
+        scalePoint(70, 55.71, 55.49, 55.95, 96.8),
+        scalePoint(140, 54.47, 54.14, 54.83, 94.7),
+        scalePoint(500, 49.95, 49.04, 50.91, 86.8),
+      ]),
+    ],
+  });
+};
+
+export const SCALE_CURVE_OK = scaleCurve();
+
+export const UNKNOWN_SCALE_CURVE = JSON.stringify({
+  schema: "clearlane.scale_curve/v1",
+  prov: "DERIVED",
+  fleet_mw: [70, 500],
+  slopes: { clamped_hb: [], inconclusive_hb: [] },
+  series: [],
 });

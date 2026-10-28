@@ -93,14 +93,50 @@ function strayDigits(root: Element): string[] {
 }
 
 /** Per card: its glob key, a file of the expected shape and one of another shape. */
-const FIXTURES: Record<ProofCardId, { key: string; ok: string; unknown: string }> = {
-  stepStats: { key: F.STEP_STATS_KEY, ok: F.STEP_STATS_OK, unknown: F.UNKNOWN_STEP_STATS },
-  backtest: { key: F.BACKTEST_KEY, ok: F.BACKTEST_OK, unknown: F.UNKNOWN_BACKTEST },
-  intervals: { key: F.INTERVALS_KEY, ok: F.INTERVALS_OK, unknown: F.UNKNOWN_INTERVALS },
-  callLedger: { key: F.CALL_LEDGER_KEY, ok: F.CALL_LEDGER_OK, unknown: F.UNKNOWN_CALL_LEDGER },
-  rtReplay: { key: F.RT_REPLAY_KEY, ok: F.RT_REPLAY_OK, unknown: F.UNKNOWN_RT_REPLAY },
-  schStudy: { key: F.SCH_STUDY_KEY, ok: F.SCH_STUDY_OK, unknown: F.UNKNOWN_SCH_STUDY },
-  crosscheck: { key: F.CROSSCHECK_KEY, ok: F.CROSSCHECK_OK, unknown: F.UNKNOWN_CROSSCHECK },
+const FIXTURES: Record<
+  ProofCardId,
+  { key: string; ok: string; unknown: string }
+> = {
+  stepStats: {
+    key: F.STEP_STATS_KEY,
+    ok: F.STEP_STATS_OK,
+    unknown: F.UNKNOWN_STEP_STATS,
+  },
+  backtest: {
+    key: F.BACKTEST_KEY,
+    ok: F.BACKTEST_OK,
+    unknown: F.UNKNOWN_BACKTEST,
+  },
+  intervals: {
+    key: F.INTERVALS_KEY,
+    ok: F.INTERVALS_OK,
+    unknown: F.UNKNOWN_INTERVALS,
+  },
+  callLedger: {
+    key: F.CALL_LEDGER_KEY,
+    ok: F.CALL_LEDGER_OK,
+    unknown: F.UNKNOWN_CALL_LEDGER,
+  },
+  rtReplay: {
+    key: F.RT_REPLAY_KEY,
+    ok: F.RT_REPLAY_OK,
+    unknown: F.UNKNOWN_RT_REPLAY,
+  },
+  schStudy: {
+    key: F.SCH_STUDY_KEY,
+    ok: F.SCH_STUDY_OK,
+    unknown: F.UNKNOWN_SCH_STUDY,
+  },
+  scaleCurve: {
+    key: F.SCALE_CURVE_KEY,
+    ok: F.SCALE_CURVE_OK,
+    unknown: F.UNKNOWN_SCALE_CURVE,
+  },
+  crosscheck: {
+    key: F.CROSSCHECK_KEY,
+    ok: F.CROSSCHECK_OK,
+    unknown: F.UNKNOWN_CROSSCHECK,
+  },
 };
 /** Cards whose files are on main in this build. A card wired ahead of its file is empty until it lands. */
 const ON_MAIN: ProofCardId[] = [
@@ -110,6 +146,7 @@ const ON_MAIN: ProofCardId[] = [
   "callLedger",
   "rtReplay",
   "schStudy",
+  "scaleCurve",
   "crosscheck",
 ];
 const IDS = Object.keys(PROOF_FILES) as ProofCardId[];
@@ -119,7 +156,8 @@ const every = (pick: (f: (typeof FIXTURES)[ProofCardId]) => string) =>
 describe("proof sources", () => {
   it("a missing file is the empty state", () => {
     const s = assembleProof({});
-    for (const id of IDS) expect(s[id]).toEqual({ state: "empty", file: PROOF_FILES[id] });
+    for (const id of IDS)
+      expect(s[id]).toEqual({ state: "empty", file: PROOF_FILES[id] });
   });
 
   it("a file that does not parse is broken", () => {
@@ -132,7 +170,8 @@ describe("proof sources", () => {
     for (const id of IDS) {
       const src = s[id];
       expect(src.state, id).toBe("unknown");
-      if (src.state === "unknown") expect(src.reason.length, id).toBeGreaterThan(0);
+      if (src.state === "unknown")
+        expect(src.reason.length, id).toBeGreaterThan(0);
     }
   });
 
@@ -144,7 +183,9 @@ describe("proof sources", () => {
   it("every file on main parses in the shape its card reads; the rest are absent, never broken", () => {
     const s = loadProofSources();
     for (const id of IDS)
-      expect(s[id].state, `${id}: ${s[id].file}`).toBe(ON_MAIN.includes(id) ? "ok" : "empty");
+      expect(s[id].state, `${id}: ${s[id].file}`).toBe(
+        ON_MAIN.includes(id) ? "ok" : "empty",
+      );
   });
 });
 
@@ -364,7 +405,9 @@ describe("step-stats card", () => {
     return openDrawer().querySelector('[data-card="stepStats"]')!;
   };
   const days = (c: Element, month: string, hb: number) =>
-    c.querySelector(`[data-hist="${month}"] rect[data-hour="${hb}"]`)?.getAttribute("data-days");
+    c
+      .querySelector(`[data-hist="${month}"] rect[data-hour="${hb}"]`)
+      ?.getAttribute("data-days");
 
   it("draws October and July step hours from per_day, only inside each window", () => {
     const c = card();
@@ -381,7 +424,8 @@ describe("step-stats card", () => {
     const c = card();
     const bands = c.querySelectorAll('rect[data-band="target-hours"]');
     expect(bands).toHaveLength(2);
-    for (const b of bands) expect(Number(b.getAttribute("width"))).toBeGreaterThan(0);
+    for (const b of bands)
+      expect(Number(b.getAttribute("width"))).toBeGreaterThan(0);
   });
 
   it("shows the tests with chips: binomial k of n and p, permutation hits of draws and p", () => {
@@ -395,7 +439,7 @@ describe("step-stats card", () => {
     expect(fig('[data-stat="perm-p"]')).toBe("0.004");
     expect(fig('[data-stat="repro-match"]')).toBe("2");
     expect(fig('[data-stat="repro-total"]')).toBe("3");
-    expect(c.querySelectorAll('[data-month]')).toHaveLength(2);
+    expect(c.querySelectorAll("[data-month]")).toHaveLength(2);
     expect(strayDigits(c)).toEqual([]);
   });
 
@@ -635,6 +679,77 @@ describe("SCH study card", () => {
   });
 });
 
+describe("scale-curve card", () => {
+  const SERIES = ["fixed_overnight", "clearlane", "dp_price_only", "dp_wear10"];
+  const card = (raw = F.SCALE_CURVE_OK) => {
+    renderDrawer(assembleProof({ [F.SCALE_CURVE_KEY]: raw }));
+    return openDrawer().querySelector('[data-card="scaleCurve"]')!;
+  };
+
+  it("draws a line, a band and one point per fleet size for each timetable", () => {
+    const c = card();
+    const attr = (sel: string, a: string) =>
+      [...c.querySelectorAll(sel)].map((e) => e.getAttribute(a));
+    expect(attr("g[data-series]", "data-series")).toEqual(SERIES);
+    expect(attr("path[data-band]", "data-band")).toEqual(SERIES);
+    for (const id of SERIES)
+      expect(
+        attr(`g[data-series="${id}"] circle[data-point]`, "data-point"),
+      ).toEqual(["70", "140", "500"]);
+  });
+
+  it("starts each row at its pinned stage value, then reads the first MOU and the ceiling", () => {
+    const c = card();
+    for (const key of [
+      "fixed_usd_mw_day",
+      "clearlane_usd_mw_day",
+      "price_only_usd_mw_day",
+      "wear10_usd_mw_day",
+    ])
+      expect(
+        c.querySelector(`[data-num="${key}"]`)?.getAttribute("data-num-state"),
+      ).toBe("ok");
+    expect(figures(c.querySelector('[data-series-row="clearlane"]'))).toEqual([
+      "$58.41",
+      "$56.13",
+      "$42.12",
+      "$39.81",
+      "$44.53",
+      "72%",
+    ]);
+  });
+
+  it("names the fleet sizes from the pinned Torus keys and calls the ceiling a ceiling", () => {
+    const c = card();
+    for (const key of ["mou_70mw", "torus_500mw"]) {
+      const n = c.querySelector(`[data-num="${key}"]`);
+      expect(n?.getAttribute("data-num-state")).toBe("ok");
+      expect(n?.getAttribute("data-prov")).toBe("TORUS_PUBLISHED");
+    }
+    expect(c.textContent).toContain(COPY.mouCeiling);
+  });
+
+  it("lists inconclusive hours only when there are some", () => {
+    expect(card().querySelector("[data-hours]")).toBeNull();
+    cleanup();
+    const hours = card(
+      F.scaleCurve({ inconclusive: [18, 19] }),
+    ).querySelectorAll("[data-hours]");
+    expect(hours).toHaveLength(1);
+    expect(
+      [...hours[0]!.querySelectorAll("[data-time]")].map((t) => t.textContent),
+    ).toEqual([clock(18), clock(19)]);
+  });
+
+  it("puts the minus sign before the dollar sign", () => {
+    const c = card(F.scaleCurve({ fixedAtCeiling: -1.5 }));
+    expect(
+      figures(c.querySelector('[data-series-row="fixed_overnight"]')),
+    ).toContain("-$1.50");
+    expect(c.textContent).not.toContain("$-");
+  });
+});
+
 describe("proof drawer in presenter mode", () => {
   it("sits next to Sources in the footer, opens, and Esc hands focus back to the presenter", () => {
     const { container } = render(
@@ -646,11 +761,14 @@ describe("proof drawer in presenter mode", () => {
     );
     const nav = container.querySelector<HTMLElement>(".p-nav")!;
     const buttons: HTMLElement[] = [...nav.querySelectorAll("button")];
-    const sources = nav.querySelector<HTMLButtonElement>('[data-action="sources"]')!;
+    const sources = nav.querySelector<HTMLButtonElement>(
+      '[data-action="sources"]',
+    )!;
     const proof = within(nav).getByRole("button", { name: COPY.proofPill });
     expect(buttons.indexOf(proof)).toBe(buttons.indexOf(sources) + 1);
     expect(proof.className).toContain("p-pill");
-    const where = () => `${document.body.dataset.screen}/${document.body.dataset.actions}`;
+    const where = () =>
+      `${document.body.dataset.screen}/${document.body.dataset.actions}`;
     const start = where();
     fireEvent.click(proof);
     expect(drawer()).not.toBeNull();

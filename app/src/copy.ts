@@ -170,6 +170,27 @@ export const COPY = {
   proofSchStageOff: ". The study's check against the envelope reads:",
   proofSchSeason: "Season:",
 
+  proofScaleTitle: "What if the fleet moves prices?",
+  proofScaleLead:
+    "The Scale beat assumes the fleet does not move prices. This estimate lets each hour's day-ahead price move with the fleet's own charging and discharging, and shows what that does to value to RMP's system per MW of fleet.",
+  proofScaleAria:
+    "For each timetable, value per MW-day as the fleet grows from no price impact to the MOU ceiling, with a shaded band around each line.",
+  proofScaleXAxis: "fleet size, MW",
+  proofScaleNote:
+    "Each line starts at the value with no price impact and follows the central estimate; the shading is its band.",
+  proofScaleWear10: "Hourly plan with wear priced in",
+  proofScaleTaker: "with no price impact,",
+  proofScaleAtFirst: "at the first MOU and",
+  proofScaleAtCeiling: "at the MOU ceiling (band",
+  proofScaleOfTaker: "of the value with no price impact.",
+  proofScaleFleetPre: "Fleet sizes:",
+  proofScaleFirstMou: "MW, the first MOU;",
+  proofScaleMw: "MW, the",
+  proofScaleAssoc:
+    "The price response comes from how PacifiCorp East day-ahead prices have moved with net load. Gas prices, imports and the wider EDAM footprint move them too, so it is an association, not a measured price impact: an estimate with a band, not a forecast.",
+  proofScaleInconclusive: "Hours whose price response could not be told from zero:",
+  proofScaleClamped: "Hours whose response was clamped to none:",
+
   fixedLabel: "Battery on the off-peak rule",
   clearlaneLabel: "Simulated Torus-style station on Clearlane",
   priceOnlyLabel: "Battery-only plan",

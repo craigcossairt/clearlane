@@ -14,6 +14,7 @@ export const PROOF_FILES = {
   callLedger: "public/derived/call_ledger.json",
   rtReplay: "public/derived/rt_replay.json",
   schStudy: "science/sch_study.json",
+  scaleCurve: "public/derived/scale_curve.json",
   crosscheck: "science/crosscheck.json",
 } as const;
 
@@ -185,6 +186,39 @@ export interface SchStudy {
   oct27: { status: string; envelope_system_critical_hb: number[] };
 }
 
+export const SCALE_SERIES = [
+  "fixed_overnight",
+  "clearlane",
+  "dp_price_only",
+  "dp_wear10",
+] as const;
+export type ScaleSeriesId = (typeof SCALE_SERIES)[number];
+
+export interface ScalePoint {
+  fleet_mw: number;
+  usd_per_mw_day: number;
+  band_low_usd_per_mw_day: number;
+  band_high_usd_per_mw_day: number;
+  pct_of_price_taker: number;
+}
+
+export interface ScaleSeries {
+  id: ScaleSeriesId;
+  price_taker_keys: string[];
+  price_taker_usd_per_mw_day: number;
+  inconclusive_traded_hb: number[];
+  points: ScalePoint[];
+}
+
+/** public/derived/scale_curve.json (#73): value per MW as the fleet grows and moves prices. */
+export interface ScaleCurve {
+  schema: "clearlane.scale_curve/v1";
+  prov: Provenance;
+  fleet_mw: number[];
+  slopes: { clamped_hb: number[]; inconclusive_hb: number[] };
+  series: ScaleSeries[];
+}
+
 export interface ProofSources {
   stepStats: CardSource<StepStats>;
   backtest: CardSource<BacktestResult>;
@@ -192,6 +226,7 @@ export interface ProofSources {
   callLedger: CardSource<CallLedger>;
   rtReplay: CardSource<RtReplay>;
   schStudy: CardSource<SchStudy>;
+  scaleCurve: CardSource<ScaleCurve>;
   crosscheck: CardSource<CrossCheck>;
 }
 
@@ -411,7 +446,12 @@ export const readSchStudy: Reader<SchStudy> = (json) => {
   const overlap = json.overlap;
   for (const r of SCH_RULES) {
     const m = isObj(overlap) && isObj(overlap[r]) ? overlap[r].mountain : null;
-    if (!isObj(m) || !finite(m.coverage) || !finite(m.budget) || !finite(m.lift))
+    if (
+      !isObj(m) ||
+      !finite(m.coverage) ||
+      !finite(m.budget) ||
+      !finite(m.lift)
+    )
       return `no Mountain overlap for ${r}`;
   }
   const oct = json.oct27;
@@ -423,6 +463,51 @@ export const readSchStudy: Reader<SchStudy> = (json) => {
   )
     return "no stage-day check";
   return json as unknown as SchStudy;
+};
+
+const numbers = (v: unknown) => Array.isArray(v) && v.every(finite);
+
+export const readScaleCurve: Reader<ScaleCurve> = (json) => {
+  if (!isObj(json) || json.schema !== "clearlane.scale_curve/v1")
+    return "schema is not clearlane.scale_curve/v1";
+  if (!isProv(json.prov)) return "no provenance";
+  if (!numbers(json.fleet_mw) || (json.fleet_mw as number[]).length === 0)
+    return "no fleet sizes";
+  if (
+    !isObj(json.slopes) ||
+    !numbers(json.slopes.clamped_hb) ||
+    !numbers(json.slopes.inconclusive_hb)
+  )
+    return "no clamped or inconclusive hours";
+  if (!Array.isArray(json.series) || json.series.length === 0)
+    return "no series";
+  for (const sr of json.series) {
+    if (!isObj(sr) || !SCALE_SERIES.includes(sr.id as ScaleSeriesId))
+      return `unknown series ${isObj(sr) ? String(sr.id) : ""}`;
+    if (
+      !Array.isArray(sr.price_taker_keys) ||
+      typeof sr.price_taker_keys[0] !== "string" ||
+      !finite(sr.price_taker_usd_per_mw_day) ||
+      !numbers(sr.inconclusive_traded_hb) ||
+      !Array.isArray(sr.points) ||
+      sr.points.length === 0
+    )
+      return `${String(sr.id)} has no price-taker value or points`;
+    for (const pt of sr.points) {
+      if (
+        !isObj(pt) ||
+        ![
+          "fleet_mw",
+          "usd_per_mw_day",
+          "band_low_usd_per_mw_day",
+          "band_high_usd_per_mw_day",
+          "pct_of_price_taker",
+        ].every((k) => finite(pt[k]))
+      )
+        return `${String(sr.id)} has a point without its value and band`;
+    }
+  }
+  return json as unknown as ScaleCurve;
 };
 
 const repoPath = (globKey: string) => globKey.replace(/^(\.\.\/)+/, "");
@@ -459,6 +544,7 @@ export function assembleProof(raw: Record<string, unknown>): ProofSources {
     callLedger: read(raw, PROOF_FILES.callLedger, readCallLedger),
     rtReplay: read(raw, PROOF_FILES.rtReplay, readRtReplay),
     schStudy: read(raw, PROOF_FILES.schStudy, readSchStudy),
+    scaleCurve: read(raw, PROOF_FILES.scaleCurve, readScaleCurve),
     crosscheck: read(raw, PROOF_FILES.crosscheck, readCrossCheck),
   };
 }
@@ -561,6 +647,7 @@ export function loadProofSources(): ProofSources {
         "../../../science/step_stats.json",
         "../../../public/derived/backtest.json",
         "../../../science/backtest_intervals.json",
+        "../../../public/derived/scale_curve.json",
         "../../../science/crosscheck.json",
       ],
       {
