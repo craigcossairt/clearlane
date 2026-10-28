@@ -149,6 +149,15 @@ if (stretch && existsSync(at("public/derived/rt_replay.json"))) {
   const w = JSON.parse(readFileSync(at("public/derived/rt_replay.json"), "utf8")).window;
   engine("replay.ts", "--rt", `public/data/rt_${w.start_mt}_${w.end_mt}.json`);
 }
+// The territory backtests (#237) are price only: each re-runs on the history and window its committed
+// output covers, at the stage W from the fresh backtest.json above. Each writes its own _days file too.
+for (const node of ["pacw", "pge"]) {
+  const f = `public/derived/backtest_${node}.json`;
+  if (!stretch || !existsSync(at(f))) continue;
+  const w = JSON.parse(readFileSync(at(f), "utf8")).window;
+  const hist = `public/data/hist_${node}_${w.start_mt}_${w.end_mt}.json`;
+  engine("backtest.ts", "--hist", hist, "--start", w.start_mt, "--end", w.end_mt, "--out", f);
+}
 
 // 3. Compare.
 const CORE_FILES = ["backtest.json", "backtest_days.json", `envelope_${day}.json`, "numbers.json", "site_default.json"];
