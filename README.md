@@ -5,8 +5,8 @@ at the Hard Tech Hackathon, Salt Lake City, October 2026.
 
 Clearlane reads the day-ahead price for PacifiCorp East, charges the battery (Pulse) in the midday clear lane when
 solar floods the grid, stays off the road in the evening jam, and keeps the flywheel (Spin) ready for Rocky Mountain
-Power's demand response calls. It exports an hourly operating envelope that marks the System Critical Hours, the hours
-the grid needs most. The envelope is a format Clearlane proposes.
+Power's demand response calls. It exports an hourly operating envelope that marks the System Critical Hours, the grid's
+tightest hours. The envelope is a format Clearlane proposes.
 
 The stations here are simulated Torus-style stations. Prices and forecasts are real public data, and everything
 simulated is labeled on screen. Dollar values are value to RMP's system at day-ahead prices, not revenue for Torus or
