@@ -52,11 +52,11 @@ As shown on the "Meet the judges" slide (s2):
 |---|---|---|---|
 | 01 | Ryan Byrd | Former CTO of Entrata, Aptive, and Pattern | in/ryanbyrd |
 | 02 | Angela Smith | COO of Nucleus Fund | in/angelasmith116 |
-| 03 | Nicole Witmyer | Strategic Events Leader of Torus | in/nicole-hopkins |
+| 03 | The Torus judge | Strategic Events Leader of Torus | not listed here |
 | 04 | Scott Holley | Executive Director, Lassonde Center at the U of U | none shown |
 | 05 | Tanner Potter | Partner at Kickstart | none shown |
 
-- **Who scores Torus.** s2 does not say which bounty each judge scores (not stated). The Nucleus slide (s4) lists its own panel: Angela Smith, Tyler Jennings, Cam Dionne and Dylan Doty. Nicole Witmyer is the only Torus person shown.
+- **Who scores Torus.** s2 does not say which bounty each judge scores (not stated). The Nucleus slide (s4) lists its own panel: Angela Smith, Tyler Jennings, Cam Dionne and Dylan Doty. The Torus judge is the only Torus person shown.
 - **Our read of the panel (ASSUMPTION).** It mixes an engineering leader, investors and a university center lead, and only one judge is from Torus. The story has to land without grid expertise, and the engineering has to hold up under a former CTO's questions.
 
 ## 5. Judging criteria
@@ -79,7 +79,7 @@ As shown on the "Meet the judges" slide (s2):
 
 ## 7. To confirm Tuesday morning
 
-Ask the organizers, or Nicole Witmyer for the Torus items:
+Ask the organizers, or the Torus judge for the Torus items:
 1. What criteria, and what weights, will Torus use to pick the winner?
 2. Where, in what format and by what time do we submit?
 3. How long is each presentation, and do we use our own laptop?

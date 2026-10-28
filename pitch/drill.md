@@ -74,7 +74,7 @@ For Tuesday night. Twenty questions by judge, each with its answer (from `pitch/
 
    Trap: "Torus stations": they are simulated Torus-style
 
-### Nicole Witmyer
+### The Torus judge
 
 12. **Isn't this what Lasso already does?**
 
@@ -156,7 +156,7 @@ Grades are A to D on whether the script and cards would hold up to that judge's 
 
 **Angela Smith, path to reality: B minus.** "Is Utah allowed to cycle daily" had a non-answer; the rewrite says what we checked and where the question gets settled. The ask is one line and stays an ask. Gap: no answer yet on who would pay for a pilot.
 
-**Nicole Witmyer, Torus and Lasso: B plus.** Every Lasso line now says "not advertised" or "a format Clearlane proposes", and Torus's answers carry the source line without naming anyone. Risk: Craig paraphrasing Torus's message on stage beyond the four answered points.
+**The Torus judge, Torus and Lasso: B plus.** Every Lasso line now says "not advertised" or "a format Clearlane proposes", and Torus's answers carry the source line without naming anyone. Risk: Craig paraphrasing Torus's message on stage beyond the four answered points.
 
 **Scott Holley, Utah impact: C plus.** Only three cards. "What does Utah get" was vague; the rewrite ties it to calls answered and the system value. Gap: nothing on students or the Lassonde Center; Craig should have one honest sentence ready.
 

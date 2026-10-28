@@ -35,7 +35,7 @@ Gaps Torus does not advertise on any page I read:
 - Do not use Torus logos, copy their branding, or present the demo as a Torus product. Use their vocabulary in the pitch, but brand the project as its own tool.
 - Absence on marketing pages is not absence in the product. Lasso may already use carbon or congestion signals internally. Say 'not advertised', never 'Torus lacks'.
 - The Torus site contradicts itself (545k vs 582k sq ft; 99% vs 99.9% uptime; Nova vs Station naming). Do not quote these numbers in the pitch without checking, or use the body text rather than the meta descriptions.
-- The judging panel is mixed: per the brief, Nicole Witmyer is Torus's events lead, and the others are a CTO, investors and an academic. The story must land without grid expertise, so lead with a visual traffic-report or map metaphor.
+- The judging panel is mixed: per the brief, the Torus judge is Torus's events lead, and the others are a CTO, investors and an academic. The story must land without grid expertise, so lead with a visual traffic-report or map metaphor.
 - Making Option 2 the main concept risks a weaker link to Torus: compute routing is not a Torus business line, and their only data-center tie is two FAQ sentences.
 ## OPEN QUESTIONS
 - Not read in this task: the RMP '500 MW of flexible capacity' case study (https://www.torus.co/case-studies/case-studies-rocky-mountain-power). It likely explains how the utility dispatches the Wattsmart fleet and is the most relevant unread page for Option 1.

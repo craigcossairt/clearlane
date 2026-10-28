@@ -110,11 +110,11 @@ A: Nobody yet: Torus asked ROWE for a transparent definition, and we found no Ut
 
 Source: FACTS `sch_hours_today`; `pitch/research-tariff.md`
 
-## Nicole Witmyer, Strategic Events Leader at Torus (fit with Torus and Lasso)
+## The Torus judge, Strategic Events Leader at Torus (fit with Torus and Lasso)
 
 ### Isn't this what Lasso already does?
 
-Judge: Nicole Witmyer
+Judge: The Torus judge
 
 A: Lasso forecasts and dispatches in under `{lasso_dispatch_ms}`, and that is Torus-published. A day-ahead timetable keyed to EDAM prices and an hourly envelope are not advertised, and the envelope is a format Clearlane proposes.
 
@@ -122,7 +122,7 @@ Source: FACTS `lasso_dispatch_ms`, `lasso_inputs`; `research/TORUS.md` section 7
 
 ### How sure are you this is not already inside Lasso?
 
-Judge: Nicole Witmyer
+Judge: The Torus judge
 
 A: We are not sure, so we say "not advertised", from Torus's own pages. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026).
 
@@ -130,7 +130,7 @@ Source: `research/TORUS.md` section 7; FACTS `lasso_external_schedule_api`
 
 ### What did Torus tell you?
 
-Judge: Nicole Witmyer
+Judge: The Torus judge
 
 A: That the 2025 heatmap hours are Mountain time, that all `{rmp_events_2025}` events in 2025 were unplanned calls, and that we may quote the published Spin and Pulse specs and event data with attribution. Whether Lasso's API takes an outside envelope is unknown to Torus too (Torus, message to Craig Cossairt, Oct 27 2026).
 
@@ -138,7 +138,7 @@ Source: FACTS `rmp_events_2025_unplanned`, `torus_quote_permission`, `lasso_exte
 
 ### What if the call lands during the jam?
 
-Judge: Nicole Witmyer
+Judge: The Torus judge
 
 A: The call needs power, not energy, and Spin sized to the enrolled kW covers one call of about five and a half minutes. Pulse keeps its plan, and the rest of the day is re-solved from the state of charge after the call.
 
@@ -146,7 +146,7 @@ Source: FACTS `call_duration_s`, `enrolled_kw`
 
 ### Does midday charging blow up the host's demand charge?
 
-Judge: Nicole Witmyer
+Judge: The Torus judge
 
 A: The planner treats the host's 15-minute ceiling as a hard limit, and the meter stays under `{host_ceiling_kw}` kW. We show kW, not dollars, because a host bill cut is not what we claim.
 
@@ -154,7 +154,7 @@ Source: FACTS `host_ceiling_kw`; `pitch/research-tariff.md`
 
 ### Does Torus earn the money on the race card?
 
-Judge: Nicole Witmyer
+Judge: The Torus judge
 
 A: No: it is value to RMP's system at day-ahead prices, not Torus revenue and not a host bill cut. Torus and hosts share it only if a program credits scheduled dispatch.
 
