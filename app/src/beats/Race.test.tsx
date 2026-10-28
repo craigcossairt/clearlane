@@ -77,6 +77,25 @@ describe("beat 2 race", () => {
     expect(text).not.toMatch(/charges at/i);
   });
 
+  it("reads the Clearlane end card from the reference keys beat 6 scales (#184)", () => {
+    const card = renderRace(24).container.querySelector('[data-card="clearlane"]');
+    if (!card) throw new Error("no clearlane card");
+    const keys = [...card.querySelectorAll("[data-num]")].map((n) => n.getAttribute("data-num"));
+    expect(keys).toEqual([
+      "clearlane_usd_mw_day",
+      "race_ratio",
+      "clearlane_70",
+      "co2_avoided_70",
+    ]);
+    for (const k of ["clearlane_usd_mw_day", "race_ratio", "clearlane_70"]) {
+      const entry = data.numbers?.find((n) => n.key === k);
+      if (!entry) continue;
+      const el = card.querySelector(`[data-num="${k}"]`);
+      expect(el?.textContent).toContain(entry.display);
+      expect(el?.getAttribute("data-prov")).toBe(entry.prov);
+    }
+  });
+
   it("shows a cycles line and a host meter for each side, in kW only", () => {
     const { container } = renderRace(24);
     expect(container.querySelector('[data-slot="cycles-fixed_overnight"]')).toBeTruthy();
