@@ -1,0 +1,2104 @@
+{
+  "checks": [
+    {
+      "abs_diff": {
+        "calls_unanswerable_pct_points": 0.0,
+        "co2_t_per_mw_day": 0.0,
+        "usd_per_mw_day": 0.0
+      },
+      "check": "sensitivity_base_vs_backtest",
+      "inputs": [
+        "public/derived/sensitivity.json",
+        "public/derived/backtest.json"
+      ],
+      "output": "sensitivity.json",
+      "owner": "engine",
+      "published": {
+        "calls_unanswerable_pct_points": -21.81818181818182,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "usd_per_mw_day": 34.284468376185146
+      },
+      "science": {
+        "calls_unanswerable_pct_points": -21.81818181818182,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "usd_per_mw_day": 34.284468376185146
+      },
+      "status": "match",
+      "what": "base.gap = clearlane minus fixed_overnight means in backtest.json (CO2 estimated)"
+    },
+    {
+      "axes_disagreeing": [
+        "dp_soc_states"
+      ],
+      "axes_without_gap_base": [
+        "host_load_archetype (pending)",
+        "co2_basis (pending)"
+      ],
+      "check": "sensitivity_base_internal",
+      "inputs": [
+        "public/derived/sensitivity.json"
+      ],
+      "output": "sensitivity.json",
+      "owner": "engine",
+      "scans_equal_base": true,
+      "status": "mismatch",
+      "what": "every axis gap_base and the spread x 1 and wear x W scans equal base.gap"
+    },
+    {
+      "check": "sensitivity_by_day_spread",
+      "inputs": [
+        "public/derived/backtest_days.json",
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        "public/derived/sensitivity.json"
+      ],
+      "output": "sensitivity.json",
+      "owner": "engine",
+      "published": {
+        "bands": [
+          {
+            "days": 21,
+            "from_usd_mwh": 0,
+            "rule_ties_or_wins": 9,
+            "to_usd_mwh": 15
+          },
+          {
+            "days": 55,
+            "from_usd_mwh": 15,
+            "rule_ties_or_wins": 6,
+            "to_usd_mwh": 25
+          },
+          {
+            "days": 56,
+            "from_usd_mwh": 25,
+            "rule_ties_or_wins": 0,
+            "to_usd_mwh": 50
+          },
+          {
+            "days": 47,
+            "from_usd_mwh": 50,
+            "rule_ties_or_wins": 1,
+            "to_usd_mwh": null
+          }
+        ],
+        "days": 179,
+        "mean_daily_spread_usd_mwh": 36.51046944134077,
+        "rule_ties_or_wins": 16
+      },
+      "science": {
+        "bands": [
+          {
+            "days": 21,
+            "from_usd_mwh": 0,
+            "rule_ties_or_wins": 9,
+            "to_usd_mwh": 15
+          },
+          {
+            "days": 55,
+            "from_usd_mwh": 15,
+            "rule_ties_or_wins": 6,
+            "to_usd_mwh": 25
+          },
+          {
+            "days": 56,
+            "from_usd_mwh": 25,
+            "rule_ties_or_wins": 0,
+            "to_usd_mwh": 50
+          },
+          {
+            "days": 47,
+            "from_usd_mwh": 50,
+            "rule_ties_or_wins": 1,
+            "to_usd_mwh": null
+          }
+        ],
+        "days": 179,
+        "mean_daily_spread_usd_mwh": 36.51046944134078,
+        "rule_ties_or_wins": 16
+      },
+      "status": "match",
+      "what": "days where the off-peak rule ties or beats Clearlane, by daily price spread (value comparison)"
+    },
+    {
+      "check": "ledger_recount",
+      "density_fields_disagreeing": [],
+      "inputs": [
+        "public/derived/call_ledger.json",
+        "public/data/torus_published.json"
+      ],
+      "output": "call_ledger.json",
+      "owner": "engine",
+      "published": {
+        "per_reading": {
+          "mt": {
+            "calls": 359,
+            "days_with_calls": 158,
+            "max_calls_one_day": 7
+          },
+          "utc": {
+            "calls": 359,
+            "days_with_calls": 155,
+            "max_calls_one_day": 7
+          }
+        },
+        "replay_density": {
+          "backtest_days": 179,
+          "calls_per_day": 2.005586592178771,
+          "calls_per_reading": 359,
+          "rate_2025_per_day": 0.9835616438356164,
+          "ratio_to_2025_rate": 2.039106145251397
+        }
+      },
+      "science": {
+        "per_reading": {
+          "mt": {
+            "calls": 359,
+            "days_with_calls": 158,
+            "labels_equal_heatmap": true,
+            "max_calls_one_day": 7
+          },
+          "utc": {
+            "calls": 359,
+            "days_with_calls": 155,
+            "labels_equal_heatmap": true,
+            "max_calls_one_day": 7
+          }
+        },
+        "replay_density": {
+          "backtest_days": 179,
+          "calls_per_day": 2.005586592178771,
+          "calls_per_reading": 359,
+          "rate_2025_per_day": 0.9835616438356164,
+          "ratio_to_2025_rate": 2.039106145251397
+        }
+      },
+      "status": "match",
+      "summary_fields_disagreeing": [],
+      "what": "calls, days, labels, delivered shares, shortfalls and density recounted from the rows"
+    },
+    {
+      "check": "ledger_overlap_closed_form",
+      "inputs": [
+        "public/derived/call_ledger.json",
+        "public/derived/site_default.json",
+        "public/data/torus_published.json"
+      ],
+      "output": "call_ledger.json",
+      "owner": "engine",
+      "published": {
+        "calls_inside_prior_refill_window": 22
+      },
+      "science": {
+        "accept_hi": 161,
+        "accept_lo": 3,
+        "call_energy_kwh": 22.256944444444443,
+        "expected_full": 7.513181283140589,
+        "expected_host_at_2025_rate": 4.253197099443811,
+        "expected_host_central": 17.68459734631883,
+        "expected_pulse": 140.75459657199266,
+        "full_refill_kw": 250,
+        "same_day_prob": 0.0055507288186518195,
+        "w_full_s": 650.5,
+        "w_host_s_max": 9506.5625,
+        "w_host_s_min": 60,
+        "w_pulse_s_max": 44342.5,
+        "window_days_by_weekday": [
+          26,
+          26,
+          25,
+          25,
+          25,
+          26,
+          26
+        ]
+      },
+      "status": "match",
+      "what": "calls inside the prior refill window: closed form at the ledger's density vs the replay (Mountain)"
+    },
+    {
+      "check": "ledger_overlap_recount_mt",
+      "for_stage": true,
+      "inputs": [
+        "public/derived/call_ledger.json",
+        "public/derived/site_default.json"
+      ],
+      "output": "call_ledger.json",
+      "owner": "engine",
+      "published": {
+        "calls_inside_prior_refill_window": 22
+      },
+      "science": {
+        "recount_full": 8,
+        "recount_host": 19,
+        "recount_pulse": 100
+      },
+      "status": "match",
+      "what": "calls inside the prior refill window recounted from the ledger's start times (Mountain, the stage reading)"
+    },
+    {
+      "check": "ledger_overlap_recount_utc",
+      "for_stage": false,
+      "inputs": [
+        "public/derived/call_ledger.json",
+        "public/derived/site_default.json"
+      ],
+      "output": "call_ledger.json",
+      "owner": "engine",
+      "published": {
+        "calls_inside_prior_refill_window": 18
+      },
+      "science": {
+        "recount_full": 8,
+        "recount_host": 17,
+        "recount_pulse": 103
+      },
+      "status": "match",
+      "what": "calls inside the prior refill window recounted from the ledger's start times (UTC reading: a sensitivity only)"
+    },
+    {
+      "bins_disagreeing": [],
+      "check": "co2_reproduction",
+      "inputs": [
+        "prep/data/eia_pace_hourly.csv",
+        "public/data/response_tables.json"
+      ],
+      "output": "response_tables.json",
+      "owner": "data",
+      "published": {
+        "bins": 192,
+        "pairs_skipped": 24
+      },
+      "science": {
+        "bins": 192,
+        "max_abs_r2_diff": 4.995207100506882e-05,
+        "max_abs_slope_diff_g_kwh": 0.0495258085964565,
+        "pairs_skipped": 24
+      },
+      "status": "match",
+      "what": "hour-of-day OLS slopes, n and R2 of the estimated marginal CO2 table, reproduced from the EIA CSV"
+    },
+    {
+      "cells": [
+        {
+          "hi": 410.8,
+          "hour_mt": 0,
+          "lo": 191.5,
+          "load_binned": 258.8191149677692,
+          "load_binned_hour_demeaned": 307.98001446493237,
+          "season": "DJF"
+        },
+        {
+          "hi": 616.4,
+          "hour_mt": 1,
+          "lo": 364.6,
+          "load_binned": 267.91721853024217,
+          "load_binned_hour_demeaned": 311.237389572842,
+          "season": "DJF"
+        },
+        {
+          "hi": 679.9,
+          "hour_mt": 2,
+          "lo": 362.3,
+          "load_binned": 288.4982303422321,
+          "load_binned_hour_demeaned": 330.97188871013356,
+          "season": "DJF"
+        },
+        {
+          "hi": 595.2,
+          "hour_mt": 3,
+          "lo": 311.9,
+          "load_binned": 298.3354096209317,
+          "load_binned_hour_demeaned": 334.71972181629747,
+          "season": "DJF"
+        },
+        {
+          "hi": 620.0,
+          "hour_mt": 4,
+          "lo": 330.5,
+          "load_binned": 294.93576837908944,
+          "load_binned_hour_demeaned": 328.3418378666131,
+          "season": "DJF"
+        },
+        {
+          "hi": 626.8,
+          "hour_mt": 5,
+          "lo": 418.7,
+          "load_binned": 278.55293645333666,
+          "load_binned_hour_demeaned": 325.01465922800094,
+          "season": "DJF"
+        },
+        {
+          "hi": 628.0,
+          "hour_mt": 6,
+          "lo": 447.5,
+          "load_binned": 245.4473758796997,
+          "load_binned_hour_demeaned": 298.0660438137134,
+          "season": "DJF"
+        },
+        {
+          "hi": 595.2,
+          "hour_mt": 7,
+          "lo": 349.8,
+          "load_binned": 239.30303160659767,
+          "load_binned_hour_demeaned": 308.31033511851206,
+          "season": "DJF"
+        },
+        {
+          "hi": 492.8,
+          "hour_mt": 9,
+          "lo": 147.6,
+          "load_binned": 230.19060232452887,
+          "load_binned_hour_demeaned": 332.9470991374711,
+          "season": "DJF"
+        },
+        {
+          "hi": 428.4,
+          "hour_mt": 10,
+          "lo": 107.5,
+          "load_binned": 218.96605161528217,
+          "load_binned_hour_demeaned": 323.44281088490044,
+          "season": "DJF"
+        },
+        {
+          "hi": 260.5,
+          "hour_mt": 11,
+          "lo": 35.3,
+          "load_binned": 219.19384165573106,
+          "load_binned_hour_demeaned": 319.9447589827741,
+          "season": "DJF"
+        },
+        {
+          "hi": 331.0,
+          "hour_mt": 12,
+          "lo": 97.5,
+          "load_binned": 215.1534415959035,
+          "load_binned_hour_demeaned": 318.59912927410755,
+          "season": "DJF"
+        },
+        {
+          "hi": 287.7,
+          "hour_mt": 13,
+          "lo": 35.7,
+          "load_binned": 220.67388581723358,
+          "load_binned_hour_demeaned": 331.3809017301408,
+          "season": "DJF"
+        },
+        {
+          "hi": 461.7,
+          "hour_mt": 14,
+          "lo": 220.1,
+          "load_binned": 224.85716043922204,
+          "load_binned_hour_demeaned": 334.06014101415616,
+          "season": "DJF"
+        },
+        {
+          "hi": 287.4,
+          "hour_mt": 15,
+          "lo": 32.4,
+          "load_binned": 227.44806068900297,
+          "load_binned_hour_demeaned": 329.4728862319573,
+          "season": "DJF"
+        },
+        {
+          "hi": 300.0,
+          "hour_mt": 16,
+          "lo": 108.2,
+          "load_binned": 236.38800352940578,
+          "load_binned_hour_demeaned": 325.0344496294388,
+          "season": "DJF"
+        },
+        {
+          "hi": 250.3,
+          "hour_mt": 17,
+          "lo": 54.8,
+          "load_binned": 230.37301146538496,
+          "load_binned_hour_demeaned": 308.6662357141467,
+          "season": "DJF"
+        },
+        {
+          "hi": 807.8,
+          "hour_mt": 18,
+          "lo": 499.4,
+          "load_binned": 218.6062236149233,
+          "load_binned_hour_demeaned": 309.42061838537626,
+          "season": "DJF"
+        },
+        {
+          "hi": 358.0,
+          "hour_mt": 19,
+          "lo": 154.2,
+          "load_binned": 214.24959449888104,
+          "load_binned_hour_demeaned": 310.1506986018308,
+          "season": "DJF"
+        },
+        {
+          "hi": 229.0,
+          "hour_mt": 20,
+          "lo": 48.4,
+          "load_binned": 212.31140026680595,
+          "load_binned_hour_demeaned": 302.57119986934225,
+          "season": "DJF"
+        },
+        {
+          "hi": 251.9,
+          "hour_mt": 21,
+          "lo": 43.4,
+          "load_binned": 217.39029818988047,
+          "load_binned_hour_demeaned": 296.5937205689687,
+          "season": "DJF"
+        },
+        {
+          "hi": 279.1,
+          "hour_mt": 22,
+          "lo": 46.8,
+          "load_binned": 228.9004655410077,
+          "load_binned_hour_demeaned": 301.7516310461218,
+          "season": "DJF"
+        },
+        {
+          "hi": 490.4,
+          "hour_mt": 23,
+          "lo": 237.0,
+          "load_binned": 241.54254348249964,
+          "load_binned_hour_demeaned": 303.7618944603688,
+          "season": "DJF"
+        },
+        {
+          "hi": 487.7,
+          "hour_mt": 0,
+          "lo": 217.8,
+          "load_binned": 81.13335923363726,
+          "load_binned_hour_demeaned": 190.8950621881517,
+          "season": "MAM"
+        },
+        {
+          "hi": 489.0,
+          "hour_mt": 1,
+          "lo": 250.4,
+          "load_binned": 83.55706510803766,
+          "load_binned_hour_demeaned": 189.6428088690541,
+          "season": "MAM"
+        },
+        {
+          "hi": 489.3,
+          "hour_mt": 2,
+          "lo": 175.2,
+          "load_binned": 85.28692773737407,
+          "load_binned_hour_demeaned": 187.17545056864486,
+          "season": "MAM"
+        },
+        {
+          "hi": 665.2,
+          "hour_mt": 3,
+          "lo": 315.6,
+          "load_binned": 105.0041382444698,
+          "load_binned_hour_demeaned": 197.96215292868467,
+          "season": "MAM"
+        },
+        {
+          "hi": 467.5,
+          "hour_mt": 4,
+          "lo": 227.3,
+          "load_binned": 95.62130373053633,
+          "load_binned_hour_demeaned": 197.36985761514987,
+          "season": "MAM"
+        },
+        {
+          "hi": 620.3,
+          "hour_mt": 5,
+          "lo": 300.8,
+          "load_binned": 98.51296875697109,
+          "load_binned_hour_demeaned": 205.86253407375122,
+          "season": "MAM"
+        },
+        {
+          "hi": 570.6,
+          "hour_mt": 6,
+          "lo": 264.3,
+          "load_binned": 69.83225403844429,
+          "load_binned_hour_demeaned": 194.51498443971582,
+          "season": "MAM"
+        },
+        {
+          "hi": 548.8,
+          "hour_mt": 8,
+          "lo": 360.3,
+          "load_binned": 6.005377006357933,
+          "load_binned_hour_demeaned": 153.35714248526577,
+          "season": "MAM"
+        },
+        {
+          "hi": 407.6,
+          "hour_mt": 9,
+          "lo": 165.9,
+          "load_binned": 1.368599626248454,
+          "load_binned_hour_demeaned": 134.38191128985042,
+          "season": "MAM"
+        },
+        {
+          "hi": 509.2,
+          "hour_mt": 10,
+          "lo": 163.3,
+          "load_binned": 13.054239840598237,
+          "load_binned_hour_demeaned": 139.67006967560573,
+          "season": "MAM"
+        },
+        {
+          "hi": 350.8,
+          "hour_mt": 12,
+          "lo": 27.1,
+          "load_binned": -6.786404295670152,
+          "load_binned_hour_demeaned": 140.6290098264926,
+          "season": "MAM"
+        },
+        {
+          "hi": 319.2,
+          "hour_mt": 13,
+          "lo": 5.2,
+          "load_binned": -6.064636369262893,
+          "load_binned_hour_demeaned": 135.5178945914313,
+          "season": "MAM"
+        },
+        {
+          "hi": 301.1,
+          "hour_mt": 14,
+          "lo": 1.0,
+          "load_binned": 7.85140802582559,
+          "load_binned_hour_demeaned": 128.53694928958615,
+          "season": "MAM"
+        },
+        {
+          "hi": 322.0,
+          "hour_mt": 18,
+          "lo": 66.7,
+          "load_binned": 3.748291067961382,
+          "load_binned_hour_demeaned": 164.68912079477406,
+          "season": "MAM"
+        },
+        {
+          "hi": 529.6,
+          "hour_mt": 21,
+          "lo": 222.1,
+          "load_binned": 12.56437413156876,
+          "load_binned_hour_demeaned": 171.65128226581163,
+          "season": "MAM"
+        },
+        {
+          "hi": 368.7,
+          "hour_mt": 22,
+          "lo": 191.4,
+          "load_binned": 25.1507142731519,
+          "load_binned_hour_demeaned": 176.88280503837032,
+          "season": "MAM"
+        },
+        {
+          "hi": 495.9,
+          "hour_mt": 23,
+          "lo": 269.3,
+          "load_binned": 41.702779625093655,
+          "load_binned_hour_demeaned": 174.62030988045953,
+          "season": "MAM"
+        },
+        {
+          "hi": 404.8,
+          "hour_mt": 0,
+          "lo": 234.8,
+          "load_binned": 20.374466618409887,
+          "load_binned_hour_demeaned": 284.3296433265417,
+          "season": "JJA"
+        },
+        {
+          "hi": 474.0,
+          "hour_mt": 1,
+          "lo": 298.6,
+          "load_binned": 64.07172554002288,
+          "load_binned_hour_demeaned": 318.2783371023316,
+          "season": "JJA"
+        },
+        {
+          "hi": 543.7,
+          "hour_mt": 2,
+          "lo": 226.0,
+          "load_binned": 97.05616591798679,
+          "load_binned_hour_demeaned": 337.92349684500766,
+          "season": "JJA"
+        },
+        {
+          "hi": 557.5,
+          "hour_mt": 3,
+          "lo": 385.4,
+          "load_binned": 130.28150524872612,
+          "load_binned_hour_demeaned": 371.5022012938116,
+          "season": "JJA"
+        },
+        {
+          "hi": 562.0,
+          "hour_mt": 4,
+          "lo": 380.2,
+          "load_binned": 155.939335318946,
+          "load_binned_hour_demeaned": 387.2844735764511,
+          "season": "JJA"
+        },
+        {
+          "hi": 403.7,
+          "hour_mt": 5,
+          "lo": 219.9,
+          "load_binned": 152.94997516402,
+          "load_binned_hour_demeaned": 386.5656484916125,
+          "season": "JJA"
+        },
+        {
+          "hi": 527.7,
+          "hour_mt": 6,
+          "lo": 317.6,
+          "load_binned": 139.4492615849002,
+          "load_binned_hour_demeaned": 379.0189728474676,
+          "season": "JJA"
+        },
+        {
+          "hi": 254.1,
+          "hour_mt": 7,
+          "lo": 72.1,
+          "load_binned": 72.06576769706552,
+          "load_binned_hour_demeaned": 324.04830334551843,
+          "season": "JJA"
+        },
+        {
+          "hi": 529.7,
+          "hour_mt": 8,
+          "lo": 398.3,
+          "load_binned": 34.87997898559516,
+          "load_binned_hour_demeaned": 297.3757003448624,
+          "season": "JJA"
+        },
+        {
+          "hi": 512.0,
+          "hour_mt": 9,
+          "lo": 377.7,
+          "load_binned": 25.392045728986968,
+          "load_binned_hour_demeaned": 285.93496176959843,
+          "season": "JJA"
+        },
+        {
+          "hi": 332.8,
+          "hour_mt": 10,
+          "lo": 153.9,
+          "load_binned": 14.380542257481782,
+          "load_binned_hour_demeaned": 262.7219065259856,
+          "season": "JJA"
+        },
+        {
+          "hi": 465.8,
+          "hour_mt": 11,
+          "lo": 272.6,
+          "load_binned": 20.66826790536212,
+          "load_binned_hour_demeaned": 251.3971097007425,
+          "season": "JJA"
+        },
+        {
+          "hi": 490.1,
+          "hour_mt": 12,
+          "lo": 305.5,
+          "load_binned": 14.673127309086077,
+          "load_binned_hour_demeaned": 242.10364646085873,
+          "season": "JJA"
+        },
+        {
+          "hi": 314.1,
+          "hour_mt": 13,
+          "lo": 154.9,
+          "load_binned": 14.023443926294263,
+          "load_binned_hour_demeaned": 235.37414284631956,
+          "season": "JJA"
+        },
+        {
+          "hi": 315.8,
+          "hour_mt": 14,
+          "lo": 123.9,
+          "load_binned": 11.282636588235526,
+          "load_binned_hour_demeaned": 229.62176030095154,
+          "season": "JJA"
+        },
+        {
+          "hi": 330.9,
+          "hour_mt": 15,
+          "lo": 157.1,
+          "load_binned": 15.331076453149057,
+          "load_binned_hour_demeaned": 219.43804076333174,
+          "season": "JJA"
+        },
+        {
+          "hi": 340.2,
+          "hour_mt": 16,
+          "lo": 116.6,
+          "load_binned": 23.83687631656506,
+          "load_binned_hour_demeaned": 218.6753833367098,
+          "season": "JJA"
+        },
+        {
+          "hi": 299.4,
+          "hour_mt": 17,
+          "lo": 136.1,
+          "load_binned": 23.287237749558717,
+          "load_binned_hour_demeaned": 221.36742654626076,
+          "season": "JJA"
+        },
+        {
+          "hi": 395.3,
+          "hour_mt": 18,
+          "lo": 204.8,
+          "load_binned": 15.05584248119043,
+          "load_binned_hour_demeaned": 221.85783004320567,
+          "season": "JJA"
+        },
+        {
+          "hi": 272.8,
+          "hour_mt": 19,
+          "lo": 106.6,
+          "load_binned": -1.801739657295154,
+          "load_binned_hour_demeaned": 230.59230021350032,
+          "season": "JJA"
+        },
+        {
+          "hi": 192.3,
+          "hour_mt": 22,
+          "lo": 8.4,
+          "load_binned": -14.120743330409448,
+          "load_binned_hour_demeaned": 251.60961854095603,
+          "season": "JJA"
+        },
+        {
+          "hi": 194.6,
+          "hour_mt": 23,
+          "lo": 60.9,
+          "load_binned": -4.15353509087845,
+          "load_binned_hour_demeaned": 261.96600542806584,
+          "season": "JJA"
+        },
+        {
+          "hi": 479.2,
+          "hour_mt": 0,
+          "lo": 252.7,
+          "load_binned": 126.07189693054195,
+          "load_binned_hour_demeaned": 279.4866383967324,
+          "season": "SON"
+        },
+        {
+          "hi": 455.0,
+          "hour_mt": 1,
+          "lo": 241.8,
+          "load_binned": 153.05433186703723,
+          "load_binned_hour_demeaned": 292.45553508536113,
+          "season": "SON"
+        },
+        {
+          "hi": 515.9,
+          "hour_mt": 2,
+          "lo": 306.2,
+          "load_binned": 183.56122533377683,
+          "load_binned_hour_demeaned": 306.98481788897817,
+          "season": "SON"
+        },
+        {
+          "hi": 548.6,
+          "hour_mt": 3,
+          "lo": 306.9,
+          "load_binned": 218.08113619039008,
+          "load_binned_hour_demeaned": 323.6730579587202,
+          "season": "SON"
+        },
+        {
+          "hi": 440.3,
+          "hour_mt": 4,
+          "lo": 195.6,
+          "load_binned": 230.750373831487,
+          "load_binned_hour_demeaned": 334.1069409432746,
+          "season": "SON"
+        },
+        {
+          "hi": 556.4,
+          "hour_mt": 5,
+          "lo": 317.3,
+          "load_binned": 219.73118573098043,
+          "load_binned_hour_demeaned": 327.8187142899224,
+          "season": "SON"
+        },
+        {
+          "hi": 666.6,
+          "hour_mt": 6,
+          "lo": 455.3,
+          "load_binned": 174.12756393866408,
+          "load_binned_hour_demeaned": 305.0429953281776,
+          "season": "SON"
+        },
+        {
+          "hi": 611.2,
+          "hour_mt": 7,
+          "lo": 317.1,
+          "load_binned": 139.48064326113797,
+          "load_binned_hour_demeaned": 286.60929220803894,
+          "season": "SON"
+        },
+        {
+          "hi": 240.9,
+          "hour_mt": 8,
+          "lo": 67.8,
+          "load_binned": 34.241384966084574,
+          "load_binned_hour_demeaned": 244.65498400140973,
+          "season": "SON"
+        },
+        {
+          "hi": 388.6,
+          "hour_mt": 9,
+          "lo": 234.8,
+          "load_binned": -9.517395234298725,
+          "load_binned_hour_demeaned": 219.3101964419664,
+          "season": "SON"
+        },
+        {
+          "hi": 492.8,
+          "hour_mt": 10,
+          "lo": 278.9,
+          "load_binned": -6.7012569839931855,
+          "load_binned_hour_demeaned": 220.73613173729873,
+          "season": "SON"
+        },
+        {
+          "hi": 381.4,
+          "hour_mt": 11,
+          "lo": 200.9,
+          "load_binned": -24.764668546148382,
+          "load_binned_hour_demeaned": 212.39723759626128,
+          "season": "SON"
+        },
+        {
+          "hi": 305.5,
+          "hour_mt": 12,
+          "lo": 124.6,
+          "load_binned": -34.60273165204525,
+          "load_binned_hour_demeaned": 207.62940428175096,
+          "season": "SON"
+        },
+        {
+          "hi": 300.1,
+          "hour_mt": 13,
+          "lo": 140.7,
+          "load_binned": -32.85315441191279,
+          "load_binned_hour_demeaned": 208.6307583950717,
+          "season": "SON"
+        },
+        {
+          "hi": 382.0,
+          "hour_mt": 14,
+          "lo": 187.3,
+          "load_binned": -35.8032527219236,
+          "load_binned_hour_demeaned": 206.88437024597326,
+          "season": "SON"
+        },
+        {
+          "hi": 349.0,
+          "hour_mt": 15,
+          "lo": 150.1,
+          "load_binned": -39.52173415905488,
+          "load_binned_hour_demeaned": 201.59574664561967,
+          "season": "SON"
+        },
+        {
+          "hi": 490.6,
+          "hour_mt": 17,
+          "lo": 243.7,
+          "load_binned": -26.491547796213847,
+          "load_binned_hour_demeaned": 209.34559791034764,
+          "season": "SON"
+        },
+        {
+          "hi": 297.4,
+          "hour_mt": 20,
+          "lo": 77.9,
+          "load_binned": 26.63127237801776,
+          "load_binned_hour_demeaned": 235.85781023193798,
+          "season": "SON"
+        },
+        {
+          "hi": 253.5,
+          "hour_mt": 21,
+          "lo": 55.2,
+          "load_binned": 33.61576003951897,
+          "load_binned_hour_demeaned": 239.26919658811485,
+          "season": "SON"
+        },
+        {
+          "hi": 364.9,
+          "hour_mt": 22,
+          "lo": 128.2,
+          "load_binned": 56.81342347668499,
+          "load_binned_hour_demeaned": 249.08252789136617,
+          "season": "SON"
+        },
+        {
+          "hi": 339.3,
+          "hour_mt": 23,
+          "lo": 168.2,
+          "load_binned": 70.45441030243747,
+          "load_binned_hour_demeaned": 256.1389033548095,
+          "season": "SON"
+        }
+      ],
+      "check": "co2_load_binned_generated",
+      "inputs": [
+        "prep/data/eia_pace_hourly.csv",
+        "public/data/response_tables.json"
+      ],
+      "output": "response_tables.json",
+      "owner": "data",
+      "post_hoc_diagnostic": {
+        "inside": 42,
+        "inside_share": 0.5060240963855421,
+        "method": "load-binned slopes after subtracting each (season, hour) cell's mean change in x and y",
+        "not_a_test": true
+      },
+      "published": {
+        "bins": 96
+      },
+      "science": {
+        "cells_outside": [
+          "DJF 01h",
+          "DJF 02h",
+          "DJF 03h",
+          "DJF 04h",
+          "DJF 05h",
+          "DJF 06h",
+          "DJF 07h",
+          "DJF 18h",
+          "MAM 00h",
+          "MAM 01h",
+          "MAM 02h",
+          "MAM 03h",
+          "MAM 04h",
+          "MAM 05h",
+          "MAM 06h",
+          "MAM 08h",
+          "MAM 09h",
+          "MAM 10h",
+          "MAM 12h",
+          "MAM 13h",
+          "MAM 18h",
+          "MAM 21h",
+          "MAM 22h",
+          "MAM 23h",
+          "JJA 00h",
+          "JJA 01h",
+          "JJA 02h",
+          "JJA 03h",
+          "JJA 04h",
+          "JJA 05h",
+          "JJA 06h",
+          "JJA 07h",
+          "JJA 08h",
+          "JJA 09h",
+          "JJA 10h",
+          "JJA 11h",
+          "JJA 12h",
+          "JJA 13h",
+          "JJA 14h",
+          "JJA 15h",
+          "JJA 16h",
+          "JJA 17h",
+          "JJA 18h",
+          "JJA 19h",
+          "JJA 22h",
+          "JJA 23h",
+          "SON 00h",
+          "SON 01h",
+          "SON 02h",
+          "SON 03h",
+          "SON 05h",
+          "SON 06h",
+          "SON 07h",
+          "SON 08h",
+          "SON 09h",
+          "SON 10h",
+          "SON 11h",
+          "SON 12h",
+          "SON 13h",
+          "SON 14h",
+          "SON 15h",
+          "SON 17h",
+          "SON 20h",
+          "SON 21h",
+          "SON 22h",
+          "SON 23h"
+        ],
+        "conclusive_cells": 83,
+        "inconclusive_cells": 13,
+        "inside": 17,
+        "inside_share": 0.20481927710843373
+      },
+      "status": "mismatch",
+      "what": "estimated marginal CO2 (generated basis): load-binned value inside the hour-of-day OLS interval"
+    },
+    {
+      "cells": [
+        {
+          "hi": 547.8,
+          "hour_mt": 0,
+          "lo": 58.2,
+          "load_binned": 681.5542093674475,
+          "load_binned_hour_demeaned": 406.84571731763697,
+          "season": "DJF"
+        },
+        {
+          "hi": 898.2,
+          "hour_mt": 1,
+          "lo": 540.3,
+          "load_binned": 667.9434789787013,
+          "load_binned_hour_demeaned": 428.871094392374,
+          "season": "DJF"
+        },
+        {
+          "hi": 618.9,
+          "hour_mt": 2,
+          "lo": 177.8,
+          "load_binned": 650.0232332844713,
+          "load_binned_hour_demeaned": 417.73725862469456,
+          "season": "DJF"
+        },
+        {
+          "hi": 808.8,
+          "hour_mt": 3,
+          "lo": 334.7,
+          "load_binned": 650.4962262209993,
+          "load_binned_hour_demeaned": 428.13330071582317,
+          "season": "DJF"
+        },
+        {
+          "hi": 441.6,
+          "hour_mt": 4,
+          "lo": 125.6,
+          "load_binned": 682.5620663113259,
+          "load_binned_hour_demeaned": 436.0462178377659,
+          "season": "DJF"
+        },
+        {
+          "hi": 815.7,
+          "hour_mt": 5,
+          "lo": 488.9,
+          "load_binned": 685.8363610640802,
+          "load_binned_hour_demeaned": 442.0358956616157,
+          "season": "DJF"
+        },
+        {
+          "hi": 776.6,
+          "hour_mt": 6,
+          "lo": 385.5,
+          "load_binned": 742.2410106838125,
+          "load_binned_hour_demeaned": 478.2233092649869,
+          "season": "DJF"
+        },
+        {
+          "hi": 761.6,
+          "hour_mt": 7,
+          "lo": 443.2,
+          "load_binned": 794.5065836664927,
+          "load_binned_hour_demeaned": 427.6519093845082,
+          "season": "DJF"
+        },
+        {
+          "hi": 985.1,
+          "hour_mt": 8,
+          "lo": 130.0,
+          "load_binned": 802.9267240117698,
+          "load_binned_hour_demeaned": 433.4197083429298,
+          "season": "DJF"
+        },
+        {
+          "hi": 1026.5,
+          "hour_mt": 9,
+          "lo": 273.9,
+          "load_binned": 811.4664846100336,
+          "load_binned_hour_demeaned": 440.50442650859236,
+          "season": "DJF"
+        },
+        {
+          "hi": 394.2,
+          "hour_mt": 12,
+          "lo": 54.8,
+          "load_binned": 793.9443525339287,
+          "load_binned_hour_demeaned": 485.98405145333163,
+          "season": "DJF"
+        },
+        {
+          "hi": 789.4,
+          "hour_mt": 14,
+          "lo": 99.7,
+          "load_binned": 775.6208167117721,
+          "load_binned_hour_demeaned": 478.7179654092688,
+          "season": "DJF"
+        },
+        {
+          "hi": 540.1,
+          "hour_mt": 15,
+          "lo": 41.9,
+          "load_binned": 773.6170117437116,
+          "load_binned_hour_demeaned": 477.76204639831957,
+          "season": "DJF"
+        },
+        {
+          "hi": 1207.2,
+          "hour_mt": 16,
+          "lo": 765.8,
+          "load_binned": 815.6483964791764,
+          "load_binned_hour_demeaned": 478.4926847928627,
+          "season": "DJF"
+        },
+        {
+          "hi": 1282.8,
+          "hour_mt": 18,
+          "lo": 522.5,
+          "load_binned": 860.9820044746056,
+          "load_binned_hour_demeaned": 411.0088088335239,
+          "season": "DJF"
+        },
+        {
+          "hi": 838.8,
+          "hour_mt": 19,
+          "lo": 288.8,
+          "load_binned": 859.0397673610589,
+          "load_binned_hour_demeaned": 390.58764126745467,
+          "season": "DJF"
+        },
+        {
+          "hi": 593.5,
+          "hour_mt": 20,
+          "lo": 97.8,
+          "load_binned": 848.2312675850644,
+          "load_binned_hour_demeaned": 428.0922576288429,
+          "season": "DJF"
+        },
+        {
+          "hi": 784.8,
+          "hour_mt": 23,
+          "lo": 194.1,
+          "load_binned": 693.1661485215674,
+          "load_binned_hour_demeaned": 452.6128989623475,
+          "season": "DJF"
+        },
+        {
+          "hi": 448.6,
+          "hour_mt": 0,
+          "lo": 202.9,
+          "load_binned": 143.9355868856448,
+          "load_binned_hour_demeaned": 283.65593929151964,
+          "season": "MAM"
+        },
+        {
+          "hi": 667.3,
+          "hour_mt": 1,
+          "lo": 246.6,
+          "load_binned": 331.11184848528615,
+          "load_binned_hour_demeaned": 381.35998419633546,
+          "season": "MAM"
+        },
+        {
+          "hi": 521.1,
+          "hour_mt": 2,
+          "lo": 235.0,
+          "load_binned": 346.79842197345295,
+          "load_binned_hour_demeaned": 392.2607305778251,
+          "season": "MAM"
+        },
+        {
+          "hi": 767.3,
+          "hour_mt": 3,
+          "lo": 217.5,
+          "load_binned": 357.9323726001805,
+          "load_binned_hour_demeaned": 398.40814969947604,
+          "season": "MAM"
+        },
+        {
+          "hi": 577.2,
+          "hour_mt": 4,
+          "lo": 175.3,
+          "load_binned": 330.99183302541434,
+          "load_binned_hour_demeaned": 393.6853178524028,
+          "season": "MAM"
+        },
+        {
+          "hi": 593.9,
+          "hour_mt": 5,
+          "lo": 213.6,
+          "load_binned": 270.8003837159965,
+          "load_binned_hour_demeaned": 363.2875140601643,
+          "season": "MAM"
+        },
+        {
+          "hi": 673.4,
+          "hour_mt": 6,
+          "lo": 377.8,
+          "load_binned": 134.74473885625753,
+          "load_binned_hour_demeaned": 262.0934204824726,
+          "season": "MAM"
+        },
+        {
+          "hi": -317.5,
+          "hour_mt": 7,
+          "lo": -803.4,
+          "load_binned": -106.24010646655749,
+          "load_binned_hour_demeaned": 136.75438942343686,
+          "season": "MAM"
+        },
+        {
+          "hi": -180.2,
+          "hour_mt": 8,
+          "lo": -823.1,
+          "load_binned": -348.6853003674178,
+          "load_binned_hour_demeaned": 47.548646057116635,
+          "season": "MAM"
+        },
+        {
+          "hi": 495.6,
+          "hour_mt": 12,
+          "lo": 98.6,
+          "load_binned": -432.3791513426351,
+          "load_binned_hour_demeaned": 21.954566355188696,
+          "season": "MAM"
+        },
+        {
+          "hi": 442.3,
+          "hour_mt": 13,
+          "lo": 131.1,
+          "load_binned": -428.8422936991538,
+          "load_binned_hour_demeaned": 7.1174753194098646,
+          "season": "MAM"
+        },
+        {
+          "hi": 377.4,
+          "hour_mt": 14,
+          "lo": 130.2,
+          "load_binned": -447.54678804614895,
+          "load_binned_hour_demeaned": 4.3947035936528644,
+          "season": "MAM"
+        },
+        {
+          "hi": -178.9,
+          "hour_mt": 17,
+          "lo": -712.3,
+          "load_binned": -461.4338839141369,
+          "load_binned_hour_demeaned": 35.4221547381316,
+          "season": "MAM"
+        },
+        {
+          "hi": -281.3,
+          "hour_mt": 20,
+          "lo": -767.7,
+          "load_binned": -477.198997926134,
+          "load_binned_hour_demeaned": -21.03943253438075,
+          "season": "MAM"
+        },
+        {
+          "hi": 566.0,
+          "hour_mt": 21,
+          "lo": 68.2,
+          "load_binned": -454.1199345463586,
+          "load_binned_hour_demeaned": 3.5916061737286533,
+          "season": "MAM"
+        },
+        {
+          "hi": 759.8,
+          "hour_mt": 22,
+          "lo": 304.8,
+          "load_binned": -218.79948436874292,
+          "load_binned_hour_demeaned": 49.12426699134163,
+          "season": "MAM"
+        },
+        {
+          "hi": 720.0,
+          "hour_mt": 23,
+          "lo": 292.0,
+          "load_binned": 18.70706305500002,
+          "load_binned_hour_demeaned": 199.93108096533,
+          "season": "MAM"
+        },
+        {
+          "hi": 558.4,
+          "hour_mt": 0,
+          "lo": 224.9,
+          "load_binned": -67.71692431915704,
+          "load_binned_hour_demeaned": 335.5400221718144,
+          "season": "JJA"
+        },
+        {
+          "hi": 553.1,
+          "hour_mt": 1,
+          "lo": 293.0,
+          "load_binned": -30.580538117492857,
+          "load_binned_hour_demeaned": 359.21907260132485,
+          "season": "JJA"
+        },
+        {
+          "hi": 454.3,
+          "hour_mt": 2,
+          "lo": 19.5,
+          "load_binned": -6.2265149287468695,
+          "load_binned_hour_demeaned": 387.5595195279593,
+          "season": "JJA"
+        },
+        {
+          "hi": 575.0,
+          "hour_mt": 3,
+          "lo": 241.7,
+          "load_binned": 13.327750770563245,
+          "load_binned_hour_demeaned": 402.7315381881176,
+          "season": "JJA"
+        },
+        {
+          "hi": 484.5,
+          "hour_mt": 4,
+          "lo": 165.4,
+          "load_binned": 31.69153113612658,
+          "load_binned_hour_demeaned": 401.83129152455444,
+          "season": "JJA"
+        },
+        {
+          "hi": 414.0,
+          "hour_mt": 5,
+          "lo": 176.4,
+          "load_binned": 23.725074405296606,
+          "load_binned_hour_demeaned": 402.58430877649056,
+          "season": "JJA"
+        },
+        {
+          "hi": 809.5,
+          "hour_mt": 6,
+          "lo": 556.7,
+          "load_binned": 4.5134428411332586,
+          "load_binned_hour_demeaned": 391.84523074087474,
+          "season": "JJA"
+        },
+        {
+          "hi": 399.2,
+          "hour_mt": 7,
+          "lo": 58.7,
+          "load_binned": -54.80728841740061,
+          "load_binned_hour_demeaned": 353.77767888881624,
+          "season": "JJA"
+        },
+        {
+          "hi": 509.9,
+          "hour_mt": 8,
+          "lo": 250.2,
+          "load_binned": -74.25034938383891,
+          "load_binned_hour_demeaned": 321.437147103113,
+          "season": "JJA"
+        },
+        {
+          "hi": 552.1,
+          "hour_mt": 9,
+          "lo": 283.3,
+          "load_binned": -57.615524554994,
+          "load_binned_hour_demeaned": 301.802794787734,
+          "season": "JJA"
+        },
+        {
+          "hi": 557.8,
+          "hour_mt": 10,
+          "lo": 254.5,
+          "load_binned": -42.78458922898098,
+          "load_binned_hour_demeaned": 287.4479338488469,
+          "season": "JJA"
+        },
+        {
+          "hi": 543.6,
+          "hour_mt": 11,
+          "lo": 206.7,
+          "load_binned": -35.90926598154976,
+          "load_binned_hour_demeaned": 270.95675559112925,
+          "season": "JJA"
+        },
+        {
+          "hi": 471.5,
+          "hour_mt": 12,
+          "lo": 225.1,
+          "load_binned": -28.503322267381776,
+          "load_binned_hour_demeaned": 244.286273196761,
+          "season": "JJA"
+        },
+        {
+          "hi": 305.2,
+          "hour_mt": 13,
+          "lo": 62.9,
+          "load_binned": -31.829980341673775,
+          "load_binned_hour_demeaned": 229.95848456943312,
+          "season": "JJA"
+        },
+        {
+          "hi": 269.2,
+          "hour_mt": 15,
+          "lo": 26.1,
+          "load_binned": -23.830750986632015,
+          "load_binned_hour_demeaned": 193.65713826686317,
+          "season": "JJA"
+        },
+        {
+          "hi": 461.5,
+          "hour_mt": 18,
+          "lo": 79.9,
+          "load_binned": -22.306274552848382,
+          "load_binned_hour_demeaned": 193.90052664843103,
+          "season": "JJA"
+        },
+        {
+          "hi": 527.3,
+          "hour_mt": 19,
+          "lo": 151.3,
+          "load_binned": -31.51532244574611,
+          "load_binned_hour_demeaned": 231.4487125952481,
+          "season": "JJA"
+        },
+        {
+          "hi": -257.0,
+          "hour_mt": 20,
+          "lo": -653.0,
+          "load_binned": -40.21571686521763,
+          "load_binned_hour_demeaned": 265.2153106159585,
+          "season": "JJA"
+        },
+        {
+          "hi": 604.0,
+          "hour_mt": 21,
+          "lo": 329.3,
+          "load_binned": -39.853324430643035,
+          "load_binned_hour_demeaned": 281.7965377367698,
+          "season": "JJA"
+        },
+        {
+          "hi": 540.8,
+          "hour_mt": 22,
+          "lo": 238.1,
+          "load_binned": -42.15898876561742,
+          "load_binned_hour_demeaned": 302.15234567605694,
+          "season": "JJA"
+        },
+        {
+          "hi": 627.5,
+          "hour_mt": 23,
+          "lo": 385.4,
+          "load_binned": -64.33658455573477,
+          "load_binned_hour_demeaned": 327.20561926013886,
+          "season": "JJA"
+        },
+        {
+          "hi": 604.4,
+          "hour_mt": 0,
+          "lo": 290.4,
+          "load_binned": 289.7326378979528,
+          "load_binned_hour_demeaned": 467.0948124230233,
+          "season": "SON"
+        },
+        {
+          "hi": 515.5,
+          "hour_mt": 1,
+          "lo": 253.6,
+          "load_binned": 336.02930234320337,
+          "load_binned_hour_demeaned": 485.3634863141772,
+          "season": "SON"
+        },
+        {
+          "hi": 615.1,
+          "hour_mt": 2,
+          "lo": 296.4,
+          "load_binned": 348.3562339787406,
+          "load_binned_hour_demeaned": 489.8489278277283,
+          "season": "SON"
+        },
+        {
+          "hi": 468.7,
+          "hour_mt": 3,
+          "lo": 247.1,
+          "load_binned": 349.01435212983546,
+          "load_binned_hour_demeaned": 491.12965539692135,
+          "season": "SON"
+        },
+        {
+          "hi": 680.9,
+          "hour_mt": 4,
+          "lo": 316.9,
+          "load_binned": 343.81611276478856,
+          "load_binned_hour_demeaned": 487.81668524718924,
+          "season": "SON"
+        },
+        {
+          "hi": 623.2,
+          "hour_mt": 5,
+          "lo": 333.7,
+          "load_binned": 320.72852490939175,
+          "load_binned_hour_demeaned": 478.4260370595284,
+          "season": "SON"
+        },
+        {
+          "hi": 758.8,
+          "hour_mt": 6,
+          "lo": 591.1,
+          "load_binned": 252.68985698571848,
+          "load_binned_hour_demeaned": 450.9563957184737,
+          "season": "SON"
+        },
+        {
+          "hi": 770.6,
+          "hour_mt": 7,
+          "lo": 597.5,
+          "load_binned": 185.75515584751523,
+          "load_binned_hour_demeaned": 424.50030186505387,
+          "season": "SON"
+        },
+        {
+          "hi": 534.9,
+          "hour_mt": 9,
+          "lo": 323.5,
+          "load_binned": 5.958332458325736,
+          "load_binned_hour_demeaned": 329.9346042552779,
+          "season": "SON"
+        },
+        {
+          "hi": 426.7,
+          "hour_mt": 10,
+          "lo": 236.0,
+          "load_binned": -40.04413054150603,
+          "load_binned_hour_demeaned": 312.9821873106927,
+          "season": "SON"
+        },
+        {
+          "hi": 482.9,
+          "hour_mt": 11,
+          "lo": 260.2,
+          "load_binned": -72.59802216239956,
+          "load_binned_hour_demeaned": 294.956786223016,
+          "season": "SON"
+        },
+        {
+          "hi": 508.0,
+          "hour_mt": 12,
+          "lo": 305.8,
+          "load_binned": -84.2896003804625,
+          "load_binned_hour_demeaned": 288.7748717982962,
+          "season": "SON"
+        },
+        {
+          "hi": 498.5,
+          "hour_mt": 13,
+          "lo": 267.8,
+          "load_binned": -91.99805165209196,
+          "load_binned_hour_demeaned": 286.351663505857,
+          "season": "SON"
+        },
+        {
+          "hi": 581.9,
+          "hour_mt": 14,
+          "lo": 320.3,
+          "load_binned": -98.19712432102482,
+          "load_binned_hour_demeaned": 282.90088206793405,
+          "season": "SON"
+        },
+        {
+          "hi": 378.0,
+          "hour_mt": 15,
+          "lo": 97.2,
+          "load_binned": -102.09927405549594,
+          "load_binned_hour_demeaned": 282.3135999935745,
+          "season": "SON"
+        },
+        {
+          "hi": 543.6,
+          "hour_mt": 17,
+          "lo": 216.8,
+          "load_binned": -110.01059590414312,
+          "load_binned_hour_demeaned": 277.4045481129991,
+          "season": "SON"
+        },
+        {
+          "hi": 375.9,
+          "hour_mt": 18,
+          "lo": 64.1,
+          "load_binned": -52.36133356439994,
+          "load_binned_hour_demeaned": 303.3845283318515,
+          "season": "SON"
+        },
+        {
+          "hi": 372.0,
+          "hour_mt": 20,
+          "lo": 150.5,
+          "load_binned": 12.793078913083257,
+          "load_binned_hour_demeaned": 337.56612519644744,
+          "season": "SON"
+        },
+        {
+          "hi": 631.3,
+          "hour_mt": 21,
+          "lo": 367.2,
+          "load_binned": 55.850957228349245,
+          "load_binned_hour_demeaned": 354.1666346836083,
+          "season": "SON"
+        },
+        {
+          "hi": 683.0,
+          "hour_mt": 22,
+          "lo": 498.6,
+          "load_binned": 135.77208412817052,
+          "load_binned_hour_demeaned": 402.0672680696717,
+          "season": "SON"
+        },
+        {
+          "hi": 758.7,
+          "hour_mt": 23,
+          "lo": 545.9,
+          "load_binned": 220.45069628880162,
+          "load_binned_hour_demeaned": 434.06726297306903,
+          "season": "SON"
+        }
+      ],
+      "check": "co2_load_binned_consumed",
+      "inputs": [
+        "prep/data/eia_pace_hourly.csv",
+        "public/data/response_tables.json"
+      ],
+      "output": "response_tables.json",
+      "owner": "data",
+      "post_hoc_diagnostic": {
+        "inside": 48,
+        "inside_share": 0.6233766233766234,
+        "method": "load-binned slopes after subtracting each (season, hour) cell's mean change in x and y",
+        "not_a_test": true
+      },
+      "published": {
+        "bins": 96
+      },
+      "science": {
+        "cells_outside": [
+          "DJF 00h",
+          "DJF 02h",
+          "DJF 04h",
+          "DJF 07h",
+          "DJF 12h",
+          "DJF 15h",
+          "DJF 19h",
+          "DJF 20h",
+          "MAM 00h",
+          "MAM 06h",
+          "MAM 07h",
+          "MAM 12h",
+          "MAM 13h",
+          "MAM 14h",
+          "MAM 21h",
+          "MAM 22h",
+          "MAM 23h",
+          "JJA 00h",
+          "JJA 01h",
+          "JJA 02h",
+          "JJA 03h",
+          "JJA 04h",
+          "JJA 05h",
+          "JJA 06h",
+          "JJA 07h",
+          "JJA 08h",
+          "JJA 09h",
+          "JJA 10h",
+          "JJA 11h",
+          "JJA 12h",
+          "JJA 13h",
+          "JJA 15h",
+          "JJA 18h",
+          "JJA 19h",
+          "JJA 20h",
+          "JJA 21h",
+          "JJA 22h",
+          "JJA 23h",
+          "SON 00h",
+          "SON 05h",
+          "SON 06h",
+          "SON 07h",
+          "SON 09h",
+          "SON 10h",
+          "SON 11h",
+          "SON 12h",
+          "SON 13h",
+          "SON 14h",
+          "SON 15h",
+          "SON 17h",
+          "SON 18h",
+          "SON 20h",
+          "SON 21h",
+          "SON 22h",
+          "SON 23h"
+        ],
+        "conclusive_cells": 77,
+        "inconclusive_cells": 19,
+        "inside": 22,
+        "inside_share": 0.2857142857142857
+      },
+      "status": "mismatch",
+      "what": "estimated marginal CO2 (consumed basis): load-binned value inside the hour-of-day OLS interval"
+    },
+    {
+      "check": "scale_slopes_vs_response",
+      "hours_disagreeing": [],
+      "inputs": [
+        "public/derived/scale_curve.json",
+        "public/data/response_tables.json"
+      ],
+      "output": "scale_curve.json",
+      "owner": "engine",
+      "status": "match",
+      "what": "scale-curve slopes equal the price_response table, clamped at zero"
+    },
+    {
+      "check": "scale_fixed_overnight",
+      "inputs": [
+        "public/derived/scale_curve.json",
+        "public/data/bundle_2026-10-27.json"
+      ],
+      "output": "scale_curve.json",
+      "owner": "engine",
+      "published": {
+        "points": [
+          {
+            "band_high_usd_per_mw_day": 18.53930470402285,
+            "band_low_usd_per_mw_day": 17.939535540386487,
+            "fleet_mw": 70,
+            "usd_per_mw_day": 18.23463861311376
+          },
+          {
+            "band_high_usd_per_mw_day": 17.01386359038649,
+            "band_low_usd_per_mw_day": 15.81432526311376,
+            "fleet_mw": 140,
+            "usd_per_mw_day": 16.404531408568307
+          },
+          {
+            "band_high_usd_per_mw_day": 14.616741840386489,
+            "band_low_usd_per_mw_day": 12.47470911311376,
+            "fleet_mw": 250,
+            "usd_per_mw_day": 13.528648658568304
+          },
+          {
+            "band_high_usd_per_mw_day": 9.168737863113762,
+            "band_low_usd_per_mw_day": 4.884672408568306,
+            "fleet_mw": 500,
+            "usd_per_mw_day": 6.992551499477395
+          }
+        ],
+        "price_taker_usd_per_mw_day": 20.064745817659215
+      },
+      "science": {
+        "max_abs_diff_usd_per_mw_day": 1.7763568394002505e-14,
+        "points": [
+          {
+            "band_high_usd_per_mw_day": 18.53930470402286,
+            "band_low_usd_per_mw_day": 17.939535540386473,
+            "fleet_mw": 70,
+            "usd_per_mw_day": 18.234638613113745
+          },
+          {
+            "band_high_usd_per_mw_day": 17.013863590386492,
+            "band_low_usd_per_mw_day": 15.814325263113759,
+            "fleet_mw": 140,
+            "usd_per_mw_day": 16.404531408568296
+          },
+          {
+            "band_high_usd_per_mw_day": 14.616741840386474,
+            "band_low_usd_per_mw_day": 12.474709113113768,
+            "fleet_mw": 250,
+            "usd_per_mw_day": 13.528648658568287
+          },
+          {
+            "band_high_usd_per_mw_day": 9.168737863113755,
+            "band_low_usd_per_mw_day": 4.884672408568299,
+            "fleet_mw": 500,
+            "usd_per_mw_day": 6.9925514994774005
+          }
+        ],
+        "price_taker_usd_per_mw_day": 20.064745817659215
+      },
+      "status": "match",
+      "what": "Battery on the off-peak rule: repriced hour by hour from the bundle prices"
+    },
+    {
+      "check": "scale_clearlane",
+      "inputs": [
+        "public/derived/scale_curve.json",
+        "public/data/bundle_2026-10-27.json"
+      ],
+      "output": "scale_curve.json",
+      "owner": "engine",
+      "published": {
+        "points": [
+          {
+            "band_high_usd_per_mw_day": 56.46236389480174,
+            "band_low_usd_per_mw_day": 55.80259978167043,
+            "fleet_mw": 70,
+            "usd_per_mw_day": 56.12599452106437
+          },
+          {
+            "band_high_usd_per_mw_day": 54.51938648066033,
+            "band_low_usd_per_mw_day": 53.199858254397704,
+            "fleet_mw": 140,
+            "usd_per_mw_day": 53.846647733185584
+          },
+          {
+            "band_high_usd_per_mw_day": 51.466136258438105,
+            "band_low_usd_per_mw_day": 49.1098358543977,
+            "fleet_mw": 250,
+            "usd_per_mw_day": 50.264817066518916
+          },
+          {
+            "band_high_usd_per_mw_day": 44.52693120793306,
+            "band_low_usd_per_mw_day": 39.81433039985225,
+            "fleet_mw": 500,
+            "usd_per_mw_day": 42.124292824094674
+          }
+        ],
+        "price_taker_usd_per_mw_day": 58.40534130894316
+      },
+      "science": {
+        "max_abs_diff_usd_per_mw_day": 7.105427357601002e-15,
+        "points": [
+          {
+            "band_high_usd_per_mw_day": 56.46236389480175,
+            "band_low_usd_per_mw_day": 55.80259978167042,
+            "fleet_mw": 70,
+            "usd_per_mw_day": 56.125994521064364
+          },
+          {
+            "band_high_usd_per_mw_day": 54.51938648066033,
+            "band_low_usd_per_mw_day": 53.199858254397704,
+            "fleet_mw": 140,
+            "usd_per_mw_day": 53.846647733185584
+          },
+          {
+            "band_high_usd_per_mw_day": 51.466136258438105,
+            "band_low_usd_per_mw_day": 49.1098358543977,
+            "fleet_mw": 250,
+            "usd_per_mw_day": 50.264817066518916
+          },
+          {
+            "band_high_usd_per_mw_day": 44.52693120793306,
+            "band_low_usd_per_mw_day": 39.81433039985225,
+            "fleet_mw": 500,
+            "usd_per_mw_day": 42.124292824094674
+          }
+        ],
+        "price_taker_usd_per_mw_day": 58.405341308943164
+      },
+      "status": "match",
+      "what": "Clearlane timetable: charge in the clear lane: repriced hour by hour from the bundle prices"
+    },
+    {
+      "check": "scale_dp_price_only",
+      "inputs": [
+        "public/derived/scale_curve.json"
+      ],
+      "output": "scale_curve.json",
+      "owner": "engine",
+      "status": "not cross-checked",
+      "what": "a re-planning DP with price impact has no second method here"
+    },
+    {
+      "check": "scale_dp_wear10",
+      "inputs": [
+        "public/derived/scale_curve.json"
+      ],
+      "output": "scale_curve.json",
+      "owner": "engine",
+      "status": "not cross-checked",
+      "what": "a re-planning DP with price impact has no second method here"
+    },
+    {
+      "check": "rt_hold_identity",
+      "inputs": [
+        "public/derived/rt_replay.json",
+        "public/derived/backtest_days.json"
+      ],
+      "output": "rt_replay.json",
+      "owner": "engine",
+      "published": {
+        "days": 179
+      },
+      "science": {
+        "days": 179,
+        "max_abs_diff_usd_per_mw_day": 0.0
+      },
+      "status": "match",
+      "what": "holding the day-ahead plan settles at its day-ahead value, day by day"
+    },
+    {
+      "check": "rt_identities_and_summary",
+      "inputs": [
+        "public/derived/rt_replay.json"
+      ],
+      "output": "rt_replay.json",
+      "owner": "engine",
+      "published": {
+        "days_replan_above_hold": 56,
+        "days_replan_below_hold": 123,
+        "days_replan_equal_hold": 0,
+        "regret_sum_usd_per_mw": {
+          "hold": 5750.760843771219,
+          "replan": 8296.164012263353
+        },
+        "replan_recovers_pct": -44.2620244110676
+      },
+      "regret_days_disagreeing": [],
+      "science": {
+        "days_replan_above_hold": 56,
+        "days_replan_below_hold": 123,
+        "days_replan_equal_hold": 0,
+        "regret_sum_usd_per_mw": {
+          "hold": 5750.760843771218,
+          "replan": 8296.164012263353
+        },
+        "replan_recovers_pct": -44.26202441106762
+      },
+      "status": "match",
+      "summary_fields_disagreeing": [],
+      "what": "regret = foresight minus policy net, never below zero; summary statistics and day counts recomputed"
+    },
+    {
+      "check": "rt_window_prices",
+      "days_disagreeing": [],
+      "inputs": [
+        "public/derived/rt_replay.json",
+        "public/data/rt_2026-05-01_2026-10-27.json",
+        "public/data/hist_2026-05-01_2026-10-27.json"
+      ],
+      "output": "rt_replay.json",
+      "owner": "engine",
+      "published": {
+        "da_evening_below_midday_days": 0,
+        "rt_evening_below_midday_days": 17
+      },
+      "science": {
+        "da_evening_below_midday_days": 0,
+        "max_abs_diff_usd_mwh": 1.1368683772161603e-13,
+        "rt_evening_below_midday_days": 17
+      },
+      "status": "match",
+      "what": "midday and evening mean RT and DA prices recomputed from the REAL price files"
+    },
+    {
+      "check": "wear_rainflow",
+      "output": "wear rainflow",
+      "owner": null,
+      "status": "not cross-checked",
+      "what": "no trace file"
+    },
+    {
+      "check": "fleet_envelope_sum",
+      "output": "fleet envelope",
+      "owner": null,
+      "status": "not cross-checked",
+      "what": "no fleet file"
+    },
+    {
+      "check": "co2_price_response",
+      "output": "response_tables.json",
+      "owner": "data",
+      "status": "not cross-checked",
+      "what": "the price_response table gets no second method here"
+    },
+    {
+      "check": "co2_forecast_residuals",
+      "output": "response_tables.json",
+      "owner": "data",
+      "status": "not cross-checked",
+      "what": "the forecast_residuals table gets no second method here"
+    },
+    {
+      "check": "sensitivity_other_axes",
+      "output": "sensitivity.json",
+      "owner": "engine",
+      "status": "not cross-checked",
+      "what": "axes and the two_way grid are not re-run; only the base-case rows above"
+    }
+  ],
+  "counts": {
+    "match": 13,
+    "mismatch": 3,
+    "not cross-checked": 7
+  },
+  "flag": "off_science_methods",
+  "inputs": [
+    {
+      "path": "prep/data/eia_pace_hourly.csv",
+      "sha256": "6a081c7224e66d06925549735e2cf46036ee58f21272d1ad2a01602f7ecf17ed"
+    },
+    {
+      "path": "public/data/bundle_2026-10-27.json",
+      "sha256": "390e2fc0c1d7fe5cf032facf13e18ad845c109b2b16c8bddddc4f26e9e64fc1b"
+    },
+    {
+      "path": "public/data/hist_2026-05-01_2026-10-27.json",
+      "sha256": "cfe0c0098def35e1ad6138c72951e0ac58a236f13722cfa6fa707c14ae9d2bd3"
+    },
+    {
+      "path": "public/data/response_tables.json",
+      "sha256": "2e2bac20086c8f06ce753920791e8e53e30f96a6660d13fa2005d0e625bd473a"
+    },
+    {
+      "path": "public/data/rt_2026-05-01_2026-10-27.json",
+      "sha256": "7522da3c296d1ff135097f584f06ee3e13dc77b1e57ac66d2d8ded5e34bc1e46"
+    },
+    {
+      "path": "public/data/torus_published.json",
+      "sha256": "a5113a668928ddecdbdc09a45c99d41b1c0458e63cd3910f44ca3b8445f8334f"
+    },
+    {
+      "path": "public/derived/backtest.json",
+      "sha256": "ad4210272203c00fa69578fc52fb31b6f71c19247231dd7ff31dd3c355c8ee6d"
+    },
+    {
+      "path": "public/derived/backtest_days.json",
+      "sha256": "b2b6f00f5ec995e540a7d73c4256ccb797c305e6ca17a0a991b4781458173c57"
+    },
+    {
+      "path": "public/derived/call_ledger.json",
+      "sha256": "dc2d09f5e9cf0cf677c2c6fecc844c2289e0b8fa2077ec5a24298a9b8fa589ed"
+    },
+    {
+      "path": "public/derived/rt_replay.json",
+      "sha256": "0a7e804de8956c0f39cc39d3b21fe0f2be58aaf005da8909bc46b567f90dc759"
+    },
+    {
+      "path": "public/derived/scale_curve.json",
+      "sha256": "132d1238045185a6941b180576c1fa9f128ad7e15ca96fa2543bb425610185dc"
+    },
+    {
+      "path": "public/derived/sensitivity.json",
+      "sha256": "f6be0d0ba76e8ede49e25511396f36fb8aa70e20290631047be885d7f81e1dbb"
+    },
+    {
+      "path": "public/derived/site_default.json",
+      "sha256": "7f57a045cb75e53162a020917f49c9465c9125114cf7afba384ef0bdadd31024"
+    }
+  ],
+  "mismatches": [
+    {
+      "check": "sensitivity_base_internal",
+      "issue": 247,
+      "owner": "engine",
+      "title": "[engine] sensitivity.json: dp_soc_states gap_base has a null calls field (science #112 cross-check)"
+    },
+    {
+      "check": "co2_load_binned_generated",
+      "issue": 248,
+      "owner": "data",
+      "title": "[data] response_tables.json marginal CO2: hourly factors fail a load-binned second method (science #112)"
+    },
+    {
+      "check": "co2_load_binned_consumed",
+      "issue": 248,
+      "owner": "data",
+      "title": "[data] response_tables.json marginal CO2: hourly factors fail a load-binned second method (science #112)"
+    }
+  ],
+  "prov": "DERIVED",
+  "schema": "clearlane.science.crosscheck_stretch/v1",
+  "stage": "not read by the stage app",
+  "tolerances": "science/crosscheck-stretch.md"
+}
