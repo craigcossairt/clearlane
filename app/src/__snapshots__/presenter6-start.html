@@ -46,759 +46,152 @@
 <header class="p-head">
 <h1 class="p-headline" data-slot="headline">An hourly envelope Rocky Mountain Power could plan around.</h1>
 <div class="p-subrow">
-<p class="p-line">A format Clearlane proposes: a working example, not a filing. System Critical Hours are our proposal.</p>
+<p class="p-line">Each hour, the most the station will draw, and the power it keeps ready for RMP. A format Clearlane proposes, not a filing.</p>
 <div class="p-actions">
 <button type="button" class="p-pill p-pill-primary" data-action="action-backtest">Show the backtest</button>
 </div>
 </div>
 </header>
 <div class="p-hero p-hero-envelope">
-<section class="beat envelope-beat" aria-labelledby="beat-envelope">
-<h2 id="beat-envelope">Envelope</h2>
-<div data-slot="envelope-strip">
-<p>
-<span data-copy-ok="engine sch_rule text and schema id">System Critical Hours (our proposal): the 4 highest net-load hours of the day plus every jam hour. In these hours Pulse keeps enough spare power to cover any part of the enrolled kW that Spin cannot. Schema clearlane.envelope/v1.</span> The envelope is a format Clearlane proposes: a working example, not a filing.</p>
-<div class="scroll" data-detail="">
-<table class="envelope-table">
-<thead>
-<tr>
-<th>Hour</th>
-<th>Reserve</th>
-<th>Max charge</th>
-<th>Max discharge</th>
-<th>Planned</th>
-<th>Reason</th>
-</tr>
-</thead>
-<tbody>
-<tr data-critical="no">
-<td>
-<span data-time="">12am</span>
-</td>
-<td>
+<section class="beat envelope-beat p-env" aria-label="Envelope">
+<div class="p-env-hours" data-slot="envelope-strip">
+<div class="p-env-facts">
+<p class="p-env-fact p-env-fact-sch">
+<span class="p-env-big">
+<span class="num num-ok" data-num="sch_hours_today" data-prov="DERIVED" data-num-state="ok" style="min-width: 3ch;">
+<span class="figure">6</span>
+<abbr class="chip chip-derived" title="engine/src/lanes.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</span>
+<span>System Critical Hours today</span>
+</p>
+<p class="p-env-fact">
+<span class="p-env-swatch is-draw" aria-hidden="true">
+</span>
+<span>Most the station will draw</span>
+<span class="p-env-big">
 <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">250 kW</span>
 <abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
 </span>
-</td>
-<td>
+</span>
+</p>
+<p class="p-env-fact">
+<span>Kept ready for RMP</span>
+<span class="p-env-big">
 <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">250 kW</span>
 <abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
 </span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
 </span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">27 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse charging 27 kW</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">1am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">2am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">3am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">4am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">5am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">6am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">7am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">8am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">200 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">9am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">180 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">160 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">clear lane: charging, host ceiling limits charge to 180 kW</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">10am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">150 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">107 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">clear lane: charging, host ceiling limits charge to 150 kW</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">11am</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">120 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">107 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">clear lane: charging, host ceiling limits charge to 120 kW</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">12pm</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">80 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">53 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">clear lane: charging, host ceiling limits charge to 80 kW</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">1pm</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">40 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">clear lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">2pm</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">clear lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">3pm</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">clear lane: Pulse idle</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">4pm</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">80 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">53 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">clear lane: charging, host ceiling limits charge to 80 kW</td>
-</tr>
-<tr data-critical="no">
-<td>
-<span data-time="">5pm</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">200 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">shoulder lane: Pulse idle</td>
-</tr>
-<tr class="critical" data-critical="yes">
-<td>
-<span data-time="">6pm</span>
-<span class="sch-tag"> critical</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">-235 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">System Critical Hour (our proposal): Spin holds 250 kW; Pulse discharging 235 kW</td>
-</tr>
-<tr class="critical" data-critical="yes">
-<td>
-<span data-time="">7pm</span>
-<span class="sch-tag"> critical</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">-211 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">System Critical Hour (our proposal): Spin holds 250 kW; Pulse discharging 211 kW</td>
-</tr>
-<tr class="critical" data-critical="yes">
-<td>
-<span data-time="">8pm</span>
-<span class="sch-tag"> critical</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle</td>
-</tr>
-<tr class="critical" data-critical="yes">
-<td>
-<span data-time="">9pm</span>
-<span class="sch-tag"> critical</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle</td>
-</tr>
-<tr class="critical" data-critical="yes">
-<td>
-<span data-time="">10pm</span>
-<span class="sch-tag"> critical</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle</td>
-</tr>
-<tr class="critical" data-critical="yes">
-<td>
-<span data-time="">11pm</span>
-<span class="sch-tag"> critical</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">0 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</td>
-<td data-copy-ok="engine reason text">System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle</td>
-</tr>
-</tbody>
-</table>
+</p>
+</div>
+<div class="p-env-strip" role="img" aria-label="Twenty-four hours, Mountain time: the most the station will draw each hour, with the System Critical Hours marked" style="grid-template-columns: repeat(24, 1fr);">
+<span class="p-env-sch-band" style="grid-column: 19 / 25;">
+<span class="p-env-sch-label">System Critical Hours, our proposal</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 1;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 2;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 3;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 4;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 5;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 6;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 7;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 8;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 9;">
+<i class="p-env-bar" style="height: 80%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 10;">
+<i class="p-env-bar" style="height: 72%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 11;">
+<i class="p-env-bar" style="height: 60%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 12;">
+<i class="p-env-bar" style="height: 48%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 13;">
+<i class="p-env-bar" style="height: 32%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 14;">
+<i class="p-env-bar" style="height: 16%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 15;">
+<i class="p-env-bar" style="height: 0%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 16;">
+<i class="p-env-bar" style="height: 0%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 17;">
+<i class="p-env-bar" style="height: 32%;">
+</i>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 18;">
+<i class="p-env-bar" style="height: 80%;">
+</i>
+</span>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 19;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 20;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 21;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 22;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 23;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 24;">
+<i class="p-env-bar" style="height: 100%;">
+</i>
+</span>
+</div>
+<div class="p-env-axis" data-axis="" style="grid-template-columns: repeat(24, 1fr);">
+<span style="grid-column: 1 / span 4;">12am</span>
+<span style="grid-column: 7 / span 4;">6am</span>
+<span style="grid-column: 13 / span 4;">12pm</span>
+<span style="grid-column: 19 / span 4;">6pm</span>
 </div>
 <button class="ghost-btn copy-btn" data-slot="copy-json" type="button">
 <span class="on" aria-hidden="false">Copy JSON</span>
