@@ -6,6 +6,7 @@ import type {
   Bundle,
   CrashEvent,
   HistDay,
+  Pctl,
   Plan,
   Policy,
   PolicyStats,
@@ -37,6 +38,9 @@ export interface BacktestOpts {
   by_weekday: number[];
   start_mt?: string;
   end_mt?: string;
+  // Only the territory CLI sets this: without it a price-only history throws rather than reaching a
+  // caller that reads CO2 statistics as numbers, such as the sensitivity sweep.
+  allow_price_only?: true;
 }
 
 // A BacktestDay whose CO2 is null when the day is left out of the CO2 statistics.
@@ -44,8 +48,20 @@ export type BacktestDayRow = Omit<BacktestDay, "co2_t_per_mw_day"> & {
   co2_t_per_mw_day: number | null;
 };
 
-export interface BacktestRun {
-  result: BacktestResult;
+// A BacktestResult that may be price only (#237): on a history with no CO2 at all (the PACW and PGE
+// files) every CO2 statistic is null, never 0, and `price_only` and `notes` say why. Those two keys
+// exist only on such a run, so a run with CO2 keeps exactly the contract's keys and bytes.
+export type PolicyStatsOut = Omit<PolicyStats, "co2_t_per_mw_day"> & {
+  co2_t_per_mw_day: Pctl | null;
+};
+export type BacktestOutput = Omit<BacktestResult, "policies"> & {
+  policies: PolicyStatsOut[];
+  price_only?: true;
+  notes?: string[];
+};
+
+export interface BacktestRun<R = BacktestResult> {
+  result: R;
   days: BacktestDayRow[];
   co2_excluded_days: Record<Policy, number>;
   solve_ms: number[]; // MEASURED, printed by the CLI, never stored
@@ -67,6 +83,24 @@ export const usableDay = (d: HistDay | undefined): d is HistDay =>
   d !== undefined &&
   d.lmp_usd_mwh.length === HOURS &&
   d.lmp_usd_mwh.every(Number.isFinite);
+
+// True when the window has usable days and none of them has a CO2 value: a price-only run.
+export function isPriceOnly(
+  hist: HistDay[],
+  start: string,
+  end: string,
+): boolean {
+  const byDay = new Map(hist.map((d) => [d.operating_day_mt, d]));
+  const ds = windowDays(start, end)
+    .map((d) => byDay.get(d))
+    .filter(usableDay);
+  return ds.length > 0 && ds.every((d) => d.co2_g_kwh.every((c) => c === null));
+}
+
+// The per-day rows sit next to the result: backtest.json -> backtest_days.json, backtest_pge.json ->
+// backtest_pge_days.json.
+export const backtestDaysPath = (out: string): string =>
+  `${out.replace(/\.json$/, "")}_days.json`;
 
 // A HistDay as a bundle: REAL prices and CO2 (null read as 0 here, masked by `co2Usable`), no net load.
 export function histBundle(d: HistDay): Bundle {
@@ -157,13 +191,30 @@ export function clearlaneCalls(
   return { delivered, outcomes, executed: plan };
 }
 
+// A run with CO2 is the contract's BacktestResult. A price-only history needs `allow_price_only`
+// and gives a BacktestOutput with null CO2 statistics; without it, it throws.
+export function runBacktest(
+  hist: HistDay[],
+  site: Site,
+  o: BacktestOpts & { allow_price_only: true },
+): BacktestRun<BacktestOutput>;
+export function runBacktest(
+  hist: HistDay[],
+  site: Site,
+  o: BacktestOpts & { allow_price_only?: undefined },
+): BacktestRun;
 export function runBacktest(
   hist: HistDay[],
   site: Site,
   o: BacktestOpts,
-): BacktestRun {
+): BacktestRun<BacktestOutput> {
   const start = o.start_mt ?? BACKTEST_WINDOW.start_mt;
   const end = o.end_mt ?? BACKTEST_WINDOW.end_mt;
+  const priceOnly = isPriceOnly(hist, start, end);
+  if (priceOnly && !o.allow_price_only)
+    throw new Error(
+      `every co2_g_kwh from ${start} to ${end} is null: a price-only backtest needs allow_price_only`,
+    );
   const byDay = new Map(hist.map((d) => [d.operating_day_mt, d]));
   const all = windowDays(start, end);
   const days = all.filter((d) => usableDay(byDay.get(d)));
@@ -234,7 +285,7 @@ export function runBacktest(
     const fixedUsd = plans.get("fixed_overnight")!.value_usd_per_mw_day;
     for (const p of POLICIES) {
       const plan = plans.get(p)!;
-      const ok = co2Usable(h, plan);
+      const ok = !priceOnly && co2Usable(h, plan);
       if (!ok) co2Excluded[p]++;
       rows.push({
         operating_day_mt: day,
@@ -255,17 +306,19 @@ export function runBacktest(
 
   const pct = (c: { n: number; miss: number }) =>
     c.n === 0 ? 0 : (100 * c.miss) / c.n;
-  const policies: PolicyStats[] = POLICIES.map((p) => {
+  const policies: PolicyStatsOut[] = POLICIES.map((p) => {
     const rs = rows.filter((r) => r.policy === p);
     const c = calls.get(p)!;
     return {
       policy: p,
       usd_per_mw_day: pctl(rs.map((r) => r.usd_per_mw_day)),
-      co2_t_per_mw_day: pctl(
-        rs.flatMap((r) =>
-          r.co2_t_per_mw_day === null ? [] : [r.co2_t_per_mw_day],
-        ),
-      ),
+      co2_t_per_mw_day: priceOnly
+        ? null
+        : pctl(
+            rs.flatMap((r) =>
+              r.co2_t_per_mw_day === null ? [] : [r.co2_t_per_mw_day],
+            ),
+          ),
       pulse_cycles_per_yr: mean(rs.map((r) => r.pulse_cycles)) * 365,
       calls_unanswerable_pct: {
         heatmap_as_mt: pct(c.mt),
@@ -284,19 +337,28 @@ export function runBacktest(
     };
   });
 
-  return {
-    result: {
-      schema: "clearlane.backtest/v1",
-      window: {
-        start_mt: start,
-        end_mt: end,
-        days: days.length,
-        missing_days: missing,
-      },
-      wear_usd_mwh: o.wear_usd_mwh,
-      seed: o.seed,
-      policies,
+  const result: BacktestOutput = {
+    schema: "clearlane.backtest/v1",
+    window: {
+      start_mt: start,
+      end_mt: end,
+      days: days.length,
+      missing_days: missing,
     },
+    wear_usd_mwh: o.wear_usd_mwh,
+    seed: o.seed,
+    policies,
+  };
+  if (priceOnly) {
+    result.price_only = true;
+    result.notes = [
+      "price only: co2_g_kwh is null in every hour of this history, so every CO2 statistic is null, not 0.",
+      `${days.length}-day window from ${start} to ${end} (${missing.length} of ${all.length} days left out, never filled; see missing_days).`,
+      "Calls are SIMULATED from the 2025 Rocky Mountain Power call heatmap and SCH is the price proxy; outside Rocky Mountain Power territory that call model is an ASSUMPTION.",
+    ];
+  }
+  return {
+    result,
     days: rows,
     co2_excluded_days: co2Excluded,
     solve_ms: solveMs,
@@ -327,8 +389,18 @@ export function clearlaneCyclesPerYr(
 
 export function validateBacktest(x: unknown): string[] {
   const e: string[] = [];
-  const r = x as BacktestResult;
+  const r = x as BacktestOutput;
   if (!r || typeof r !== "object") return ["not an object"];
+  const priceOnly = r.price_only === true;
+  if (r.price_only !== undefined && !priceOnly)
+    e.push("price_only must be true or absent");
+  if (
+    priceOnly &&
+    (!Array.isArray(r.notes) ||
+      r.notes.length === 0 ||
+      !r.notes.every((n) => typeof n === "string" && n.length > 0))
+  )
+    e.push("a price only run needs notes saying why CO2 is null");
   if (r.schema !== "clearlane.backtest/v1")
     e.push(`schema is ${String(r.schema)}`);
   const w = r.window;
@@ -349,6 +421,12 @@ export function validateBacktest(x: unknown): string[] {
   if (names.join() !== [...POLICIES].sort().join())
     e.push(`policies must be ${POLICIES.join(", ")} once each`);
   for (const p of ps) {
+    if (priceOnly && p.co2_t_per_mw_day !== null)
+      e.push(`${p.policy}: CO2 statistics must be null on a price only run`);
+    if (!priceOnly && p.co2_t_per_mw_day === null)
+      e.push(
+        `${p.policy}: co2_t_per_mw_day is null on a run not marked price_only`,
+      );
     const nums: [string, unknown][] = [
       ...Object.entries(p.usd_per_mw_day ?? {}).map(
         ([k, v]) => [`usd_per_mw_day.${k}`, v] as [string, unknown],
@@ -363,7 +441,7 @@ export function validateBacktest(x: unknown): string[] {
       ["host_ceiling_breaches", p.host_ceiling_breaches],
       ["days_beating_fixed_overnight_pct", p.days_beating_fixed_overnight_pct],
     ];
-    if (nums.length !== 4 + 4 + 3 + 3)
+    if (nums.length !== 4 + (priceOnly ? 0 : 4) + 3 + 3)
       e.push(`${p.policy}: missing statistics`);
     for (const [k, v] of nums)
       if (typeof v !== "number" || !Number.isFinite(v))

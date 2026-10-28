@@ -1,0 +1,704 @@
+[
+  {
+    "operating_day_mt": "2026-10-02",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 35.769767242619864,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-02",
+    "policy": "price_only",
+    "usd_per_mw_day": 61.159396754798344,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.5,
+    "host_ceiling_breaches": 8,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-02",
+    "policy": "clearlane",
+    "usd_per_mw_day": 56.45712967883443,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.9500000000000001,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-03",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 92.5655505251723,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-03",
+    "policy": "price_only",
+    "usd_per_mw_day": 121.37769761830917,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0500000000000003,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-03",
+    "policy": "clearlane",
+    "usd_per_mw_day": 121.11020960354794,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0500000000000003,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-04",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 71.264232664224,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-04",
+    "policy": "price_only",
+    "usd_per_mw_day": 92.27582196600268,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0500000000000003,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-04",
+    "policy": "clearlane",
+    "usd_per_mw_day": 91.13384217694417,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-05",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 58.6392232765212,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-05",
+    "policy": "price_only",
+    "usd_per_mw_day": 93.49244469034188,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 2.0499999999999994,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-05",
+    "policy": "clearlane",
+    "usd_per_mw_day": 78.0891983899074,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-06",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 80.04346548889586,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-06",
+    "policy": "price_only",
+    "usd_per_mw_day": 97.49123400037658,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9999999999999998,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-06",
+    "policy": "clearlane",
+    "usd_per_mw_day": 86.80692656024326,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-07",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 34.12184360518712,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-07",
+    "policy": "price_only",
+    "usd_per_mw_day": 50.087241393893805,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 2.4,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-07",
+    "policy": "clearlane",
+    "usd_per_mw_day": 36.884385448703284,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.9500000000000001,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-08",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 26.368794011696732,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-08",
+    "policy": "price_only",
+    "usd_per_mw_day": 40.27916459310041,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 2.0499999999999994,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-08",
+    "policy": "clearlane",
+    "usd_per_mw_day": 33.484098306439336,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-09",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 8.427866957680555,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-09",
+    "policy": "price_only",
+    "usd_per_mw_day": 11.854832459903998,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 2.0499999999999994,
+    "host_ceiling_breaches": 12,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-09",
+    "policy": "clearlane",
+    "usd_per_mw_day": 0,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-10",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 15.440710527274547,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-10",
+    "policy": "price_only",
+    "usd_per_mw_day": 22.586792605350695,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9999999999999998,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-10",
+    "policy": "clearlane",
+    "usd_per_mw_day": 12.445880917430154,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.5,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-11",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": -7.063049353485711,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-11",
+    "policy": "price_only",
+    "usd_per_mw_day": 8.740399337551127,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 12,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-11",
+    "policy": "clearlane",
+    "usd_per_mw_day": 0,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-12",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 23.15000706975443,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-12",
+    "policy": "price_only",
+    "usd_per_mw_day": 33.151226151827025,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9999999999999998,
+    "host_ceiling_breaches": 11,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-12",
+    "policy": "clearlane",
+    "usd_per_mw_day": 22.876496987559033,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.95,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-13",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": -1.1404903688541026,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-13",
+    "policy": "price_only",
+    "usd_per_mw_day": 30.07086092626244,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9999999999999998,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-13",
+    "policy": "clearlane",
+    "usd_per_mw_day": 23.01581188701787,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.9000000000000001,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-14",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 4.940955596838677,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-14",
+    "policy": "price_only",
+    "usd_per_mw_day": 27.343718887049825,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9999999999999996,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-14",
+    "policy": "clearlane",
+    "usd_per_mw_day": 1.1710949905657797,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.05,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-15",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 24.408685042519544,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-15",
+    "policy": "price_only",
+    "usd_per_mw_day": 44.97347825898085,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9499999999999995,
+    "host_ceiling_breaches": 12,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-15",
+    "policy": "clearlane",
+    "usd_per_mw_day": 28.40702999962114,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.9500000000000001,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-16",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": -9.277848964424889,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-16",
+    "policy": "price_only",
+    "usd_per_mw_day": 23.06517621032226,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.7999999999999998,
+    "host_ceiling_breaches": 12,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-16",
+    "policy": "clearlane",
+    "usd_per_mw_day": 7.29414903750194,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.3,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-17",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 1.4710904860723453,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-17",
+    "policy": "price_only",
+    "usd_per_mw_day": 10.760709110763344,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 2.4999999999999996,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-17",
+    "policy": "clearlane",
+    "usd_per_mw_day": 0,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-18",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 26.566308911747903,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-18",
+    "policy": "price_only",
+    "usd_per_mw_day": 36.51876523765734,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9999999999999998,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-18",
+    "policy": "clearlane",
+    "usd_per_mw_day": 25.27225458675805,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.9500000000000001,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-19",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 14.433959475385342,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-19",
+    "policy": "price_only",
+    "usd_per_mw_day": 38.56590525501936,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9499999999999995,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-19",
+    "policy": "clearlane",
+    "usd_per_mw_day": 24.149610098586255,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.9500000000000001,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-20",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": -2.9883325312141533,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-20",
+    "policy": "price_only",
+    "usd_per_mw_day": 44.328451217686315,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9499999999999995,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-20",
+    "policy": "clearlane",
+    "usd_per_mw_day": 30.487669520661683,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.9000000000000001,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-21",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": -4.367342267494664,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-21",
+    "policy": "price_only",
+    "usd_per_mw_day": 18.577637263286075,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9499999999999995,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-21",
+    "policy": "clearlane",
+    "usd_per_mw_day": 1.0384599253912112,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.05,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-22",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": -5.768846384956394,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-22",
+    "policy": "price_only",
+    "usd_per_mw_day": 15.315681312375666,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9999999999999996,
+    "host_ceiling_breaches": 11,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-22",
+    "policy": "clearlane",
+    "usd_per_mw_day": 1.1109077460962986,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.05,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-23",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 20.055404641472805,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-23",
+    "policy": "price_only",
+    "usd_per_mw_day": 25.65867917954691,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9999999999999998,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-23",
+    "policy": "clearlane",
+    "usd_per_mw_day": 10.321916964099271,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.5,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-24",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 11.055731656920749,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-24",
+    "policy": "price_only",
+    "usd_per_mw_day": 25.23177416674364,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9499999999999995,
+    "host_ceiling_breaches": 12,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-24",
+    "policy": "clearlane",
+    "usd_per_mw_day": 0,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-25",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 21.569107981124603,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-25",
+    "policy": "price_only",
+    "usd_per_mw_day": 47.364469798805914,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.9499999999999995,
+    "host_ceiling_breaches": 11,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-25",
+    "policy": "clearlane",
+    "usd_per_mw_day": 32.21359136096885,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.9500000000000001,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-26",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": -5.555506022131599,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-26",
+    "policy": "price_only",
+    "usd_per_mw_day": 36.4677764954549,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 2.0499999999999994,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-26",
+    "policy": "clearlane",
+    "usd_per_mw_day": 16.97189824447392,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 0.5,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-27",
+    "policy": "fixed_overnight",
+    "usd_per_mw_day": 14.014502203206483,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.0000000000000002,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": false
+  },
+  {
+    "operating_day_mt": "2026-10-27",
+    "policy": "price_only",
+    "usd_per_mw_day": 72.5009638831679,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 2.3999999999999995,
+    "host_ceiling_breaches": 10,
+    "beats_fixed_overnight": true
+  },
+  {
+    "operating_day_mt": "2026-10-27",
+    "policy": "clearlane",
+    "usd_per_mw_day": 53.39520128369776,
+    "co2_t_per_mw_day": null,
+    "pulse_cycles": 1.85,
+    "host_ceiling_breaches": 0,
+    "beats_fixed_overnight": true
+  }
+]

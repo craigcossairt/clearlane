@@ -40,6 +40,8 @@ const CLIS = [
   { out: "sensitivity.json", cli: "sensitivity.ts", inputs: "hist, torus_published, backtest.json (#238)", args: () => [] },
   { out: "wear_rainflow.json", cli: "wear.ts", inputs: "hist, torus_published, backtest.json, bundle, numbers.json (#70)", args: () => [] },
   { out: "rt_replay.json", cli: "replay.ts", inputs: "rt_<window>, hist, backtest.json (#227)", args: ({ rtArgs }) => rtArgs() },
+  { out: "backtest_pacw.json", also: ["backtest_pacw_days.json"], cli: "backtest.ts", inputs: "hist_pacw_<window>, torus_published, backtest.json for W; price only (#237)", args: ({ territoryArgs }) => territoryArgs("pacw") },
+  { out: "backtest_pge.json", also: ["backtest_pge_days.json"], cli: "backtest.ts", inputs: "hist_pge_<window>, torus_published, backtest.json for W; price only (#237)", args: ({ territoryArgs }) => territoryArgs("pge") },
 ];
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -156,8 +158,15 @@ const rtArgs = () => {
   const w = JSON.parse(readFileSync(at("public/derived/rt_replay.json"), "utf8")).window;
   return ["--rt", `public/data/rt_${w.start_mt}_${w.end_mt}.json`];
 };
+// A territory backtest (#237) re-runs on the history and window its committed output covers.
+const territoryArgs = (node) => {
+  const out = `public/derived/backtest_${node}.json`;
+  const w = JSON.parse(readFileSync(at(out), "utf8")).window;
+  const hist = `public/data/hist_${node}_${w.start_mt}_${w.end_mt}.json`;
+  return ["--hist", hist, "--start", w.start_mt, "--end", w.end_mt, "--out", out];
+};
 const runs = CLIS.filter((c) => (c.core || !core) && (c.core || existsSync(at("public/derived", c.out))));
-for (const c of runs) engine(c.cli, ...c.args({ bundle, now, rtArgs }));
+for (const c of runs) engine(c.cli, ...c.args({ bundle, now, rtArgs, territoryArgs }));
 
 // 3. Compare.
 const coreFiles = CLIS.filter((c) => c.core).flatMap((c) => [c.out.replace("<day>", day), ...(c.also ?? [])]);

@@ -11,6 +11,7 @@ import type {
   TorusPublished,
 } from "../../contracts/types";
 import { validateBacktest } from "../src/backtest";
+import type { BacktestOutput } from "../src/backtest";
 import { stableJson } from "../src/json";
 import {
   buildNumbers,
@@ -53,6 +54,13 @@ const backtest = optional("backtest", (t) => JSON.parse(t) as BacktestResult);
 if (backtest && validateBacktest(backtest.data).length) {
   console.error(
     `invalid backtest ${backtest.path}: ${validateBacktest(backtest.data).join("; ")}`,
+  );
+  process.exit(1);
+}
+// The stage numbers read the PACE backtest; a price-only territory run (#237) never feeds them.
+if (backtest && (backtest.data as BacktestOutput).price_only) {
+  console.error(
+    `${backtest.path} is a price-only backtest; numbers.json reads the PACE backtest`,
   );
   process.exit(1);
 }
