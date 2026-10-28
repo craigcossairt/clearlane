@@ -107,8 +107,7 @@ lists every number with its source, class and how it was checked.
   `research/data/pace_snapshot_2026-10-27.csv`. Not used by the app. CC BY 4.0; weather data by Open-Meteo.com.
 
 Sources for each file are in `research/DATA-SOURCES.md`. The code is MIT licensed.
-MIT covers the code only: CAISO OASIS and EIA data keep their publishers' terms, and Torus figures are quoted with
-attribution from Torus's public pages.
+MIT covers the code only: CAISO OASIS and EIA data keep their publishers' terms, and Torus figures are quoted with attribution and Torus's permission.
 
 ## Reproduce every number
 
