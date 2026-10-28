@@ -7,6 +7,7 @@ Definitions: docs/lanes/science.md 6.1 to 6.6 and 6.9; claim text in docs/FACTS.
 import argparse
 import csv
 import datetime as dt
+import json
 import math
 import pathlib
 import statistics
@@ -15,7 +16,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from science import common  # noqa: E402
+from science import common, dp  # noqa: E402
 
 SCHEMA = "clearlane.science.crosscheck/v1"
 SCRIPT = "science/crosscheck.py"
@@ -47,6 +48,15 @@ DEF = {
     "load": ["research/data/caiso3/*.csv"],
     "windsolar": ["research/data/caiso4/*.xml"],
     "snapshot": "research/data/pace_snapshot_2026-10-27.csv",
+    # #107: backtest and history
+    "hist": "public/data/hist_2026-05-01_2026-10-27.json",
+    "backtest": "public/derived/backtest.json",
+    "backtest_days": "public/derived/backtest_days.json",
+    "site": "public/derived/site_default.json",
+    "bundle": "public/data/bundle_2026-10-27.json",
+    "raw_may": ["research/data/caiso7/20260425_20260524_*.csv"],
+    "raw_jul": ["research/data/oasis/dam_jul/*.csv"],
+    "raw_oct": ["research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_*.csv"],
 }
 
 
@@ -179,6 +189,261 @@ def read_snapshot(path):
     for r in rows:
         r["utc"] = common.parse_oasis_time(r["interval_start_utc"].replace("Z", "+00:00"))
     return rows
+
+
+# ------------------------------------------------------------------ backtest and history (#107)
+
+def pctl_linear(values, q):
+    """Hyndman-Fan type 7 (linear interpolation, numpy's default)."""
+    v = sorted(values)
+    h = (len(v) - 1) * q
+    lo = math.floor(h)
+    hi = min(lo + 1, len(v) - 1)
+    return v[lo] + (h - lo) * (v[hi] - v[lo])
+
+
+def pctl_nearest(values, q):
+    """Nearest rank: the ceil(q * n)-th smallest value (1-based), at least the first."""
+    v = sorted(values)
+    return v[max(1, math.ceil(q * len(v) - 1e-12)) - 1]
+
+
+def summarize(values):
+    return {"n": len(values), "mean": sum(values) / len(values),
+            "linear": {k: pctl_linear(values, q) for k, q in (("p10", 0.1), ("p50", 0.5), ("p90", 0.9))},
+            "nearest_rank": {k: pctl_nearest(values, q) for k, q in (("p10", 0.1), ("p50", 0.5), ("p90", 0.9))}}
+
+
+def dominance_violations(stats):
+    """clearlane P10, P50, P90 must each be at or below price_only's (science.md 6.7)."""
+    out = []
+    for k in ("p10", "p50", "p90"):
+        c, p = stats["clearlane"][k], stats["price_only"][k]
+        if c > p:
+            out.append(f"{k}: clearlane {c:g} > price_only {p:g}")
+    return out
+
+
+def fixed_overnight_day(p):
+    """fixed_overnight per MW-day: the full 0 to 500 kWh swing, HB 1 to 4 in, HB 18 to 19 out."""
+    return race_value(p, FIXED_CHARGE, DISCHARGE)
+
+
+def share_beating(clear, fixed):
+    """Percent of days on which clearlane is strictly greater than fixed_overnight (ties do not beat)."""
+    days = sorted(fixed)
+    return 100.0 * sum(1 for d in days if clear[d] > fixed[d]) / len(days)
+
+
+def window_check(hist_days, raw_hours, first, last):
+    """Days in [first, last] with a hist row, and the missing ones with the raw hour count."""
+    have = set(hist_days)
+    missing, n = [], 0
+    d = first
+    while d <= last:
+        if d.isoformat() in have:
+            n += 1
+        else:
+            missing.append(d.isoformat())
+        d += dt.timedelta(days=1)
+    return {"days": n, "missing_days": missing,
+            "raw_hours_on_missing": {m: raw_hours.get(dt.date.fromisoformat(m), 0) for m in missing}}
+
+
+def compare_hist_raw(hist, raw_days, first, last):
+    """Every hour of every raw Mountain day in [first, last] against the hist row for that day."""
+    hours, worst, worst_at, absent = 0, 0.0, None, []
+    for d in sorted(raw_days):
+        if not first <= d <= last:
+            continue
+        row = hist.get(d.isoformat())
+        if row is None:
+            absent.append(d.isoformat())
+            continue
+        for h in range(24):
+            diff = abs(row[h] - raw_days[d][h])
+            hours += 1
+            if worst_at is None or diff > worst:
+                worst, worst_at = diff, {"day": d.isoformat(), "hb": h}
+    return {"hours": hours, "max_abs_diff": worst, "worst": worst_at, "days_absent": absent}
+
+
+def _load_json(path):
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _resolve(path):
+    p = pathlib.Path(path)
+    return p if p.is_absolute() else ROOT / p
+
+
+def backtest_checks(a):
+    """The #107 rows. Returns (checks, notes, inputs); rows stay pending when an input is absent."""
+    paths = {k: _resolve(getattr(a, k)) for k in ("hist", "backtest", "backtest_days", "site", "bundle")}
+    absent = [common.rel(p) if p.is_relative_to(ROOT) else str(p) for p in paths.values() if not p.exists()]
+    if absent:
+        return None, [f"#107 rows pending: missing {', '.join(absent)}"], []
+    raw_globs = {"may": a.raw_may, "jul": a.raw_jul, "oct": a.raw_oct}
+    raw_files = {k: expand(v) for k, v in raw_globs.items()}
+    hist_list = _load_json(paths["hist"])
+    bt = _load_json(paths["backtest"])
+    bdays = _load_json(paths["backtest_days"])
+    site = _load_json(paths["site"])["site"]
+    bundle = _load_json(paths["bundle"])
+    hist = {r["operating_day_mt"]: r["lmp_usd_mwh"] for r in hist_list}
+    pol = {p["policy"]: p["usd_per_mw_day"] for p in bt["policies"]}
+    eng = {}
+    for r in bdays:
+        eng.setdefault(r["policy"], {})[r["operating_day_mt"]] = r["usd_per_mw_day"]
+    checks, notes = {}, []
+    dp_inputs = [paths["hist"], paths["site"]]
+
+    # ---- window: hist days vs raw May (May 1 has 23 priced hours)
+    first = dt.date.fromisoformat(bt["window"]["start_mt"])
+    last = dt.date.fromisoformat(bt["window"]["end_mt"])
+    _, skipped = common.group_mountain_days(common.read_oasis_lmp(raw_files["may"], NODE))
+    raw_hours = {d: n for d, n in skipped}
+    w = window_check(sorted(hist), raw_hours, first, last)
+    bad_rows = sorted(d for d, p in hist.items() if len(p) != 24 or not all(math.isfinite(x) for x in p))
+    sci = {"days": w["days"], "missing_days": w["missing_days"], "raw_hours_on_missing": w["raw_hours_on_missing"],
+           "hist_rows_not_24_finite": bad_rows}
+    pv = {"facts_days": 179, "backtest_json": {"days": bt["window"]["days"], "missing_days": bt["window"]["missing_days"]}}
+    ok = (w["days"] == 179 == bt["window"]["days"] and w["missing_days"] == bt["window"]["missing_days"]
+          == ["2026-05-01"] and not bad_rows)
+    checks["backtest_days"] = entry(
+        "backtest_days", "days", pv, sci, "exact", ok,
+        "Mountain days May 1 to Oct 27 with a 24-price hist row; missing days listed with raw OASIS hours.",
+        [paths["hist"], paths["backtest"]] + raw_files["may"])
+
+    # ---- hist vs raw OASIS
+    spans = {"may": (dt.date(2026, 5, 1), dt.date(2026, 5, 23)), "jul": (dt.date(2026, 7, 1), dt.date(2026, 7, 30)),
+             "oct": (dt.date(2026, 10, 1), dt.date(2026, 10, 27))}
+    sci, ok = {}, True
+    for k, (f0, f1) in spans.items():
+        days, _ = common.group_mountain_days(common.read_oasis_lmp(raw_files[k], NODE))
+        r = compare_hist_raw(hist, days, f0, f1)
+        r["max_abs_diff"] = round(r["max_abs_diff"], 9)
+        sci[k] = r
+        ok = ok and r["max_abs_diff"] <= 0.00001 + 1e-12 and not r["days_absent"]
+    want_hours = {"may": 22 * 24, "jul": 30 * 24, "oct": 27 * 24}
+    ok = ok and all(sci[k]["hours"] == want_hours[k] for k in spans)
+    notes.append("hist vs raw: May 1 is not in the hist file (23 hours), so May compares May 2 to 23 "
+                 f"({want_hours['may']} hours).")
+    checks["hist_vs_raw_prices"] = entry(
+        "hist_vs_raw_prices", "$/MWh", "raw OASIS, every hour", sci, "within 0.00001 every hour", ok,
+        "Hist lmp_usd_mwh against raw OASIS DAM LMP for ELAP_PACE-APND, Mountain days from 06:00Z.",
+        [paths["hist"]] + raw_files["may"] + raw_files["jul"] + raw_files["oct"])
+
+    # ---- bundle Oct 27 HB 0
+    h0 = next(h for h in bundle["hours"] if h["hour_mt"] == 0)
+    raw_oct, _ = common.group_mountain_days(common.read_oasis_lmp(raw_files["oct"], NODE))
+    raw_h0 = raw_oct[dt.date(2026, 10, 27)][0]
+    sci = {"bundle_hb0": h0["lmp_usd_mwh"], "raw_hb0": r5(raw_h0), "ts_utc": h0["ts_utc"],
+           "hist_hb0": hist["2026-10-27"][0]}
+    ok = abs(h0["lmp_usd_mwh"] - raw_h0) <= 0.005 and abs(h0["lmp_usd_mwh"] - 46.11) > 0.005 \
+        and abs(raw_h0 - 30.21857) <= 0.00001
+    checks["bundle_oct27_hb0"] = entry(
+        "bundle_oct27_hb0", "$/MWh", {"raw": 30.21857, "not": 46.11}, sci,
+        "bundle within its cent precision of raw; not 46.11", ok,
+        "Bundle hours[hour_mt == 0] against raw OASIS Oct 27 06:00Z (CAISO OPR_DT Oct 26 HE24).",
+        [paths["bundle"]] + raw_files["oct"])
+
+    # ---- fixed_overnight from the hist file
+    days = sorted(d for d in hist if first.isoformat() <= d <= last.isoformat())
+    fixed = {d: fixed_overnight_day(hist[d]) for d in days}
+    fs = summarize(list(fixed.values()))
+    eng_fixed = eng.get("fixed_overnight", {})
+    per_day = max(abs(fixed[d] - eng_fixed[d]) for d in days) if set(eng_fixed) >= set(days) else None
+    method_ok = {m: all(abs(fs[m][k] - pol["fixed_overnight"][k]) <= 0.01 for k in ("p10", "p50", "p90"))
+                 for m in ("linear", "nearest_rank")}
+    matched = [m for m, v in method_ok.items() if v]
+    sci = {"n": fs["n"], "mean": r5(fs["mean"]), "linear": {k: r5(v) for k, v in fs["linear"].items()},
+           "nearest_rank": {k: r5(v) for k, v in fs["nearest_rank"].items()},
+           "max_abs_diff_per_day_vs_backtest_days": None if per_day is None else round(per_day, 9)}
+    ok = (bool(matched) and abs(fs["mean"] - pol["fixed_overnight"]["mean"]) <= 0.01
+          and per_day is not None and per_day <= 0.01)
+    checks["backtest_fixed_overnight"] = entry(
+        "backtest_fixed_overnight", "$/MW-day", {k: r5(v) for k, v in pol["fixed_overnight"].items()}, sci,
+        "0.01 each (P10, P50, P90 under the matching method, mean); 0.01 every day", ok,
+        "Reference race per hist day: sell 2 x sqrt(0.88) MWh at mean HB 18 to 19, buy 2 / sqrt(0.88) at "
+        "mean HB 1 to 4; percentiles both ways.", [paths["hist"], paths["backtest"], paths["backtest_days"]])
+    checks["percentile_method"] = entry(
+        "percentile_method", "method", "linear (engine.md 6.4)", {"matches": matched}, "the matching method",
+        matched == ["linear"], "Which percentile method reproduces backtest.json fixed_overnight to $0.01.",
+        [paths["backtest"]])
+
+    # ---- price_only by an independent DP
+    host = [float(x) for x in site["host_load_kw_15m"]]
+    st = site["station"]
+    po = {d: dp.price_only_day(hist[d], host, pulse_kw=st["pulse_kw"], pulse_kwh=st["pulse_kwh"],
+                               rte=st["rte"]["value"], export_limit_kw=site["export_limit_kw"]["value"])
+          ["usd_per_mw_day"] for d in days}
+    ps = summarize(list(po.values()))
+    eng_po = eng.get("price_only", {})
+    diffs = {d: po[d] - eng_po[d] for d in days if d in eng_po}
+    over = sorted(d for d, x in diffs.items() if abs(x) > 0.01)
+    worst = max(diffs, key=lambda d: abs(diffs[d])) if diffs else None
+    sci = {"p50_linear": r5(ps["linear"]["p50"]), "p50_nearest_rank": r5(ps["nearest_rank"]["p50"]),
+           "p10_linear": r5(ps["linear"]["p10"]), "p90_linear": r5(ps["linear"]["p90"]), "mean": r5(ps["mean"]),
+           "days_compared": len(diffs), "days_over_0.01": len(over),
+           "max_abs_diff_per_day": None if worst is None else round(abs(diffs[worst]), 9),
+           "worst_day": worst, "first_days_over": over[:5]}
+    ok = abs(ps["linear"]["p50"] - pol["price_only"]["p50"]) <= 0.01
+    checks["backtest_price_only_p50"] = entry(
+        "backtest_price_only_p50", "$/MW-day", r5(pol["price_only"]["p50"]), sci, "0.01 on P50 (linear)", ok,
+        "Independent stdlib DP (science/dp.py): 96 steps, 41 levels of 12.5 kWh, 4 up and 5 down at the meter, "
+        "sqrt(0.88) each leg, discharge at most host load (export limit 0), start and end level 2, W = 0.",
+        dp_inputs + [paths["backtest"], paths["backtest_days"]])
+
+    # ---- dominance and clearlane
+    viol = dominance_violations({"clearlane": pol["clearlane"], "price_only": pol["price_only"]})
+    viol_sci = dominance_violations({"clearlane": pol["clearlane"],
+                                     "price_only": {k: ps["linear"][k] for k in ("p10", "p50", "p90")}})
+    eng_cl = eng.get("clearlane", {})
+    day_viol = sorted(d for d in days if d in eng_cl and eng_cl[d] > po[d] + 1e-9)
+    checks["backtest_dominance"] = entry(
+        "backtest_dominance", "$/MW-day", "clearlane <= price_only at P10, P50, P90",
+        {"violations_vs_backtest_json": viol, "violations_vs_science_dp": viol_sci,
+         "days_clearlane_above_science_price_only": len(day_viol), "first_such_days": day_viol[:5]},
+        "each <=", not viol and not viol_sci,
+        "Order statistics of backtest.json clearlane against price_only (engine) and the science DP.",
+        [paths["backtest"], paths["backtest_days"]] + dp_inputs)
+
+    cl_vals = [eng_cl[d] for d in days if d in eng_cl]
+    cs = summarize(cl_vals) if len(cl_vals) == len(days) else None
+    if cs is None:
+        notes.append("clearlane_p50 left pending: backtest_days.json lacks clearlane rows for some days.")
+        checks["clearlane_p50"] = entry("clearlane_p50", "$/MW-day", 39.21, None, None, False,
+                                        "Waits on a complete backtest_days.json.", [paths["backtest_days"]])
+    else:
+        sci = {"p50_linear": r5(cs["linear"]["p50"]), "p50_nearest_rank": r5(cs["nearest_rank"]["p50"]),
+               "n": cs["n"], "below_science_price_only_p50": cs["linear"]["p50"] <= ps["linear"]["p50"]}
+        ok = (abs(cs["linear"]["p50"] - pol["clearlane"]["p50"]) <= 0.01 and rounds_equal(cs["linear"]["p50"], 39.21, 2)
+              and cs["linear"]["p50"] <= ps["linear"]["p50"])
+        checks["clearlane_p50"] = entry(
+            "clearlane_p50", "$/MW-day", {"facts": 39.21, "backtest_json": r5(pol["clearlane"]["p50"])}, sci,
+            "0.01 vs backtest.json; rounds equal at 2 dp; at or below the science price_only P50", ok,
+            "P50 of backtest_days.json clearlane rows (not recomputed: needs the engine's wear, calls and "
+            "re-plan), both methods; ordered against the science DP.", [paths["backtest_days"], paths["backtest"]])
+
+    clear = {d: eng_cl[d] for d in days if d in eng_cl}
+    if len(clear) == len(days):
+        share_eng = share_beating(clear, {d: eng_fixed[d] for d in days})
+        share_sci_fixed = share_beating(clear, fixed)
+        cl_stats = next(p for p in bt["policies"] if p["policy"] == "clearlane")
+        sci = {"pct_engine_fixed": round(share_eng, 5), "pct_science_fixed": round(share_sci_fixed, 5),
+               "days": len(days), "ties": sum(1 for d in days if clear[d] == fixed[d])}
+        ok = (abs(share_sci_fixed - cl_stats["days_beating_fixed_overnight_pct"]) <= 0.01
+              and rounds_equal(share_sci_fixed, 96, 0))
+        checks["share_days_beating"] = entry(
+            "share_days_beating", "% of days", {"facts": "96%", "backtest_json": r5(cl_stats["days_beating_fixed_overnight_pct"])},
+            sci, "0.01 percentage point; rounds equal at 0 dp", ok,
+            "Days with clearlane (backtest_days.json) strictly above the science fixed_overnight value, of all days.",
+            [paths["backtest_days"], paths["hist"], paths["backtest"]])
+
+    inputs = [paths[k] for k in paths] + [p for v in raw_files.values() for p in v]
+    return checks, notes, inputs
 
 
 # ------------------------------------------------------------------ checks
@@ -379,8 +644,12 @@ def run(a):
                        "tolerance": None, "status": "pending",
                        "method": "Not computed in #102; waits on public/derived/backtest.json and the hist file (#107).",
                        "inputs": []}
+    bchecks, bnotes, binputs = backtest_checks(a)
+    if bchecks:
+        checks.update(bchecks)
+    notes.extend(bnotes)
 
-    all_inputs = set()
+    all_inputs = set(binputs)
     for lst in files.values():
         all_inputs.update(lst)
     all_inputs.add(snap_path)
@@ -415,6 +684,10 @@ def main(argv=None):
     ap.add_argument("--timetable-hours", default=",".join(map(str, TIMETABLE_CHARGE)),
                     help="charge hours beginning, comma separated (an Oct 27 result)")
     for k in ("prices", "step_oct", "step_jul", "fossil_oct_lmp", "fossil_jul_lmp", "eia", "load", "windsolar"):
+        ap.add_argument("--" + k.replace("_", "-"), dest=k, nargs="+", default=DEF[k])
+    for k in ("hist", "backtest", "backtest_days", "site", "bundle"):
+        ap.add_argument("--" + k.replace("_", "-"), dest=k, default=DEF[k])
+    for k in ("raw_may", "raw_jul", "raw_oct"):
         ap.add_argument("--" + k.replace("_", "-"), dest=k, nargs="+", default=DEF[k])
     ap.add_argument("--out-json", default="science/crosscheck.json")
     ap.add_argument("--out-md", default="science/crosscheck.md")

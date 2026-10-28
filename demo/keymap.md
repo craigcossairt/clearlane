@@ -17,7 +17,7 @@ Mirrors `docs/lanes/ui.md` section 6.8 today. Once `app/src/keymap.ts` is on mai
 | Esc             | close any overlay                                                         | all                           |
 
 - **Reserved for stretch:** T projector theme, D day picker, P proof drawer, F fleet board, I lineage panel.
-- **Dropped:** T as a time-zone toggle (both heatmap readings are always shown), the Q cards, and the L live tile.
+- **Dropped:** T as a time-zone toggle (Torus confirmed the heatmap is Mountain time, so there is one reading), the Q cards, and the L live tile.
 - Keys typed into an input are ignored, except Esc.
 
 ## Presenter remote: UNVERIFIED
