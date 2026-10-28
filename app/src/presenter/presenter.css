@@ -1247,13 +1247,11 @@ body[data-mode="presenter"] {
   flex: 1;
   min-height: 160px;
   display: grid;
-  grid-template-rows: 1fr;
   column-gap: 8px;
   padding-top: 52px;
-  border-bottom: 2px solid var(--line);
 }
 [data-mode="presenter"] .p-env-sch-band {
-  grid-row: 1;
+  grid-row: 1 / 3;
   margin: -52px -4px 0;
   border-radius: 14px 14px 0 0;
   background: var(--jam-soft);
@@ -1267,16 +1265,50 @@ body[data-mode="presenter"] {
   white-space: nowrap;
 }
 [data-mode="presenter"] .p-env-col {
-  grid-row: 1;
-  position: relative;
+  grid-row: 1 / 3;
+  display: grid;
+  grid-template-rows: subgrid;
+}
+[data-mode="presenter"] .p-env-half {
   display: flex;
+  min-height: 0;
+}
+[data-mode="presenter"] .p-env-half.is-up {
   align-items: flex-end;
+}
+[data-mode="presenter"] .p-env-half.is-down {
+  align-items: flex-start;
 }
 [data-mode="presenter"] .p-env-bar {
   display: block;
   width: 100%;
+}
+[data-mode="presenter"] .p-env-bar.is-charge {
   border-radius: 8px 8px 0 0;
   background: var(--clear);
+}
+[data-mode="presenter"] .p-env-bar.is-sell {
+  border-radius: 0 0 8px 8px;
+  background: var(--shoulder);
+}
+[data-mode="presenter"] .p-env-zero {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  border-top: 2px solid var(--line);
+}
+[data-mode="presenter"] .p-env-keys {
+  gap: 32px;
+}
+[data-mode="presenter"] .p-env-keys > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+[data-mode="presenter"] .p-env-swatch.is-charge {
+  background: var(--clear);
+}
+[data-mode="presenter"] .p-env-swatch.is-sell {
+  background: var(--shoulder);
 }
 [data-mode="presenter"] .p-env-axis {
   display: grid;
@@ -1599,19 +1631,19 @@ body[data-mode="presenter"] {
 [data-mode="presenter"] .p-call[data-anim="on"] .p-call-trace[data-done="yes"] .p-call-hero > * {
   animation: p-rise 400ms ease-out;
 }
-/* Pulse's planned discharge is context, not the answer: dashed and dim. */
-[data-mode="presenter"] .p-call-pulse {
-  stroke-dasharray: 10 8;
-  opacity: 0.55;
-}
-[data-mode="presenter"] .p-call-busy {
-  margin: 0;
-  color: var(--shoulder);
+/* Before the call the banner waits quietly; it turns red only when the call lands. */
+[data-mode="presenter"] .p-call-banner.is-waiting {
+  border-left-color: var(--line);
+  background: var(--surface);
+  color: var(--muted);
 }
 
 /* Envelope: bars rise from the baseline left to right, then the critical span fades in. */
-[data-mode="presenter"] .p-env-bar {
+[data-mode="presenter"] .p-env-half.is-up .p-env-bar {
   transform-origin: bottom;
+}
+[data-mode="presenter"] .p-env-half.is-down .p-env-bar {
+  transform-origin: top;
 }
 [data-mode="presenter"] .p-env[data-anim="on"] .p-env-bar {
   animation: p-grow 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both;

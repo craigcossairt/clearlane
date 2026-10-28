@@ -89,7 +89,10 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
       aria-label={COPY.crashTitle}
       data-anim={motionOff() ? "off" : "on"}
     >
-      <div className="p-call-banner" data-slot="call-banner">
+      <div
+        className={`p-call-banner${shown ? "" : " is-waiting"}`}
+        data-slot="call-banner"
+      >
         <div className="reserve">
           <p
             className={shown ? undefined : "off"}
@@ -122,6 +125,7 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
           f={f}
           scales={scales}
           lead
+          second={call.second !== null}
         />
         <Trace
           title={COPY.priceOnlyLabel}
@@ -140,7 +144,6 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
           <h3>{PRESENTER.callSimTitle}</h3>
           {shown ? (
             <p>
-              {COPY.ramp} <Live value={shown.ramp_s} unit="s" digits={0} />.{" "}
               {PRESENTER.callSpinBack}{" "}
               <span data-time="">{mtClock(shown.spin_full_again_utc)}</span>{" "}
               {COPY.mt}. {COPY.meterRefill}{" "}
@@ -152,9 +155,7 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
               .
             </p>
           ) : (
-            <p className="unavailable">
-              {COPY.noCallYet} {COPY.emptyNotZero}
-            </p>
+            <p className="unavailable">{PRESENTER.callWaiting}</p>
           )}
           <p data-slot="second-call">
             {call.second ? (
@@ -175,7 +176,8 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
             {/* The year is part of the FACTS wording for rmp_events_2025, not a stage number. */}
             <span data-copy-ok="">{COPY.eventsTail}</span>{" "}
             {PRESENTER.callPublishedRamp} <Num k="rmp_event_ramp_s" width={3} />{" "}
-            {COPY.against} <Num k="rmp_event_ramp_target_s" width={3} />{" "}
+            {PRESENTER.callPublishedSeconds}{" "}
+            <Num k="rmp_event_ramp_target_s" width={3} />{" "}
             {PRESENTER.callPublishedDelivered}{" "}
             <Num k="rmp_event_target_pct" width={4} />.
           </p>
@@ -209,6 +211,7 @@ function Trace({
   f,
   scales,
   lead,
+  second,
 }: {
   title: string;
   result: CrashResult | null;
@@ -216,6 +219,8 @@ function Trace({
   f: number;
   scales: { maxKw: number; maxT: number };
   lead?: boolean;
+  /** This card shows the second call. */
+  second?: boolean;
 }) {
   const rows = result
     ? result.trace.slice(0, Math.max(1, Math.ceil(f * result.trace.length)))
@@ -227,11 +232,6 @@ function Trace({
       )},${H}`
     : "";
   const done = f >= 1;
-  // The battery was already discharging as planned when the call came, and had no Spin to give.
-  const busy =
-    result !== null &&
-    result.spin_kwh === 0 &&
-    (result.trace[0]?.pulse_kw ?? 0) < 0;
   const line = (
     key: string,
     cls: string,
@@ -265,13 +265,13 @@ function Trace({
               />
             </span>
             <span className="p-call-pct-label">
-              {PRESENTER.callDeliveredOf}
+              {second
+                ? PRESENTER.callSecondDeliveredOf
+                : PRESENTER.callDeliveredOf}
             </span>
           </>
         ) : (
-          <span className="unavailable">
-            {COPY.noCallYet} {COPY.emptyNotZero}
-          </span>
+          <span className="unavailable">{PRESENTER.callWaiting}</span>
         )}
       </div>
       <svg
@@ -289,15 +289,16 @@ function Trace({
               className="p-call-asked"
               points={asked}
             />
-            {/* Pulse's line is its planned evening discharge plus any help it gives the call,
-                so it is drawn dashed and dim: it is not the call being answered. */}
-            {line("pulse", "p-call-pulse", (p) => Math.max(0, -p.pulse_kw))}
+            {/* Pulse's line includes power it was already selling, so the battery-only card
+                does not draw it: there it would read as answering the call (judge review 2). */}
+            {lead
+              ? line("pulse", "p-call-pulse", (p) => Math.max(0, -p.pulse_kw))
+              : null}
             {/* Spin answering: discharge only, so the refill after the call is not drawn as help. */}
             {line("spin", "p-call-spin", (p) => Math.max(0, -p.spin_kw))}
           </>
         ) : null}
       </svg>
-      {busy ? <p className="p-call-busy">{PRESENTER.callPulseBusy}</p> : null}
     </article>
   );
 }

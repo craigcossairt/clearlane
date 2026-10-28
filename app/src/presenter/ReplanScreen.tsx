@@ -147,7 +147,8 @@ export function ReplanScreen({
           className="p-replan-callmark"
         >
           {PRESENTER.replanCallMark}{" "}
-          <tspan data-time="">{mtClock(live.calls.first.start_utc)}</tspan>
+          <tspan data-time="">{mtClock(live.calls.first.start_utc)}</tspan>{" "}
+          {PRESENTER.replanCallMarkTz}
         </text>
         {replan && leave ? (
           <g data-slot="replan-leave">
@@ -192,22 +193,6 @@ export function ReplanScreen({
           </text>
         ))}
       </svg>
-      <p className="p-replan-cycles" data-slot="replan-cycles" data-detail="">
-        {PRESENTER.replanCycles}{" "}
-        {replan ? (
-          <Num
-            value={replan.pulse_cycles}
-            display={grouped(replan.pulse_cycles, 2)}
-            prov="DERIVED"
-            source="engine re-plan (live, this laptop)"
-            width={5}
-          />
-        ) : (
-          <Num k="cycles_today" width={5} />
-        )}
-        . {PRESENTER.replanCyclesBudget}{" "}
-        <Num k="pulse_cycle_budget" width={4} /> {PRESENTER.replanCyclesTail}.
-      </p>
     </section>
   );
 }

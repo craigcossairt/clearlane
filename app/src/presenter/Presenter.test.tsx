@@ -158,25 +158,37 @@ describe("presenter mode (#216, ff_presenter)", () => {
     ).toContain(PRESENTER.secondRule);
   });
 
-  it("says why the battery-only Pulse line is not the answer, and lands with motion off (#4)", () => {
+  it("draws no Pulse line on the battery-only card, and lands with motion off (#4)", () => {
     const { container } = renderPresenter("screen=4&step=end&motion=off");
-    // The battery-only plan was already discharging when the call came and has no Spin.
     expect(
-      container.querySelector('[data-slot="call-ghost"] .p-call-busy')
-        ?.textContent,
-    ).toBe(PRESENTER.callPulseBusy);
-    expect(
-      container.querySelector('[data-slot="call-inset"] .p-call-busy'),
+      container.querySelector('[data-slot="call-ghost"] [data-series="pulse"]'),
     ).toBeNull();
+    expect(
+      container.querySelector('[data-slot="call-inset"] [data-series="pulse"]'),
+    ).toBeTruthy();
+    // Torus's 19 s is their published record, not our result.
+    expect(
+      container.querySelector('[data-slot="call-result"] [data-num]')
+        ?.textContent,
+    ).not.toMatch(/s/);
+    expect(container.querySelector(".p-call-pct-label")?.textContent).toBe(
+      PRESENTER.callSecondDeliveredOf,
+    );
     expect(container.querySelector(".p-call")?.getAttribute("data-anim")).toBe(
       "off",
     );
-    // With motion off each trace is finished, so each share is shown.
     expect(
       [...container.querySelectorAll(".p-call-trace")].map((t) =>
         t.getAttribute("data-done"),
       ),
     ).toEqual(["yes", "yes"]);
+  });
+
+  it("waits plainly before the call (#4)", () => {
+    const { container } = renderPresenter("screen=4&motion=off");
+    expect(container.querySelector(".p-call-banner.is-waiting")).toBeTruthy();
+    expect(container.textContent).toContain(PRESENTER.callWaiting);
+    expect(container.textContent).not.toContain("Empty, not zero");
   });
 
   it("the re-plan ring mounts only after Resume (#4)", () => {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { Policy, PolicyStats } from "@contracts/types";
 import type { Live } from "../beats/types";
 import { Num, useNumber } from "../components/Num";
@@ -9,7 +9,6 @@ import { grouped, usdPerMw } from "../format";
 import { animAttr } from "./motion";
 
 const ENVELOPE_SOURCE = "public/derived/envelope file (engine)";
-const COPY_LABELS = [COPY.copyJson, COPY.copied, COPY.copyFailed] as const;
 
 /**
  * Screen 6 (#270). The envelope state is a 24-hour strip: each hour's draw limit as a bar, the
@@ -60,7 +59,6 @@ function EnvelopeHours({
   derived: DerivedFiles;
   day: string;
 }) {
-  const [note, setNote] = useState<(typeof COPY_LABELS)[number]>(COPY.copyJson);
   const entry = derived.envelopes[day];
   if (!entry) {
     return (
@@ -71,13 +69,13 @@ function EnvelopeHours({
     );
   }
   const hours = entry.envelope.hours;
-  const top = Math.max(1, ...hours.map((h) => h.max_charge_kw));
-  const reserves = hours.map((h) => h.reserve_kw);
-  const ready = Math.min(...reserves);
+  // Planned power each hour, from the same envelope file: + charging, - selling (discharging).
+  const up = Math.max(0, ...hours.map((h) => h.planned_kw));
+  const down = Math.max(0, ...hours.map((h) => -h.planned_kw));
+  const span = Math.max(1, up + down);
+  const ready = Math.min(...hours.map((h) => h.reserve_kw));
   // The first and last System Critical Hour, for the label over the marked span.
   const sch = hours.flatMap((h, i) => (h.system_critical ? [i] : []));
-  const board =
-    typeof navigator !== "undefined" ? (navigator.clipboard ?? null) : null;
   return (
     <div className="p-env-hours" data-slot="envelope-strip">
       <div className="p-env-facts">
@@ -88,20 +86,28 @@ function EnvelopeHours({
           <span>{PRESENTER.envelopeSchCount}</span>
         </p>
         <p className="p-env-fact">
-          <span className="p-env-swatch is-draw" aria-hidden="true" />
-          <span>{PRESENTER.envelopeDrawLabel}</span>
-          <span className="p-env-big">{kw(top)}</span>
-        </p>
-        <p className="p-env-fact">
           <span>{PRESENTER.envelopeReadyLabel}</span>
           <span className="p-env-big">{kw(ready)}</span>
+        </p>
+        <p className="p-env-fact p-env-keys">
+          <span>
+            <span className="p-env-swatch is-charge" aria-hidden="true" />
+            {PRESENTER.envelopeChargeKey}
+          </span>
+          <span>
+            <span className="p-env-swatch is-sell" aria-hidden="true" />
+            {PRESENTER.envelopeSellKey}
+          </span>
         </p>
       </div>
       <div
         className="p-env-strip"
         role="img"
         aria-label={PRESENTER.envelopeAria}
-        style={{ gridTemplateColumns: `repeat(${hours.length}, 1fr)` }}
+        style={{
+          gridTemplateColumns: `repeat(${hours.length}, 1fr)`,
+          gridTemplateRows: `${Math.max(up, 1) / span}fr ${Math.max(down, 1) / span}fr`,
+        }}
       >
         {sch.length > 0 ? (
           <span
@@ -115,6 +121,7 @@ function EnvelopeHours({
             </span>
           </span>
         ) : null}
+        <span className="p-env-zero" aria-hidden="true" />
         {hours.map((h, i) => (
           <span
             key={h.ts_utc}
@@ -122,10 +129,26 @@ function EnvelopeHours({
             data-critical={h.system_critical ? "yes" : "no"}
             style={{ gridColumn: i + 1, ["--i" as string]: i }}
           >
-            <i
-              className="p-env-bar"
-              style={{ height: `${(h.max_charge_kw / top) * 100}%` }}
-            />
+            <span className="p-env-half is-up">
+              {h.planned_kw > 0 ? (
+                <i
+                  className="p-env-bar is-charge"
+                  style={{
+                    height: `${(h.planned_kw / Math.max(up, 1)) * 100}%`,
+                  }}
+                />
+              ) : null}
+            </span>
+            <span className="p-env-half is-down">
+              {h.planned_kw < 0 ? (
+                <i
+                  className="p-env-bar is-sell"
+                  style={{
+                    height: `${(-h.planned_kw / Math.max(down, 1)) * 100}%`,
+                  }}
+                />
+              ) : null}
+            </span>
           </span>
         ))}
       </div>
@@ -140,33 +163,13 @@ function EnvelopeHours({
           </span>
         ))}
       </div>
-      <button
-        className="ghost-btn copy-btn"
-        data-slot="copy-json"
-        type="button"
-        onClick={() => {
-          if (!board) {
-            setNote(COPY.copyFailed);
-            return;
-          }
-          board.writeText(entry.raw).then(
-            () => setNote(COPY.copied),
-            () => setNote(COPY.copyFailed),
-          );
-        }}
-      >
-        {COPY_LABELS.map((label) => (
-          <span
-            key={label}
-            className={label === note ? "on" : "off"}
-            aria-hidden={label !== note}
-          >
-            {label}
-          </span>
-        ))}
-      </button>
     </div>
   );
+}
+
+/** "-$14.26", not "$-14.26". Presenter only, so the shared usdPerMw and the stage stay as they are. */
+function money(n: number): string {
+  return n < 0 ? `-${usdPerMw(-n)}` : usdPerMw(n);
 }
 
 /** Column order: the baseline, the plan that wins on paper, then Clearlane. */
@@ -283,9 +286,7 @@ function Scorecard({ derived }: { derived: DerivedFiles }) {
               <span className="p-score-mobile-label">
                 {PRESENTER.scoreMoney}
               </span>
-              <span className="p-score-money">
-                {live(v.p50, usdPerMw(v.p50))}
-              </span>
+              <span className="p-score-money">{live(v.p50, money(v.p50))}</span>
               <span className="p-score-bar" aria-hidden="true">
                 <i
                   style={{
@@ -294,8 +295,8 @@ function Scorecard({ derived }: { derived: DerivedFiles }) {
                 />
               </span>
               <span className="p-score-range" data-detail="">
-                {PRESENTER.scoreMoneyRange} {live(v.p10, usdPerMw(v.p10))}{" "}
-                {PRESENTER.scoreMoneyAnd} {live(v.p90, usdPerMw(v.p90))}
+                {PRESENTER.scoreMoneyRange} {live(v.p10, money(v.p10))}{" "}
+                {PRESENTER.scoreMoneyAnd} {live(v.p90, money(v.p90))}
               </span>
             </div>
             <div className="p-score-cell" data-rule="wear">
