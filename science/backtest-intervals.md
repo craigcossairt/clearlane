@@ -78,6 +78,62 @@ not results.
 ## Results
 
 <!-- results:start -->
+Run: `python -I science/backtest_intervals.py`, seed 111, 10,000 resamples per method. Input `public/derived/backtest_days.json` (sha256 b2b6f00f5ec9...); point checks against `public/derived/backtest.json` (sha256 ad4210272203...). Every value below is DERIVED from these files; dollars are $/MW-day of value to RMP's system at day-ahead prices.
 
-Not computed yet.
+Days: 179 consecutive days, 2026-05-02 to 2026-10-27 (`public/derived/backtest_days.json`); gaps: 0; days missing a policy: 0.
+
+### Point values vs the summary
+
+| Check | From `public/derived/backtest_days.json` | `public/derived/backtest.json` | Abs diff | Tolerance | Status |
+|---|---|---|---|---|---|
+| P50 fixed_overnight | 7.751021 | 7.751021 | 0 | $0.01; 2 dp | match |
+| P50 price_only | 44.905881 | 44.905881 | 0 | $0.01; 2 dp | match |
+| P50 clearlane | 38.686189 | 38.686189 | 0 | $0.01; 2 dp | match |
+| days beating fixed overnight, fixed_overnight (%) | 0.000000 | 0.000000 | 0 | 0.01 percentage point | match |
+| days beating fixed overnight, price_only (%) | 100.000000 | 100.000000 | 0 | 0.01 percentage point | match |
+| days beating fixed overnight, clearlane (%) | 91.061453 | 91.061453 | 0 | 0.01 percentage point | match |
+| day set | 179 days to 2026-10-27 | 179 days, missing 2026-05-01 | | exact | match |
+| `beats_fixed_overnight` flags vs strict greater than | 0 disagree | | | none disagree | match |
+
+### 90% intervals on P50, $/MW-day (source `public/derived/backtest_days.json`)
+
+| Policy | Point P50 | 7-day moving block | Stationary, mean block 7 | Reference: independent days | Point inside both block intervals |
+|---|---|---|---|---|---|
+| fixed_overnight | $7.75 | $0.90 to $15.86 | $0.34 to $16.18 | $4.04 to $11.08 | yes |
+| price_only | $44.91 | $39.35 to $54.06 | $39.35 to $54.32 | $41.72 to $50.45 | yes |
+| clearlane | $38.69 | $33.00 to $48.25 | $32.77 to $48.90 | $34.66 to $42.59 | yes |
+
+The 7-day moving-block intervals on P50 are 1.7 to 2.1 times as wide as the independent-days reference, so the day-to-day correlation matters.
+
+### 90% intervals on days beating the fixed overnight rule, % of days (source `public/derived/backtest_days.json`)
+
+| Policy | Point | 7-day moving block | Stationary, mean block 7 | Reference: independent days |
+|---|---|---|---|---|
+| fixed_overnight | 0.0 | 0.0 to 0.0 | 0.0 to 0.0 | 0.0 to 0.0 |
+| price_only | 100.0 | 100.0 to 100.0 | 100.0 to 100.0 | 100.0 to 100.0 |
+| clearlane | 91.1 | 85.5 to 95.5 | 85.5 to 96.1 | 87.7 to 94.4 |
+
+Ties do not beat, so fixed_overnight is 0 on every resample.
+
+Seed check (seed 112, not a result): the largest endpoint change is $1.01 and 0.00 percentage points for the moving block, $1.33 and 0.00 for the stationary bootstrap.
+
+Quote: Clearlane's median daily value: $38.69 per MW-day of value to RMP's system at day-ahead prices, 90% interval $33.00 to $48.25; it beat a battery on a fixed off-peak rule on 91% of days (90% interval 85.5% to 95.5%). 7-day moving-block bootstrap of public/derived/backtest_days.json, seed 111; DERIVED by science/backtest_intervals.py.
 <!-- results:end -->
+
+## Note, Wed Oct 28 2026 (after the real run)
+
+The method and tolerance section above is unchanged since its own commit (452d4bf).
+
+- Point checks. Every row matches: the P50 and the share of days beating the fixed overnight rule, for
+  each policy, come back from the per-day rows to the value in `public/derived/backtest.json` with no
+  difference, the day set is the summary's, and no `beats_fixed_overnight` flag disagrees with the strict
+  greater-than rule. No issue was filed.
+- Every point P50 sits inside both of its block intervals. The moving-block and stationary intervals
+  agree closely; the stationary one is a little wider for every policy.
+- The independent-days reference is much narrower, so an interval that ignored the correlation between
+  neighboring days would overstate how precisely one season pins the median.
+- The share for `price_only` is a zero-width interval because it beats the fixed rule on every day, and
+  `fixed_overnight` cannot beat itself, so both are degenerate by construction, not by luck.
+- The quote line above is printed by the script and uses the moving-block interval, the headline method.
+- Independence. No engine code was read. The bootstrap uses the engine's daily values as given; it does
+  not re-solve any plan.
