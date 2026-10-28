@@ -103,9 +103,10 @@ for (const p of w.policies)
   );
 for (const d of w.depth_aware_clearlane)
   console.log(
-    `  depth-aware clearlane k ${d.k}: $${f(d.usd_per_mw_day.mean, 2)}/MW-day ` +
-      `(${f(d.usd_per_mw_day_vs_linear, 2)} vs linear), plan changed on ${d.days_plan_changed} days, ` +
-      `${f(d.equivalent_cycles_per_yr)} eq cycles/yr`,
+    `  depth-aware clearlane k ${d.k}: gross $${f(d.usd_per_mw_day.mean, 2)}/MW-day ` +
+      `(${f(d.usd_per_mw_day_vs_linear, 2)} vs linear), wear $${f(d.wear_usd_per_mw_day, 2)}, ` +
+      `net $${f(d.net_usd_per_mw_day, 2)} (${f(d.net_usd_per_mw_day_vs_linear, 2)} vs linear at the same wear), ` +
+      `plan changed on ${d.days_plan_changed} days, ${f(d.equivalent_cycles_per_yr)} eq cycles/yr`,
   );
 const r = w.stage_day.race_full_h;
 console.log(
