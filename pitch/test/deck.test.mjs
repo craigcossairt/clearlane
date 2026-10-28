@@ -31,14 +31,14 @@ test("slide footers list the provenance classes of the slide's keys", () => {
   assert.deepEqual(provClasses(["b", "a", "c"], keys), ["REAL", "DERIVED", "MEASURED"]);
 });
 
-test("page counts match: one per slide, one per one-pager (SKIP without built PDFs)", (t) => {
+test("page counts match: one per slide, and each doc's pages (SKIP without built PDFs)", (t) => {
   const slides = splitSlides(deck).length;
   let checked = 0;
   for (const doc of DOCS) {
     const pdf = new URL(doc.pdf, out);
     if (!existsSync(pdf)) continue;
     checked++;
-    assert.equal(countPdfPages(readFileSync(pdf)), doc.kind === "deck" ? slides : 1, doc.pdf);
+    assert.equal(countPdfPages(readFileSync(pdf)), doc.kind === "deck" ? slides : doc.pages, doc.pdf);
   }
   if (checked === 0) t.skip("SKIP: no PDFs in pitch/out; run node pitch/build.mjs");
 });

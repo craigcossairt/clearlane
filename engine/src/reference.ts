@@ -13,6 +13,14 @@ export interface RaceLeg {
   charge_mean_usd_mwh: number;
   discharge_mean_usd_mwh: number;
   co2_t_per_mw_day: number; // + avoided
+  /** MWh bought from the grid per MW (REF_E_MWH / sqrt(RTE)). ASSUMPTION station. */
+  charge_mwh: number;
+  /** MWh sold to the grid per MW (REF_E_MWH * sqrt(RTE)). */
+  discharge_mwh: number;
+  /** charge_mwh at the mean charge price; sell - buy is usd_per_mw_day. */
+  buy_usd_per_mw_day: number;
+  /** discharge_mwh at the mean discharge price. */
+  sell_usd_per_mw_day: number;
 }
 
 export interface ReferenceRace {
@@ -40,6 +48,10 @@ function leg(b: Bundle, chg: number[], dis: number[]): RaceLeg {
     charge_mean_usd_mwh: sum(chg.map(price)) / chg.length,
     discharge_mean_usd_mwh: sum(dis.map(price)) / dis.length,
     co2_t_per_mw_day: co2Avoid - co2Add,
+    charge_mwh: cg,
+    discharge_mwh: dg,
+    buy_usd_per_mw_day: cost,
+    sell_usd_per_mw_day: rev,
   };
 }
 

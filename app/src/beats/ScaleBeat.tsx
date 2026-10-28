@@ -73,7 +73,7 @@ export function ScaleBeat({ fleetMw, onFleet, step }: BeatProps) {
   );
 }
 
-function CloseCard() {
+export function CloseCard() {
   return (
     <article className="card close-card" data-slot="close-card">
       <h3>
@@ -92,7 +92,7 @@ function CloseCard() {
   );
 }
 
-function ScaleCard({
+export function ScaleCard({
   title,
   perMwKey,
   fleetMw,
