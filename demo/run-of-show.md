@@ -21,7 +21,10 @@ All times Mountain (MDT, UTC-6). Integration keeps this file current at every tr
 | Wed 7:00am            | Fixes only; Craig's read                                      |
 | Wed 10:00am           | Train 7                                                       |
 | Wed noon              | Train 8, copy and polish                                      |
-| Wed 2:00pm            | Code freeze, tag `v1-stage`                                   |
+| Wed 2:00pm            | Code freeze, tag `v1-stage` (six-beat fallback)               |
+| Wed 2:45pm            | Presenter PRs #270 and #271 due                               |
+| Wed about 3:05pm      | Presenter PRs merged; freeze gate on the new main             |
+| Wed about 3:20pm      | Tag `v1-stage-2` (presenter build) on Craig's go              |
 | Wed 3:30pm            | Backup video and deck PDF copied to laptop, USB stick and Mac |
 | Wed by 5:00pm         | Craig submits                                                 |
 | Wed 5:00pm to 6:00pm  | Judging                                                       |
@@ -39,13 +42,16 @@ All times Mountain (MDT, UTC-6). Integration keeps this file current at every tr
 
 ## Train log
 
-| Train | Tagged (MT) | Merged                                                                      | Gate                                                                                    | Cuts                                                  |
-| ----- | ----------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| 1     | Tue 8:50am  | integration #119, #123                                                      | check:all green                                                                         | none                                                  |
-| 2     | Tue 9:15am  | data #114, #116, #121; engine #113; pitch #17, #15, #16; integration #126   | check:all green; offline-check and facts-check not built                                | none                                                  |
-| 3     | Tue 11:55am | data #124; engine #118, #122, #143; integration #132, #147, #149            | check:all green                                                                         | none                                                  |
-| 4     | not tagged  | data #151; integration #166, #167; ui #155, #168 to #172                    | 4:08pm: check:all green; offline 6/6; facts-check 1 fail (fixed by #167)                | none                                                  |
-| 5     | Tue 5:44pm  | data #176; engine #181; ui #180; pitch #130; science #174; integration #177 | check:all green; offline 6/6; facts-check PASS; projector by hand ok (small text: #190) | stretch-1 cut: #29, #48, #64 to #67, #86 to #89, #110 |
+| Train | Tagged (MT) | Merged                                                                      | Gate                                                                                              | Cuts                                                  |
+| ----- | ----------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| 1     | Tue 8:50am  | integration #119, #123                                                      | check:all green                                                                                   | none                                                  |
+| 2     | Tue 9:15am  | data #114, #116, #121; engine #113; pitch #17, #15, #16; integration #126   | check:all green; offline-check and facts-check not built                                          | none                                                  |
+| 3     | Tue 11:55am | data #124; engine #118, #122, #143; integration #132, #147, #149            | check:all green                                                                                   | none                                                  |
+| 4     | not tagged  | data #151; integration #166, #167; ui #155, #168 to #172                    | 4:08pm: check:all green; offline 6/6; facts-check 1 fail (fixed by #167)                          | none                                                  |
+| 5     | Tue 5:44pm  | data #176; engine #181; ui #180; pitch #130; science #174; integration #177 | check:all green; offline 6/6; facts-check PASS; projector by hand ok (small text: #190)           | stretch-1 cut: #29, #48, #64 to #67, #86 to #89, #110 |
+| 6     | Tue 11:27pm | on d52ac32: #213, #214, #209, #210, #195, #204                              | gate green; all flags off                                                                         | none                                                  |
+| 7     | Wed 9:58am  | on 3c3bc00: integration #267 (docs)                                         | check:all green; offline 6/6; facts PASS; reproduce 110/110; projector default and presenter PASS | none                                                  |
+| 8     | Wed 11:40am | on 3c3bc00: none                                                            | Train 7 counts; offline 6/6 and facts PASS rerun                                                  | none                                                  |
 
 ## Rehearsal log
 
@@ -79,7 +85,24 @@ Day-coupled tests found by the dry run and fixed before the live run: engine #18
 
 ## Stage flag set
 
-Every flag off until Craig picks the set at Train 6.
+Every flag off in `contracts/flags.ts`. The stage opens presenter mode from the URL, `http://localhost:4173/?ff=presenter`, so no flag default changes. The six-beat stage at `http://localhost:4173/` is the fallback.
+
+## Stage cues, presenter mode
+
+The clicker only: Right or PageDown is Next, Left or PageUp is Back. C, E and B are not used.
+
+| Screen     | Next presses on it | What they do                             |
+| ---------- | ------------------ | ---------------------------------------- |
+| 1 Title    | 1                  | to Traffic                               |
+| 2 Traffic  | 1                  | to Race                                  |
+| 3 Race     | 2                  | replay; then to Call                     |
+| 4 Call     | 3                  | first call; second call; then to Re-plan |
+| 5 Re-plan  | 2                  | resume; then to Envelope                 |
+| 6 Envelope | 2                  | backtest; then to Scale                  |
+| 7 Scale    | 2                  | fleet to the maximum; then to Close      |
+| 8 Close    | 0                  | last screen                              |
+
+A Next press while the race replay is running jumps it to its end; one more press leaves the screen. Check this table against the screens after #270 and #271 merge.
 
 ## Pack list
 

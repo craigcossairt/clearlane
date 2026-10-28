@@ -4,6 +4,8 @@ import {
   classifyRequest,
   isSameOrigin,
   scanBundleText,
+  presenterSummaryLine,
+  presenterWalkDone,
   summaryLine,
 } from "./lib/offline-check.mjs";
 
@@ -181,5 +183,46 @@ describe("summaryLine", () => {
     expect(summaryLine({ violations: 3, sameOrigin: 12, beatsDriven: 6 })).toBe(
       "FAIL offline-check: 3 violations",
     );
+  });
+});
+
+describe("presenter walk", () => {
+  it("is done only when Next leaves the presenter state unchanged", () => {
+    const at = (screen: string, actions: string) => ({
+      screen,
+      actions,
+      state: "ready",
+    });
+    expect(presenterWalkDone(at("7", "1"), at("8", "0"))).toBe(false);
+    expect(presenterWalkDone(at("4", "1"), at("4", "2"))).toBe(false);
+    expect(presenterWalkDone(at("8", "0"), at("8", "0"))).toBe(true);
+    // A running replay stops on Next but stays on its screen: not done yet.
+    expect(
+      presenterWalkDone(
+        { screen: "3", actions: "1", state: "playing" },
+        at("3", "1"),
+      ),
+    ).toBe(false);
+  });
+
+  it("summarizes screens reached and actions run", () => {
+    expect(
+      presenterSummaryLine({
+        violations: 0,
+        sameOrigin: 20,
+        screens: 8,
+        actions: 6,
+      }),
+    ).toBe(
+      "PASS offline-check --presenter: 0 external requests, 20 same-origin, 8 screens, 6 actions",
+    );
+    expect(
+      presenterSummaryLine({
+        violations: 2,
+        sameOrigin: 20,
+        screens: 8,
+        actions: 6,
+      }),
+    ).toBe("FAIL offline-check --presenter: 2 violations");
   });
 });
