@@ -1,0 +1,62 @@
+{
+  "axis": {
+    "max": 140,
+    "min": -20,
+    "step": 20
+  },
+  "caption": "Value to RMP's system at day-ahead prices. The fixed overnight rule is our comparison rule, not Torus practice.",
+  "chart": "backtest_spread",
+  "class": "DERIVED",
+  "input": {
+    "path": "public/derived/backtest.json",
+    "sha256": "3009fbdc04bc54b74d8923a933e5370880a5fadfe7e9b969e90376742f110c2d"
+  },
+  "marks": {
+    "bar": "P10 to P90",
+    "dot": "mean",
+    "tick": "P50"
+  },
+  "policies": [
+    {
+      "label": "Fixed overnight rule",
+      "policy": "fixed_overnight",
+      "usd_per_mw_day": {
+        "mean": 17.2377544435824,
+        "p10": -14.26151697957755,
+        "p50": 7.751020775473549,
+        "p90": 57.181005465941155
+      }
+    },
+    {
+      "label": "Price only",
+      "policy": "price_only",
+      "usd_per_mw_day": {
+        "mean": 60.66427801283702,
+        "p10": 20.973307424607345,
+        "p50": 44.90588079721297,
+        "p90": 133.4211194240824
+      }
+    },
+    {
+      "label": "Clearlane",
+      "policy": "clearlane",
+      "usd_per_mw_day": {
+        "mean": 52.5506409220984,
+        "p10": 8.70650045776269,
+        "p50": 39.21366936711043,
+        "p90": 116.19983685636377
+      }
+    }
+  ],
+  "schema": "clearlane.backtest/v1",
+  "script": "science/chart_backtest.py",
+  "unit": "$/MW-day",
+  "window": {
+    "days": 179,
+    "end_mt": "2026-10-27",
+    "missing_days": [
+      "2026-05-01"
+    ],
+    "start_mt": "2026-05-01"
+  }
+}
