@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-const JUDGES = ["Ryan Byrd", "Angela Smith", "Nicole Witmyer", "Scott Holley", "Tanner Potter"];
+const JUDGES = ["Ryan Byrd", "Angela Smith", "the Torus judge", "Scott Holley", "Tanner Potter"];
 const text = readFileSync(new URL("../qa.md", import.meta.url), "utf8");
 
 function cards() {
