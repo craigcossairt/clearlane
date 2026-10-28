@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img">
+<title>System Critical Hours: four rules over May to October 2026</title>
+<desc>Line chart of the share of season days each rule flags each hour beginning, Mountain time, for four rules labeled in text: Ours, ours: the 4 highest net-load hours plus every jam hour; Top 6 price, the 6 highest-price hours; Net load P75, every hour at or above the season's 75th percentile of net load; Top 4 net load, the 4 highest net-load hours only (ours without the jam part). Below, bars of the 2025 RMP calls by hour in Mountain time, confirmed by Torus. PacifiCorp East day-ahead prices and EIA-930 net load.</desc>
+<defs><pattern id="hatch-accent" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect x="0" y="0" width="16" height="16" fill="#111316"/><rect x="0" y="0" width="7" height="16" fill="#7ea9ff"/></pattern></defs>
+<rect x="0" y="0" width="1920" height="1080" fill="#111316"/>
+<text x="48" y="76" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="50" font-weight="bold" text-anchor="start" fill="#ebeae6">Which hours does each System Critical Hours rule flag?</text>
+<text x="48" y="124" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="normal" text-anchor="start" fill="#a2a6ad">Share of season days each hour is flagged; PacifiCorp East, May to October 2026</text>
+<text x="48" y="176" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="start" fill="#a2a6ad">share of days flagged; labels give each rule's mean hours flagged a day</text>
+<line x1="200" y1="520" x2="1450" y2="520" stroke="#a2a6ad" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="186" y="529" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#a2a6ad">0%</text>
+<line x1="200" y1="442.5" x2="1450" y2="442.5" stroke="#a2a6ad" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="186" y="451.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#a2a6ad">25%</text>
+<line x1="200" y1="365" x2="1450" y2="365" stroke="#a2a6ad" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="186" y="374" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#a2a6ad">50%</text>
+<line x1="200" y1="287.5" x2="1450" y2="287.5" stroke="#a2a6ad" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="186" y="296.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#a2a6ad">75%</text>
+<line x1="200" y1="210" x2="1450" y2="210" stroke="#a2a6ad" stroke-width="1" stroke-dasharray="4 6"/>
+<text x="186" y="219" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" font-weight="normal" text-anchor="end" fill="#a2a6ad">100%</text>
+<polyline points="226.04,372.88 278.12,446.44 330.21,456.95 382.29,460.45 434.38,451.69 486.46,432.43 538.54,437.68 590.62,448.19 642.71,497.23 694.79,512.99 746.88,507.74 798.96,514.75 851.04,514.75 903.12,507.74 955.21,500.73 1007.29,491.98 1059.38,469.21 1111.46,465.71 1163.54,386.89 1215.62,285.31 1267.71,239.78 1319.79,271.3 1371.88,308.08 1423.96,365.87" fill="none" stroke="#ee6b58" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="226.04,378.13 278.12,490.22 330.21,498.98 382.29,505.99 434.38,507.74 486.46,483.22 538.54,458.7 590.62,470.96 642.71,507.74 694.79,520 746.88,520 798.96,520 851.04,520 903.12,518.25 955.21,514.75 1007.29,502.49 1059.38,488.48 1111.46,488.48 1163.54,378.13 1215.62,269.55 1267.71,225.76 1319.79,243.28 1371.88,292.32 1423.96,316.84" fill="none" stroke="#7ea9ff" stroke-width="4" stroke-linejoin="round" stroke-dasharray="18 10"/>
+<polyline points="226.04,430.68 278.12,448.19 330.21,453.45 382.29,458.7 434.38,448.19 486.46,432.43 538.54,437.68 590.62,469.21 642.71,498.98 694.79,505.99 746.88,507.74 798.96,497.23 851.04,484.97 903.12,465.71 955.21,455.2 1007.29,446.44 1059.38,441.19 1111.46,427.17 1163.54,413.16 1215.62,372.88 1267.71,360.62 1319.79,364.13 1371.88,392.15 1423.96,407.91" fill="none" stroke="#e2a73c" stroke-width="5" stroke-linejoin="round" stroke-dasharray="4 10"/>
+<polyline points="226.04,442.94 278.12,483.22 330.21,490.22 382.29,495.48 434.38,488.48 486.46,465.71 538.54,479.72 590.62,486.72 642.71,507.74 694.79,514.75 746.88,512.99 798.96,520 851.04,520 903.12,514.75 955.21,509.49 1007.29,504.24 1059.38,491.98 1111.46,481.47 1163.54,465.71 1215.62,397.4 1267.71,322.09 1319.79,346.61 1371.88,367.63 1423.96,430.68" fill="none" stroke="#ebeae6" stroke-width="3" stroke-linejoin="round" stroke-dasharray="26 8 6 8"/>
+<line x1="1423.96" y1="365.87" x2="1474" y2="356.87" stroke="#ee6b58" stroke-width="2"/>
+<text x="1482" y="365.87" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="start" fill="#ee6b58">Ours, 6.9 a day</text>
+<line x1="1423.96" y1="316.84" x2="1474" y2="307.84" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1482" y="316.84" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="start" fill="#7ea9ff">Top 6 price, 6.0 a day</text>
+<line x1="1423.96" y1="407.91" x2="1474" y2="398.91" stroke="#e2a73c" stroke-width="2"/>
+<text x="1482" y="407.91" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="start" fill="#e2a73c">Net load P75, 6.0 a day</text>
+<line x1="1423.96" y1="430.68" x2="1474" y2="438.91" stroke="#ebeae6" stroke-width="2"/>
+<text x="1482" y="447.91" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="start" fill="#ebeae6">Top 4 net load, 4.0 a day</text>
+<line x1="200" y1="520" x2="1450" y2="520" stroke="#ebeae6" stroke-width="2"/>
+<line x1="226.04" y1="520" x2="226.04" y2="530" stroke="#ebeae6" stroke-width="2"/>
+<text x="226.04" y="560" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">12am</text>
+<line x1="382.29" y1="520" x2="382.29" y2="530" stroke="#ebeae6" stroke-width="2"/>
+<text x="382.29" y="560" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">3am</text>
+<line x1="538.54" y1="520" x2="538.54" y2="530" stroke="#ebeae6" stroke-width="2"/>
+<text x="538.54" y="560" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">6am</text>
+<line x1="694.79" y1="520" x2="694.79" y2="530" stroke="#ebeae6" stroke-width="2"/>
+<text x="694.79" y="560" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">9am</text>
+<line x1="851.04" y1="520" x2="851.04" y2="530" stroke="#ebeae6" stroke-width="2"/>
+<text x="851.04" y="560" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">12pm</text>
+<line x1="1007.29" y1="520" x2="1007.29" y2="530" stroke="#ebeae6" stroke-width="2"/>
+<text x="1007.29" y="560" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">3pm</text>
+<line x1="1163.54" y1="520" x2="1163.54" y2="530" stroke="#ebeae6" stroke-width="2"/>
+<text x="1163.54" y="560" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">6pm</text>
+<line x1="1319.79" y1="520" x2="1319.79" y2="530" stroke="#ebeae6" stroke-width="2"/>
+<text x="1319.79" y="560" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">9pm</text>
+<text x="48" y="604" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="normal" text-anchor="start" fill="#a2a6ad">2025 RMP calls by hour, Mountain time, confirmed by Torus (TORUS_PUBLISHED)</text>
+<rect x="207.81" y="816" width="36.46" height="44" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="226.04" y="808" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">9</text>
+<rect x="259.9" y="659.56" width="36.46" height="200.44" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="278.12" y="651.56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">41</text>
+<rect x="311.98" y="835.56" width="36.46" height="24.44" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="330.21" y="827.56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">5</text>
+<rect x="364.06" y="840.44" width="36.46" height="19.56" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="382.29" y="832.44" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">4</text>
+<rect x="416.15" y="855.11" width="36.46" height="4.89" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="434.38" y="847.11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">1</text>
+<rect x="468.23" y="845.33" width="36.46" height="14.67" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="486.46" y="837.33" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">3</text>
+<rect x="520.31" y="840.44" width="36.46" height="19.56" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="538.54" y="832.44" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">4</text>
+<rect x="572.4" y="791.56" width="36.46" height="68.44" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="590.62" y="783.56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">14</text>
+<rect x="624.48" y="747.56" width="36.46" height="112.44" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="642.71" y="739.56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">23</text>
+<rect x="676.56" y="732.89" width="36.46" height="127.11" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="694.79" y="724.89" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">26</text>
+<rect x="728.65" y="737.78" width="36.46" height="122.22" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="746.88" y="729.78" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">25</text>
+<rect x="780.73" y="762.22" width="36.46" height="97.78" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="798.96" y="754.22" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">20</text>
+<rect x="832.81" y="786.67" width="36.46" height="73.33" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="851.04" y="778.67" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">15</text>
+<rect x="884.9" y="698.67" width="36.46" height="161.33" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="903.12" y="690.67" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">33</text>
+<rect x="936.98" y="767.11" width="36.46" height="92.89" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="955.21" y="759.11" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">19</text>
+<rect x="989.06" y="791.56" width="36.46" height="68.44" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1007.29" y="783.56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">14</text>
+<rect x="1041.15" y="791.56" width="36.46" height="68.44" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1059.38" y="783.56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">14</text>
+<rect x="1093.23" y="820.89" width="36.46" height="39.11" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1111.46" y="812.89" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">8</text>
+<rect x="1145.31" y="830.67" width="36.46" height="29.33" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1163.54" y="822.67" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">6</text>
+<rect x="1197.4" y="840.44" width="36.46" height="19.56" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1215.62" y="832.44" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">4</text>
+<rect x="1249.48" y="835.56" width="36.46" height="24.44" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1267.71" y="827.56" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">5</text>
+<rect x="1301.56" y="693.78" width="36.46" height="166.22" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1319.79" y="685.78" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">34</text>
+<rect x="1353.65" y="742.67" width="36.46" height="117.33" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1371.88" y="734.67" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">24</text>
+<rect x="1405.73" y="820.89" width="36.46" height="39.11" fill="url(#hatch-accent)" stroke="#7ea9ff" stroke-width="2"/>
+<text x="1423.96" y="812.89" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="24" font-weight="normal" text-anchor="middle" fill="#ebeae6">8</text>
+<line x1="200" y1="860" x2="1450" y2="860" stroke="#ebeae6" stroke-width="2"/>
+<text x="226.04" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">12am</text>
+<text x="382.29" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">3am</text>
+<text x="538.54" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">6am</text>
+<text x="694.79" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">9am</text>
+<text x="851.04" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">12pm</text>
+<text x="1007.29" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">3pm</text>
+<text x="1163.54" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">6pm</text>
+<text x="1319.79" y="894" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#ebeae6">9pm</text>
+<text x="825" y="934" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="normal" text-anchor="middle" fill="#a2a6ad">hour beginning, Mountain time</text>
+<text x="48" y="992" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="normal" text-anchor="start" fill="#a2a6ad">Sources: public/data/hist_2026-05-01_2026-10-27.json (CAISO day-ahead LMP, ELAP_PACE-APND); EIA-930 PACE balance, research/data/eia930/</text>
+<text x="48" y="1024" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="normal" text-anchor="start" fill="#a2a6ad">(Adjusted demand, solar and wind); calls: public/data/torus_published.json (TORUS_PUBLISHED). Rules are our proposal.</text>
+<text x="48" y="1056" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="normal" text-anchor="start" fill="#a2a6ad">DERIVED. science/sch_study.py. Mountain days 2026-05-02 to 2026-10-25 (177 days); EIA-930 values are metered actuals, not CAISO forecasts.</text>
+</svg>
