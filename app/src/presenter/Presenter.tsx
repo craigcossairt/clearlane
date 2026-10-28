@@ -675,7 +675,6 @@ function TitleHero({ day, onStart }: { day: string; onStart: () => void }) {
   return (
     <section className="p-title" aria-labelledby="p-wordmark">
       <div className="p-brand">
-        <span className="p-logo" aria-hidden="true" />
         <h1 id="p-wordmark" className="p-wordmark">
           {COPY.title}
         </h1>

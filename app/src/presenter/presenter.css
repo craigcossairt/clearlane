@@ -291,17 +291,6 @@ body[data-mode="presenter"] {
   align-items: center;
   gap: 32px;
 }
-/* A filled dot, not a ring: a ring the wordmark's height and stroke read as a letter O. The brand row
-   centres on the line box; the shift drops the dot onto the middle of the lowercase letters
-   (measured: x-height centre sits 17.5px below the box centre at 160px). */
-[data-mode="presenter"] .p-logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--clear);
-  flex: none;
-  transform: translateY(18px);
-}
 [data-mode="presenter"] .p-wordmark {
   margin: 0;
   font-size: 160px;
@@ -760,11 +749,6 @@ body[data-mode="presenter"] {
 }
 [data-mode="presenter"].phone .p-wordmark {
   font-size: 56px;
-}
-[data-mode="presenter"].phone .p-logo {
-  width: 20px;
-  height: 20px;
-  transform: translateY(6px);
 }
 [data-mode="presenter"].phone .p-title-line {
   font-size: 24px;
