@@ -10,8 +10,8 @@
       "reserve_kw": 250,
       "max_charge_kw": 250,
       "max_discharge_kw": 250,
-      "planned_kw": 213.20071635561044,
-      "reason": "shoulder lane: Pulse charging 213 kW"
+      "planned_kw": 26.650089544451305,
+      "reason": "shoulder lane: Pulse charging 27 kW"
     },
     {
       "ts_utc": "2026-10-27T07:00:00Z",
@@ -82,8 +82,8 @@
       "reserve_kw": 250,
       "max_charge_kw": 200,
       "max_discharge_kw": 250,
-      "planned_kw": -164.16455159382005,
-      "reason": "shoulder lane: Pulse discharging 164 kW"
+      "planned_kw": 0,
+      "reason": "shoulder lane: Pulse idle"
     },
     {
       "ts_utc": "2026-10-27T15:00:00Z",

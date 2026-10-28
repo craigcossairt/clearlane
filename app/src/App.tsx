@@ -10,7 +10,7 @@ import type { BeatProps, CallState, Live } from "./beats/types";
 import { findNumber, NumbersContext, type NumbersState } from "./components/Num";
 import { mtClock, mtDate } from "./components/Time";
 import { COPY } from "./copy";
-import { loadStageData, type StageData } from "./data";
+import { loadStageData, stageWearUsdMwh, type StageData } from "./data";
 import {
   crash,
   dayLanes,
@@ -122,8 +122,9 @@ function Stage({
   const live = useMemo<Live>(() => {
     const site = defaultSite();
     const policies: Policy[] = ["fixed_overnight", "price_only", "clearlane"];
+    const wear_usd_mwh = stageWearUsdMwh();
     const plans = Object.fromEntries(
-      policies.map((p) => [p, solve(bundle, site, p)]),
+      policies.map((p) => [p, solve(bundle, site, p, { wear_usd_mwh })]),
     ) as Live["plans"];
     return {
       bundle,

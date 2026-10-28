@@ -96,6 +96,10 @@ describe("backtest on the July and October research days", () => {
     const m = cl.reduce((a, r) => a + r.pulse_cycles, 0) / cl.length;
     expect(stats("clearlane").pulse_cycles_per_yr).toBeCloseTo(m * 365, 9);
   });
+
+  it("fixed_overnight counts one full cycle a day, 365 a year (stored energy, #45)", () => {
+    expect(stats("fixed_overnight").pulse_cycles_per_yr).toBeCloseTo(365, 9);
+  });
 });
 
 describe("missing days and CO2", () => {

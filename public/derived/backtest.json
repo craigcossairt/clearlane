@@ -8,7 +8,7 @@
       "2026-05-01"
     ]
   },
-  "wear_usd_mwh": 9.62,
+  "wear_usd_mwh": 10.95,
   "seed": 20261027,
   "policies": [
     {
@@ -25,7 +25,7 @@
         "p90": -0.18034605956377822,
         "mean": -0.46810380600657153
       },
-      "pulse_cycles_per_yr": 342.4003504671112,
+      "pulse_cycles_per_yr": 365.00000000000006,
       "calls_unanswerable_pct": {
         "heatmap_as_mt": 23.03030303030303,
         "heatmap_as_utc": 17.575757575757574,
@@ -48,7 +48,7 @@
         "p90": 0.6437154731276233,
         "mean": 0.23823729926511109
       },
-      "pulse_cycles_per_yr": 586.7192597599133,
+      "pulse_cycles_per_yr": 625.4448324022351,
       "calls_unanswerable_pct": {
         "heatmap_as_mt": 40,
         "heatmap_as_utc": 46.06060606060606,
@@ -60,25 +60,25 @@
     {
       "policy": "clearlane",
       "usd_per_mw_day": {
-        "p10": 8.70650045776269,
-        "p50": 39.21366936711043,
-        "p90": 116.19983685636377,
-        "mean": 52.5506409220984
+        "p10": 1.2821246533220731,
+        "p50": 38.686189176294,
+        "p90": 115.998956020155,
+        "mean": 51.52222281976755
       },
       "co2_t_per_mw_day": {
-        "p10": -0.11669856746784528,
-        "p50": 0.19820588357288743,
-        "p90": 0.6784520952828703,
-        "mean": 0.23560376090454294
+        "p10": -0.11338440497224041,
+        "p50": 0.18061213405779014,
+        "p90": 0.6732876916904449,
+        "mean": 0.2188857556155666
       },
-      "pulse_cycles_per_yr": 299.36120026873095,
+      "pulse_cycles_per_yr": 299.74860335195524,
       "calls_unanswerable_pct": {
         "heatmap_as_mt": 1.2121212121212122,
         "heatmap_as_utc": 0,
         "heatmap_as_utc_mst": 0
       },
       "host_ceiling_breaches": 0,
-      "days_beating_fixed_overnight_pct": 95.53072625698324
+      "days_beating_fixed_overnight_pct": 91.06145251396649
     }
   ]
 }

@@ -253,36 +253,36 @@
   },
   {
     "key": "clearlane_dp_usd_mw_day",
-    "value": 55.714122879767395,
+    "value": 48.89204107753403,
     "unit": "$/MW-day",
-    "display": "$55.71",
+    "display": "$48.89",
     "prov": "DERIVED",
     "source": "engine/src/policies.ts + public/data/bundle_2026-10-27.json",
     "as_of_mt": "2026-10-27"
   },
   {
     "key": "clearlane_p10",
-    "value": 8.70650045776269,
+    "value": 1.2821246533220731,
     "unit": "$/MW-day",
-    "display": "$8.71",
+    "display": "$1.28",
     "prov": "DERIVED",
     "source": "engine/src/backtest.ts + public/derived/backtest.json",
     "as_of_mt": "2026-10-27"
   },
   {
     "key": "clearlane_p50",
-    "value": 39.21366936711043,
+    "value": 38.686189176294,
     "unit": "$/MW-day",
-    "display": "$39.21",
+    "display": "$38.69",
     "prov": "DERIVED",
     "source": "engine/src/backtest.ts + public/derived/backtest.json",
     "as_of_mt": "2026-10-27"
   },
   {
     "key": "clearlane_p90",
-    "value": 116.19983685636377,
+    "value": 115.998956020155,
     "unit": "$/MW-day",
-    "display": "$116.20",
+    "display": "$116.00",
     "prov": "DERIVED",
     "source": "engine/src/backtest.ts + public/derived/backtest.json",
     "as_of_mt": "2026-10-27"
@@ -370,36 +370,36 @@
   },
   {
     "key": "cycles_per_year_by_policy_clearlane",
-    "value": 299.36120026873095,
+    "value": 299.74860335195524,
     "unit": "cycles/yr",
-    "display": "299",
+    "display": "300",
     "prov": "DERIVED",
     "source": "engine/src/backtest.ts + public/derived/backtest.json",
     "as_of_mt": "2026-10-27"
   },
   {
     "key": "cycles_per_year_by_policy_fixed_overnight",
-    "value": 342.4003504671112,
+    "value": 365.00000000000006,
     "unit": "cycles/yr",
-    "display": "342",
+    "display": "365",
     "prov": "DERIVED",
     "source": "engine/src/backtest.ts + public/derived/backtest.json",
     "as_of_mt": "2026-10-27"
   },
   {
     "key": "cycles_per_year_by_policy_price_only",
-    "value": 586.7192597599133,
+    "value": 625.4448324022351,
     "unit": "cycles/yr",
-    "display": "587",
+    "display": "625",
     "prov": "DERIVED",
     "source": "engine/src/backtest.ts + public/derived/backtest.json",
     "as_of_mt": "2026-10-27"
   },
   {
     "key": "cycles_today",
-    "value": 1.2195080975540917,
+    "value": 0.9500000000000001,
     "unit": "cycles",
-    "display": "1.22",
+    "display": "0.95",
     "prov": "DERIVED",
     "source": "engine/src/policies.ts + public/data/bundle_2026-10-27.json",
     "as_of_mt": "2026-10-27"
@@ -415,9 +415,9 @@
   },
   {
     "key": "dp_race_ratio",
-    "value": 2.776717103026182,
+    "value": 2.43671370282217,
     "unit": "x",
-    "display": "2.8x",
+    "display": "2.4x",
     "prov": "DERIVED",
     "source": "engine/src/policies.ts + public/data/bundle_2026-10-27.json",
     "as_of_mt": "2026-10-27"
@@ -838,9 +838,9 @@
   },
   {
     "key": "share_days_beating",
-    "value": 95.53072625698324,
+    "value": 91.06145251396649,
     "unit": "% of days",
-    "display": "96%",
+    "display": "91%",
     "prov": "DERIVED",
     "source": "engine/src/backtest.ts + public/derived/backtest.json",
     "as_of_mt": "2026-10-27"
@@ -982,9 +982,9 @@
   },
   {
     "key": "wear_usd_mwh",
-    "value": 9.62,
+    "value": 10.95,
     "unit": "$/MWh",
-    "display": "$9.62",
+    "display": "$10.95",
     "prov": "DERIVED",
     "source": "engine/src/backtest.ts + public/derived/backtest.json",
     "as_of_mt": "2026-10-27"

@@ -59,7 +59,9 @@ describe("fixed_overnight is the off-peak rule", () => {
       .map((x) => Math.floor(x.i / 4));
     expect([...new Set(active)]).toEqual([1, 2, 3, 4, 18, 19]);
     expect(iv.every((x) => x.spin_kw === 0 && x.spin_soc_kwh === 0)).toBe(true);
-    expect(fixed.pulse_cycles).toBeCloseTo(0.88 ** 0.5, 9); // 500 kWh stored x eta / 500 kWh
+    // Equivalent full cycles on stored energy (#45): the rule draws all 500 kWh out of Pulse once, so
+    // one cycle a day (365 a year), even though only 500 x sqrt(0.88) = 469 kWh reaches the grid.
+    expect(fixed.pulse_cycles).toBeCloseTo(1, 9);
   });
 });
 

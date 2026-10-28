@@ -39,3 +39,34 @@ describe("public/derived stays in step with the engine", () => {
       );
   });
 });
+
+// Pins the committed stage numbers that the stored-energy cycle count (#45) moved.
+describe("committed numbers.json after the #45 cycle fix", () => {
+  const n: { key: string; value: number; display: string }[] = JSON.parse(
+    readFileSync(repoPath("public/derived/numbers.json"), "utf8"),
+  );
+  const d = (k: string) => n.find((x) => x.key === k)!.display;
+  const v = (k: string) => n.find((x) => x.key === k)!.value;
+
+  it("wear is calibrated on stored-side cycles and clearlane stays in budget", () => {
+    expect(d("wear_usd_mwh")).toBe("$10.95");
+    expect(v("cycles_per_year_by_policy_clearlane")).toBeLessThanOrEqual(300);
+    expect(v("cycles_per_year_by_policy_clearlane").toFixed(2)).toBe("299.75");
+    expect(v("cycles_per_year_by_policy_fixed_overnight").toFixed(6)).toBe(
+      "365.000000",
+    );
+    expect(v("cycles_per_year_by_policy_price_only").toFixed(2)).toBe("625.44");
+  });
+
+  it("the Oct 27 site plan at the calibrated wear", () => {
+    expect(v("clearlane_dp_usd_mw_day").toFixed(2)).toBe("48.89");
+    expect(v("cycles_today").toFixed(2)).toBe("0.95");
+    expect(d("dp_race_ratio")).toBe("2.4x");
+    expect(d("share_days_beating")).toBe("91%");
+  });
+
+  it("the reference race does not depend on cycles or wear", () => {
+    expect(v("clearlane_usd_mw_day").toFixed(2)).toBe("58.41");
+    expect(d("race_ratio")).toBe("2.9x");
+  });
+});

@@ -4,7 +4,7 @@ import type { StageNumber } from "@contracts/types";
 import { afterEach, describe, expect, it } from "vitest";
 import { NumbersContext } from "../components/Num";
 import { COPY } from "../copy";
-import { loadStageData } from "../data";
+import { loadStageData, stageWearUsdMwh } from "../data";
 import {
   dayLanes,
   defaultSite,
@@ -34,7 +34,9 @@ const live: Live = {
   plans: {
     fixed_overnight: solve(bundle, site, "fixed_overnight"),
     price_only: solve(bundle, site, "price_only"),
-    clearlane: solve(bundle, site, "clearlane"),
+    clearlane: solve(bundle, site, "clearlane", {
+      wear_usd_mwh: stageWearUsdMwh(),
+    }),
   },
   torus: data.torus,
   calls: scriptedCalls(bundle, site),

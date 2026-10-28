@@ -132,7 +132,7 @@ describe("numbers on the Oct 27 fixture", () => {
 
   it("pins the site plan and the scripted calls", () => {
     expect(v("clearlane_dp_usd_mw_day").toFixed(6)).toBe("55.714123");
-    expect(v("cycles_today").toFixed(4)).toBe("1.2195");
+    expect(v("cycles_today").toFixed(4)).toBe("1.3000"); // stored-side cycles at W = 10 (#45)
     expect(v("enrolled_kw")).toBe(250);
     expect(v("host_ceiling_kw")).toBe(800);
     expect(v("call_duration_s")).toBe(330);
