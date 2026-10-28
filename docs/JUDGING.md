@@ -4,7 +4,7 @@ What the event slides say about the Torus bounty, the judges, the schedule and s
 
 **Scope.** Craig enters only the Torus bounty. The Nucleus x Startup State bounty is out of scope: no Nucleus slide in the deck and no double-entry talk.
 
-**Sources.** The kickoff slide images `s1.png`, `s2.png`, `s3.png`, `s4.png` and `s6.png` in `../clearlane-raw/event/` are local only and not in git. Slide 5 (s5) is the Torus bounty slide. It has no local copy; the orchestrator session read it from the Google Slides kickoff deck on Oct 28 2026, about 4am MT (`tools/out/judge-review.md`, local scratch). Where the slides are silent, this file says **not stated**. Facts that come from somewhere other than a slide name their source.
+**Sources.** The kickoff slide images `s1.png`, `s2.png`, `s3.png`, `s4.png` and `s6.png` in `../clearlane-raw/event/` are local only and not in git. Slide 5 (s5) is the Torus bounty slide. It has no local copy; the judge-review session (orchestrator-started) read it from the Google Slides kickoff deck on Oct 28 2026, about 4am MT (`tools/out/judge-review.md`, local scratch). Where the slides are silent, this file says **not stated**. Facts that come from somewhere other than a slide name their source.
 
 ---
 
@@ -37,7 +37,7 @@ What the event slides say about the Torus bounty, the judges, the schedule and s
 | Item | What we have | Basis |
 |---|---|---|
 | Title | ENERGY x AI INFRASTRUCTURE | s5 |
-| Prize | $5K | s5 |
+| Prize | $5K | s5; FACTS `torus_bounty_amount` stays UNCHECKED until Craig confirms, so do not state it yet |
 | Option 1, "Rush hour for electrons" | Paraphrase of s5: build software that knows when the grid is jammed and stays out of traffic. Its examples: a navigation app for electricity, a traffic report for tomorrow's grid, and agents that schedule around clean power. Its question: how would you manage the grid's congestion? Suggested data: EIA, CAISO, ERCOT, Open-Meteo and Electricity Maps. | s5 |
 | Option 2, "Compute follows the sun" | Paraphrase of s5: decide where and when compute runs. Its examples: a carbon-saving job router, bidding agents and a live map. | s5 |
 | Rules | Free and open-source data only. Simulated data is fine if it is labeled. | s5 |
