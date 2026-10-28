@@ -8,7 +8,7 @@ No Torus logo. Stations are simulated Torus-style.
 
 ## 1. Title
 
-Clearlane. Fill up when Utah's grid is clear. Keep Spin ready for the crash.
+Clearlane. Fill up when Utah's grid is clear. Keep Spin ready for Rocky Mountain Power's calls.
 
 Torus bounty, Energy x AI Infrastructure. Option 1, a day planner for the stations, is the spine. Option 2, moving computing work to cheaper hours, is one card: in time, not in space.
 
@@ -32,7 +32,7 @@ Line: in October the cheapest hours were also the cleanest on PacifiCorp East: `
 
 ## 3. Live demo
 
-Six beats, about two minutes and forty-five seconds. Traffic report, race, crash, re-plan, envelope and proof, scale and close. Script: `pitch/stage-script.md`.
+Presenter mode, eight screens, about two and a half minutes: title, traffic report, race, the call, re-plan, envelope and backtest, scale, close. Script: `pitch/stage-script-presenter.md`.
 
 ## 4. Power, not energy
 
@@ -95,7 +95,7 @@ What Torus told us (Torus, message to Craig Cossairt, Oct 27 2026): the 2025 hea
 
 ## 11. Close
 
-Clearlane: fill up when the road is clear, keep Spin ready for the crash.
+Clearlane: fill up when the road is clear, keep Spin ready for Rocky Mountain Power's calls.
 
 Ask: pilot the day-ahead envelope, a format Clearlane proposes, at a few sites in Wattsmart, RMP's battery program, this winter.
 
