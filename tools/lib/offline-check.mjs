@@ -120,3 +120,27 @@ export function summaryLine({ violations, sameOrigin, beatsDriven }) {
   if (violations > 0) return `FAIL offline-check: ${violations} violations`;
   return `PASS offline-check: 0 external requests, ${sameOrigin} same-origin, ${beatsDriven}/6 beats`;
 }
+
+// --presenter: Next is pressed from the title screen until it stops changing anything, so every
+// screen and every screen action is driven whatever the screen list is. The cap stops a loop.
+export const PRESENTER_NEXT_KEY = "ArrowRight";
+export const PRESENTER_MAX_PRESSES = 60;
+
+/**
+ * True when a Next press left the presenter where it was: the last screen at its end.
+ * A press that only stopped a running replay is not the end.
+ * @param {{ screen?: string, actions?: string, state?: string }} before body dataset before Next
+ * @param {{ screen?: string, actions?: string, state?: string }} after body dataset after Next
+ */
+export function presenterWalkDone(before, after) {
+  if (before.state === "playing") return false;
+  return before.screen === after.screen && before.actions === after.actions;
+}
+
+/**
+ * @param {{ violations: number, sameOrigin: number, screens: number, actions: number }} r
+ */
+export function presenterSummaryLine({ violations, sameOrigin, screens, actions }) {
+  if (violations > 0) return `FAIL offline-check --presenter: ${violations} violations`;
+  return `PASS offline-check --presenter: 0 external requests, ${sameOrigin} same-origin, ${screens} screens, ${actions} actions`;
+}

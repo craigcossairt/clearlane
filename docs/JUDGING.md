@@ -4,7 +4,7 @@ What the event slides say about the Torus bounty, the judges, the schedule and s
 
 **Scope.** Craig enters only the Torus bounty. The Nucleus x Startup State bounty is out of scope: no Nucleus slide in the deck and no double-entry talk.
 
-**Sources.** The kickoff slide images `s1.png`, `s2.png`, `s3.png`, `s4.png` and `s6.png` in `../clearlane-raw/event/` are local only and not in git. Slide 5 (s5) is the Torus bounty slide. It has no local copy; the judge-review session (orchestrator-started) read it from the Google Slides kickoff deck on Oct 28 2026, about 4am MT (`tools/out/judge-review.md`, local scratch). Where the slides are silent, this file says **not stated**. Facts that come from somewhere other than a slide name their source.
+**Sources.** The kickoff slide images `s1.png`, `s2.png`, `s3.png`, `s4.png` and `s6.png` in `../clearlane-raw/event/` are local only and not in git. Slide 5 (s5) is the Torus bounty slide. It has no local copy; the judge-review session (orchestrator-started) read it from the Google Slides kickoff deck on Oct 28 2026, about 4am MT (`tools/out/judge-review.md`, local scratch). The organizers' judging-groups PDF (received Oct 28, relayed by the orchestrator; local only, not in git) adds the judging rooms, times and submission method; rows from it cite "organizers' judging-groups PDF, Oct 28". Where the slides are silent, this file says **not stated**. Facts that come from somewhere other than a slide name their source.
 
 ---
 
@@ -26,11 +26,16 @@ What the event slides say about the Torus bounty, the judges, the schedule and s
 | Mon-Wed | Build: three days to ship a solution | s6 |
 | Wed Oct 28, 5-6 PM | Judging: teams present to sponsor judges | s6 |
 | Thu Oct 29 | Winners announced on the main stage at the Zero Gravity Summit | s6 |
+| Wed Oct 28, by 5:00 PM | Arrive at Aernata, 250 E 200 S, Suite 320, Salt Lake City | organizers' judging-groups PDF, Oct 28 |
+| Wed Oct 28, 5:15 PM | Judging starts. Groups 4 to 6 judge Torus | organizers' judging-groups PDF, Oct 28 |
+| Wed Oct 28, 5:20 PM | Craig presents in Group 4. Each team has a 5-minute slot; be at the room before the slot | organizers' judging-groups PDF, Oct 28 |
+| Wed Oct 28, 6:15-6:45 PM | Finals: finalists from each group present to the full panel | organizers' judging-groups PDF, Oct 28 |
+| Thu Oct 29, 9:00 AM | Winners announced on the main stage at Zero Gravity Summit. Finalists get a free ticket and should arrive by 8:30 AM | organizers' judging-groups PDF, Oct 28 |
 
 - **Time zone.** Not stated on the slides. The venue is in Salt Lake City, so read every time as Mountain.
-- **Announcement time.** The Zero Gravity agenda puts the hackathon winner announcement on Day 2 at 9:05 AM (https://zerogravitysummit.com/agenda, from research/notes/torus-intel.findings.md; not on a slide).
+- **Announcement time.** 9:00 AM Thu Oct 29 (organizers' judging-groups PDF, Oct 28). The Zero Gravity agenda had said 9:05 AM (https://zerogravitysummit.com/agenda, from research/notes/torus-intel.findings.md); the PDF is newer.
 - **Code freeze and submission.** Not stated on the slides. The plan of record sets code freeze at Wed 2:00pm, the tag `v1-stage`, and submission by 5:00pm. Those are Craig's own deadlines, not published rules.
-- **Pitch length.** Not stated. The plan rehearses a 2:45 demo.
+- **Pitch length.** A 5-minute slot per team (organizers' judging-groups PDF, Oct 28). Setup comes out of the slot, so the laptop is on the presenter title screen with the cable in before it starts. The plan rehearses a 2:45 demo.
 
 ## 3. The Torus bounty
 
@@ -70,9 +75,9 @@ As shown on the "Meet the judges" slide (s2):
 
 | Question | Answer | Basis |
 |---|---|---|
-| Submission method, format or link | Not stated | no slide |
+| Submission method, format or link | Upload the presentation to the submission Google Drive folder. Share the slides and the technical build in any format; if the build is on GitHub, link it in the slides. | organizers' judging-groups PDF, Oct 28 |
 | Submission deadline | Not stated; Craig's plan uses Wed 5:00pm | no slide |
-| Deck, video or demo requirements | Not stated | no slide |
+| Deck, video or demo requirements | Slides plus the technical build, format of the team's choice | organizers' judging-groups PDF, Oct 28 |
 | Repo must be public or open source | Not stated. The plan keeps the repo private until submission and keeps it ready to go public at any time (no secrets, no copied pages). | no slide |
 | Starting from a template | Not stated on the slides. Craig reports that the guest speaker shared a template with the audience and that starting from our own template is fine. | Craig, Oct 26 |
 | Ownership of what we build | Not stated for the Torus bounty. The Nucleus slide says teams keep full ownership, but that slide covers only its own bounty. | s4 |
