@@ -9,7 +9,7 @@ import type {
 import { INTERVAL_S, intervalStartsUtc } from "./bundle";
 import { lanes, systemCriticalHours } from "./lanes";
 import type { SchMode } from "./lanes";
-import { spinAvailKw } from "./limits";
+import { eta, spinAvailKw } from "./limits";
 
 const STEP_H = INTERVAL_S / 3600;
 
@@ -82,7 +82,8 @@ export function buildPlan(
     value_usd: value,
     value_usd_per_mw_day: value / (P / 1000),
     co2_avoided_kg: co2Kg,
-    pulse_cycles: dischargedKwh / site.station.pulse_kwh,
+    // Equivalent full cycles on stored energy (#45): grid-side kWh / eta is what left the battery.
+    pulse_cycles: dischargedKwh / eta(site) / site.station.pulse_kwh,
     host_peak_kw: Math.max(...intervals.map((x) => x.meter_kw)),
     wear_usd_mwh: m.wear_usd_mwh,
     solve_ms: m.solve_ms,
