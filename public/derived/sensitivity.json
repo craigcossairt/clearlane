@@ -424,6 +424,7 @@
       "high": 161,
       "range_prov": "ASSUMPTION",
       "range_note": "41 states (the engine's grid), 81 and 161: nested grids, solved without calls; the re-plan after a call stays on 41",
+      "calls_note": "calls_unanswerable_pct_points is not computed on this axis, because the nested grids are solved without calls: null here means not computed, not zero. The base case's calls gap is in base.gap.",
       "gap_base": {
         "usd_per_mw_day": 34.284468376185146,
         "co2_t_per_mw_day": 0.6869895616221382,

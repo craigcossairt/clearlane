@@ -348,6 +348,7 @@ export interface AxisSpec {
   high?: number | string;
   points?: (number | string)[];
   range_note: string;
+  calls_note?: string;
   pending_on?: string;
 }
 
@@ -370,6 +371,8 @@ export type AxisResult =
       resolved_usd_mwh?: { base: number; low: number; high: number };
       range_prov: "ASSUMPTION";
       range_note: string;
+      // set only where the calls column is not computed (null there means not computed, not zero)
+      calls_note?: string;
       gap_base: Gap;
       gap_low: Gap;
       gap_high: Gap;
@@ -493,6 +496,8 @@ export const AXES: AxisSpec[] = [
     points: [41, 81, 161],
     range_note:
       "41 states (the engine's grid), 81 and 161: nested grids, solved without calls; the re-plan after a call stays on 41",
+    calls_note:
+      "calls_unanswerable_pct_points is not computed on this axis, because the nested grids are solved without calls: null here means not computed, not zero. The base case's calls gap is in base.gap.",
   },
 ];
 
@@ -586,6 +591,7 @@ export function runAxis(
       : {}),
     range_prov: "ASSUMPTION",
     range_note: spec.range_note,
+    ...(spec.calls_note ? { calls_note: spec.calls_note } : {}),
     gap_base: gBase,
     gap_low: gLow,
     gap_high: gHigh,

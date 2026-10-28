@@ -452,13 +452,36 @@ describe.skipIf(!existsSync(repoPath(SENS)))(
         `The low stress sets every bin to its 5th-percentile slope; ${neg.length} of the ${used.length} are below zero, down to ${low.lo.toFixed(1)} g/kWh at ${low.season} hour ${low.hour_mt}, which no real hour emits`,
       );
       const arch = sens().axes.find((a) => a.key === "host_load_archetype")!;
-      expect(arch.status).toBe("pending");
+      if (arch.status !== "pending") throw new Error("expected a pending axis");
       expect(arch.note).toContain(
         "will not run; #66 was closed as not planned",
       );
       expect(arch.note).toContain("host_frontier.json (#71)");
       for (const n of sens().notes)
         expect(n).not.toMatch(/wait[s]? on[^.]*#66/);
+    });
+
+    it("dp_soc_states says its calls field is not computed, so null is not zero (#247)", () => {
+      const grid = sens().axes.find((a) => a.key === "dp_soc_states")!;
+      if (grid.status !== "ok") throw new Error("grid should be ok");
+      expect(grid.calls_note).toContain("not computed");
+      expect(grid.calls_note).toContain("not zero");
+      // the null stays: the nested grids are solved without calls
+      for (const g of [
+        grid.gap_base,
+        grid.gap_low,
+        grid.gap_high,
+        grid.delta_low,
+        grid.delta_high,
+        ...grid.points!.flatMap((p) => [p.gap, p.delta]),
+      ])
+        expect(g.calls_unanswerable_pct_points).toBeNull();
+      // every other ok axis computes calls and carries no calls_note
+      for (const a of sens().axes)
+        if (a.status === "ok" && a.key !== "dp_soc_states") {
+          expect(a.calls_note).toBeUndefined();
+          expect(a.gap_base.calls_unanswerable_pct_points).not.toBeNull();
+        }
     });
 
     it("has no em dash or en dash", () => {
