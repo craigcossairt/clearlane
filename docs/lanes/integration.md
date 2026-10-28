@@ -1,6 +1,6 @@
 # Integration lane brief
 
-You are the **integration lane**: Claude Code, the orchestrator session, running in the main checkout `C:/Users/Craig Cossairt/Code/clearlane`. Craig starts this session in that folder. Your own changes go on `int/` branches in a linked worktree, `C:/Users/Craig Cossairt/Code/clearlane-int`. The main checkout stays on `main`, where you merge, verify, tag and run the refresh.
+You are the **integration lane**: Claude Code, the orchestrator session, running in the main checkout `~/Code/clearlane`. Craig starts this session in that folder. Your own changes go on `int/` branches in a linked worktree, `~/Code/clearlane-int`. The main checkout stays on `main`, where you merge, verify, tag and run the refresh.
 
 Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file wins over the Integration `first_prompt` in `docs/plan/synthesis.json`. That prompt is out of date on the schedule, OpenCode (dropped), the Nucleus slide (dropped; Torus bounty only) and the scope (we are building toward the stretch tiers). Each lane's own brief in `docs/lanes/` sets that lane's queue. Read it before you re-order the queue.
 
@@ -49,7 +49,7 @@ All times are Mountain (MDT, UTC-6 until Nov 1). Run `date` before you write a t
 ## 2. Boot sequence
 
 ```bash
-cd "C:/Users/Craig Cossairt/Code/clearlane"
+cd ~/Code/clearlane
 date                      # Mountain time
 git status                # must be clean and on main; stop and report if not
 git fetch origin --prune
@@ -63,8 +63,8 @@ npm run check:all
 If `../clearlane-int` is missing:
 
 ```bash
-git -C "C:/Users/Craig Cossairt/Code/clearlane" worktree add ../clearlane-int --detach origin/main
-cd "C:/Users/Craig Cossairt/Code/clearlane-int" && npm ci
+git -C ~/Code/clearlane worktree add ../clearlane-int --detach origin/main
+cd ~/Code/clearlane-int && npm ci
 ```
 
 Read these, in this order:
@@ -105,7 +105,7 @@ If the session has no scheduling tool, check the board at every pause and at eac
 1. **Claim:** `gh issue comment <n> --body "claimed by Claude Code (integration lane)"`.
 2. **Branch** in the int worktree, always from fresh `origin/main`:
    ```bash
-   cd "C:/Users/Craig Cossairt/Code/clearlane-int"
+   cd ~/Code/clearlane-int
    git fetch origin
    git switch -c int/<n>-<slug> origin/main
    ```
@@ -279,13 +279,13 @@ A PR merges only when **all** of these hold:
 7. **Merge:** `gh pr merge <n> --squash`. Do not pass `--delete-branch`, because lane branches sit under worktrees.
 8. **Verify main right away** in the main checkout:
    ```bash
-   cd "C:/Users/Craig Cossairt/Code/clearlane"
+   cd ~/Code/clearlane
    git pull --ff-only
    npm run check:all
    ```
    If main is red, revert before anything else merges:
    ```bash
-   cd "C:/Users/Craig Cossairt/Code/clearlane-int"
+   cd ~/Code/clearlane-int
    git fetch origin && git switch -c int/revert-<pr> origin/main
    git revert --no-edit <squash-commit-sha>
    npm run check:all && git push -u origin int/revert-<pr>
@@ -412,7 +412,7 @@ Then, outside the verbatim block: every merged stretch CLI that writes a per-day
 **Dry run, Tue 5:00pm.** Run the whole list on Oct 27 on a throwaway `int/refresh-dry` branch, and never merge it. It proves two things: every command runs, and the data script exits non-zero and changes nothing when OASIS fails (use the failure switch the data brief names).
 
 **Live run:**
-1. **9:10pm:** main is green. Run `git -C "C:/Users/Craig Cossairt/Code/clearlane-int" switch -c int/oct28-refresh origin/main`.
+1. **9:10pm:** main is green. Run `git -C ~/Code/clearlane-int switch -c int/oct28-refresh origin/main`.
 2. **From about 9:16pm:** run the data command in the int worktree. `--poll-until 22:00` retries every 5 minutes and gives up at 10:00pm on its own.
 3. Run the engine CLIs and the re-pin, in list order.
 4. Run the checks:
@@ -443,7 +443,7 @@ Then, outside the verbatim block: every merged stretch CLI that writes a per-day
 - **1:45pm:** the last merge. Craig's Train 6 flag set must already be on main as `default: true` in `contracts/flags.ts`.
 - **2:00pm, tag the stage build:**
   ```bash
-  cd "C:/Users/Craig Cossairt/Code/clearlane"
+  cd ~/Code/clearlane
   git pull --ff-only && npm run check:all
   git tag -a v1-stage -m "Stage build, operating day <day>, flags: <list or none>"
   git push origin v1-stage
@@ -508,7 +508,7 @@ Usage: `node tools/offline-check.mjs [--dist dist] [--browser msedge|chrome|chro
 Run the scan by Train 8, and again right before the switch:
 
 ```bash
-cd "C:/Users/Craig Cossairt/Code/clearlane"
+cd ~/Code/clearlane
 # 1. secrets in any commit, and secret-like files
 git log --all -p | grep -nE "(api[_-]?key|secret|token|passw|BEGIN [A-Z ]*PRIVATE KEY|ghp_[A-Za-z0-9]{30,}|github_pat_|sk-[A-Za-z0-9]{20,}|xai-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})" | head -100
 git ls-files | grep -iE "(^|/)\.env|\.pem$|\.key$|secret"
@@ -640,7 +640,7 @@ Afterwards, check GitHub's secret-scanning alerts for the repo, and post the res
   - never invent a Torus fact.
 - **Data honesty:**
   - CO2 numbers are average-emissions estimates and always carry the caveat;
-  - the 2025 heatmap states no time zone, so always show both readings (Mountain and UTC);
+  - the 2025 heatmap is Mountain time, as Torus confirmed (`heatmap_readings`); UTC readings are a sensitivity check only, never on stage;
   - every number carries its provenance class;
   - missing, unknown and failed look different from each other;
   - anything not confirmed is marked UNVERIFIED.

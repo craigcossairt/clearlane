@@ -1,6 +1,6 @@
 # Data lane brief
 
-Harness: **Codex desktop app**. Worktree: `C:\Users\Craig Cossairt\Code\clearlane-data`. Branch prefix: `data/`.
+Harness: **Codex desktop app**. Worktree: `~/Code/clearlane-data`. Branch prefix: `data/`.
 Tracking issue: **#2 "Lane: data status"**. Queue: `gh issue list --label lane:data --state open`.
 
 Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file wins over the plan files in `docs/plan/`, which are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
@@ -66,7 +66,7 @@ You are the front of the pipeline: `prep/` (Python) writes `public/data/` (REAL)
 Run commands one per line (Windows PowerShell 5.1 has no `&&`).
 
 ```powershell
-cd "C:\Users\Craig Cossairt\Code\clearlane-data"
+cd ~/Code/clearlane-data
 git fetch origin
 git switch --detach origin/main
 git status --short --branch
@@ -234,7 +234,7 @@ No arithmetic change of any kind. `numbers.py`'s own crash section has an index 
 
 Shape: each key is `{ "value": ..., "prov": "TORUS_PUBLISHED", "source_id": "<id>" }`. Add top-level `"sources": SourceRef[]` (one per distinct URL; `license`: "Torus public web page, facts only, no text copied"; `retrieved_utc`: `"2026-10-26"`, the date `research/TORUS.md` says it was checked, because no time of day was recorded) and `"notes": string[]` containing, in plain words:
 
-- The heatmap states no time zone; always show it read as Mountain time and as UTC.
+- The heatmap is Mountain time, as Torus confirmed (`heatmap_readings` in `docs/FACTS.md`). Show the Mountain reading; UTC readings are a sensitivity check only.
 - 359 is the RMP case study count; Torus's 2025 wrap-up says "more than 360". We use 359.
 - `pulse_life_yr` is the Torus Station lifespan of 25 years, not a Pulse-specific rating.
 - 500 MW is the ceiling of the expanded MOU, not installed capacity.
@@ -487,7 +487,7 @@ os.replace(tmp, path)
 
 Timestamps as `YYYY-MM-DDTHH:MM:SSZ`. `fetched_utc` and `retrieved_utc` come from the raw cache meta, never from the current clock, so a rebuild from cache is byte-identical. Seed every random draw.
 
-**Raw folder.** `C:\Users\Craig Cossairt\Code\clearlane-raw` (resolved as `<repo>\..\clearlane-raw`; override with `CLEARLANE_RAW`). It already holds `eia\PACE.xlsx` and the full EIA-930 six-month CSVs. Write OASIS responses under `oasis\`, refresh runs under `refresh\`, RT under `rt\`. Never write raw files inside the worktree.
+**Raw folder.** `~/Code/clearlane-raw` (resolved as `<repo>\..\clearlane-raw`; override with `CLEARLANE_RAW`). It already holds `eia\PACE.xlsx` and the full EIA-930 six-month CSVs. Write OASIS responses under `oasis\`, refresh runs under `refresh\`, RT under `rt\`. Never write raw files inside the worktree.
 
 **OASIS rules** (`research/DATA-SOURCES.md` §1):
 
@@ -532,7 +532,7 @@ Timestamps as `YYYY-MM-DDTHH:MM:SSZ`. `fetched_utc` and `retrieved_utc` come fro
 - The fixed overnight schedule is our off-peak baseline, never Torus practice.
 - Value is "to RMP's system at day-ahead prices", never Torus revenue.
 - CO2 is an average-emissions estimate and says so, unless a table says marginal and shows its interval.
-- The 2025 heatmap states no time zone: every file and string that uses it keeps both readings, Mountain and UTC.
+- The 2025 heatmap is Mountain time, as Torus confirmed (`heatmap_readings`). Files may keep the UTC readings as a sensitivity check, labeled as such; no stage string shows them.
 - 500 MW is the MOU ceiling, never installed capacity.
 - No keys, `.env` or credentials in git. OASIS and EIA need none.
 - No copied page text. Quotes under 15 words, with the URL.

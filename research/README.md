@@ -159,7 +159,7 @@ Lane names: Integration, Engine, Data, UI, Pitch, Science. "All" means every lan
 
 ## The local-only raw folder
 
-`C:\Users\Craig Cossairt\Code\clearlane-raw` is NOT in git. It holds large files and third-party page snapshots that must not be published with the repo. Every worktree is a sibling of the main checkout, so every lane reaches it at `../clearlane-raw`. Read from it; never copy its page text into git (quotes under 15 words, with the URL, are fine).
+`~/Code/clearlane-raw` is NOT in git. It holds large files and third-party page snapshots that must not be published with the repo. Every worktree is a sibling of the main checkout, so every lane reaches it at `../clearlane-raw`. Read from it; never copy its page text into git (quotes under 15 words, with the URL, are fine).
 
 | Folder | What is there |
 |---|---|

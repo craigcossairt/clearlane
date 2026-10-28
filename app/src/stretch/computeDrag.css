@@ -1,0 +1,196 @@
+/* Compute drag (#93, ff_compute_drag). Loaded with the card's lazy chunk, so none of this reaches
+   the flag-off stage. At 1920 the card sits under the close lines in two columns and fits the
+   1080 frame; on a phone it is one column and the page scrolls. */
+
+.drag {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.drag h4 {
+  margin: 0 0 8px;
+  font-size: var(--body);
+}
+
+.drag p {
+  margin: 0;
+}
+
+.drag-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.drag-chart-col,
+.drag-result {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.drag-track {
+  position: relative;
+  height: 150px;
+  touch-action: none;
+  user-select: none;
+  cursor: pointer;
+  border-bottom: 1px solid var(--line);
+}
+
+.drag-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.drag-from {
+  fill: color-mix(in srgb, var(--jam) 22%, transparent);
+}
+
+.drag-price {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+
+.drag-block {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 6px;
+  text-align: center;
+  border: 3px solid var(--accent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  cursor: grab;
+  touch-action: none;
+}
+
+.drag-block:active {
+  cursor: grabbing;
+}
+
+.drag-block:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.drag-block-label {
+  font-size: var(--body);
+  line-height: 1.1;
+  padding: 0 4px;
+}
+
+.drag-ticks {
+  position: relative;
+  height: 1.4em;
+}
+
+.drag-tick {
+  position: absolute;
+  top: 0;
+  padding-left: 4px;
+  color: var(--muted);
+  font-size: var(--body);
+  white-space: nowrap;
+}
+
+.drag .drag-legend {
+  padding: 0;
+  margin: 0;
+}
+
+/* Detail lines read at 24px, like the envelope table; the value and CO2 stay full size. */
+.drag [data-detail] .figure {
+  font-size: var(--body);
+}
+
+/* Fixed heights, so a block move or the space toggle never shifts what follows. */
+.drag-view {
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drag-value,
+.drag-co2 {
+  min-height: 2.9em;
+}
+
+.drag-toggle {
+  align-self: flex-start;
+}
+
+.drag-toggle[aria-pressed="true"] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.drag-space {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.drag-peers {
+  border-collapse: collapse;
+  font-size: var(--body);
+}
+
+.drag-peers th,
+.drag-peers td {
+  text-align: left;
+  padding: 2px 12px 2px 0;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.drag-peers thead th {
+  color: var(--muted);
+}
+
+/* Phone: one column; the block keeps its place on the line, and its label gives way. */
+.phone .drag-grid {
+  grid-template-columns: 1fr;
+}
+
+.phone .drag-track {
+  height: 120px;
+}
+
+.phone .drag-block-label {
+  display: none;
+}
+
+.phone .drag-tick:nth-child(even) {
+  display: none;
+}
+
+.phone .drag-view {
+  height: 400px;
+}
+
+.phone .drag-value,
+.phone .drag-co2 {
+  min-height: 7.5em;
+}
+
+.phone .drag-peers {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.phone .drag-peers th,
+.phone .drag-peers td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  padding-right: 6px;
+}

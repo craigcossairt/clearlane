@@ -1,6 +1,6 @@
 # Engine lane brief
 
-You are the **engine lane**: Claude Code (second session), worktree `C:\Users\Craig Cossairt\Code\clearlane-engine`, branch prefix `engine/`. You write the planner the stage runs: lanes and System Critical Hours, the 15-minute DP, the three policies, the crash and re-plan, the envelope, the backtest and `numbers.json`. Every number a judge sees either comes out of your code or passes through your `numbers.json`.
+You are the **engine lane**: Claude Code (second session), worktree `~/Code/clearlane-engine`, branch prefix `engine/`. You write the planner the stage runs: lanes and System Critical Hours, the 15-minute DP, the three policies, the crash and re-plan, the envelope, the backtest and `numbers.json`. Every number a judge sees either comes out of your code or passes through your `numbers.json`.
 
 Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file wins over the engine `first_prompt` in `docs/plan/synthesis.json`, which predates the current paths and scope `prep/reference/` arrives with data Core 1; until then use `research/analysis/demo-story/`, matching FACTS "Paths". The plan files in `docs/plan/` are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
 
@@ -36,13 +36,13 @@ Lane done when (from `AGENTS.md`): the pinned Oct 27 numbers pass to the cent; `
 ## 2. Boot sequence
 
 ```bash
-cd "C:\Users\Craig Cossairt\Code\clearlane-engine"
+cd ~/Code/clearlane-engine
 git fetch origin
 git status   # a detached HEAD is normal here; uncommitted work belongs to an open issue, do not discard it
 npm ci       # each worktree needs its own node_modules; rerun when package-lock.json changes on origin/main
 ```
 
-If the worktree is missing: `git -C "C:\Users\Craig Cossairt\Code\clearlane" worktree add --detach ../clearlane-engine origin/main`, then `npm ci`.
+If the worktree is missing: `git -C ~/Code/clearlane worktree add --detach ../clearlane-engine origin/main`, then `npm ci`.
 
 Read, in this order:
 1. `AGENTS.md`, then this file.
@@ -189,7 +189,7 @@ Overnight (2am to 7am) nobody answers questions: mark blocked and move on. Each 
 - The same seed gives the same calls.
 
 **Core 10. Backtest CLI, May 1 to Oct 27.**
-- Every Mountain day, all three policies, sampled calls under both readings.
+- Every Mountain day, all three policies, sampled calls read as Mountain time, with the UTC readings kept as a sensitivity check.
 - Clearlane re-plans after each call.
 - Reports:
   - P10/P50/P90/mean of $/MW-day and t CO2/MW-day

@@ -1,6 +1,8 @@
 
 
 ######## torus-intel
+> Internal research on Torus's own business, written before the build to choose a concept. It is not a Clearlane claim: Clearlane's value is to Rocky Mountain Power's system, not Torus revenue.
+
 ## SUMMARY
 Torus is a hardware company whose money comes from software-dispatched flexible load. The proven revenue engine is utility demand response. Torus Stations (Spin flywheel, Pulse LFP battery, Lasso software, Shield cyber, Overwatch 24/7 monitoring) sit behind the meter at C&I sites under Rocky Mountain Power's Wattsmart Battery program. The host pays a monthly subscription with no upfront capital, and PacifiCorp dispatches the fleet as a virtual power plant: 359 events in 2025, a 70 MW MOU that grew to 500 MW, recognition from PLMA and Fast Company for managing fast-moving loads. Their pitch to utilities is congestion relief, non-wires alternatives and frequency/voltage support. Their CTO/CISO publicly describes grid congestion as a freeway at 5pm on a Friday, which is almost exactly Option 1's framing.
 

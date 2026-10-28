@@ -34,7 +34,7 @@ Read this before quoting any hourly number.
 
 ## Commands
 
-Run from the repo root (`C:/Users/Craig Cossairt/Code/clearlane`) in Git Bash. Mirrors go in a temp directory, never in the repo.
+Run from the repo root (`~/Code/clearlane`) in Git Bash. Mirrors go in a temp directory, never in the repo.
 
 ```bash
 W=$(mktemp -d)

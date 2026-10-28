@@ -189,3 +189,31 @@ export function referenceRaceFor(bundle: Bundle): ReferenceRace {
   return referenceRace(bundle);
 }
 export type { ReferenceRace };
+
+/**
+ * Compute drag (#93, ff_compute_drag): the engine's default Option 2 block (option2Shift's opts in
+ * engine/src/reference.ts), pinned in ComputeDrag.test.tsx against option2Shift(bundle).
+ */
+export const OPTION2_BLOCK = { mw: 25, hours: 3 } as const;
+
+/**
+ * The engine's Option 2 shift with the destination block fixed to the hours starting at startHb.
+ * Null when the block overlaps the hours the shift moves load out of: the engine cannot price
+ * that position, and the card says so instead of showing a number.
+ */
+export function option2ShiftAt(
+  bundle: Bundle,
+  startHb: number,
+): Option2Shift | null {
+  try {
+    return engineOption2Shift(bundle, {
+      mw: OPTION2_BLOCK.mw,
+      hours: OPTION2_BLOCK.hours,
+      window_hb: [startHb, startHb + OPTION2_BLOCK.hours - 1],
+    });
+  } catch (err) {
+    if (err instanceof Error && err.message.startsWith("option2Shift:"))
+      return null;
+    throw err;
+  }
+}
