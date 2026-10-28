@@ -11,7 +11,7 @@ import { motionOff } from "./motion";
 
 const CRASH_SOURCE = STUB_ACTIVE
   ? "engineClient.crash (stub)"
-  : "engine crash (live, this laptop)";
+  : "engine crash (live, this machine)";
 
 /** The traces draw over INSET_PLAY_MS, keyed by the call's event id, as on the stage. */
 function usePlayhead(playId: string | null): number {

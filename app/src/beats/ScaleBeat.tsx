@@ -92,7 +92,7 @@ export function CloseCard({ bundle }: { bundle?: Bundle }) {
       </h3>
       <p>
         {COPY.campusLine1} <Num k="campus_mwh" /> {COPY.campusLine2}{" "}
-        <Num k="campus_usd" />.
+        <Num k="campus_usd" /> {COPY.campusLine3}
       </p>
       <p className="muted">
         {COPY.simulated} {COPY.notTorusProduct}

@@ -53,7 +53,7 @@ export function Replan({ live, call, hour, presenter }: BeatProps) {
               value={replan.solve_ms}
               display={`${grouped(replan.solve_ms, 1)} ms`}
               prov="MEASURED"
-              source="performance.now inside the engine solve, this laptop"
+              source="performance.now inside the engine solve, this machine"
               width={9}
             />
             . <span className="muted">{COPY.replanNote}</span>
@@ -119,7 +119,7 @@ export function Replan({ live, call, hour, presenter }: BeatProps) {
             value={replan.pulse_cycles}
             display={grouped(replan.pulse_cycles, 2)}
             prov="DERIVED"
-            source="engine re-plan (live, this laptop)"
+            source="engine re-plan (live, this machine)"
             width={5}
           />
         ) : (
