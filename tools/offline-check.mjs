@@ -1,4 +1,4 @@
-// Usage: node tools/offline-check.mjs [--dist dist] [--browser msedge|chrome|chromium] [--plant]
+// Usage: node tools/offline-check.mjs [--dist dist] [--browser msedge|chrome|chromium] [--plant] [--presenter]
 //
 // Proves the built stage app needs no network (docs/lanes/integration.md section 6.7):
 //   1. scans dist/**/*.{html,js,css} for external URLs in a position the browser would load;
@@ -6,6 +6,10 @@
 //   3. opens it in a real browser (service workers blocked), records every request and aborts
 //      any request to another origin, any WebSocket and any /api/ request in snapshot mode;
 //   4. drives beats 1 to 6 through ?beat=N&step=end&motion=off and each beat's keys.
+//
+// --presenter drives presenter mode instead: it opens ?ff=presenter&motion=off on the title
+// screen and presses Next (ArrowRight) until Next changes nothing, so every screen and every
+// screen action runs under the same network rules. The summary counts screens and actions.
 //
 // No stage app yet: while the UI lane's app is not on main, the built page has no data-beat
 // hook. Each beat then prints a WARN "not built" line and does not count as driven, so the
@@ -22,7 +26,17 @@ import { readFile } from "node:fs/promises";
 import http from "node:http";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { BEAT_KEYS, RESET_KEY, classifyRequest, scanBundleText, summaryLine } from "./lib/offline-check.mjs";
+import {
+  BEAT_KEYS,
+  PRESENTER_MAX_PRESSES,
+  PRESENTER_NEXT_KEY,
+  RESET_KEY,
+  classifyRequest,
+  presenterSummaryLine,
+  presenterWalkDone,
+  scanBundleText,
+  summaryLine,
+} from "./lib/offline-check.mjs";
 
 const PLANT_IMG = "https://planted.offline-check.invalid/x.png";
 const PLANT_FETCH = "https://planted.offline-check.invalid/p";
@@ -33,10 +47,11 @@ const KEY_SETTLE_MS = 300;
 class CouldNotRun extends Error {}
 
 function parseArgs(argv) {
-  const args = { dist: "dist", browser: "auto", plant: false };
+  const args = { dist: "dist", browser: "auto", plant: false, presenter: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--plant") args.plant = true;
+    else if (a === "--presenter") args.presenter = true;
     else if (a === "--dist") args.dist = argv[++i];
     else if (a === "--browser") args.browser = argv[++i];
     else throw new CouldNotRun(`unknown argument ${a}`);
@@ -205,10 +220,20 @@ async function run(args) {
         ws.close();
       });
 
-      // 4. Drive the six beats.
       const page = await context.newPage();
       const settle = () => page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
       const state = () => page.evaluate(() => document.body?.dataset.state ?? null);
+
+      if (args.presenter) {
+        // 4. Walk presenter mode with Next.
+        const walk = await walkPresenter(page, origin, settle, fail, (w) => (where = w));
+        await context.close();
+        console.log(`offline-check: ${requests.length} requests recorded`);
+        console.log(presenterSummaryLine({ violations: violations.length, sameOrigin, ...walk }));
+        return { violations, requests };
+      }
+
+      // 4. Drive the six beats.
       let beatsDriven = 0;
       let anyHooks = false;
       for (const n of /** @type {const} */ ([1, 2, 3, 4, 5, 6])) {
@@ -263,6 +288,52 @@ async function run(args) {
   } finally {
     if (args.plant) rmSync(root, { recursive: true, force: true });
   }
+}
+
+/**
+ * Presses Next from the title screen until it changes nothing. Returns the number of screens
+ * reached and screen actions run.
+ */
+async function walkPresenter(page, origin, settle, fail, setWhere) {
+  const read = () =>
+    page.evaluate(() => {
+      const b = document.body?.dataset ?? {};
+      return { mode: b.mode, screen: b.screen, actions: b.actions, state: b.state };
+    });
+  setWhere("presenter open");
+  await page.goto(`${origin}/?ff=presenter&motion=off`, { waitUntil: "load" });
+  const opened = await page
+    .waitForFunction(() => document.body?.dataset.mode === "presenter" && document.body.dataset.screen === "1", null, {
+      timeout: READY_WAIT_MS,
+    })
+    .then(() => true, () => false);
+  if (!opened) {
+    fail("presenter", page.url(), `body[data-mode="presenter"][data-screen="1"] not set after ${READY_WAIT_MS} ms`);
+    return { screens: 0, actions: 0 };
+  }
+  await settle();
+  const screens = new Set(["1"]);
+  const actions = new Set();
+  let before = await read();
+  for (let press = 1; press <= PRESENTER_MAX_PRESSES; press++) {
+    setWhere(`presenter screen ${before.screen} Next ${press}`);
+    await page.keyboard.press(PRESENTER_NEXT_KEY);
+    await page.waitForTimeout(KEY_SETTLE_MS);
+    await settle();
+    const after = await read();
+    if (after.state === "failed") {
+      fail(`presenter screen ${after.screen}`, page.url(), "page state failed");
+      break;
+    }
+    if (presenterWalkDone(before, after)) return { screens: screens.size, actions: actions.size };
+    screens.add(after.screen);
+    if (after.screen === before.screen && Number(after.actions) > Number(before.actions)) {
+      actions.add(`${after.screen}.${after.actions}`);
+    }
+    before = after;
+  }
+  fail("presenter", page.url(), `Next still changed the screen after ${PRESENTER_MAX_PRESSES} presses`);
+  return { screens: screens.size, actions: actions.size };
 }
 
 async function main() {
