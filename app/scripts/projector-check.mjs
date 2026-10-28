@@ -1,4 +1,4 @@
-// Usage: node app/scripts/projector-check.mjs [baseUrl] [--browser auto|chromium|msedge|chrome]
+// Usage: node app/scripts/projector-check.mjs [baseUrl] [--browser auto|chromium|msedge|chrome] [--presenter]
 //
 // The projector check (docs/lanes/ui.md section 4, core 12). Against a running stage build
 // (default http://localhost:4173, which is `npm run preview`) it opens each beat's end state,
@@ -11,6 +11,13 @@
 //   - every request is same-origin;
 //   - [data-slot] boxes stay put across state changes: step start against end, before and
 //     after C, Copy JSON against Copied.
+//
+// --presenter (#216) checks presenter mode instead (?ff=presenter): each of the eight screens'
+// end states, ?screen=N&step=end&motion=off, at both sizes with the same rules (no sideways
+// scroll, numbers fit their slots, minimum font sizes at 1920, same-origin requests), and each
+// start state for sideways scroll,
+// saving tools/out/screens/presenter<N>-<w>x<h>.png. Without the flag the six-beat run is as
+// it was.
 //
 // The rules and the exit code live in app/src/projector/verdict.ts (pure, vitest-pinned).
 // Exit codes: 0 PASS; 1 FAIL, each violation listed; 2 COULD NOT RUN (Playwright missing,
@@ -27,16 +34,18 @@ const SIZES = [
   { width: 375, height: 812 },
 ];
 const BEATS = [1, 2, 3, 4, 5, 6];
+const PRESENTER_SCREENS = [1, 2, 3, 4, 5, 6, 7, 8];
 const HOOK_WAIT_MS = 15000;
 const STATE_WAIT_MS = 5000;
 
 class CouldNotRun extends Error {}
 
 function parseArgs(argv) {
-  const args = { base: "http://localhost:4173", browser: "auto" };
+  const args = { base: "http://localhost:4173", browser: "auto", presenter: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--browser") args.browser = argv[++i];
+    else if (a === "--presenter") args.presenter = true;
     else if (a.startsWith("--")) throw new CouldNotRun(`unknown option ${a}`);
     else args.base = a;
   }
@@ -180,7 +189,67 @@ async function open(page, url, beat) {
   return true;
 }
 
+async function openScreen(page, url, screen) {
+  await page.goto(url, { waitUntil: "load" });
+  try {
+    await page.waitForSelector(`body[data-mode="presenter"][data-screen="${screen}"]`, {
+      timeout: HOOK_WAIT_MS,
+    });
+  } catch {
+    return false;
+  }
+  await page.evaluate(() => document.fonts?.ready);
+  return true;
+}
+
+/** Presenter mode (#216): the eight screens' end and start states at both sizes. */
+async function runPresenter(args, rules) {
+  const violations = [];
+  let statesChecked = 0;
+  await checkServer(args.base);
+  const { browser, name } = await launchBrowser(args.browser);
+  console.log(`projector-check --presenter: ${args.base} in ${name}, screenshots in tools/out/screens/`);
+  mkdirSync(SCREENS, { recursive: true });
+  try {
+    for (const size of SIZES) {
+      const tag = `${size.width}x${size.height}`;
+      const context = await browser.newContext({
+        viewport: size,
+        reducedMotion: "reduce",
+        serviceWorkers: "block",
+      });
+      context.on("request", (req) => violations.push(...rules.offOrigin(tag, req.url(), args.base)));
+      const page = await context.newPage();
+      for (const step of ["end", "start"]) {
+        for (const screen of PRESENTER_SCREENS) {
+          const label = `presenter${screen} ${step} ${tag}`;
+          const q = step === "end" ? "&step=end" : "";
+          if (!(await openScreen(page, `${args.base}/?ff=presenter&screen=${screen}${q}&motion=off`, screen))) {
+            violations.push(`${label}: the deep link never set body[data-screen="${screen}"]`);
+            continue;
+          }
+          if (step === "end")
+            await page.screenshot({ path: path.join(SCREENS, `presenter${screen}-${tag}.png`) });
+          // End states get every rule; start states, as in the six-beat run, the scroll rule.
+          const full = step === "end";
+          const m = await page.evaluate(measure, full && size.width === 1920);
+          statesChecked++;
+          violations.push(...rules.noSidewaysScroll(label, m.scrollWidth, m.clientWidth));
+          if (!full) continue;
+          for (const n of m.nums) violations.push(...rules.numFits(label, n));
+          for (const t of m.texts) violations.push(...rules.fontTooSmall(label, t));
+        }
+      }
+      await context.close();
+    }
+  } finally {
+    await browser.close().catch(() => {});
+  }
+  return { couldNotRun: null, statesChecked, violations };
+}
+
 async function run(args, rules) {
+  if (args.presenter) return runPresenter(args, rules);
   const violations = [];
   let statesChecked = 0;
   await checkServer(args.base);

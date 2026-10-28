@@ -35,4 +35,6 @@ export interface BeatProps {
   onFleet: (mw: number) => void;
   /** The beat's step; beat 6 shows the close card at "end". Optional so tests can omit it. */
   step?: "start" | "end";
+  /** Presenter mode (#216): name buttons instead of keys. Undefined on the stage. */
+  presenter?: boolean;
 }

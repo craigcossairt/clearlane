@@ -1,0 +1,856 @@
+/* Presenter mode (#216, ff_presenter). Every rule is scoped under [data-mode="presenter"], so
+   the default stage theme cannot change. Charcoal near-black, warm off-white, one muted gray;
+   lane colors keep their meaning. System fonts only, nothing downloaded. */
+
+body[data-mode="presenter"] {
+  background: #121212;
+}
+
+[data-mode="presenter"] {
+  color-scheme: dark;
+  --bg: #121212;
+  --ink: #f1ede4;
+  --muted: #a39e94;
+  --accent: #8fb4ff;
+  --clear: #3cbf84;
+  --clear-soft: #16291f;
+  --shoulder: #e2a73c;
+  --shoulder-soft: #2b2414;
+  --jam: #ee6b58;
+  --jam-soft: #2e1a17;
+  --solar: #f0c04c;
+  --surface: #1b1b1a;
+  --surface-2: #232321;
+  --line: #34332f;
+  --p-buy: #3cbf84;
+  --p-sell: #e2a73c;
+  --figure: 40px;
+  --body: 24px;
+  font-family:
+    "Century Gothic", "Avenir Next", Futura, "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  outline: none;
+}
+
+[data-mode="presenter"] button,
+[data-mode="presenter"] input {
+  font-family: inherit;
+}
+
+/* Numbers read in the same face as the words, with tabular figures. */
+[data-mode="presenter"] .num,
+[data-mode="presenter"] .figure,
+[data-mode="presenter"] .chip {
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+}
+[data-mode="presenter"] .figure {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Provenance chips: quiet pills with a check mark in our own clear-lane green. */
+[data-mode="presenter"] .chip {
+  border-color: var(--line);
+  color: var(--muted);
+  background: transparent;
+  padding: 0 10px;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+}
+[data-mode="presenter"] .chip::before {
+  content: "\2713\00a0";
+  color: var(--clear);
+}
+
+/* The frame: 1920x1080, scaled to fit, as the stage does. */
+[data-mode="presenter"] .p-frame {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 72px 22px;
+  gap: 18px;
+  background: var(--bg);
+}
+
+/* Progress: eight labelled segments, each clickable. */
+[data-mode="presenter"] .p-progress {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
+}
+[data-mode="presenter"] .p-seg {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-seg-bar {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+}
+[data-mode="presenter"] .p-seg.is-done .p-seg-bar {
+  background: var(--muted);
+}
+[data-mode="presenter"] .p-seg.is-current .p-seg-bar {
+  background: var(--ink);
+}
+[data-mode="presenter"] .p-seg.is-current {
+  color: var(--ink);
+}
+
+[data-mode="presenter"] .p-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+[data-mode="presenter"] .p-head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+[data-mode="presenter"] .p-headline {
+  margin: 0;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  max-width: 1720px;
+}
+[data-mode="presenter"] .p-headline .num {
+  font-weight: 400;
+  gap: 10px;
+  align-items: baseline;
+}
+[data-mode="presenter"] .p-headline .figure {
+  font-size: 64px;
+  font-weight: 500;
+  color: var(--clear);
+}
+[data-mode="presenter"] .p-subrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+[data-mode="presenter"] .p-line {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.3;
+  color: var(--muted);
+  max-width: 1200px;
+}
+[data-mode="presenter"] .p-subrow .p-actions {
+  flex: none;
+  justify-content: flex-end;
+}
+
+[data-mode="presenter"] .p-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+[data-mode="presenter"] .p-detail-actions {
+  display: contents;
+}
+
+/* Pill buttons: primary filled off-white on charcoal, secondary outlined. */
+[data-mode="presenter"] .p-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 8px 28px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font-size: 24px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+[data-mode="presenter"] .p-pill-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+[data-mode="presenter"] .p-pill-primary .chip {
+  color: var(--bg);
+  border-color: color-mix(in srgb, var(--bg) 40%, var(--ink));
+}
+[data-mode="presenter"] .p-pill-quiet {
+  border-color: var(--line);
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-pill[aria-pressed="true"] {
+  border-color: var(--muted);
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-pill:focus-visible,
+[data-mode="presenter"] .p-seg:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+[data-mode="presenter"] .p-pill .num,
+[data-mode="presenter"] .p-pill .figure {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+[data-mode="presenter"] .p-hero {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Footer: the day the whole talk, the screen's sources, and the nav pills. */
+[data-mode="presenter"] .p-foot {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-foot p {
+  margin: 0;
+}
+[data-mode="presenter"] .p-src {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+[data-mode="presenter"] .p-nav {
+  display: flex;
+  gap: 12px;
+}
+
+/* The beats reused on screens 2, 4, 5 and 6: the presenter headline replaces their titles. */
+[data-mode="presenter"] .p-hero .beat {
+  min-height: 0;
+  gap: 14px;
+}
+[data-mode="presenter"] .p-hero .beat > h2,
+[data-mode="presenter"] .p-hero #beat-ribbon + .muted {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+[data-mode="presenter"] .card,
+[data-mode="presenter"] .panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 18px 24px;
+}
+[data-mode="presenter"] .banner {
+  border-radius: 20px;
+}
+
+/* Title */
+[data-mode="presenter"] .p-title {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  max-width: 1500px;
+}
+[data-mode="presenter"] .p-brand {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+/* A filled dot, not a ring: a ring the wordmark's height and stroke read as a letter O. The brand row
+   centres on the line box; the shift drops the dot onto the middle of the lowercase letters
+   (measured: x-height centre sits 17.5px below the box centre at 160px). */
+[data-mode="presenter"] .p-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--clear);
+  flex: none;
+  transform: translateY(18px);
+}
+[data-mode="presenter"] .p-wordmark {
+  margin: 0;
+  font-size: 160px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+[data-mode="presenter"] .p-title-line {
+  margin: 0;
+  font-size: 52px;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+[data-mode="presenter"] .p-title-detail {
+  margin: 0;
+  font-size: 30px;
+  color: var(--muted);
+  max-width: 1300px;
+}
+[data-mode="presenter"] .p-title-facts {
+  display: flex;
+  gap: 64px;
+  margin: 8px 0;
+}
+[data-mode="presenter"] .p-title-facts dt {
+  color: var(--muted);
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-title-facts dd {
+  margin: 4px 0 0;
+  font-size: 32px;
+}
+
+/* Race */
+[data-mode="presenter"] .p-race {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+[data-mode="presenter"] .p-race-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+[data-mode="presenter"] .p-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 18px 28px 14px;
+  min-width: 0;
+}
+[data-mode="presenter"] .p-card-ours {
+  border-color: color-mix(in srgb, var(--clear) 55%, var(--line));
+}
+[data-mode="presenter"] .p-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+[data-mode="presenter"] .p-card-head h3 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-check {
+  flex: none;
+  padding: 2px 14px;
+  border-radius: 999px;
+  border: 2px solid var(--clear);
+  color: var(--clear);
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-keep {
+  margin-top: 6px;
+}
+[data-mode="presenter"] .p-keep .figure {
+  font-size: 104px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+[data-mode="presenter"] .p-card-ours .p-keep .figure {
+  color: var(--clear);
+}
+[data-mode="presenter"] .p-keep-label {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-arith {
+  border-collapse: collapse;
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-arith th {
+  text-align: left;
+  font-weight: 400;
+  color: var(--muted);
+  padding: 3px 14px 3px 0;
+}
+[data-mode="presenter"] .p-arith td {
+  padding: 3px 3px;
+  white-space: nowrap;
+}
+[data-mode="presenter"] .p-arith .num,
+[data-mode="presenter"] .p-arith .figure {
+  font-size: 24px;
+  font-weight: 500;
+  gap: 2px;
+  flex-wrap: nowrap;
+}
+[data-mode="presenter"] .p-arith .chip {
+  margin-left: 2px;
+  padding: 0 6px;
+  letter-spacing: 0.02em;
+}
+[data-mode="presenter"] .p-arith .p-op {
+  color: var(--muted);
+  padding: 4px 2px;
+}
+[data-mode="presenter"] .p-arith-keep th,
+[data-mode="presenter"] .p-arith-keep td {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+[data-mode="presenter"] .p-strip svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+[data-mode="presenter"] .p-strip-label {
+  fill: var(--muted);
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-mark-none {
+  fill: var(--surface);
+}
+[data-mode="presenter"] .p-mark-buy,
+[data-mode="presenter"] .p-mark-sell {
+  fill: transparent;
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+[data-mode="presenter"] .p-mark-buy {
+  stroke: var(--p-buy);
+}
+[data-mode="presenter"] .p-mark-sell {
+  stroke: var(--p-sell);
+}
+[data-mode="presenter"] .p-mark-buy.is-filled {
+  fill: var(--p-buy);
+  stroke-dasharray: none;
+}
+[data-mode="presenter"] .p-mark-sell.is-filled {
+  fill: var(--p-sell);
+  stroke-dasharray: none;
+}
+[data-mode="presenter"] .p-mark-word {
+  font-size: 24px;
+  fill: var(--ink);
+}
+[data-mode="presenter"] .p-mark-word.is-filled {
+  fill: var(--bg);
+}
+[data-mode="presenter"] .p-axis {
+  fill: var(--muted);
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-cursor {
+  stroke: var(--ink);
+  stroke-width: 4;
+}
+[data-mode="presenter"] .p-strip-legend {
+  margin: 6px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  display: inline-block;
+}
+[data-mode="presenter"] .p-swatch-buy {
+  background: var(--p-buy);
+}
+[data-mode="presenter"] .p-swatch-sell {
+  background: var(--p-sell);
+  margin-left: 18px;
+}
+[data-mode="presenter"] .p-strip-note {
+  margin-left: auto;
+}
+
+/* Scale */
+[data-mode="presenter"] .p-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+[data-mode="presenter"] .p-scale-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+[data-mode="presenter"] .p-scale-size {
+  margin: 0;
+  font-size: 28px;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-slider {
+  width: 100%;
+  accent-color: var(--ink);
+  height: 40px;
+}
+[data-mode="presenter"] .p-scale-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+[data-mode="presenter"] .p-scale-cards .figure {
+  font-size: 88px;
+  font-weight: 400;
+}
+[data-mode="presenter"] .p-scale-cards .card h3 {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* Close */
+[data-mode="presenter"] .p-hero-close .close-card {
+  max-width: 1500px;
+  padding: 32px 40px;
+}
+[data-mode="presenter"] .p-hero-close .close-card h3 {
+  font-weight: 400;
+  font-size: 30px;
+}
+[data-mode="presenter"] .p-hero-close .close-line {
+  font-size: 44px;
+  line-height: 1.2;
+  margin: 18px 0 0;
+  letter-spacing: -0.015em;
+}
+
+/* Overlays: sources and keys. */
+[data-mode="presenter"] .p-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, #121212 80%, transparent);
+  z-index: 10;
+}
+[data-mode="presenter"] .p-overlay-card {
+  max-width: min(1400px, 92vw);
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 32px 40px;
+}
+[data-mode="presenter"] .p-overlay-card h2 {
+  font-weight: 400;
+  font-size: 32px;
+  margin: 0 0 10px;
+}
+[data-mode="presenter"] .p-overlay-card p,
+[data-mode="presenter"] .p-sources {
+  margin: 0 0 24px;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-keys {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 32px;
+  margin: 0 0 24px;
+}
+[data-mode="presenter"] .p-keys dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Phone (375x812): the screen stacks, progress shrinks to dots, Back and Next are a bottom bar. */
+[data-mode="presenter"].phone {
+  --body: 18px;
+  padding-bottom: 88px;
+}
+[data-mode="presenter"].phone .p-frame {
+  padding: 16px 16px 0;
+  gap: 16px;
+}
+[data-mode="presenter"].phone .p-progress {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+[data-mode="presenter"].phone .p-seg {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--line);
+  gap: 0;
+}
+[data-mode="presenter"].phone .p-seg.is-done {
+  background: var(--muted);
+}
+[data-mode="presenter"].phone .p-seg.is-current {
+  background: var(--ink);
+}
+[data-mode="presenter"].phone .p-seg-bar,
+[data-mode="presenter"].phone .p-seg-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+[data-mode="presenter"].phone .p-headline,
+[data-mode="presenter"].phone .p-headline .figure {
+  font-size: 32px;
+}
+[data-mode="presenter"].phone .p-line {
+  font-size: 18px;
+}
+[data-mode="presenter"].phone .p-pill {
+  min-height: 44px;
+  padding: 6px 18px;
+  font-size: 18px;
+  white-space: normal;
+}
+[data-mode="presenter"].phone .p-race-cards,
+[data-mode="presenter"].phone .p-scale-cards {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+[data-mode="presenter"].phone .p-card {
+  padding: 16px;
+}
+[data-mode="presenter"].phone .p-keep .figure {
+  font-size: 56px;
+}
+[data-mode="presenter"].phone .p-arith,
+[data-mode="presenter"].phone .p-arith .num,
+[data-mode="presenter"].phone .p-arith .figure {
+  font-size: 16px;
+}
+[data-mode="presenter"].phone .p-arith td {
+  white-space: normal;
+  padding: 2px 3px;
+}
+[data-mode="presenter"].phone .p-arith .num {
+  flex-wrap: wrap;
+}
+[data-mode="presenter"].phone .p-arith .chip {
+  font-size: 12px;
+  margin-left: 0;
+}
+[data-mode="presenter"].phone .p-strip-legend {
+  flex-wrap: wrap;
+  font-size: 16px;
+}
+[data-mode="presenter"].phone .p-strip-note {
+  margin-left: 0;
+}
+[data-mode="presenter"].phone .p-wordmark {
+  font-size: 56px;
+}
+[data-mode="presenter"].phone .p-logo {
+  width: 20px;
+  height: 20px;
+  transform: translateY(6px);
+}
+[data-mode="presenter"].phone .p-title-line {
+  font-size: 24px;
+}
+[data-mode="presenter"].phone .p-title-detail,
+[data-mode="presenter"].phone .p-title-facts dd {
+  font-size: 18px;
+}
+[data-mode="presenter"].phone .p-title-facts {
+  flex-direction: column;
+  gap: 12px;
+}
+[data-mode="presenter"].phone .p-scale-cards .figure {
+  font-size: 44px;
+}
+[data-mode="presenter"].phone .p-hero-close .close-line {
+  font-size: 24px;
+}
+[data-mode="presenter"].phone .p-foot {
+  grid-template-columns: 1fr;
+  gap: 8px;
+  font-size: 16px;
+  padding-bottom: 16px;
+}
+[data-mode="presenter"].phone .p-src {
+  white-space: normal;
+}
+[data-mode="presenter"].phone .p-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  z-index: 5;
+}
+[data-mode="presenter"].phone .p-nav .p-pill-quiet {
+  margin-right: auto;
+}
+
+/* Reused beats: charts keep their full width (a flex column would shrink them). */
+[data-mode="presenter"] .p-hero .chart,
+[data-mode="presenter"] .p-hero .trace {
+  flex: none;
+}
+/* The call screen: the published heatmap stays on the stage; here the event card keeps its
+   numbers so the screen fits the projector. */
+[data-mode="presenter"] .p-hero-call .published > .muted,
+[data-mode="presenter"] .p-hero-call .heatmaps,
+[data-mode="presenter"] .p-hero-call .published > .unavailable {
+  display: none;
+}
+[data-mode="presenter"] .p-hero-call .crash-beat {
+  gap: 10px;
+}
+
+[data-mode="presenter"] .card h3,
+[data-mode="presenter"] .panel h3 {
+  font-weight: 400;
+}
+[data-mode="presenter"] .p-hero-envelope .card p {
+  margin: 4px 0;
+}
+[data-mode="presenter"] .p-scale-size [data-slot="fleet-value"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  vertical-align: middle;
+}
+[data-mode="presenter"] .p-scale-size .figure {
+  font-size: 44px;
+  font-weight: 400;
+}
+[data-mode="presenter"] .p-scale-cards .figure {
+  font-size: 120px;
+}
+[data-mode="presenter"] .p-scale-cards .card {
+  padding: 28px 32px;
+}
+
+/* Phone: the line and the action pills stack; the arithmetic rows wrap. */
+[data-mode="presenter"].phone .p-subrow {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+[data-mode="presenter"].phone .p-subrow .p-actions {
+  justify-content: flex-start;
+}
+[data-mode="presenter"].phone .p-arith,
+[data-mode="presenter"].phone .p-arith tbody {
+  display: block;
+}
+[data-mode="presenter"].phone .p-arith tr {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 6px;
+  padding: 6px 0;
+}
+[data-mode="presenter"].phone .p-arith th,
+[data-mode="presenter"].phone .p-arith td {
+  padding: 0;
+  border: 0;
+}
+[data-mode="presenter"].phone .p-arith td:empty {
+  display: none;
+}
+[data-mode="presenter"].phone .p-arith-keep {
+  border-top: 1px solid var(--line);
+}
+[data-mode="presenter"].phone .p-headline br {
+  display: none;
+}
+[data-mode="presenter"].phone .p-scale-size .figure {
+  font-size: 28px;
+}
+[data-mode="presenter"].phone .p-scale-cards .figure {
+  font-size: 44px;
+}
+[data-mode="presenter"].phone .p-pill .chip {
+  font-size: 12px;
+}
+[data-mode="presenter"] {
+  font-size: 24px;
+}
+[data-mode="presenter"].phone {
+  font-size: 18px;
+}
+[data-mode="presenter"].phone .p-card-head h3,
+[data-mode="presenter"].phone .p-keep-label,
+[data-mode="presenter"].phone .p-check,
+[data-mode="presenter"].phone .p-foot,
+[data-mode="presenter"].phone .p-strip-label {
+  font-size: 18px;
+}
+/* Envelope: the supporting line carries the format caveat, so the strip's intro paragraph
+   gives its room to the table. */
+[data-mode="presenter"] .p-hero-envelope [data-slot="envelope-strip"] > p:first-child {
+  display: none;
+}
+[data-mode="presenter"] .p-hero-envelope .copy-btn {
+  margin-top: 10px;
+  border-radius: 999px;
+  padding: 6px 22px;
+  background: transparent;
+  border: 2px solid var(--line);
+}
+[data-mode="presenter"] .p-hero-envelope .envelope-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+[data-mode="presenter"] .p-hero-envelope .envelope-table td,
+[data-mode="presenter"] .p-hero-envelope .envelope-table th,
+[data-mode="presenter"] .p-hero-envelope .envelope-table .num,
+[data-mode="presenter"] .p-hero-envelope .envelope-table .num * {
+  font-size: 20px;
+}
+[data-mode="presenter"] .p-hero-envelope .envelope-table .chip {
+  font-size: 14px;
+}
+[data-mode="presenter"] .p-hero-envelope .envelope-table th {
+  font-weight: 400;
+  color: var(--muted);
+  text-align: left;
+}
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table td,
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table th,
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table .num,
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table .num * {
+  font-size: 14px;
+}
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table .chip {
+  font-size: 10px;
+}
+/* A pressed choice (the fleet size shown, a call already made) reads as selected, not disabled. */
+[data-mode="presenter"] .p-pill[aria-pressed="true"] {
+  background: var(--surface-2);
+  border-color: var(--clear);
+  color: var(--ink);
+}
+[data-mode="presenter"].phone .p-title-facts dt {
+  font-size: 16px;
+}

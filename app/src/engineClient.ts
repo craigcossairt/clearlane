@@ -22,7 +22,7 @@ import {
   scaleUsdPerDay as engineScaleUsdPerDay,
   systemCriticalHours,
 } from "@engine";
-import type { LaneThresholds, Option2Shift } from "@engine";
+import type { LaneThresholds, Option2Shift, ReferenceRace } from "@engine";
 import { CALL_DURATION_S } from "@engine/inputs";
 import { STUB_HOST_CEILING_KW, stubHostLoadKw15m } from "./stub/site";
 import {
@@ -180,3 +180,12 @@ export function option2Shift(bundle: Bundle): Option2Shift {
 export function heatmapMountain(byHour: number[]): number[] {
   return [...byHour];
 }
+
+/**
+ * Presenter race screen (#216): the reference race with each leg's MWh and buy and sell
+ * subtotals, the same engine function whose values numbers.json publishes.
+ */
+export function referenceRaceFor(bundle: Bundle): ReferenceRace {
+  return referenceRace(bundle);
+}
+export type { ReferenceRace };
