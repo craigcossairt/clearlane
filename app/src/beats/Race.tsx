@@ -54,9 +54,9 @@ export function Race({ live, hour }: BeatProps) {
           live={live}
         />
       </div>
-      <div className="cards" data-slot="race-end-cards">
-        {done ? (
-          <>
+      {/* The cards render from the start, hidden, so the slot holds its end size (#4). */}
+      <div className="reserve" data-slot="race-end-cards">
+        <div className={done ? "cards" : "cards off"} aria-hidden={done ? undefined : true}>
             <article className="card" data-card="fixed_overnight">
               <h3>{COPY.fixedLabel}</h3>
               <Num k="fixed_usd_mw_day" width={8} />
@@ -92,10 +92,8 @@ export function Race({ live, hour }: BeatProps) {
               </p>
             </article>
             <p className="muted card-note">{COPY.co2Caveat}</p>
-          </>
-        ) : (
-          <p className="muted">{COPY.raceCardsPending}</p>
-        )}
+        </div>
+        {done ? null : <p className="muted">{COPY.raceCardsPending}</p>}
       </div>
     </section>
   );
