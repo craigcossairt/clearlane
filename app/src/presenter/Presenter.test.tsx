@@ -158,6 +158,34 @@ describe("presenter mode (#216, ff_presenter)", () => {
     ).toContain(PRESENTER.secondRule);
   });
 
+  it("says why the battery-only Pulse line is not the answer, and lands with motion off (#4)", () => {
+    const { container } = renderPresenter("screen=4&step=end&motion=off");
+    // The battery-only plan was already discharging when the call came and has no Spin.
+    expect(
+      container.querySelector('[data-slot="call-ghost"] .p-call-busy')
+        ?.textContent,
+    ).toBe(PRESENTER.callPulseBusy);
+    expect(
+      container.querySelector('[data-slot="call-inset"] .p-call-busy'),
+    ).toBeNull();
+    expect(container.querySelector(".p-call")?.getAttribute("data-anim")).toBe(
+      "off",
+    );
+    // With motion off each trace is finished, so each share is shown.
+    expect(
+      [...container.querySelectorAll(".p-call-trace")].map((t) =>
+        t.getAttribute("data-done"),
+      ),
+    ).toEqual(["yes", "yes"]);
+  });
+
+  it("the re-plan ring mounts only after Resume (#4)", () => {
+    const { container } = renderPresenter("screen=5&motion=off");
+    expect(container.querySelector(".p-replan-ring")).toBeNull();
+    click(container, "action-resume");
+    expect(container.querySelector(".p-replan-ring")).toBeTruthy();
+  });
+
   it("the re-plan screen names its axis and the call, and leads with the measured time (#270)", () => {
     const { container } = renderPresenter("screen=5&step=end&motion=off");
     const chart = container.querySelector('[data-slot="replan-chart"]')!;

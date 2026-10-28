@@ -61,7 +61,7 @@
 </div>
 </header>
 <div class="p-hero p-hero-envelope">
-<section class="beat envelope-beat p-env" aria-label="Backtest">
+<section class="beat envelope-beat p-env" data-anim="off" aria-label="Backtest">
 <div class="p-score" data-slot="backtest-bands">
 <div class="p-score-labels">
 <span class="p-score-head">
@@ -76,7 +76,7 @@
 <span class="p-score-rowlabel">RMP calls it could not answer<small>Pass: fewer than the off-peak rule</small>
 </span>
 </div>
-<article class="p-score-col" data-policy="fixed_overnight">
+<article class="p-score-col" data-policy="fixed_overnight" style="--col: 0;">
 <h3 class="p-score-head">Battery on the off-peak rule</h3>
 <div class="p-score-cell is-money">
 <span class="p-score-mobile-label">Typical day per MW, on paper</span>
@@ -133,7 +133,7 @@
 <span class="p-mark-icon" aria-hidden="true">–</span>Baseline</span>
 </div>
 </article>
-<article class="p-score-col" data-policy="price_only">
+<article class="p-score-col" data-policy="price_only" style="--col: 1;">
 <h3 class="p-score-head">Battery-only plan</h3>
 <div class="p-score-cell is-money">
 <span class="p-score-mobile-label">Typical day per MW, on paper</span>
@@ -190,7 +190,7 @@
 <span class="p-mark-icon" aria-hidden="true">✕</span>Fail</span>
 </div>
 </article>
-<article class="p-score-col is-allowed" data-policy="clearlane">
+<article class="p-score-col is-allowed" data-policy="clearlane" style="--col: 2;">
 <h3 class="p-score-head">Simulated Torus-style station on Clearlane</h3>
 <div class="p-score-cell is-money">
 <span class="p-score-mobile-label">Typical day per MW, on paper</span>

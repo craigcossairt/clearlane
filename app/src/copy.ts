@@ -539,7 +539,10 @@ export const PRESENTER = {
 
   // #270: screens 4 to 6 read from the screen alone. No digit sits in this copy; every number
   // is a Num or a Live engine value.
-  callTraceLegend: "Gray: what Rocky Mountain Power asked for. Blue: Spin. Gold: Pulse.",
+  callTraceLegend:
+    "Gray: what Rocky Mountain Power asked for. Blue: Spin answering. Gold dashed: Pulse, already discharging as planned for the evening.",
+  callPulseBusy:
+    "Pulse was already discharging as planned, and there is no Spin, so almost nothing is left for the call.",
   callDeliveredOf: "of the call delivered",
   callSimTitle: "Our simulation",
   callPublishedTitle: "Torus's published record, separate from this simulation",

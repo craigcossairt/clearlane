@@ -1559,3 +1559,88 @@ body[data-mode="presenter"] {
   height: 28px;
   font-size: 16px;
 }
+
+/* Round 2 (#4): motion on screens 4 to 6. Each keyframe is from-only, so the resting style is
+   the end state; [data-anim="off"] (?motion=off) and the global reduced-motion rule land there
+   at once. */
+@keyframes p-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes p-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes p-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes p-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes p-ring {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+}
+
+/* Call: each Delivered share waits for its trace to finish, then rises in. */
+[data-mode="presenter"] .p-call[data-anim="on"] .p-call-trace[data-done="no"] .p-call-hero > * {
+  opacity: 0;
+}
+[data-mode="presenter"] .p-call[data-anim="on"] .p-call-trace[data-done="yes"] .p-call-hero > * {
+  animation: p-rise 400ms ease-out;
+}
+/* Pulse's planned discharge is context, not the answer: dashed and dim. */
+[data-mode="presenter"] .p-call-pulse {
+  stroke-dasharray: 10 8;
+  opacity: 0.55;
+}
+[data-mode="presenter"] .p-call-busy {
+  margin: 0;
+  color: var(--shoulder);
+}
+
+/* Envelope: bars rise from the baseline left to right, then the critical span fades in. */
+[data-mode="presenter"] .p-env-bar {
+  transform-origin: bottom;
+}
+[data-mode="presenter"] .p-env[data-anim="on"] .p-env-bar {
+  animation: p-grow 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 30ms);
+}
+[data-mode="presenter"] .p-env[data-anim="on"] .p-env-sch-band {
+  animation: p-fade 500ms ease-out 1300ms both;
+}
+
+/* Backtest: columns land left to right, Clearlane last; the marks pop as they land. */
+[data-mode="presenter"] .p-env[data-anim="on"] .p-score-labels {
+  animation: p-rise 400ms ease-out both;
+}
+[data-mode="presenter"] .p-env[data-anim="on"] .p-score-col {
+  animation: p-rise 450ms ease-out both;
+  animation-delay: calc(150ms + var(--col, 0) * 150ms);
+}
+[data-mode="presenter"] .p-env[data-anim="on"] .p-mark {
+  animation: p-pop 320ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(450ms + var(--col, 0) * 150ms);
+}
+
+/* Re-plan: on resume, a ring pulses twice where the re-plan takes over. Resting: invisible. */
+[data-mode="presenter"] .p-replan-ring {
+  opacity: 0;
+  transform: scale(3.2);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+[data-mode="presenter"] .p-replan[data-anim="on"] .p-replan-ring {
+  animation: p-ring 1s ease-out 2;
+}

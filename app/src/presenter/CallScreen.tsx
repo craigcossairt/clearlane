@@ -7,25 +7,17 @@ import { mtClock } from "../components/Time";
 import { COPY, PRESENTER } from "../copy";
 import { STUB_ACTIVE } from "../engineClient";
 import { grouped } from "../format";
+import { motionOff } from "./motion";
 
 const CRASH_SOURCE = STUB_ACTIVE
   ? "engineClient.crash (stub)"
   : "engine crash (live, this laptop)";
 
-function reducedMotion(): boolean {
-  if (typeof window === "undefined") return true;
-  if (new URLSearchParams(window.location.search).get("motion") === "off")
-    return true;
-  return typeof window.matchMedia === "function"
-    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    : true;
-}
-
 /** The traces draw over INSET_PLAY_MS, keyed by the call's event id, as on the stage. */
 function usePlayhead(playId: string | null): number {
   const [f, setF] = useState(1);
   useEffect(() => {
-    if (!playId || reducedMotion()) {
+    if (!playId || motionOff()) {
       setF(1);
       return;
     }
@@ -92,7 +84,11 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
   const scales = { maxKw, maxT };
 
   return (
-    <section className="beat crash-beat p-call" aria-label={COPY.crashTitle}>
+    <section
+      className="beat crash-beat p-call"
+      aria-label={COPY.crashTitle}
+      data-anim={motionOff() ? "off" : "on"}
+    >
       <div className="p-call-banner" data-slot="call-banner">
         <div className="reserve">
           <p
@@ -230,6 +226,12 @@ function Trace({
         scales,
       )},${H}`
     : "";
+  const done = f >= 1;
+  // The battery was already discharging as planned when the call came, and had no Spin to give.
+  const busy =
+    result !== null &&
+    result.spin_kwh === 0 &&
+    (result.trace[0]?.pulse_kw ?? 0) < 0;
   const line = (
     key: string,
     cls: string,
@@ -248,6 +250,7 @@ function Trace({
     <article
       className={`p-call-trace${lead ? " is-lead" : ""}`}
       data-slot={slot}
+      data-done={result ? (done ? "yes" : "no") : undefined}
     >
       <h3>{title}</h3>
       <div className="p-call-hero">
@@ -286,11 +289,15 @@ function Trace({
               className="p-call-asked"
               points={asked}
             />
-            {line("spin", "p-call-spin", (p) => Math.abs(p.spin_kw))}
-            {line("pulse", "p-call-pulse", (p) => Math.abs(p.pulse_kw))}
+            {/* Pulse's line is its planned evening discharge plus any help it gives the call,
+                so it is drawn dashed and dim: it is not the call being answered. */}
+            {line("pulse", "p-call-pulse", (p) => Math.max(0, -p.pulse_kw))}
+            {/* Spin answering: discharge only, so the refill after the call is not drawn as help. */}
+            {line("spin", "p-call-spin", (p) => Math.max(0, -p.spin_kw))}
           </>
         ) : null}
       </svg>
+      {busy ? <p className="p-call-busy">{PRESENTER.callPulseBusy}</p> : null}
     </article>
   );
 }

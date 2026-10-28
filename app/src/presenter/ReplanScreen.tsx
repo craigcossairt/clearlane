@@ -4,6 +4,7 @@ import { Num } from "../components/Num";
 import { hourLabel, mtClock } from "../components/Time";
 import { COPY, PRESENTER } from "../copy";
 import { grouped } from "../format";
+import { animAttr } from "./motion";
 
 // Drawing geometry only.
 const X0 = 60;
@@ -19,10 +20,13 @@ export function ReplanScreen({
   live,
   call,
   hour,
+  resumed,
 }: {
   live: Live;
   call: CallState;
   hour: number;
+  /** Resume has been pressed: the ring at the take-over point pulses as it mounts. */
+  resumed?: boolean;
 }) {
   const result = call.second ?? call.first;
   const plan = live.plans.clearlane;
@@ -52,7 +56,11 @@ export function ReplanScreen({
   const callRight = callIdx > 60;
 
   return (
-    <section className="beat p-replan" aria-label={COPY.replanTitle}>
+    <section
+      className="beat p-replan"
+      aria-label={COPY.replanTitle}
+      data-anim={animAttr()}
+    >
       <div className="p-replan-hero" data-slot="replan-line">
         {replan ? (
           <p>
@@ -143,6 +151,17 @@ export function ReplanScreen({
         </text>
         {replan && leave ? (
           <g data-slot="replan-leave">
+            {resumed ? (
+              <circle
+                className="p-replan-ring"
+                cx={x(callIdx)}
+                cy={y(leave.pulse_soc_kwh)}
+                r={8}
+                fill="none"
+                stroke="var(--accent)"
+                strokeWidth={3}
+              />
+            ) : null}
             <circle
               cx={x(callIdx)}
               cy={y(leave.pulse_soc_kwh)}

@@ -6,6 +6,7 @@ import { hourLabel } from "../components/Time";
 import { COPY, PRESENTER } from "../copy";
 import { BACKTEST_FILE, loadDerivedFiles, type DerivedFiles } from "../data";
 import { grouped, usdPerMw } from "../format";
+import { animAttr } from "./motion";
 
 const ENVELOPE_SOURCE = "public/derived/envelope file (engine)";
 const COPY_LABELS = [COPY.copyJson, COPY.copied, COPY.copyFailed] as const;
@@ -29,6 +30,7 @@ export function EnvelopeScreen({
   return (
     <section
       className="beat envelope-beat p-env"
+      data-anim={animAttr()}
       aria-label={backtest ? COPY.backtestTitle : COPY.envelopeTitle}
     >
       {backtest ? (
@@ -118,7 +120,7 @@ function EnvelopeHours({
             key={h.ts_utc}
             className={`p-env-col${h.system_critical ? " is-sch" : ""}`}
             data-critical={h.system_critical ? "yes" : "no"}
-            style={{ gridColumn: i + 1 }}
+            style={{ gridColumn: i + 1, ["--i" as string]: i }}
           >
             <i
               className="p-env-bar"
@@ -264,7 +266,7 @@ function Scorecard({ derived }: { derived: DerivedFiles }) {
           <small>{PRESENTER.scoreCallsRule}</small>
         </span>
       </div>
-      {stats.map((s) => {
+      {stats.map((s, col) => {
         const v = s.usd_per_mw_day;
         const m = marks(s);
         const allPass =
@@ -274,6 +276,7 @@ function Scorecard({ derived }: { derived: DerivedFiles }) {
             key={s.policy}
             className={`p-score-col${allPass ? " is-allowed" : ""}`}
             data-policy={s.policy}
+            style={{ ["--col" as string]: col }}
           >
             <h3 className="p-score-head">{LABEL[s.policy]}</h3>
             <div className="p-score-cell is-money">
