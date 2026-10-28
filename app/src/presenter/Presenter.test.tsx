@@ -176,6 +176,9 @@ describe("presenter mode (#216, ff_presenter)", () => {
     // Pitch review: the count and the window, never "every day".
     const head = container.querySelector<HTMLElement>('[data-slot="headline"]')!;
     expect(spoken(head)).toBe("Backtested on 179 days, May 1 to Oct 27.");
+    expect(container.textContent).toContain(
+      "Each policy run on every day of the history with full data, beside the off-peak rule.",
+    );
     expect(
       head.querySelector('[data-num="backtest_days"]')?.getAttribute("data-prov"),
     ).toBe("DERIVED");

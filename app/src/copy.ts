@@ -239,7 +239,7 @@ export const PRESENTER = {
   backtestHeadlineDays: "days,",
   backtestHeadlineTo: "to",
   backtestLine:
-    "Each policy run on every day of the history, beside the off-peak rule.",
+    "Each policy run on every day of the history with full data, beside the off-peak rule.",
   showBacktest: "Show the backtest",
   showEnvelope: "Show the envelope",
 
