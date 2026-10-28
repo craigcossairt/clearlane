@@ -1,0 +1,80 @@
+{
+  "schema": "clearlane.backtest/v1",
+  "window": {
+    "start_mt": "2026-05-01",
+    "end_mt": "2026-10-27",
+    "days": 179,
+    "missing_days": [
+      "2026-05-01"
+    ]
+  },
+  "wear_usd_mwh": 10.95,
+  "seed": 20261027,
+  "policies": [
+    {
+      "policy": "fixed_overnight",
+      "usd_per_mw_day": {
+        "p10": -13.824520451986755,
+        "p50": 6.804307898112933,
+        "p90": 43.16848368418887,
+        "mean": 12.68555446182287
+      },
+      "co2_t_per_mw_day": null,
+      "pulse_cycles_per_yr": 365.00000000000006,
+      "calls_unanswerable_pct": {
+        "heatmap_as_mt": 23.03030303030303,
+        "heatmap_as_utc": 17.575757575757574,
+        "heatmap_as_utc_mst": 18.78787878787879
+      },
+      "host_ceiling_breaches": 0,
+      "days_beating_fixed_overnight_pct": 0
+    },
+    {
+      "policy": "price_only",
+      "usd_per_mw_day": {
+        "p10": 22.870363731687245,
+        "p50": 47.44541921127638,
+        "p90": 97.73343950585246,
+        "mean": 59.002988013166984
+      },
+      "co2_t_per_mw_day": null,
+      "pulse_cycles_per_yr": 746.6696927374298,
+      "calls_unanswerable_pct": {
+        "heatmap_as_mt": 45.45454545454545,
+        "heatmap_as_utc": 41.21212121212121,
+        "heatmap_as_utc_mst": 40.60606060606061
+      },
+      "host_ceiling_breaches": 2014,
+      "days_beating_fixed_overnight_pct": 100
+    },
+    {
+      "policy": "clearlane",
+      "usd_per_mw_day": {
+        "p10": 8.275101617316148,
+        "p50": 33.32087324512219,
+        "p90": 90.71117057990122,
+        "mean": 45.65565805254118
+      },
+      "co2_t_per_mw_day": null,
+      "pulse_cycles_per_yr": 332.3743016759778,
+      "calls_unanswerable_pct": {
+        "heatmap_as_mt": 1.2121212121212122,
+        "heatmap_as_utc": 1.2121212121212122,
+        "heatmap_as_utc_mst": 1.2121212121212122
+      },
+      "host_ceiling_breaches": 0,
+      "days_beating_fixed_overnight_pct": 94.41340782122904
+    }
+  ],
+  "price_only": true,
+  "notes": [
+    "price only: co2_g_kwh is null in every hour of this history, so every CO2 statistic is null, not 0.",
+    "179-day window from 2026-05-01 to 2026-10-27 (1 of 180 days left out, never filled; see missing_days).",
+    "Calls are SIMULATED from the 2025 Rocky Mountain Power call heatmap and SCH is the price proxy; outside Rocky Mountain Power territory that call model is an ASSUMPTION.",
+    "W 10.95 $/MWh is the stage wear price, calibrated on the PACE history (backtest.json), not on this node.",
+    "Day-ahead (EDAM) LMP at ELAP_PACW-APND from California ISO OASIS PRC_LMP DAM, by Mountain hour beginning.",
+    "price only; CO2 for PACW and PGE is out of scope: co2_g_kwh is null in every hour.",
+    "Days without all 24 Mountain hours are left out and listed in missing_days, never filled.",
+    "Wattsmart is a Rocky Mountain Power program, so on this node the envelope is a format proposal only."
+  ]
+}
