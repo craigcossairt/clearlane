@@ -1,0 +1,450 @@
+<div class="viewport p-viewport" data-mode="presenter" tabindex="-1">
+<div class="frame p-frame" data-screen-key="race" style="transform: scale(0.5333333333333333);">
+<nav class="p-progress" aria-label="Screens">
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Title</span>
+</button>
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Traffic report</span>
+</button>
+<button type="button" class="p-seg is-current" aria-current="step">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Race</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Call</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Re-plan</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Envelope</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Scale</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Close</span>
+</button>
+</nav>
+<main class="p-main">
+<header class="p-head">
+<h1 class="p-headline" data-slot="headline">Filling up at midday is worth <span class="num num-ok" data-num="race_ratio" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">2.9x</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+<br> the off-peak rule.</h1>
+<div class="p-subrow">
+<p class="p-line">Same battery, same evening sale. Only the hours it buys in change. The off-peak rule is our baseline, not Torus practice.</p>
+<div class="p-actions">
+<button type="button" class="p-pill" data-action="action-replay">Replay the day</button>
+</div>
+</div>
+</header>
+<div class="p-hero p-hero-race">
+<div class="p-race">
+<div class="p-race-cards">
+<article class="p-card" data-card="fixed_overnight" data-slot="race-card-fixed_overnight">
+<header class="p-card-head">
+<h3>Battery on the off-peak rule</h3>
+</header>
+<div class="p-keep">
+<span class="num num-ok" data-num="fixed_usd_mw_day" data-prov="DERIVED" data-num-state="ok" style="min-width: 7ch;">
+<span class="figure">$20.06</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</div>
+<p class="p-keep-label">value to RMP's system per MW per day, higher is better</p>
+<table class="p-arith" data-detail="">
+<tbody>
+<tr>
+<th scope="row">Buys</th>
+<td>
+<span class="num num-ok" data-num="live" data-prov="ASSUMPTION" data-num-state="ok" style="min-width: 9ch;">
+<span class="figure">2.132 MWh</span>
+<abbr class="chip chip-assumption" title="reference battery, 1 MW / 2 MWh at 88% round trip (FACTS ref_station)" data-copy-ok="provenance class name">ASSUMPTION</abbr>
+</span>
+</td>
+<td class="p-op">at</td>
+<td>
+<span class="num num-ok" data-num="fixed_rule_charge_usd_mwh" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$39.53</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+<td class="p-op">=</td>
+<td>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">$84</span>
+<abbr class="chip chip-derived" title="engine referenceRace (live, this laptop): MWh times price, whole dollars" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+</tr>
+<tr>
+<th scope="row">Sells</th>
+<td>
+<span class="num num-ok" data-num="live" data-prov="ASSUMPTION" data-num-state="ok" style="min-width: 9ch;">
+<span class="figure">1.876 MWh</span>
+<abbr class="chip chip-assumption" title="reference battery, 1 MW / 2 MWh at 88% round trip (FACTS ref_station)" data-copy-ok="provenance class name">ASSUMPTION</abbr>
+</span>
+</td>
+<td class="p-op">at</td>
+<td>
+<span class="num num-ok" data-num="race_discharge_usd_mwh" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$55.62</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+<td class="p-op">=</td>
+<td>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">$104</span>
+<abbr class="chip chip-derived" title="engine referenceRace (live, this laptop): MWh times price, whole dollars" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+</tr>
+<tr class="p-arith-keep">
+<th scope="row">Net</th>
+<td colspan="4">
+</td>
+<td>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">$20</span>
+<abbr class="chip chip-derived" title="engine referenceRace (live, this laptop): sells minus buys, whole dollars" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</article>
+<article class="p-card p-card-ours" data-card="clearlane" data-slot="race-card-clearlane">
+<header class="p-card-head">
+<h3>Simulated Torus-style station on Clearlane</h3>
+<span class="p-check">
+<span aria-hidden="true">✓</span> Clearlane</span>
+</header>
+<div class="p-keep">
+<span class="num num-ok" data-num="clearlane_usd_mw_day" data-prov="DERIVED" data-num-state="ok" style="min-width: 7ch;">
+<span class="figure">$58.41</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</div>
+<p class="p-keep-label">value to RMP's system per MW per day, higher is better</p>
+<table class="p-arith" data-detail="">
+<tbody>
+<tr>
+<th scope="row">Buys</th>
+<td>
+<span class="num num-ok" data-num="live" data-prov="ASSUMPTION" data-num-state="ok" style="min-width: 9ch;">
+<span class="figure">2.132 MWh</span>
+<abbr class="chip chip-assumption" title="reference battery, 1 MW / 2 MWh at 88% round trip (FACTS ref_station)" data-copy-ok="provenance class name">ASSUMPTION</abbr>
+</span>
+</td>
+<td class="p-op">at</td>
+<td>
+<span class="num num-ok" data-num="timetable_charge_usd_mwh" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$21.55</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+<td class="p-op">=</td>
+<td>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">$46</span>
+<abbr class="chip chip-derived" title="engine referenceRace (live, this laptop): MWh times price, whole dollars" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+</tr>
+<tr>
+<th scope="row">Sells</th>
+<td>
+<span class="num num-ok" data-num="live" data-prov="ASSUMPTION" data-num-state="ok" style="min-width: 9ch;">
+<span class="figure">1.876 MWh</span>
+<abbr class="chip chip-assumption" title="reference battery, 1 MW / 2 MWh at 88% round trip (FACTS ref_station)" data-copy-ok="provenance class name">ASSUMPTION</abbr>
+</span>
+</td>
+<td class="p-op">at</td>
+<td>
+<span class="num num-ok" data-num="race_discharge_usd_mwh" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">$55.62</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+<td class="p-op">=</td>
+<td>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">$104</span>
+<abbr class="chip chip-derived" title="engine referenceRace (live, this laptop): MWh times price, whole dollars" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+</tr>
+<tr class="p-arith-keep">
+<th scope="row">Net</th>
+<td colspan="4">
+</td>
+<td>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">$58</span>
+<abbr class="chip chip-derived" title="engine referenceRace (live, this laptop): sells minus buys, whole dollars" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</article>
+</div>
+<div class="p-strip" data-slot="race-strip">
+<svg viewBox="0 0 1766 150" role="img" aria-label="Twenty-four hours, Mountain time, marking each plan's buy hours and sell hours" data-replay="done">
+<g data-row="fixed_overnight">
+<text x="0" y="30" dominant-baseline="middle" class="p-strip-label">Off-peak rule</text>
+<g>
+<rect x="232" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="296" y="8" width="60" height="44" rx="6" class="p-mark p-mark-buy is-filled" data-mark="buy" data-filled="true">
+</rect>
+<text x="326" y="30" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Buy</text>
+</g>
+<g>
+<rect x="360" y="8" width="60" height="44" rx="6" class="p-mark p-mark-buy is-filled" data-mark="buy" data-filled="true">
+</rect>
+<text x="390" y="30" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Buy</text>
+</g>
+<g>
+<rect x="424" y="8" width="60" height="44" rx="6" class="p-mark p-mark-buy is-filled" data-mark="buy" data-filled="true">
+</rect>
+<text x="454" y="30" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Buy</text>
+</g>
+<g>
+<rect x="488" y="8" width="60" height="44" rx="6" class="p-mark p-mark-buy is-filled" data-mark="buy" data-filled="true">
+</rect>
+<text x="518" y="30" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Buy</text>
+</g>
+<g>
+<rect x="552" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="616" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="680" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="744" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="808" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="872" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="936" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1000" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1064" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1128" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1192" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1256" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1320" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1384" y="8" width="60" height="44" rx="6" class="p-mark p-mark-sell is-filled" data-mark="sell" data-filled="true">
+</rect>
+<text x="1414" y="30" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Sell</text>
+</g>
+<g>
+<rect x="1448" y="8" width="60" height="44" rx="6" class="p-mark p-mark-sell is-filled" data-mark="sell" data-filled="true">
+</rect>
+<text x="1478" y="30" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Sell</text>
+</g>
+<g>
+<rect x="1512" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1576" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1640" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1704" y="8" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+</g>
+<g data-row="clearlane">
+<text x="0" y="82" dominant-baseline="middle" class="p-strip-label">Clearlane</text>
+<g>
+<rect x="232" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="296" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="360" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="424" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="488" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="552" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="616" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="680" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="744" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="808" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="872" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="936" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1000" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1064" y="60" width="60" height="44" rx="6" class="p-mark p-mark-buy is-filled" data-mark="buy" data-filled="true">
+</rect>
+<text x="1094" y="82" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Buy</text>
+</g>
+<g>
+<rect x="1128" y="60" width="60" height="44" rx="6" class="p-mark p-mark-buy is-filled" data-mark="buy" data-filled="true">
+</rect>
+<text x="1158" y="82" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Buy</text>
+</g>
+<g>
+<rect x="1192" y="60" width="60" height="44" rx="6" class="p-mark p-mark-buy is-filled" data-mark="buy" data-filled="true">
+</rect>
+<text x="1222" y="82" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Buy</text>
+</g>
+<g>
+<rect x="1256" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1320" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1384" y="60" width="60" height="44" rx="6" class="p-mark p-mark-sell is-filled" data-mark="sell" data-filled="true">
+</rect>
+<text x="1414" y="82" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Sell</text>
+</g>
+<g>
+<rect x="1448" y="60" width="60" height="44" rx="6" class="p-mark p-mark-sell is-filled" data-mark="sell" data-filled="true">
+</rect>
+<text x="1478" y="82" text-anchor="middle" dominant-baseline="middle" class="p-mark-word is-filled">Sell</text>
+</g>
+<g>
+<rect x="1512" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1576" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1640" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+<g>
+<rect x="1704" y="60" width="60" height="44" rx="6" class="p-mark p-mark-none">
+</rect>
+</g>
+</g>
+<text x="234" y="142" class="p-axis" data-axis="">12am</text>
+<text x="426" y="142" class="p-axis" data-axis="">3am</text>
+<text x="618" y="142" class="p-axis" data-axis="">6am</text>
+<text x="810" y="142" class="p-axis" data-axis="">9am</text>
+<text x="1002" y="142" class="p-axis" data-axis="">12pm</text>
+<text x="1194" y="142" class="p-axis" data-axis="">3pm</text>
+<text x="1386" y="142" class="p-axis" data-axis="">6pm</text>
+<text x="1578" y="142" class="p-axis" data-axis="">9pm</text>
+</svg>
+<p class="p-strip-legend">
+<span class="p-swatch p-swatch-buy" aria-hidden="true">
+</span> Buy hours<span class="p-swatch p-swatch-sell" aria-hidden="true">
+</span> Sell hours<span class="p-strip-note">Value to RMP's system at day-ahead prices, per MW of battery.</span>
+</p>
+</div>
+</div>
+</div>
+</main>
+<footer class="p-foot">
+<p class="p-day">Today <span data-time="">Tue, Oct 27, 2026</span>. Snapshot, fetched <span data-time="">11:07am</span> MT</p>
+<p class="p-src">CAISO prices; engine reference race.</p>
+<div class="p-nav">
+<button type="button" class="p-pill p-pill-quiet" data-action="sources">Sources</button>
+<button type="button" class="p-pill" data-action="back">Back</button>
+<button type="button" class="p-pill p-pill-primary" data-action="next">Next</button>
+</div>
+</footer>
+</div>
+</div>

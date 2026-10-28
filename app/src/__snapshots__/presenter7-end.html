@@ -1,0 +1,109 @@
+<div class="viewport p-viewport" data-mode="presenter" tabindex="-1">
+<div class="frame p-frame" data-screen-key="scale" style="transform: scale(0.5333333333333333);">
+<nav class="p-progress" aria-label="Screens">
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Title</span>
+</button>
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Traffic report</span>
+</button>
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Race</span>
+</button>
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Call</span>
+</button>
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Re-plan</span>
+</button>
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Envelope</span>
+</button>
+<button type="button" class="p-seg is-current" aria-current="step">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Scale</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Close</span>
+</button>
+</nav>
+<main class="p-main">
+<header class="p-head">
+<h1 class="p-headline" data-slot="headline">Scale the station to the fleet the MOU allows.</h1>
+<div class="p-subrow">
+<p class="p-line">MOU ceiling, not installed capacity. Assumes the fleet does not move prices.</p>
+<div class="p-actions">
+<span class="p-detail-actions" data-detail="">
+<button type="button" class="p-pill" aria-pressed="false" data-action="action-fleet-min">
+<span class="num num-ok" data-num="mou_70mw" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 3ch;">
+<span class="figure">70</span>
+<abbr class="chip chip-torus_published" title="https://www.businesswire.com/news/home/20250127668054/en/Rocky-Mountain-Power-and-Torus-Announce-Strategic-Partnership, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
+</span> MW</button>
+<button type="button" class="p-pill" aria-pressed="true" data-action="action-fleet-max">
+<span class="num num-ok" data-num="torus_500mw" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 3ch;">
+<span class="figure">500</span>
+<abbr class="chip chip-torus_published" title="https://www.torus.co/news/torus-raises-200-million-from-magnetar-deployment-of-modular-power-plants, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
+</span> MW</button>
+</span>
+</div>
+</div>
+</header>
+<div class="p-hero p-hero-scale">
+<section class="p-scale" aria-label="Scale">
+<div class="p-scale-row">
+<p class="p-scale-size">Fleet size <span class="slot-fleet" data-slot="fleet-value">
+<span class="num num-ok" data-num="live" data-prov="SIMULATED" data-num-state="ok" style="min-width: 8ch;">
+<span class="figure">500 MW</span>
+<abbr class="chip chip-simulated" title="fleet slider, between mou_70mw and torus_500mw" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span>
+</span>
+</p>
+<input class="slider p-slider" type="range" min="70" max="500" step="10" aria-label="Fleet size in MW" value="500">
+</div>
+<div class="p-scale-cards" data-slot="scale-cards">
+<article class="card">
+<h3>Battery on the off-peak rule</h3>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 8ch;">
+<span class="figure">$10,032</span>
+<abbr class="chip chip-derived" title="engine scaleUsdPerDay(fixed_usd_mw_day, fleet MW)" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+<p>per day, value to RMP's system at day-ahead prices.</p>
+</article>
+<article class="card">
+<h3>Simulated Torus-style station on Clearlane</h3>
+<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 8ch;">
+<span class="figure">$29,203</span>
+<abbr class="chip chip-derived" title="engine scaleUsdPerDay(clearlane_usd_mw_day, fleet MW)" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+<p>per day, value to RMP's system at day-ahead prices.</p>
+</article>
+</div>
+</section>
+</div>
+</main>
+<footer class="p-foot">
+<p class="p-day">Today <span data-time="">Tue, Oct 27, 2026</span>. Snapshot, fetched <span data-time="">11:07am</span> MT</p>
+<p class="p-src">Torus and RMP announcements.</p>
+<div class="p-nav">
+<button type="button" class="p-pill p-pill-quiet" data-action="sources">Sources</button>
+<button type="button" class="p-pill" data-action="back">Back</button>
+<button type="button" class="p-pill p-pill-primary" data-action="next">Next</button>
+</div>
+</footer>
+</div>
+</div>

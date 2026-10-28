@@ -98,7 +98,13 @@ export function Num(props: KeyProps | LiveProps) {
     return (
       <Frame state="ok" prov={n.prov} keyName={props.k} width={width}>
         <span className="figure">{n.display}</span>
-        <Chip prov={n.prov} source={n.source} asOf={n.as_of_mt} />
+        <Chip
+          prov={n.prov}
+          source={n.source}
+          asOf={n.as_of_mt}
+          numKey={n.key}
+          display={n.display}
+        />
       </Frame>
     );
   }
@@ -112,7 +118,12 @@ export function Num(props: KeyProps | LiveProps) {
   return (
     <Frame state="ok" prov={props.prov} width={width}>
       <span className="figure">{props.display}</span>
-      <Chip prov={props.prov} source={props.source} asOf={props.asOf} />
+      <Chip
+        prov={props.prov}
+        source={props.source}
+        asOf={props.asOf}
+        display={props.display}
+      />
     </Frame>
   );
 }

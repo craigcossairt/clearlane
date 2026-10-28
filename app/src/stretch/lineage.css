@@ -1,0 +1,118 @@
+/* Number lineage (#91, ff_lineage). The panel sits outside the scaled stage frame, above the
+   proof drawer and every other overlay; on a phone it fills the screen. */
+
+.chip[data-lineage] {
+  cursor: pointer;
+}
+
+.chip[data-lineage]:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.lineage-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+}
+
+.lineage-panel {
+  box-sizing: border-box;
+  width: min(1180px, 100%);
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 24px 32px;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: var(--body);
+}
+
+.lineage-panel:focus {
+  outline: none;
+}
+
+.lineage-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.lineage-head h2 {
+  margin: 0;
+}
+
+.lineage-close {
+  font: inherit;
+  padding: 4px 24px;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.lineage-rows {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 12px 24px;
+  margin: 24px 0 0;
+}
+
+.lineage-rows dt {
+  color: var(--muted);
+}
+
+.lineage-rows dd {
+  margin: 0;
+  min-width: 0;
+}
+
+.lineage-rows p {
+  margin: 0;
+}
+
+.lineage-panel code {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: inherit;
+  overflow-wrap: anywhere;
+}
+
+.lineage-sources {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lineage-value {
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .lineage-backdrop {
+    padding: 0;
+  }
+
+  .lineage-panel {
+    height: 100%;
+    border-radius: 0;
+    padding: 16px;
+  }
+
+  .lineage-rows {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .lineage-rows dd {
+    margin-bottom: 12px;
+  }
+}
