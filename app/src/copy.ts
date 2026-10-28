@@ -478,18 +478,24 @@ export const PRESENTER = {
 
   titleLine: "A day planner for simulated Torus-style stations on Utah's grid.",
   titleDetail:
-    "It reads the CAISO day-ahead price for PacifiCorp East, fills the battery in the midday clear lane, and keeps Spin ready for Rocky Mountain Power's calls.",
+    "It reads the next day's power prices, fills the battery when power is cheap at midday, stops buying in the evening rush, and keeps the flywheel ready for Rocky Mountain Power's calls.",
   titleNode: "CAISO day-ahead node",
+  titleBy: "Presented by Craig Cossairt",
   start: "Start",
 
   trafficHeadline: "Power is cheapest at midday. The road jams after the evening step.",
   trafficLine:
-    "Day-ahead price for PacifiCorp East, each hour labeled Clear, Shoulder or Jam.",
+    "Like a traffic report published the evening before: each bar is one hour's price, green when the road is clear and red in the evening jam.",
+  // Screen 2's one caption sentence: "Price jumps {peak_over_trough} from the midday low to the
+  // {peak_hour_mt} peak."
+  trafficPeak1: "Price jumps",
+  trafficPeak2: "from the midday low to the",
+  trafficPeak3: "peak.",
 
   raceHeadlinePre: "Filling up at midday is worth",
   raceHeadlinePost: "the off-peak rule.",
   raceLine:
-    "Same battery, same evening sale. Only the hours it buys in change. The off-peak rule is our baseline, not Torus practice.",
+    "Same battery, selling in the same evening hours. The only difference is when it fills up. The off-peak rule is our baseline, not Torus practice.",
   replay: "Replay the day",
   keepsLabel: "value to RMP's system per MW per day, higher is better",
   rowBuys: "Buys",
@@ -527,24 +533,73 @@ export const PRESENTER = {
 
   envelopeHeadline: "An hourly envelope Rocky Mountain Power could plan around.",
   envelopeLine:
-    "A format Clearlane proposes: a working example, not a filing. System Critical Hours are our proposal.",
-  // "Backtested on {backtest_days} days, {window start} to {window end}." The count is a Num and the
-  // dates are the backtest window rendered as times, so no digit sits in copy (Pitch review, #217).
-  backtestHeadlinePre: "Backtested on",
-  backtestHeadlineDays: "days,",
-  backtestHeadlineTo: "to",
-  backtestLine:
-    "Each policy run on every day of the history with full data, beside the off-peak rule.",
+    "Each hour, the most the station will draw, and the power it keeps ready for RMP. A format Clearlane proposes, not a filing.",
   showBacktest: "Show the backtest",
   showEnvelope: "Show the envelope",
 
+  // #270: screens 4 to 6 read from the screen alone. No digit sits in this copy; every number
+  // is a Num or a Live engine value.
+  callTraceLegend: "Gray: what Rocky Mountain Power asked for. Blue: Spin. Gold: Pulse.",
+  callDeliveredOf: "of the call delivered",
+  callSimTitle: "Our simulation",
+  callPublishedTitle: "Torus's published record, separate from this simulation",
+  callPublishedRamp: "Ramp",
+  callPublishedDelivered: "target, delivered",
+  callSpinBack: "Spin full again at",
+  replanHero: "Re-planned in",
+  replanHeroTail: "timed live on this laptop, from the charge the call left behind.",
+  replanAxis: "Pulse battery charge",
+  replanCallMark: "RMP call,",
+  replanTakesOver: "The re-plan takes over here",
+  replanKeyPlanned: "This morning's plan",
+  replanKeyReplanned: "Re-plan after the call",
+  replanCycles: "Pulse cycles today",
+  replanCyclesBudget: "Budget",
+  replanCyclesTail: "a year",
+  envelopeDrawLabel: "Most the station will draw",
+  envelopeReadyLabel: "Kept ready for RMP",
+  envelopeSchLabel: "System Critical Hours, our proposal",
+  envelopeSchCount: "System Critical Hours today",
+  envelopeAria:
+    "Twenty-four hours, Mountain time: the most the station will draw each hour, with the System Critical Hours marked",
+  backtestScoreHeadline:
+    "Battery-only is worth more on paper. Clearlane is the plan a host and RMP would allow.",
+  backtestLinePre: "Backtested on",
+  backtestLineDays: "days,",
+  backtestLineTo: "to",
+  backtestLineBeats: "Clearlane beats the off-peak rule on",
+  backtestLineBeatsTail: "of days.",
+  scoreMoney: "Typical day per MW, on paper",
+  scoreMoneyRange: "Most days between",
+  scoreMoneyAnd: "and",
+  scoreWear: "Battery wear: cycles a year, budget",
+  scoreCeiling: "Times it broke the host's meter ceiling",
+  scoreCalls: "RMP calls it could not answer",
+  scoreCallsRule: "Pass: fewer than the off-peak rule",
+  scorePass: "Pass",
+  scoreFail: "Fail",
+  scoreBaseline: "Baseline",
   scaleHeadline: "Scale the station to the fleet the MOU allows.",
   scaleLine:
-    "MOU ceiling, not installed capacity. Assumes the fleet does not move prices.",
+    "One station's daily value per MW, multiplied by the fleet in Torus's agreement (MOU) with Rocky Mountain Power.",
+  scaleTimes: "×",
+  scalePerMw: "per MW-day",
+  scaleCaveat:
+    "This assumes every enrolled MW is a two-hour battery like our reference station, and that the fleet does not move prices. The MOU is a ceiling, not installed capacity.",
   fleetMin: "MW",
   fleetMax: "MW",
 
   closeHeadline: "The ask: pilot the envelope.",
+  closeLine:
+    "Pilot the day-ahead envelope, a format Clearlane proposes, at a few Wattsmart sites this winter.",
+  closeWhat:
+    "Each hour it tells Rocky Mountain Power the reserve held for its calls and the most the station will charge or discharge.",
+  sawRatio: "what filling up at midday is worth, against the off-peak rule",
+  sawCalls: "of Rocky Mountain Power's calls missed in the backtest",
+  sawDays: "of backtest days beat the off-peak rule",
+  sawAria: "What you saw",
+  // Plain text, not a link: the stage runs offline.
+  closeRepo: "Code and data: github.com/craigcossairt/clearlane",
 
   footTitle: "Data: CAISO OASIS and EIA.",
   footTraffic: "CAISO day-ahead price and forecasts.",

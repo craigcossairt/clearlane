@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { buildLive, callHour, runCalls } from "../live";
-import { CrashBeat } from "../beats/CrashBeat";
-import { EnvelopeBeat } from "../beats/EnvelopeBeat";
-import { Replan } from "../beats/Replan";
 import { Ribbon } from "../beats/Ribbon";
-import { CloseCard, ScaleCard } from "../beats/ScaleBeat";
+import { ScaleCard } from "../beats/ScaleBeat";
+import { Chip } from "../components/Chip";
 import type { CallState, Live } from "../beats/types";
 import { findNumber, Num, type NumbersState } from "../components/Num";
 import { mtClock, mtDate } from "../components/Time";
@@ -27,6 +25,9 @@ import {
 import { ProofDrawer } from "../proof/ProofDrawer";
 import { StretchKeyRows } from "../components/StretchKeyRows";
 import { RaceScreen } from "./RaceScreen";
+import { CallScreen } from "./CallScreen";
+import { BacktestLine, EnvelopeScreen } from "./EnvelopeScreen";
+import { ReplanScreen } from "./ReplanScreen";
 import "./presenter.css";
 
 /** The race replay: 24 hours in the stage's 15 seconds. */
@@ -68,7 +69,11 @@ const HEADLINES: Record<
     source: PRESENTER.footScale,
     sourceLong: PRESENTER.sourceScale,
   },
-  close: { source: PRESENTER.footClose, sourceLong: PRESENTER.sourceClose },
+  close: {
+    line: `${PRESENTER.closeLine} ${PRESENTER.closeWhat}`,
+    source: PRESENTER.footClose,
+    sourceLong: PRESENTER.sourceClose,
+  },
 };
 
 interface Play {
@@ -430,7 +435,9 @@ export function Presenter({
       case "replan":
         return PRESENTER.replanHeadline;
       case "envelope":
-        return isAction(1) ? <BacktestHeadline /> : PRESENTER.envelopeHeadline;
+        return isAction(1)
+          ? PRESENTER.backtestScoreHeadline
+          : PRESENTER.envelopeHeadline;
       case "scale":
         return PRESENTER.scaleHeadline;
       case "close":
@@ -440,7 +447,7 @@ export function Presenter({
     }
   })();
   const line =
-    def.key === "envelope" && isAction(1) ? PRESENTER.backtestLine : head.line;
+    def.key === "envelope" && isAction(1) ? <BacktestLine /> : head.line;
 
   const hero = (() => {
     switch (def.key) {
@@ -466,41 +473,11 @@ export function Presenter({
       case "race":
         return <RaceScreen live={live} hour={raceHour} />;
       case "call":
-        return (
-          <CrashBeat
-            live={live}
-            hour={0}
-            call={callState}
-            backtest={false}
-            fleetMw={null}
-            onFleet={() => undefined}
-            presenter
-          />
-        );
+        return <CallScreen live={live} call={callState} />;
       case "replan":
-        return (
-          <Replan
-            live={live}
-            hour={replanHour}
-            call={callState}
-            backtest={false}
-            fleetMw={null}
-            onFleet={() => undefined}
-            presenter
-          />
-        );
+        return <ReplanScreen live={live} call={callState} hour={replanHour} />;
       case "envelope":
-        return (
-          <EnvelopeBeat
-            live={live}
-            hour={0}
-            call={EMPTY_CALL}
-            backtest={isAction(1)}
-            fleetMw={null}
-            onFleet={() => undefined}
-            presenter
-          />
-        );
+        return <EnvelopeScreen live={live} backtest={isAction(1)} />;
       case "scale":
         return (
           <ScaleHero
@@ -510,7 +487,7 @@ export function Presenter({
           />
         );
       case "close":
-        return <CloseCard />;
+        return <CloseHero />;
     }
   })();
 
@@ -670,7 +647,6 @@ function TitleHero({ day, onStart }: { day: string; onStart: () => void }) {
   return (
     <section className="p-title" aria-labelledby="p-wordmark">
       <div className="p-brand">
-        <span className="p-logo" aria-hidden="true" />
         <h1 id="p-wordmark" className="p-wordmark">
           {COPY.title}
         </h1>
@@ -689,6 +665,7 @@ function TitleHero({ day, onStart }: { day: string; onStart: () => void }) {
           <dd data-copy-ok="CAISO node id">{COPY.node}</dd>
         </div>
       </dl>
+      <p className="p-title-by">{PRESENTER.titleBy}</p>
       <div className="p-actions">
         <PillButton primary onClick={onStart} slot="action-start">
           {PRESENTER.start}
@@ -713,17 +690,7 @@ function ScaleHero({
         <p className="p-scale-size">
           {COPY.fleetSize}{" "}
           <span className="slot-fleet" data-slot="fleet-value">
-            {fleetMw !== null ? (
-              <Num
-                value={fleetMw}
-                display={`${grouped(fleetMw, 0)} MW`}
-                prov="SIMULATED"
-                source="fleet slider, between mou_70mw and torus_500mw"
-                width={8}
-              />
-            ) : (
-              <Num k="mou_70mw" width={8} />
-            )}
+            <FleetNum fleetMw={fleetMw} width={8} />
           </span>
         </p>
         <input
@@ -739,52 +706,98 @@ function ScaleHero({
         />
       </div>
       <div className="p-scale-cards" data-slot="scale-cards">
-        <ScaleCard
-          title={COPY.fixedLabel}
-          perMwKey="fixed_usd_mw_day"
-          fleetMw={fleetMw}
-        />
-        <ScaleCard
-          title={COPY.clearlaneLabel}
-          perMwKey="clearlane_usd_mw_day"
-          fleetMw={fleetMw}
-        />
+        {(
+          [
+            [COPY.fixedLabel, "fixed_usd_mw_day"],
+            [COPY.clearlaneLabel, "clearlane_usd_mw_day"],
+          ] as const
+        ).map(([title, perMwKey]) => (
+          <div className="p-scale-col" key={perMwKey}>
+            <ScaleCard title={title} perMwKey={perMwKey} fleetMw={fleetMw} />
+            <p className="p-scale-arith" data-detail="">
+              <Num k={perMwKey} width={4} /> {PRESENTER.scalePerMw}{" "}
+              <span className="p-op">{PRESENTER.scaleTimes}</span>{" "}
+              <FleetNum fleetMw={fleetMw} />
+            </p>
+          </div>
+        ))}
       </div>
+      <p className="p-scale-caveat">{PRESENTER.scaleCaveat}</p>
     </section>
   );
 }
 
-/** "Mon D" for a Mountain day YYYY-MM-DD ("May 1"); noon-ish UTC keeps it on that date. */
-function shortDay(day: string): string {
-  return new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Denver",
-    month: "short",
-    day: "numeric",
-  }).format(new Date(`${day}T18:00:00Z`));
+/** The fleet size as the slider holds it: SIMULATED between the two MOU keys. */
+function FleetNum({
+  fleetMw,
+  width,
+}: {
+  fleetMw: number | null;
+  width?: number;
+}) {
+  return fleetMw !== null ? (
+    <Num
+      value={fleetMw}
+      display={`${grouped(fleetMw, 0)} MW`}
+      prov="SIMULATED"
+      source="fleet slider, between mou_70mw and torus_500mw"
+      width={width}
+    />
+  ) : (
+    <Num k="mou_70mw" width={width} />
+  );
 }
 
 /**
- * Screen 6 after "Show the backtest": the day count through Num and the window from
- * backtest.json, so the headline never claims more days than were run (Pitch review, #217).
+ * Screen 8 (#271): the ask spelled out in the supporting line, three numbers the judges already
+ * saw, the two close lines, and the Option 2 campus as a quieter card beside them.
  */
-function BacktestHeadline() {
-  const window = useMemo(
-    () => loadDerivedFiles().backtest?.result?.window ?? null,
-    [],
-  );
+function CloseHero() {
   return (
-    <>
-      {PRESENTER.backtestHeadlinePre} <Num k="backtest_days" width={3} />{" "}
-      {PRESENTER.backtestHeadlineDays}
-      {window ? (
-        <>
-          {" "}
-          <span data-time="">{shortDay(window.start_mt)}</span>{" "}
-          {PRESENTER.backtestHeadlineTo}{" "}
-          <span data-time="">{shortDay(window.end_mt)}</span>
-        </>
-      ) : null}
-      .
-    </>
+    <section className="p-close" data-slot="close-card">
+      <p className="p-repo">{PRESENTER.closeRepo}</p>
+      <dl className="p-saw" aria-label={PRESENTER.sawAria}>
+        <div>
+          <dd>
+            <Num k="race_ratio" width={4} />
+          </dd>
+          <dt>{PRESENTER.sawRatio}</dt>
+        </div>
+        <div>
+          <dd>
+            <Num k="calls_missed_by_policy_clearlane_mt" width={4} />
+          </dd>
+          <dt>{PRESENTER.sawCalls}</dt>
+        </div>
+        <div>
+          <dd>
+            <Num k="share_days_beating" width={4} />
+          </dd>
+          <dt>{PRESENTER.sawDays}</dt>
+        </div>
+      </dl>
+      <div className="p-close-body">
+        <div className="p-close-lines">
+          <p className="close-line">{COPY.closeLine1}</p>
+          <p className="close-line">{COPY.closeLine2}</p>
+        </div>
+        <aside className="p-campus" data-detail="">
+          <h3>
+            {COPY.campusTitle}{" "}
+            <Chip
+              prov="SIMULATED"
+              source="Option 2 campus shift (engine), simulated"
+            />
+          </h3>
+          <p>
+            {COPY.campusLine1} <Num k="campus_mwh" /> {COPY.campusLine2}{" "}
+            <Num k="campus_usd" />.
+          </p>
+          <p className="p-campus-note">
+            {COPY.simulated} {COPY.notTorusProduct}
+          </p>
+        </aside>
+      </div>
+    </section>
   );
 }
