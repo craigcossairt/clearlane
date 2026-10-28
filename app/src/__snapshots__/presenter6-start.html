@@ -46,14 +46,14 @@
 <header class="p-head">
 <h1 class="p-headline" data-slot="headline">An hourly envelope Rocky Mountain Power could plan around.</h1>
 <div class="p-subrow">
-<p class="p-line">Each hour, the most the station will draw, and the power it keeps ready for RMP. A format Clearlane proposes, not a filing.</p>
+<p class="p-line">Each hour, what the station plans to do: charge when power is cheap, sell in the evening rush, and keep Spin's power ready for RMP. In System Critical Hours it does not charge. A format Clearlane proposes, not a filing.</p>
 <div class="p-actions">
 <button type="button" class="p-pill p-pill-primary" data-action="action-backtest">Show the backtest</button>
 </div>
 </div>
 </header>
 <div class="p-hero p-hero-envelope">
-<section class="beat envelope-beat p-env" aria-label="Envelope">
+<section class="beat envelope-beat p-env" data-anim="off" aria-label="Envelope">
 <div class="p-env-hours" data-slot="envelope-strip">
 <div class="p-env-facts">
 <p class="p-env-fact p-env-fact-sch">
@@ -66,17 +66,6 @@
 <span>System Critical Hours today</span>
 </p>
 <p class="p-env-fact">
-<span class="p-env-swatch is-draw" aria-hidden="true">
-</span>
-<span>Most the station will draw</span>
-<span class="p-env-big">
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">250 kW</span>
-<abbr class="chip chip-derived" title="public/derived/envelope file (engine)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>
-</span>
-</p>
-<p class="p-env-fact">
 <span>Kept ready for RMP</span>
 <span class="p-env-big">
 <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
@@ -85,106 +74,180 @@
 </span>
 </span>
 </p>
+<p class="p-env-fact p-env-keys">
+<span>
+<span class="p-env-swatch is-charge" aria-hidden="true">
+</span>Planned charging</span>
+<span>
+<span class="p-env-swatch is-sell" aria-hidden="true">
+</span>Planned selling</span>
+</p>
 </div>
-<div class="p-env-strip" role="img" aria-label="Twenty-four hours, Mountain time: the most the station will draw each hour, with the System Critical Hours marked" style="grid-template-columns: repeat(24, 1fr);">
+<div class="p-env-strip" role="img" aria-label="Twenty-four hours, Mountain time: the power the station plans to charge, up, or sell, down, each hour, with the System Critical Hours marked" style="grid-template-columns: repeat(24, 1fr); grid-template-rows: 0.40540540540540543fr 0.5945945945945946fr;">
 <span class="p-env-sch-band" style="grid-column: 19 / 25;">
 <span class="p-env-sch-label">System Critical Hours, our proposal</span>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 1;">
-<i class="p-env-bar" style="height: 100%;">
+<span class="p-env-zero" aria-hidden="true">
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 1; --i: 0;">
+<span class="p-env-half is-up">
+<i class="p-env-bar is-charge" style="height: 16.666666666666664%;">
 </i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 2;">
-<i class="p-env-bar" style="height: 100%;">
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 2; --i: 1;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 3; --i: 2;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 4; --i: 3;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 5; --i: 4;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 6; --i: 5;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 7; --i: 6;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 8; --i: 7;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 9; --i: 8;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 10; --i: 9;">
+<span class="p-env-half is-up">
+<i class="p-env-bar is-charge" style="height: 100%;">
 </i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 3;">
-<i class="p-env-bar" style="height: 100%;">
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 11; --i: 10;">
+<span class="p-env-half is-up">
+<i class="p-env-bar is-charge" style="height: 66.66666666666666%;">
 </i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 4;">
-<i class="p-env-bar" style="height: 100%;">
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 12; --i: 11;">
+<span class="p-env-half is-up">
+<i class="p-env-bar is-charge" style="height: 66.66666666666666%;">
 </i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 5;">
-<i class="p-env-bar" style="height: 100%;">
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 13; --i: 12;">
+<span class="p-env-half is-up">
+<i class="p-env-bar is-charge" style="height: 33.33333333333333%;">
 </i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 6;">
-<i class="p-env-bar" style="height: 100%;">
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 14; --i: 13;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 15; --i: 14;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 16; --i: 15;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 17; --i: 16;">
+<span class="p-env-half is-up">
+<i class="p-env-bar is-charge" style="height: 33.33333333333333%;">
 </i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 7;">
-<i class="p-env-bar" style="height: 100%;">
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col" data-critical="no" style="grid-column: 18; --i: 17;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+</span>
+</span>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 19; --i: 18;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+<i class="p-env-bar is-sell" style="height: 100%;">
 </i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 8;">
-<i class="p-env-bar" style="height: 100%;">
+</span>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 20; --i: 19;">
+<span class="p-env-half is-up">
+</span>
+<span class="p-env-half is-down">
+<i class="p-env-bar is-sell" style="height: 90%;">
 </i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 9;">
-<i class="p-env-bar" style="height: 80%;">
-</i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 10;">
-<i class="p-env-bar" style="height: 72%;">
-</i>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 21; --i: 20;">
+<span class="p-env-half is-up">
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 11;">
-<i class="p-env-bar" style="height: 60%;">
-</i>
+<span class="p-env-half is-down">
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 12;">
-<i class="p-env-bar" style="height: 48%;">
-</i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 13;">
-<i class="p-env-bar" style="height: 32%;">
-</i>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 22; --i: 21;">
+<span class="p-env-half is-up">
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 14;">
-<i class="p-env-bar" style="height: 16%;">
-</i>
+<span class="p-env-half is-down">
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 15;">
-<i class="p-env-bar" style="height: 0%;">
-</i>
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 16;">
-<i class="p-env-bar" style="height: 0%;">
-</i>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 23; --i: 22;">
+<span class="p-env-half is-up">
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 17;">
-<i class="p-env-bar" style="height: 32%;">
-</i>
+<span class="p-env-half is-down">
 </span>
-<span class="p-env-col" data-critical="no" style="grid-column: 18;">
-<i class="p-env-bar" style="height: 80%;">
-</i>
 </span>
-<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 19;">
-<i class="p-env-bar" style="height: 100%;">
-</i>
+<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 24; --i: 23;">
+<span class="p-env-half is-up">
 </span>
-<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 20;">
-<i class="p-env-bar" style="height: 100%;">
-</i>
+<span class="p-env-half is-down">
 </span>
-<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 21;">
-<i class="p-env-bar" style="height: 100%;">
-</i>
-</span>
-<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 22;">
-<i class="p-env-bar" style="height: 100%;">
-</i>
-</span>
-<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 23;">
-<i class="p-env-bar" style="height: 100%;">
-</i>
-</span>
-<span class="p-env-col is-sch" data-critical="yes" style="grid-column: 24;">
-<i class="p-env-bar" style="height: 100%;">
-</i>
 </span>
 </div>
 <div class="p-env-axis" data-axis="" style="grid-template-columns: repeat(24, 1fr);">
@@ -193,11 +256,6 @@
 <span style="grid-column: 13 / span 4;">12pm</span>
 <span style="grid-column: 19 / span 4;">6pm</span>
 </div>
-<button class="ghost-btn copy-btn" data-slot="copy-json" type="button">
-<span class="on" aria-hidden="false">Copy JSON</span>
-<span class="off" aria-hidden="true">Copied</span>
-<span class="off" aria-hidden="true">Copy failed</span>
-</button>
 </div>
 </section>
 </div>
