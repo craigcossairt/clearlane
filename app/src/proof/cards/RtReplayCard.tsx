@@ -45,6 +45,17 @@ export function RtReplayCard({ data }: { data: RtReplay }) {
   return (
     <>
       <p>{COPY.proofRtLead}</p>
+      {/* The settlement label comes before any number from the file. */}
+      <p className="proof-settlement">
+        {COPY.proofRtSettlement}{" "}
+        <strong data-settlement={data.settlement.status}>
+          {data.settlement.status}
+        </strong>
+        .
+        {data.settlement.status === "UNVERIFIED" ? (
+          <> {COPY.proofRtUnverified}</>
+        ) : null}
+      </p>
       <BandChart
         aria={COPY.proofRtAria}
         rows={WAYS.map((w) => {
@@ -67,10 +78,8 @@ export function RtReplayCard({ data }: { data: RtReplay }) {
       <p>
         {COPY.proofRtDaysPre} {live(s.days_replan_above_hold)}{" "}
         {COPY.proofRtDaysMid} {live(s.days_replan_below_hold)}.{" "}
-        {COPY.proofRtRegretPre}{" "}
-        {live(s.regret_usd_per_mw_day.hold.p50, true)}
-        {COPY.proofRtRegretMid}{" "}
-        {live(s.regret_usd_per_mw_day.replan.p50, true)}{" "}
+        {COPY.proofRtRegretPre} {live(s.regret_usd_per_mw_day.hold.p50, true)}
+        {COPY.proofRtRegretMid} {live(s.regret_usd_per_mw_day.replan.p50, true)}{" "}
         {COPY.perMwDay}.
       </p>
       <p>
@@ -82,16 +91,6 @@ export function RtReplayCard({ data }: { data: RtReplay }) {
         {COPY.backtestWindow} <span data-time="">{data.window.start_mt}</span>{" "}
         {COPY.ribbonTo} <span data-time="">{data.window.end_mt}</span>.{" "}
         {COPY.proofRtWearPre} <Num k="wear_usd_mwh" /> {COPY.proofPerMwh}
-      </p>
-      <p className="proof-settlement">
-        {COPY.proofRtSettlement}{" "}
-        <strong data-settlement={data.settlement.status}>
-          {data.settlement.status}
-        </strong>
-        .
-        {data.settlement.status === "UNVERIFIED" ? (
-          <> {COPY.proofRtUnverified}</>
-        ) : null}
       </p>
     </>
   );

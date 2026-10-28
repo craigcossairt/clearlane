@@ -34,10 +34,10 @@ export const COPY = {
   proofBacktestLead:
     "Value to RMP's system per MW per day at day-ahead prices, one row per timetable.",
   proofBacktestAria:
-    "One band per timetable from the low day to the high day, in dollars per MW-day, with the middle day and the mean marked",
+    "One band per timetable from the tenth to the ninetieth percentile day, in dollars per MW-day, with the middle day and the mean marked",
   proofAxis: "dollars per MW-day",
   proofBandNote:
-    "Each band runs from the low day to the high day, the tenth to the ninetieth percentile. The tick is the middle day and the dot is the mean.",
+    "Each band runs from the tenth to the ninetieth percentile day. The tick is the middle day and the dot is the mean.",
   proofMean: ", mean ",
   proofBaseline: "The off-peak rule is our baseline, not Torus practice.",
   proofCrossTitle: "Independent cross-check of the pinned numbers",
@@ -50,6 +50,10 @@ export const COPY = {
   proofMismatchHead: "Outside tolerance, with the second path the script also ran:",
   proofPinned: "pinned",
   proofScience: "science",
+  proofSameCent:
+    "Same to the cent. They differ only past the cent, which misses the tolerance Science set before running:",
+  proofDifference: "difference",
+  proofNotScalar: "not a single number; see",
   proofSecondPath: "Second path",
   proofFrom: "from",
   proofTolerance: "Tolerance:",
@@ -110,7 +114,7 @@ export const COPY = {
   proofRtLead:
     "A separate replay settles each day on real-time prices three ways: holding the day-ahead plan all day, re-planning at the top of every hour, and perfect foresight, which no plan can reach and which sets the yardstick. Values are net of wear, as value to RMP's system.",
   proofRtAria:
-    "For holding, re-planning and perfect foresight, net value per MW-day from the low day to the high day, with the middle day as a tick and the mean as a dot.",
+    "For holding, re-planning and perfect foresight, net value per MW-day from the tenth to the ninetieth percentile day, with the middle day as a tick and the mean as a dot.",
   proofRtHold: "Hold the day-ahead plan",
   proofRtReplan: "Re-plan every hour",
   proofRtForesight: "Perfect foresight",

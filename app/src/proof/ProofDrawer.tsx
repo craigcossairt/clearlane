@@ -29,8 +29,9 @@ import "./proof.css";
 
 /**
  * The proof drawer (#90, ff_proof_drawer): Q&A cards for the stretch analyses. P or the Proof
- * pill opens it over the current beat; Esc, P or Close shuts it and hands focus back. It never
- * joins the six beats or their timing, and with the flag off it renders nothing at all.
+ * pill opens it over the current beat; Esc, P, PageUp, PageDown or Close shuts it and hands focus
+ * back, and Tab stays inside it while it is open. It never joins the six beats or their timing,
+ * and with the flag off it renders nothing at all.
  */
 export function ProofDrawer({
   sources,
@@ -138,6 +139,24 @@ const CARDS: Record<ProofCardId, (s: ProofSources) => ReactNode> = {
   ),
 };
 
+const CLOSE_KEYS = new Set(["Escape", "PageUp", "PageDown"]);
+const FOCUSABLE = 'button, [href], input, [tabindex]:not([tabindex="-1"])';
+
+/** Tab and Shift+Tab cycle through the drawer's own controls, as the presenter's dialogs do. */
+function trapTab(panel: HTMLElement | null, back: boolean) {
+  const items = [...(panel?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])];
+  if (items.length === 0) return;
+  const at = items.indexOf(document.activeElement as HTMLElement);
+  const step = back ? -1 : 1;
+  const next =
+    at < 0
+      ? back
+        ? items.length - 1
+        : 0
+      : (at + step + items.length) % items.length;
+  items[next]!.focus();
+}
+
 function DrawerOn({
   sources,
   pillClassName,
@@ -188,16 +207,33 @@ function DrawerOn({
         !event.metaKey &&
         !event.altKey;
       if (!openRef.current) {
-        if (isKey && !typedIntoInput(event.target)) {
+        // Held P must not flicker the drawer, and it never opens over another open dialog.
+        if (
+          isKey &&
+          !event.repeat &&
+          !typedIntoInput(event.target) &&
+          !document.querySelector('[role="dialog"][aria-modal="true"]')
+        ) {
           event.preventDefault();
           show();
         }
         return;
       }
       // Open, the drawer owns the keyboard: beat keys must not move the stage underneath it.
-      // Tab, Enter and Space still do their default work on the drawer's own controls.
+      // This listener stops the event before React sees it, so Tab is kept inside here.
+      // Enter and Space still do their default work on the drawer's own controls.
       event.stopImmediatePropagation();
-      if (event.key === "Escape" || isKey) {
+      if (event.key === "Tab") {
+        event.preventDefault();
+        trapTab(panel.current, event.shiftKey);
+        return;
+      }
+      if (isKey && event.repeat) {
+        event.preventDefault();
+        return;
+      }
+      // The presenter's clicker sends PageUp and PageDown: either one closes the drawer.
+      if (CLOSE_KEYS.has(event.key) || isKey) {
         event.preventDefault();
         hide();
       }

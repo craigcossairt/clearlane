@@ -126,22 +126,41 @@ function Count({ value }: { value: number }) {
   );
 }
 
-/** A value from the file, shown exactly as the script wrote it. */
-function Value({ value }: { value: unknown }) {
-  const n = typeof value === "number" && Number.isFinite(value) ? value : null;
+const scalar = (v: unknown) =>
+  typeof v === "number" && Number.isFinite(v) ? v : null;
+
+/** A value from the file, shown exactly as the script wrote it, or to four places. */
+function Value({ value, places }: { value: unknown; places?: number }) {
+  const n = scalar(value);
   return (
     <Num
       value={n}
-      display={String(n)}
+      display={
+        n === null || places === undefined ? String(n) : n.toFixed(places)
+      }
       prov="DERIVED"
       source={PROOF_FILES.crosscheck}
+      reason={
+        typeof value === "object" && value !== null
+          ? `${COPY.proofNotScalar} ${PROOF_FILES.crosscheck}`
+          : undefined
+      }
       width={3}
     />
   );
 }
 
+/**
+ * Science's verdict stands, but a check that misses only a tolerance finer than a cent says so:
+ * otherwise "outside tolerance" beside a headline reads as "the headline is wrong".
+ */
+const sameToTheCent = (a: number | null, b: number | null) =>
+  a !== null && b !== null && Math.round(a * 100) === Math.round(b * 100);
+
 function OutsideRow({ name, row }: { name: string; row: CrossCheckRow }) {
   const second = row.second_path;
+  const pinned = scalar(row.pinned?.facts);
+  const science = scalar(row.science);
   return (
     <li data-check={name}>
       <code data-copy-ok="check name">{name}</code>
@@ -151,8 +170,20 @@ function OutsideRow({ name, row }: { name: string; row: CrossCheckRow }) {
           (<span data-copy-ok="unit named in the file">{row.unit}</span>)
         </>
       ) : null}
-      : {COPY.proofPinned} <Value value={row.pinned?.facts} />,{" "}
-      {COPY.proofScience} <Value value={row.science} />.
+      :{" "}
+      {sameToTheCent(pinned, science) ? (
+        <>
+          <span data-same-cent="">{COPY.proofSameCent}</span> {COPY.proofPinned}{" "}
+          <Value value={pinned} places={4} />, {COPY.proofScience}{" "}
+          <Value value={science} places={4} />, {COPY.proofDifference}{" "}
+          <Value value={science! - pinned!} places={4} />.
+        </>
+      ) : (
+        <>
+          {COPY.proofPinned} <Value value={row.pinned?.facts} />,{" "}
+          {COPY.proofScience} <Value value={row.science} />.
+        </>
+      )}
       {second ? (
         <>
           <br />

@@ -385,10 +385,39 @@ describe("cross-check card", () => {
     expect(count("pending")).toBe("1");
     const row = card.querySelector('[data-check="d_off"]')!;
     expect(row.textContent).toContain("58.4053");
-    expect(row.textContent).toContain("58.40968");
+    expect(row.textContent).toContain("58.4097");
     expect(row.textContent).toContain("58.40534");
     expect(row.textContent).toContain(COPY.proofSecondPathPasses);
     expect(card.querySelectorAll("rect[data-status]")).toHaveLength(4);
+  });
+
+  it("says a check is the same to the cent only when both values round to the same cents", () => {
+    renderDrawer(assembleProof({ [F.CROSSCHECK_KEY]: F.CROSSCHECK_MIXED }));
+    const card = openDrawer().querySelector('[data-card="crosscheck"]')!;
+    // Science's verdict stands: every one of them is still counted outside tolerance.
+    expect(
+      card.querySelector('[data-status-count="mismatch"] .figure')?.textContent,
+    ).toBe("3");
+    const same = card.querySelector('[data-check="clearlane_usd_mw_day"]')!;
+    expect(same.querySelector("[data-same-cent]")?.textContent).toBe(
+      COPY.proofSameCent,
+    );
+    expect(figures(same)).toEqual(["58.4053", "58.4097", "0.0044"]);
+    // $20.06 against $20.07: a cent apart, so no softer wording.
+    const cent = card.querySelector('[data-check="fixed_usd_mw_day"]')!;
+    expect(cent.querySelector("[data-same-cent]")).toBeNull();
+    expect(figures(cent)).toEqual(["20.0647", "20.06513"]);
+  });
+
+  it("says why a value that is not a single number is unavailable", () => {
+    renderDrawer(assembleProof({ [F.CROSSCHECK_KEY]: F.CROSSCHECK_MIXED }));
+    const row = openDrawer().querySelector('[data-check="hb_set"]')!;
+    const values = [...row.querySelectorAll('[data-num-state="unavailable"]')];
+    expect(values).toHaveLength(2);
+    for (const v of values)
+      expect(v.textContent).toBe(
+        `${COPY.unavailable}: ${COPY.proofNotScalar} ${PROOF_FILES.crosscheck}`,
+      );
   });
 });
 
@@ -576,6 +605,13 @@ describe("RT-replay card", () => {
       "UNVERIFIED",
     );
     expect(unverified.textContent).toContain(COPY.proofRtUnverified);
+    // The label comes before the first number read from the file.
+    const label = unverified.querySelector("[data-settlement]")!;
+    const firstNumber = unverified.querySelector('svg, [data-num="live"]')!;
+    expect(
+      label.compareDocumentPosition(firstNumber) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     cleanup();
     const verified = card(F.rtReplay("VERIFIED"));
     expect(verified.querySelector("[data-settlement]")?.textContent).toBe(
@@ -881,5 +917,95 @@ describe("proof drawer in presenter mode", () => {
     expect(document.activeElement?.getAttribute("data-mode")).toBe("presenter");
     press("ArrowRight");
     expect(where()).not.toBe(start);
+  });
+
+  const presenter = (extra = "") =>
+    render(
+      <App
+        data={data}
+        now={STAGE_NOW}
+        search={`?ff=presenter,proof_drawer&screen=3&motion=off${extra}`}
+      />,
+    ).container;
+  const where = () =>
+    `${document.body.dataset.screen}/${document.body.dataset.actions}`;
+  const pill = (c: HTMLElement) =>
+    within(c.querySelector<HTMLElement>(".p-nav")!).getByRole("button", {
+      name: COPY.proofPill,
+    });
+
+  it("keeps Tab inside the drawer, so Enter can never reach Back or Next behind it", () => {
+    const c = presenter();
+    const start = where();
+    fireEvent.click(pill(c));
+    const d = drawer()!;
+    for (let i = 0; i < 40; i++) {
+      const tab = fireEvent.keyDown(document.activeElement ?? d, {
+        key: "Tab",
+        shiftKey: i % 3 === 0,
+      });
+      expect(tab).toBe(false);
+      expect(d.contains(document.activeElement)).toBe(true);
+    }
+    press("Enter");
+    expect(where()).toBe(start);
+    // Shift+Tab from the drawer itself lands on its last control, Tab on its first.
+    d.focus();
+    fireEvent.keyDown(d, { key: "Tab", shiftKey: true });
+    const items = [
+      ...d.querySelectorAll<HTMLElement>(
+        'button, [href], input, [tabindex]:not([tabindex="-1"])',
+      ),
+    ];
+    expect(document.activeElement).toBe(items[items.length - 1]);
+    fireEvent.keyDown(document.activeElement!, { key: "Tab" });
+    expect(document.activeElement).toBe(items[0]);
+  });
+
+  it("closes on the clicker's PageUp or PageDown without moving the deck", () => {
+    const c = presenter();
+    const start = where();
+    for (const key of ["PageDown", "PageUp"]) {
+      fireEvent.click(pill(c));
+      expect(drawer()).not.toBeNull();
+      press(key);
+      expect(drawer()).toBeNull();
+      expect(where()).toBe(start);
+    }
+    press("PageDown");
+    expect(where()).not.toBe(start);
+  });
+
+  it("ignores a held P", () => {
+    presenter();
+    press("p");
+    expect(drawer()).not.toBeNull();
+    act(() => {
+      fireEvent.keyDown(document.activeElement ?? document.body, {
+        key: "p",
+        repeat: true,
+      });
+    });
+    expect(drawer()).not.toBeNull();
+    act(() => {
+      fireEvent.keyDown(document.activeElement ?? document.body, {
+        key: "p",
+        repeat: true,
+      });
+    });
+    expect(drawer()).not.toBeNull();
+  });
+
+  it("lists P in the presenter's own key overlay, and P does not open over it", () => {
+    const c = presenter();
+    press("?");
+    const keys = c.querySelector<HTMLElement>(".p-overlay")!;
+    const dts = [...keys.querySelectorAll("dt")].map((d) => d.textContent);
+    expect(dts).toHaveLength(5);
+    expect(dts[4]).toBe(STRETCH_KEYMAP[0]!.keyLabel);
+    press("p");
+    expect(drawer()).toBeNull();
+    press("Escape");
+    expect(c.querySelector(".p-overlay")).toBeNull();
   });
 });

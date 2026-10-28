@@ -79,6 +79,27 @@ export const CROSSCHECK_OK = JSON.stringify({
   },
 });
 
+/** Three ways to miss: past the cent only, at the cent, and a field that is not a number. */
+export const CROSSCHECK_MIXED = JSON.stringify({
+  schema: "clearlane.science.crosscheck/v1",
+  checks: {
+    clearlane_usd_mw_day: check("mismatch", {
+      pinned: { facts: 58.4053, numbers_json: null },
+      science: 58.40968,
+      tolerance: "rounds equal at 4 dp and within 0.01",
+    }),
+    fixed_usd_mw_day: check("mismatch", {
+      pinned: { facts: 20.0647, numbers_json: null },
+      science: 20.06513,
+      tolerance: "rounds equal at 4 dp and within 0.01",
+    }),
+    hb_set: check("mismatch", {
+      pinned: { facts: [18, 19, 20], numbers_json: null },
+      science: { hours: [18, 19] },
+    }),
+  },
+});
+
 /** A file that exists but does not parse: the broken state. */
 export const BROKEN_TEXT = '{"schema": "clearlane.backtest/v1", "policies": [';
 
