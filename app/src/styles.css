@@ -595,3 +595,55 @@ td {
 .envelope-beat .envelope-table .chip {
   font-size: 12px;
 }
+
+/* Reserved slots (projector check: a [data-slot] keeps one box across states). .reserve stacks
+   its children in one grid cell; .off hides a layer but keeps its size. */
+.reserve {
+  display: grid;
+}
+.reserve > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.reserve > .off {
+  visibility: hidden;
+}
+.banner .reserve > p {
+  margin: 0;
+}
+.slot-clock {
+  min-width: 14ch;
+  min-height: 1.35em;
+  vertical-align: top;
+}
+[data-slot="call-clock"] {
+  min-width: 24ch;
+}
+/* Call beat and re-plan: the end state holds numbers the engine only returns on C, so the
+   slots reserve the end-state height measured at each layout, with room for 24px card titles
+   (#190). */
+.crash-beat [data-slot="call-inset"],
+.crash-beat [data-slot="call-ghost"] {
+  min-height: 228px;
+}
+.crash-beat [data-slot="second-call"] {
+  min-height: 42px;
+}
+[data-slot="replan-line"] {
+  min-height: 130px;
+}
+@media (max-width: 767px) {
+  .crash-beat [data-slot="call-inset"],
+  .crash-beat [data-slot="call-ghost"] {
+    min-height: 296px;
+  }
+  .crash-beat [data-slot="second-call"] {
+    min-height: 92px;
+  }
+  .crash-beat [data-slot="call-result"] {
+    min-height: 318px;
+  }
+  [data-slot="replan-line"] {
+    min-height: 202px;
+  }
+}

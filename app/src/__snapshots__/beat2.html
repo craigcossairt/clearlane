@@ -95,7 +95,8 @@
 </span> cycles a year.</p>
 </article>
 </div>
-<div class="cards" data-slot="race-end-cards">
+<div class="reserve" data-slot="race-end-cards">
+<div class="cards">
 <article class="card" data-card="fixed_overnight">
 <h3>Battery on the off-peak rule</h3>
 <span class="num num-ok" data-num="fixed_usd_mw_day" data-prov="DERIVED" data-num-state="ok" style="min-width: 8ch;">
@@ -116,17 +117,17 @@
 </article>
 <article class="card" data-card="clearlane">
 <h3>Simulated Torus-style station on Clearlane</h3>
-<span class="num num-ok" data-num="clearlane_dp_usd_mw_day" data-prov="DERIVED" data-num-state="ok" style="min-width: 8ch;">
-<span class="figure">$55.71</span>
-<abbr class="chip chip-derived" title="engine/src/policies.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+<span class="num num-ok" data-num="clearlane_usd_mw_day" data-prov="DERIVED" data-num-state="ok" style="min-width: 8ch;">
+<span class="figure">$58.41</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
 </span>
-<p class="muted">per MW-day, <span class="num num-ok" data-num="dp_race_ratio" data-prov="DERIVED" data-num-state="ok" style="min-width: 5ch;">
-<span class="figure">2.8x</span>
-<abbr class="chip chip-derived" title="engine/src/policies.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+<p class="muted">per MW-day, <span class="num num-ok" data-num="race_ratio" data-prov="DERIVED" data-num-state="ok" style="min-width: 5ch;">
+<span class="figure">2.9x</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
 </span> the off-peak rule</p>
-<span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 8ch;">
-<span class="figure">$3,900</span>
-<abbr class="chip chip-derived" title="engine solve (live, this laptop), scaled to mou_70mw" data-copy-ok="provenance class name">DERIVED</abbr>
+<span class="num num-ok" data-num="clearlane_70" data-prov="DERIVED" data-num-state="ok" style="min-width: 8ch;">
+<span class="figure">$4,088</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
 </span>
 <p>per day at the MOU size, value to RMP's system at day-ahead prices.</p>
 <p>
@@ -136,6 +137,7 @@
 </span> t of carbon dioxide a day avoided at the MOU size.</p>
 </article>
 <p class="muted card-note">Average-emissions estimate (EIA hourly); marginal emissions can differ.</p>
+</div>
 </div>
 </section>
 </main>

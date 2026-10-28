@@ -1,28 +1,22 @@
 import type { Plan } from "@contracts/types";
-import { Num, useNumber } from "../components/Num";
+import { Num } from "../components/Num";
 import { hourLabel } from "../components/Time";
 import { COPY } from "../copy";
-import { scaleUsdPerDay } from "../engineClient";
-import { grouped, usdDay } from "../format";
+import { grouped } from "../format";
 import type { BeatProps } from "./types";
 
 const ENGINE_SRC = "engine solve (live, this laptop)";
 
 /**
  * Beat 2: the race. Both plans were solved through engineClient before Space is pressed (App
- * builds live.plans on load). The animation plays the live engine plans, so the Clearlane card
- * reads the engine DP's own key (clearlane_dp_usd_mw_day, dp_race_ratio) and its $/day at the
- * MOU size comes from the engine's linear fleet scaling of the live plan: one card never mixes
- * the reference timetable with the DP.
+ * builds live.plans on load). The bars play the live engine plans. The end cards read the
+ * reference race (clearlane_usd_mw_day, race_ratio, clearlane_70), the same keys beat 6 scales
+ * and the stage script says (#184, the pitch decision on #5 at 2:41pm Oct 27). The engine's own
+ * plan figure, clearlane_dp_usd_mw_day, belongs on beat 5.
  */
 export function Race({ live, hour }: BeatProps) {
   const done = hour >= 24;
-  const mou = useNumber("mou_70mw");
   const clear = live.plans.clearlane;
-  const clear70 =
-    mou !== undefined
-      ? scaleUsdPerDay(clear.value_usd_per_mw_day, mou.value)
-      : null;
   return (
     <section className="beat" aria-labelledby="beat-race">
       <h2 id="beat-race">{COPY.raceTitle}</h2>
@@ -54,9 +48,9 @@ export function Race({ live, hour }: BeatProps) {
           live={live}
         />
       </div>
-      <div className="cards" data-slot="race-end-cards">
-        {done ? (
-          <>
+      {/* The cards render from the start, hidden, so the slot holds its end size (#4). */}
+      <div className="reserve" data-slot="race-end-cards">
+        <div className={done ? "cards" : "cards off"} aria-hidden={done ? undefined : true}>
             <article className="card" data-card="fixed_overnight">
               <h3>{COPY.fixedLabel}</h3>
               <Num k="fixed_usd_mw_day" width={8} />
@@ -71,19 +65,12 @@ export function Race({ live, hour }: BeatProps) {
             </article>
             <article className="card" data-card="clearlane">
               <h3>{COPY.clearlaneLabel}</h3>
-              <Num k="clearlane_dp_usd_mw_day" width={8} />
+              <Num k="clearlane_usd_mw_day" width={8} />
               <p className="muted">
-                {COPY.perMwDay}, <Num k="dp_race_ratio" width={5} />{" "}
+                {COPY.perMwDay}, <Num k="race_ratio" width={5} />{" "}
                 {COPY.raceRatioTail}
               </p>
-              <Num
-                value={clear70}
-                display={clear70 === null ? "" : usdDay(clear70)}
-                prov="DERIVED"
-                source={`${ENGINE_SRC}, scaled to mou_70mw`}
-                reason={COPY.notComputed}
-                width={8}
-              />
+              <Num k="clearlane_70" width={8} />
               <p>
                 {COPY.perDayAtMou}, {COPY.valueToSystem}.
               </p>
@@ -92,10 +79,8 @@ export function Race({ live, hour }: BeatProps) {
               </p>
             </article>
             <p className="muted card-note">{COPY.co2Caveat}</p>
-          </>
-        ) : (
-          <p className="muted">{COPY.raceCardsPending}</p>
-        )}
+        </div>
+        {done ? null : <p className="muted">{COPY.raceCardsPending}</p>}
       </div>
     </section>
   );

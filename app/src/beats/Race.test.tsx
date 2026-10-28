@@ -12,14 +12,18 @@ import {
   solve,
   STUB_ACTIVE,
 } from "../engineClient";
+import { resolveStageDay } from "../stageDay";
 import { Race } from "./Race";
 import type { Live } from "./types";
 
 afterEach(cleanup);
 
 const data = loadStageData();
-const entry = data.bundles["2026-10-27"];
-if (!entry) throw new Error("the Oct 27 bundle (fixture) is missing");
+// The stage day comes from the data (numbers.json, then the latest bundle), as App.test.tsx does,
+// so the to-the-cent check below compares a solve and numbers.json for the same day.
+const resolved = resolveStageDay(data, "");
+if (resolved.state !== "ready") throw new Error(`no stage day: ${resolved.reason}`);
+const entry = resolved.entry;
 const bundle = entry.bundle;
 const site = defaultSite();
 const live: Live = {
@@ -62,12 +66,21 @@ describe("beat 2 race", () => {
     ]);
   });
 
-  it("keeps the end-card slot at rest and fills it only at the end of the day", () => {
+  it("reserves the end-card slot at rest (cards hidden) and shows them only at the end of the day", () => {
     const start = renderRace(0).container;
-    expect(start.querySelector('[data-slot="race-end-cards"]')).toBeTruthy();
-    expect(start.querySelectorAll(".card")).toHaveLength(0);
+    const slot = start.querySelector('[data-slot="race-end-cards"]');
+    expect(slot).toBeTruthy();
+    // The cards are laid out from the start so the slot keeps its end size, but hidden.
+    const layer = slot?.querySelector(".cards");
+    expect(layer?.classList.contains("off")).toBe(true);
+    expect(layer?.getAttribute("aria-hidden")).toBe("true");
+    expect(slot?.textContent).toContain(COPY.raceCardsPending);
     cleanup();
     const end = renderRace(24).container;
+    const endLayer = end.querySelector('[data-slot="race-end-cards"] .cards');
+    expect(endLayer?.classList.contains("off")).toBe(false);
+    expect(endLayer?.hasAttribute("aria-hidden")).toBe(false);
+    expect(end.textContent).not.toContain(COPY.raceCardsPending);
     expect(end.querySelectorAll(".card")).toHaveLength(2);
     const text = end.textContent ?? "";
     expect(text).toContain(COPY.valueToSystem);
@@ -75,6 +88,25 @@ describe("beat 2 race", () => {
       "Average-emissions estimate (EIA hourly); marginal emissions can differ.",
     );
     expect(text).not.toMatch(/charges at/i);
+  });
+
+  it("reads the Clearlane end card from the reference keys beat 6 scales (#184)", () => {
+    const card = renderRace(24).container.querySelector('[data-card="clearlane"]');
+    if (!card) throw new Error("no clearlane card");
+    const keys = [...card.querySelectorAll("[data-num]")].map((n) => n.getAttribute("data-num"));
+    expect(keys).toEqual([
+      "clearlane_usd_mw_day",
+      "race_ratio",
+      "clearlane_70",
+      "co2_avoided_70",
+    ]);
+    for (const k of ["clearlane_usd_mw_day", "race_ratio", "clearlane_70"]) {
+      const entry = data.numbers?.find((n) => n.key === k);
+      if (!entry) continue;
+      const el = card.querySelector(`[data-num="${k}"]`);
+      expect(el?.textContent).toContain(entry.display);
+      expect(el?.getAttribute("data-prov")).toBe(entry.prov);
+    }
   });
 
   it("shows a cycles line and a host meter for each side, in kW only", () => {
