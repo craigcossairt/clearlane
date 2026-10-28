@@ -38,7 +38,7 @@ Plain meanings of the terms used in Clearlane's code, UI copy and Q&A. Two sente
 
 **Mountain day**: Clearlane's day: the 24 hours from midnight Mountain time (06:00 UTC while daylight time lasts, until Nov 1 2026). Its first hour (midnight to 1am) comes from the previous CAISO operating day.
 
-**2025 event heatmap**: Torus's published count of 2025 Rocky Mountain Power events by hour and weekday. It states no time zone, so Clearlane always shows both readings, Mountain and UTC.
+**2025 event heatmap**: Torus's published count of 2025 Rocky Mountain Power events by hour and weekday. The image states no time zone; Torus confirmed the hours are Mountain time, so Clearlane shows the Mountain reading and keeps UTC readings as a sensitivity check only (`heatmap_readings` in `docs/FACTS.md`).
 
 ### Time crosswalk for Oct 27 2026 (MDT, UTC-6)
 

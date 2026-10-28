@@ -189,7 +189,7 @@ Overnight (2am to 7am) nobody answers questions: mark blocked and move on. Each 
 - The same seed gives the same calls.
 
 **Core 10. Backtest CLI, May 1 to Oct 27.**
-- Every Mountain day, all three policies, sampled calls under both readings.
+- Every Mountain day, all three policies, sampled calls read as Mountain time, with the UTC readings kept as a sensitivity check.
 - Clearlane re-plans after each call.
 - Reports:
   - P10/P50/P90/mean of $/MW-day and t CO2/MW-day

@@ -234,7 +234,7 @@ No arithmetic change of any kind. `numbers.py`'s own crash section has an index 
 
 Shape: each key is `{ "value": ..., "prov": "TORUS_PUBLISHED", "source_id": "<id>" }`. Add top-level `"sources": SourceRef[]` (one per distinct URL; `license`: "Torus public web page, facts only, no text copied"; `retrieved_utc`: `"2026-10-26"`, the date `research/TORUS.md` says it was checked, because no time of day was recorded) and `"notes": string[]` containing, in plain words:
 
-- The heatmap states no time zone; always show it read as Mountain time and as UTC.
+- The heatmap is Mountain time, as Torus confirmed (`heatmap_readings` in `docs/FACTS.md`). Show the Mountain reading; UTC readings are a sensitivity check only.
 - 359 is the RMP case study count; Torus's 2025 wrap-up says "more than 360". We use 359.
 - `pulse_life_yr` is the Torus Station lifespan of 25 years, not a Pulse-specific rating.
 - 500 MW is the ceiling of the expanded MOU, not installed capacity.
@@ -532,7 +532,7 @@ Timestamps as `YYYY-MM-DDTHH:MM:SSZ`. `fetched_utc` and `retrieved_utc` come fro
 - The fixed overnight schedule is our off-peak baseline, never Torus practice.
 - Value is "to RMP's system at day-ahead prices", never Torus revenue.
 - CO2 is an average-emissions estimate and says so, unless a table says marginal and shows its interval.
-- The 2025 heatmap states no time zone: every file and string that uses it keeps both readings, Mountain and UTC.
+- The 2025 heatmap is Mountain time, as Torus confirmed (`heatmap_readings`). Files may keep the UTC readings as a sensitivity check, labeled as such; no stage string shows them.
 - 500 MW is the MOU ceiling, never installed capacity.
 - No keys, `.env` or credentials in git. OASIS and EIA need none.
 - No copied page text. Quotes under 15 words, with the URL.

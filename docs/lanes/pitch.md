@@ -164,7 +164,7 @@ gh issue comment <n> --body-file "$B"
    - [ ] Overnight rule is our baseline, never Torus practice
    - [ ] Value "to RMP's system at day-ahead prices", not Torus revenue or host savings
    - [ ] CO2 "estimated, using average emissions"; PacifiCorp East (Utah, Wyoming, Idaho)
-   - [ ] Heatmap shown under both readings; 500 MW is an MOU ceiling
+   - [ ] Heatmap shown in Mountain time, as Torus confirmed; 500 MW is an MOU ceiling
    - [ ] No Nucleus framing; no prize amount; no quote of 15+ words; every quote has its URL
 
    ## Needs from other lanes
@@ -424,7 +424,7 @@ Slides follow `pitch_outline` in synthesis minus slide 9 (Nucleus). Headroom (`h
 Acceptance:
 
 - [ ] **Slides:** title (slide 1), the live demo, and the close (last). Everything between is a Q&A backup, and slide 1's notes say so. Every slide footer shows `{operating_day}` and the provenance class of each number on it.
-- [ ] **The heatmap is our own redraw** from `public/data/torus_published.json` under both readings, labeled "Torus 2025 event data, time zone not stated". Never Torus's image.
+- [ ] **The heatmap is our own redraw** from `public/data/torus_published.json` read as Mountain time, labeled "Torus 2025 event data, hours in Mountain time, confirmed by Torus". Never Torus's image.
 - [ ] **The Spin and Pulse line on slide 4,** "Spin absorbs spikes so Pulse can discharge steadily", has no FACTS row. Cut it, or ask Integration for a row with its URL (TORUS.md section 2.3).
 - [ ] **`pitch/build.mjs` renders and checks offline:**
   1. It runs `resolve.mjs --render pitch/out/src`.
@@ -481,7 +481,7 @@ Acceptance:
 - [ ] **Cover all 16 `anticipated_judge_questions`** from synthesis, with the FACTS corrections applied, plus at least 6 new ones. Include:
   - "Isn't this just arbitrage?"
   - "What happens if a second call comes during refill?" (`second_call_shortfall_kw`)
-  - "Why trust the heatmap?" Answer with both readings and the 43% to 77% range.
+  - "Why trust the heatmap?" Answer: Torus confirmed the hours are Mountain time (`heatmap_readings`); the UTC readings are a sensitivity check, never on stage.
   - "Is this Torus revenue?"
   - "How do you know Lasso doesn't do this?" Answer "not advertised", citing TORUS.md section 7.
   - "What did Torus tell you?" Only what Craig cleared.
@@ -661,7 +661,7 @@ Each row is a CONFLICT or a "Do not say" entry in FACTS.md.
 | Prices post at 9:16pm | Available by 9:16pm the night before | `oct27_prices_available_mt` |
 | Utah's grid (for CO2 or fuel mix) | PacifiCorp East (Utah, Wyoming, Idaho) | Do not say |
 | Record peak (10,173 MW) | Highest hour in 16 months of EIA data | `pace_peak_16mo_mw` |
-| Most calls come in the evening | Show the heatmap under both readings | `rmp_event_timing_2024` |
+| Most calls come in the evening | Show the heatmap in Mountain time, as Torus confirmed | `rmp_event_timing_2024` |
 | Any annualized value | Daily values, and the backtest P10 to P90 once it exists | Do not say |
 | 500 MW installed, or linking it to the 500 MW seasonal headroom | An MOU for up to 500 MW | `torus_500mw`, `headroom_seasonal_05_mw` |
 | Torus's uptime as a single settled figure | 99.9% from the wrap-up summary, with the row's CONFLICT note in mind | `torus_uptime_2025` |
@@ -675,7 +675,7 @@ The 18 PENDING-ENGINE keys (backtest, crash, envelope and timing) have no value 
 - **"HB 6pm"** means 6:00 to 7:00pm MT.
 - **EIA files are hour ending,** so hour beginning h uses HE h+1.
 - **The research snapshot** is CAISO's Oct 27 trade day, which starts at 07:00Z. A Mountain day starts at 06:00Z, so fixture hour 0 is borrowed from the next midnight. Never quote an hour 0 price from the fixture.
-- **Torus's 2025 heatmap** labels 12am to 11pm and states no time zone. Every result built on it is shown twice: read as Mountain, and read as UTC. Name the shift: 6 hours under MDT, 7 under MST.
+- **Torus's 2025 heatmap** labels 12am to 11pm and the image states no time zone; Torus confirmed the hours are Mountain time (`heatmap_readings`). Show the Mountain reading. The UTC readings (6 hours under MDT, 7 under MST) are a sensitivity check only and never go on stage.
 
 ### Torus
 

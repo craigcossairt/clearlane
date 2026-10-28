@@ -640,7 +640,7 @@ Afterwards, check GitHub's secret-scanning alerts for the repo, and post the res
   - never invent a Torus fact.
 - **Data honesty:**
   - CO2 numbers are average-emissions estimates and always carry the caveat;
-  - the 2025 heatmap states no time zone, so always show both readings (Mountain and UTC);
+  - the 2025 heatmap is Mountain time, as Torus confirmed (`heatmap_readings`); UTC readings are a sensitivity check only, never on stage;
   - every number carries its provenance class;
   - missing, unknown and failed look different from each other;
   - anything not confirmed is marked UNVERIFIED.

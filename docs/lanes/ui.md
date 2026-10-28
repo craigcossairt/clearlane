@@ -134,7 +134,7 @@ Each issue body holds the full checklist. The summary below is the contract.
 - The ghost "Battery-only plan" plays the same call against the price_only plan beside it.
 - C again during the refill lands the scripted second call and shows the second-press rule and `shortfall_kwh`.
 - The event card puts the TORUS_PUBLISHED 2025 facts (359 events; 19 s ramp against a 30 s target; 102% delivered against a 90 to 100% band) in a panel visibly apart from our SIMULATED result.
-- Any heatmap-derived figure shows both readings, Mountain and UTC.
+- Any heatmap-derived figure shows the Mountain reading; Torus confirmed the hours are Mountain time (`heatmap_readings`). UTC readings never show on stage.
 
 **Core 7. Beat 4: re-plan.**
 - The rest of the day redraws from `CrashResult.replan`, labeled "Re-planned in N ms", where N is the live `replan.solve_ms` with a MEASURED chip.
@@ -286,7 +286,7 @@ Keys the beats expect, by their `docs/FACTS.md` names. Where a beat needs a scal
 | 2 | Reference set only, decided at Train 1 so one card never mixes two plans: `fixed_usd_mw_day`, `clearlane_usd_mw_day`, `race_ratio`, `fixed_70`, `clearlane_70`, `fixed_rule_charge_usd_mwh`, `timetable_charge_usd_mwh`. The animation plays the reference timetable. `clearlane_dp_usd_mw_day` (the engine DP) appears only on the backtest or crash beat, with its own label. Also: `co2_added_70`, `co2_avoided_70`, `mou_70mw`, `host_ceiling_kw`, `pulse_cycle_budget` (per day, new split) |
 | 3 | `enrolled_kw`, `call_duration_s`, `rmp_events_2025`, `rmp_event_ramp_s` (split into 19 and 30), `rmp_event_target_pct` (split into 102, 90 and 100), `reserve_cost_pct`, `second_call_shortfall_kw`, `meter_peak_refill_kw` |
 | 4 | `pulse_cycle_budget`, `cycles_today`, `replan_ms` (the live value wins on stage) |
-| 5 | `share_days_beating`, `clearlane_p10`, `clearlane_p50`, `clearlane_p90`, `calls_answered_pct` (both readings), `backtest_days`, `cycles_per_year_by_policy`, `calls_missed_by_policy`, `sch_hours_today` |
+| 5 | `share_days_beating`, `clearlane_p10`, `clearlane_p50`, `clearlane_p90`, `calls_answered_pct` (Mountain reading), `backtest_days`, `cycles_per_year_by_policy`, `calls_missed_by_policy`, `sch_hours_today` |
 | 6 | `mou_70mw`, `torus_500mw`, `fixed_500`, `clearlane_500`, `campus_usd`, `campus_mwh` |
 
 ### 6.5 Time
@@ -294,7 +294,7 @@ Keys the beats expect, by their `docs/FACTS.md` names. Where a beat needs a scal
 - **Intervals are identified by their UTC start.** Display is Mountain time, hour beginning. Format with `Intl.DateTimeFormat("en-US", { timeZone: "America/Denver" })` or from `hour_mt`/`local_mt`. Never use the machine's local time zone: CI runs in UTC, and snapshots would differ.
 - A Mountain day is the 24 hours from 06:00Z while daylight time lasts (until Nov 1 2026). Interval `i` is hour `floor(i/4)`, minute `(i%4)*15`.
 - **The axis caption is "hour beginning, Mountain time".** `docs/plan/plan-v1.html` says "hour ending"; that label is wrong (FACTS `ribbon_hour_label`).
-- **Torus's 2025 heatmap states no time zone.** Any figure derived from it shows both readings, labeled "if Mountain time" and "if UTC", side by side. There is no toggle in core: both readings are always on screen.
+- **Torus's 2025 heatmap is Mountain time.** The image states no time zone, and Torus confirmed the hours are Mountain time (`heatmap_readings`). Any figure derived from it shows the Mountain reading only; the UTC readings are a sensitivity check and are not on screen.
 
 ### 6.6 Layout and theme
 
@@ -329,7 +329,7 @@ Keys the beats expect, by their `docs/FACTS.md` names. Where a beat needs a scal
 | Esc | close any overlay | all |
 
 - **Reserved for stretch:** T projector theme, D day picker, P proof drawer, F fleet board, I lineage panel.
-- **Dropped from the old draft:** T as a time-zone toggle (both readings are always shown), Q plus 1 to 6 Q&A cards (the proof drawer replaces them), and L live tile (snapshot stamp only).
+- **Dropped from the old draft:** T as a time-zone toggle (the heatmap is Mountain time, so there is nothing to toggle), Q plus 1 to 6 Q&A cards (the proof drawer replaces them), and L live tile (snapshot stamp only).
 - The key handler ignores keys typed into inputs, except Esc.
 - **Presenter remotes are UNVERIFIED.** Many send PageDown and PageUp, and some send B or a period for "blank screen", which would hit B. Ask on #4 for the remote to be tested at the first rehearsal.
 
