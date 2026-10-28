@@ -663,10 +663,6 @@ function TitleHero({ day, onStart }: { day: string; onStart: () => void }) {
             <span data-time="">{mtDate(day)}</span>
           </dd>
         </div>
-        <div>
-          <dt>{PRESENTER.titleNode}</dt>
-          <dd data-copy-ok="CAISO node id">{COPY.node}</dd>
-        </div>
       </dl>
       <p className="p-title-by">{PRESENTER.titleBy}</p>
       <div className="p-actions">
@@ -741,14 +737,20 @@ function FleetNum({
   fleetMw: number | null;
   width?: number;
 }) {
+  // No chip on the slider position (judge review 2): the 70 and 500 MW buttons carry the
+  // TORUS_PUBLISHED chips, and a second, SIMULATED chip on the same figure read as a conflict.
+  // The span keeps the Num frame and its data attributes.
   return fleetMw !== null ? (
-    <Num
-      value={fleetMw}
-      display={`${grouped(fleetMw, 0)} MW`}
-      prov="SIMULATED"
-      source="fleet slider, between mou_70mw and torus_500mw"
-      width={width}
-    />
+    <span
+      className="num num-ok"
+      data-num="live"
+      data-prov="SIMULATED"
+      data-num-state="ok"
+      title="fleet slider, between mou_70mw and torus_500mw"
+      style={{ minWidth: `${width ?? 6}ch` }}
+    >
+      <span className="figure">{`${grouped(fleetMw, 0)} MW`}</span>
+    </span>
   ) : (
     <Num k="mou_70mw" width={width} />
   );
@@ -785,7 +787,7 @@ function CloseHero() {
       <div className="p-close-body">
         <div className="p-close-lines">
           <p className="close-line">{COPY.closeLine1}</p>
-          <p className="close-line">{COPY.closeLine2}</p>
+          <p className="close-line">{PRESENTER.closeLine2}</p>
         </div>
         <aside className="p-campus" data-detail="">
           <h3>

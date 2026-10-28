@@ -478,14 +478,15 @@ export const PRESENTER = {
 
   titleLine: "A day planner for simulated Torus-style stations on Utah's grid.",
   titleDetail:
-    "It reads the next day's power prices, fills the battery when power is cheap at midday, stops buying in the evening rush, and keeps the flywheel ready for Rocky Mountain Power's calls.",
+    "It reads tomorrow's power prices, fills Pulse, the battery, when power is cheap at midday, sells in the evening rush, and keeps Spin, the flywheel, ready for calls from Rocky Mountain Power (RMP), the local utility.",
   titleNode: "CAISO day-ahead node",
   titleBy: "Presented by Craig Cossairt",
   start: "Start",
 
-  trafficHeadline: "Power is cheapest at midday. The road jams after the evening step.",
+  trafficHeadline:
+    "Power is cheapest at midday. The road jams in the evening.",
   trafficLine:
-    "Like a traffic report published the evening before: each bar is one hour's price, green when the road is clear and red in the evening jam.",
+    "Like a traffic report published the evening before. Each bar is one hour's price: green is the clear lane, amber is in between, red is the evening jam.",
   // Screen 2's one caption sentence: "Price jumps {peak_over_trough} from the midday low to the
   // {peak_hour_mt} peak."
   trafficPeak1: "Price jumps",
@@ -497,7 +498,8 @@ export const PRESENTER = {
   raceLine:
     "Same battery, selling in the same evening hours. The only difference is when it fills up. The off-peak rule is our baseline, not Torus practice.",
   replay: "Replay the day",
-  keepsLabel: "value to RMP's system per MW per day, higher is better",
+  keepsLabel:
+    "per MW of battery per day, value to Rocky Mountain Power's grid",
   rowBuys: "Buys",
   rowSells: "Sells",
   rowKeeps: "Net",
@@ -512,7 +514,8 @@ export const PRESENTER = {
   stripSell: "Sell hours",
   stripAria:
     "Twenty-four hours, Mountain time, marking each plan's buy hours and sell hours",
-  raceNote: "Value to RMP's system at day-ahead prices, per MW of battery.",
+  raceNote:
+    "Value to Rocky Mountain Power's grid at day-ahead prices, per MW of battery, before any host building's meter limit.",
 
   callHeadline: "When Rocky Mountain Power calls, Spin answers.",
   callLine:
@@ -581,17 +584,21 @@ export const PRESENTER = {
   scoreBaseline: "Baseline",
   scaleHeadline: "Scale the station to the fleet the MOU allows.",
   scaleLine:
-    "One station's daily value per MW, multiplied by the fleet in Torus's agreement (MOU) with Rocky Mountain Power.",
+    "One station's value per MW on the reference day, multiplied by the fleet in Torus's agreement (MOU) with Rocky Mountain Power.",
   scaleTimes: "×",
   scalePerMw: "per MW-day",
   scaleCaveat:
-    "This assumes every enrolled MW is a two-hour battery like our reference station, and that the fleet does not move prices. The MOU is a ceiling, not installed capacity.",
+    "This assumes every enrolled MW is a two-hour battery like our reference station, and that the fleet does not move prices. The MOU is a ceiling, not installed capacity. A typical backtest day is worth less.",
   fleetMin: "MW",
   fleetMax: "MW",
 
   closeHeadline: "The ask: pilot the envelope.",
   closeLine:
-    "Pilot the day-ahead envelope, a format Clearlane proposes, at a few Wattsmart sites this winter.",
+    "Pilot the day-ahead envelope, a format Clearlane proposes, at a few sites in Rocky Mountain Power's Wattsmart program this winter.",
+  // Presenter-only close line (judge review 2): "calls", as screen 4 says, not "crash". The
+  // six-beat close keeps COPY.closeLine2.
+  closeLine2:
+    "Clearlane: fill up when the road is clear, and keep Spin ready for Rocky Mountain Power's calls.",
   closeWhat:
     "Each hour it tells Rocky Mountain Power the reserve held for its calls and the most the station will charge or discharge.",
   sawRatio: "what filling up at midday is worth, against the off-peak rule",
