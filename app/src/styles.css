@@ -603,10 +603,11 @@ td {
   min-width: 24ch;
 }
 /* Call beat and re-plan: the end state holds numbers the engine only returns on C, so the
-   slots reserve the end-state height measured at each layout. */
+   slots reserve the end-state height measured at each layout, with room for 24px card titles
+   (#190). */
 .crash-beat [data-slot="call-inset"],
 .crash-beat [data-slot="call-ghost"] {
-  min-height: 216px;
+  min-height: 228px;
 }
 .crash-beat [data-slot="second-call"] {
   min-height: 42px;
@@ -617,13 +618,13 @@ td {
 @media (max-width: 767px) {
   .crash-beat [data-slot="call-inset"],
   .crash-beat [data-slot="call-ghost"] {
-    min-height: 290px;
+    min-height: 296px;
   }
   .crash-beat [data-slot="second-call"] {
     min-height: 92px;
   }
   .crash-beat [data-slot="call-result"] {
-    min-height: 312px;
+    min-height: 318px;
   }
   [data-slot="replan-line"] {
     min-height: 202px;
