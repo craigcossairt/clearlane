@@ -76,6 +76,14 @@ A: The price leg is, worth `{clearlane_usd_mw_day}` per MW-day against `{fixed_u
 
 Source: FACTS `clearlane_usd_mw_day`, `fixed_usd_mw_day`, `calls_missed_by_policy_price_only_mt`, `calls_missed_by_policy_clearlane_mt`
 
+### Why plan the day ahead instead of re-planning on real-time prices?
+
+Judge: Ryan Byrd
+
+A: We replayed `{rt_replay_days}` real days on CAISO real-time prices for PacifiCorp East: holding the day-ahead plan beat re-planning every hour on `{rt_hold_beats_replan_days}` days, and re-planning added `{rt_replan_regret_increase}` to the shortfall against perfect hindsight. That replay used a simple forecast, no RMP calls, and a settlement rule we assumed and have not verified for EDAM, so it says the day-ahead plan is a good anchor, not that real-time correction cannot help.
+
+Source: FACTS `rt_replay_days`, `rt_hold_beats_replan_days`, `rt_replan_regret_increase`; `public/derived/rt_replay.json` (summary, settlement.status UNVERIFIED)
+
 ## Angela Smith, COO of Nucleus Fund (path to reality)
 
 ### Is the reference day cherry-picked?
@@ -201,6 +209,14 @@ Judge: Scott Holley
 A: Batteries that fill when the grid is clear, stay off the road in the 6pm jam, and still answer Rocky Mountain Power's calls: Clearlane misses `{calls_missed_by_policy_clearlane_mt}` in the backtest. At `{mou_70mw}` MW that is `{clearlane_70}` a day of value to RMP's system at day-ahead prices.
 
 Source: FACTS `calls_missed_by_policy_clearlane_mt`, `mou_70mw`, `clearlane_70`
+
+### Does the midday lane hold up in real time?
+
+Judge: Scott Holley
+
+A: Not every day: real-time prices averaged lower in the evening than at midday on `{rt_evening_below_midday_days}` of `{rt_replay_days}` days, while day-ahead prices never did. Clearlane plans on the day-ahead prices published the evening before, and those kept the evening above midday on every replayed day.
+
+Source: FACTS `rt_evening_below_midday_days`, `rt_replay_days`; `public/derived/rt_replay.json` (summary.rt_evening_below_midday_days, da_evening_below_midday_days, windows_mt)
 
 ## Tanner Potter, Partner at Kickstart (market and ask)
 
