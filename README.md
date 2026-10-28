@@ -99,6 +99,20 @@ lists every number with its source, class and how it was checked.
 
 Sources for each file are in `research/DATA-SOURCES.md`. The code is MIT licensed.
 
+## Reproduce every number
+
+```bash
+npm ci
+npm run reproduce
+```
+
+Works offline. It checks the SHA-256 of every input in `public/data` against `tools/manifest.sha256`, re-runs the
+engine into a scratch folder, and compares every file in `public/derived` with the committed one. It ends with
+"REPRODUCED n/n stage numbers" and exits 0; any difference exits 1 and names the file and the stage key. Every number,
+with its class and source, is listed in `docs/NUMBERS.md`. `npm run reproduce -- --fetch` also re-fetches the
+operating day from CAISO OASIS and EIA and reports any difference, since OASIS can revise its data. CI runs the
+offline mode on every pull request.
+
 ## Check it
 
 ```bash
