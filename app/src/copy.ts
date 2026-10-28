@@ -230,9 +230,9 @@ export const PRESENTER = {
     "Dashed: Pulse state of charge as planned this morning. Solid: the re-plan from the call (red line).",
   resume: "Resume the day",
 
-  envelopeHeadline: "Every hour, a limit Rocky Mountain Power can plan around.",
+  envelopeHeadline: "An hourly limit Rocky Mountain Power can plan around.",
   envelopeLine:
-    "The hourly envelope is a format Clearlane proposes, and System Critical Hours are our proposal.",
+    "A format Clearlane proposes: a working example, not a filing. System Critical Hours are our proposal.",
   backtestHeadline: "Backtested on every day from May to October.",
   backtestLine:
     "Each policy run on every day of the history, beside the off-peak rule.",

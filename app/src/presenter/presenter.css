@@ -789,3 +789,55 @@ body[data-mode="presenter"] {
 [data-mode="presenter"].phone .p-pill .chip {
   font-size: 12px;
 }
+[data-mode="presenter"] {
+  font-size: 24px;
+}
+[data-mode="presenter"].phone {
+  font-size: 18px;
+}
+[data-mode="presenter"].phone .p-card-head h3,
+[data-mode="presenter"].phone .p-keep-label,
+[data-mode="presenter"].phone .p-check,
+[data-mode="presenter"].phone .p-foot,
+[data-mode="presenter"].phone .p-strip-label {
+  font-size: 18px;
+}
+/* Envelope: the supporting line carries the format caveat, so the strip's intro paragraph
+   gives its room to the table. */
+[data-mode="presenter"] .p-hero-envelope [data-slot="envelope-strip"] > p:first-child {
+  display: none;
+}
+[data-mode="presenter"] .p-hero-envelope .copy-btn {
+  margin-top: 10px;
+  border-radius: 999px;
+  padding: 6px 22px;
+  background: transparent;
+  border: 2px solid var(--line);
+}
+[data-mode="presenter"] .p-hero-envelope .envelope-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+[data-mode="presenter"] .p-hero-envelope .envelope-table td,
+[data-mode="presenter"] .p-hero-envelope .envelope-table th,
+[data-mode="presenter"] .p-hero-envelope .envelope-table .num,
+[data-mode="presenter"] .p-hero-envelope .envelope-table .num * {
+  font-size: 20px;
+}
+[data-mode="presenter"] .p-hero-envelope .envelope-table .chip {
+  font-size: 14px;
+}
+[data-mode="presenter"] .p-hero-envelope .envelope-table th {
+  font-weight: 400;
+  color: var(--muted);
+  text-align: left;
+}
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table td,
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table th,
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table .num,
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table .num * {
+  font-size: 14px;
+}
+[data-mode="presenter"].phone .p-hero-envelope .envelope-table .chip {
+  font-size: 10px;
+}
