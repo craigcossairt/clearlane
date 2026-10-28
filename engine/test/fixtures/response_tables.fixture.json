@@ -1,0 +1,237 @@
+{
+  "schema": "clearlane.response_tables/v1",
+  "prov": "SIMULATED",
+  "note": "SIMULATED test fixture for the engine's price-impact tests (#73). The slopes are invented to exercise the code (one negative hour, one evening hour whose interval spans zero); they are not estimated from any data. The real table is public/data/response_tables.json from prep/response_tables.py (#47). Same shape as the real table (tables.price_response); HB 19 is left unflagged so the engine's own spans-zero rule is what marks it.",
+  "tables": {
+    "price_response": {
+      "unit": "$/MWh per MW of net load",
+      "x": "net load, MW (SIMULATED)",
+      "y": "PACE day-ahead LMP, $/MWh (SIMULATED)",
+      "bins": [
+        {
+          "hour_mt": 0,
+          "n": 180,
+          "slope": 0.006,
+          "lo": 0.003,
+          "hi": 0.009,
+          "r2": 0.31,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 1,
+          "n": 180,
+          "slope": 0.005,
+          "lo": 0.002,
+          "hi": 0.008,
+          "r2": 0.28,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 2,
+          "n": 180,
+          "slope": 0.004,
+          "lo": 0.001,
+          "hi": 0.007,
+          "r2": 0.22,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 3,
+          "n": 180,
+          "slope": 0.003,
+          "lo": 0.001,
+          "hi": 0.005,
+          "r2": 0.19,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 4,
+          "n": 180,
+          "slope": -0.002,
+          "lo": -0.005,
+          "hi": 0.001,
+          "r2": 0.02,
+          "inconclusive": true
+        },
+        {
+          "hour_mt": 5,
+          "n": 180,
+          "slope": 0.004,
+          "lo": 0.002,
+          "hi": 0.006,
+          "r2": 0.21,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 6,
+          "n": 180,
+          "slope": 0.006,
+          "lo": 0.003,
+          "hi": 0.009,
+          "r2": 0.26,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 7,
+          "n": 180,
+          "slope": 0.008,
+          "lo": 0.005,
+          "hi": 0.011,
+          "r2": 0.33,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 8,
+          "n": 180,
+          "slope": 0.009,
+          "lo": 0.006,
+          "hi": 0.012,
+          "r2": 0.35,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 9,
+          "n": 180,
+          "slope": 0.007,
+          "lo": 0.004,
+          "hi": 0.01,
+          "r2": 0.3,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 10,
+          "n": 180,
+          "slope": 0.006,
+          "lo": 0.003,
+          "hi": 0.009,
+          "r2": 0.27,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 11,
+          "n": 180,
+          "slope": 0.005,
+          "lo": 0.003,
+          "hi": 0.007,
+          "r2": 0.25,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 12,
+          "n": 180,
+          "slope": 0.005,
+          "lo": 0.003,
+          "hi": 0.007,
+          "r2": 0.24,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 13,
+          "n": 180,
+          "slope": 0.006,
+          "lo": 0.004,
+          "hi": 0.008,
+          "r2": 0.26,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 14,
+          "n": 180,
+          "slope": 0.007,
+          "lo": 0.004,
+          "hi": 0.01,
+          "r2": 0.29,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 15,
+          "n": 180,
+          "slope": 0.008,
+          "lo": 0.005,
+          "hi": 0.011,
+          "r2": 0.32,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 16,
+          "n": 180,
+          "slope": 0.01,
+          "lo": 0.007,
+          "hi": 0.013,
+          "r2": 0.36,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 17,
+          "n": 180,
+          "slope": 0.012,
+          "lo": 0.008,
+          "hi": 0.016,
+          "r2": 0.38,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 18,
+          "n": 180,
+          "slope": 0.015,
+          "lo": 0.01,
+          "hi": 0.02,
+          "r2": 0.41,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 19,
+          "n": 180,
+          "slope": 0.006,
+          "lo": -0.001,
+          "hi": 0.013,
+          "r2": 0.08,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 20,
+          "n": 180,
+          "slope": 0.013,
+          "lo": 0.009,
+          "hi": 0.017,
+          "r2": 0.39,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 21,
+          "n": 180,
+          "slope": 0.011,
+          "lo": 0.007,
+          "hi": 0.015,
+          "r2": 0.37,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 22,
+          "n": 180,
+          "slope": 0.009,
+          "lo": 0.006,
+          "hi": 0.012,
+          "r2": 0.34,
+          "inconclusive": false
+        },
+        {
+          "hour_mt": 23,
+          "n": 180,
+          "slope": 0.007,
+          "lo": 0.004,
+          "hi": 0.01,
+          "r2": 0.3,
+          "inconclusive": false
+        }
+      ],
+      "prov": "SIMULATED",
+      "sources": [
+        {
+          "url": "engine/test/fixtures/response_tables.fixture.json"
+        }
+      ],
+      "caveats": ["SIMULATED slopes for tests only."]
+    }
+  }
+}

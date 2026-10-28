@@ -13,6 +13,7 @@ export interface HourlyOpts {
   soc_end?: number;
   steps?: number;
   rte?: number;
+  impact?: number[]; // per step, aligned to `price` (ff_price_impact); absent = price taker
 }
 
 export function dpHourly(price: number[], o: HourlyOpts): DpResult {
@@ -32,6 +33,7 @@ export function dpHourly(price: number[], o: HourlyOpts): DpResult {
     start_level: Math.round((o.soc0 ?? 0.1) / dz),
     end_level: Math.round((o.soc_end ?? 0.1) / dz),
     to_mwh: 1,
+    impact: o.impact,
   });
 }
 
