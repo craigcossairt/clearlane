@@ -1,6 +1,7 @@
 // Writes public/derived/backtest_days.json, then public/derived/sensitivity.json (ff_sensitivity): each
 // input varied one at a time over the backtest, break-evens and the RTE x spread grid.
 // Usage: npx tsx engine/cli/sensitivity.ts [--hist file] [--torus file] [--backtest backtest.json]
+//   [--response-tables file] (the marginal CO2 estimate for the CO2 basis axis, #47)
 // W and the seed come from backtest.json, and the base run must reproduce it byte for byte (else exit 1).
 // Exit 2 names a missing input; no partial file. Run time is MEASURED and printed, never stored.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -12,7 +13,7 @@ import type {
 } from "../../contracts/types";
 import { stableJson } from "../src/json";
 import { buildSensitivity, runBase } from "../src/sensitivity";
-import type { SensCtx } from "../src/sensitivity";
+import type { MarginalCo2, SensCtx } from "../src/sensitivity";
 import { defaultSite } from "../src/site";
 import { argValue } from "./args";
 
@@ -20,8 +21,10 @@ const histFile =
   argValue("--hist") ?? "public/data/hist_2026-05-01_2026-10-27.json";
 const torusFile = argValue("--torus") ?? "public/data/torus_published.json";
 const backtestFile = argValue("--backtest") ?? "public/derived/backtest.json";
+const responseFile =
+  argValue("--response-tables") ?? "public/data/response_tables.json";
 
-for (const f of [histFile, torusFile, backtestFile]) {
+for (const f of [histFile, torusFile, backtestFile, responseFile]) {
   if (!existsSync(f)) {
     console.error(`input not found: ${f}`);
     process.exit(2);
@@ -31,6 +34,9 @@ const hist = JSON.parse(readFileSync(histFile, "utf8")) as HistDay[];
 const torus = JSON.parse(readFileSync(torusFile, "utf8")) as TorusPublished;
 const backtestText = readFileSync(backtestFile, "utf8");
 const backtest = JSON.parse(backtestText) as BacktestResult;
+const response = JSON.parse(readFileSync(responseFile, "utf8")) as {
+  tables: { marginal_co2: MarginalCo2 };
+};
 
 const ctx: SensCtx = {
   hist,
@@ -39,6 +45,7 @@ const ctx: SensCtx = {
   seed: backtest.seed,
   by_hour: torus.events_2025_by_hour.value,
   by_weekday: torus.events_2025_by_weekday.value,
+  marginal_co2: response.tables.marginal_co2,
 };
 
 const t0 = performance.now();
