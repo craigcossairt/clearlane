@@ -6,6 +6,7 @@ import json
 import sys
 from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
+from typing import Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -63,12 +64,13 @@ def _cache(url: str, report: str, refetch: bool) -> tuple[bytes, dict[str, str]]
     return raw, json.loads(meta_path.read_text(encoding="utf-8"))
 
 
-def _url(query: str, start: datetime, end: datetime, report: str) -> str:
+def _url(query: str, start: datetime, end: datetime, report: str, base: str | None = None) -> str:
+    extra = {"base": base} if base else {}
     if report == "prc_lmp":
-        return oasis.build_url("PRC_LMP", start, end, market_run_id="DAM", version=12, node=",".join(NODES))
+        return oasis.build_url("PRC_LMP", start, end, market_run_id="DAM", version=12, node=",".join(NODES), **extra)
     if report == "sld_fcst":
-        return oasis.build_url("SLD_FCST", start, end, market_run_id="DAM", version=1)
-    return oasis.build_url(oasis.EDAM_GROUP, start, end, version=1)
+        return oasis.build_url("SLD_FCST", start, end, market_run_id="DAM", version=1, **extra)
+    return oasis.build_url(oasis.EDAM_GROUP, start, end, version=1, **extra)
 
 
 def build(
@@ -77,7 +79,12 @@ def build(
     refetch: bool = False,
     co2_window: tuple[str, str] | None = None,
     co2_window_days: int = 30,
+    fetch_raw: Callable[[str, str], tuple[bytes, dict[str, str]]] | None = None,
+    oasis_base: str | None = None,
+    write: bool = True,
 ) -> dict:
+    """Build and validate one Bundle; fetch_raw(url, report) replaces the shared cache (the refresh uses it)."""
+    get = fetch_raw or (lambda url, report: _cache(url, report, refetch))
     mountain_day = date.fromisoformat(day)
     timestamps = mtday.mountain_day_hours(mountain_day)
     start_mt = datetime.combine(mountain_day, time.min, tzinfo=mtday.MOUNTAIN).astimezone(UTC)
@@ -87,8 +94,8 @@ def build(
     fetched = []
     sources = []
 
-    price_url = _url("PRC_LMP", start_mt, next_start, "prc_lmp")
-    raw, meta = _cache(price_url, "prc_lmp", refetch)
+    price_url = _url("PRC_LMP", start_mt, next_start, "prc_lmp", oasis_base)
+    raw, meta = get(price_url, "prc_lmp")
     fetched.append(meta["retrieved_utc"])
     sources.append(
         {"id": "caiso_prc_lmp_dam", "url": price_url, "license": OASIS_LICENSE, "retrieved_utc": meta["retrieved_utc"]}
@@ -109,8 +116,8 @@ def build(
     )
     for operating_day, lower, upper in calls:
         for report in ("sld_fcst", "edam_wind_solar"):
-            url = _url(report, lower, upper, report)
-            raw, meta = _cache(url, report, refetch)
+            url = _url(report, lower, upper, report, oasis_base)
+            raw, meta = get(url, report)
             fetched.append(meta["retrieved_utc"])
             source_id = "caiso_sld_fcst_dam" if report == "sld_fcst" else "caiso_edam_wnd_slr"
             sources.append(
@@ -217,8 +224,8 @@ def build(
         "notes": notes,
     }
     validate_bundle(result)
-    destination = out or PUBLIC_DATA / f"bundle_{day}.json"
-    write_json(destination, result)
+    if write:
+        write_json(out or PUBLIC_DATA / f"bundle_{day}.json", result)
     return result
 
 

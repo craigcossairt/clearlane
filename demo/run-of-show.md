@@ -28,21 +28,24 @@ All times Mountain (MDT, UTC-6). Integration keeps this file current at every tr
 
 ## Beats on main
 
-| Beat                 | Status  | Note                         |
-| -------------------- | ------- | ---------------------------- |
-| 1 Traffic report     | missing | stage app is UI PR #18, held |
-| 2 Race               | missing |                              |
-| 3 Crash              | missing |                              |
-| 4 Re-plan            | missing |                              |
-| 5 Envelope and proof | missing |                              |
-| 6 Scale and close    | missing |                              |
+| Beat                 | Status | Note                        |
+| -------------------- | ------ | --------------------------- |
+| 1 Traffic report     | ok     | #155                        |
+| 2 Race               | ok     | #168                        |
+| 3 Crash              | ok     | #169; Mountain heatmap #173 |
+| 4 Re-plan            | ok     | #170                        |
+| 5 Envelope and proof | ok     | #171                        |
+| 6 Scale and close    | ok     | #172                        |
 
 ## Train log
 
-| Train | Tagged (MT) | Merged                                                                    | Gate                                                     | Cuts |
-| ----- | ----------- | ------------------------------------------------------------------------- | -------------------------------------------------------- | ---- |
-| 1     | Tue 8:50am  | integration #119, #123                                                    | check:all green                                          | none |
-| 2     | Tue 9:15am  | data #114, #116, #121; engine #113; pitch #17, #15, #16; integration #126 | check:all green; offline-check and facts-check not built | none |
+| Train | Tagged (MT) | Merged                                                                      | Gate                                                                                    | Cuts                                                  |
+| ----- | ----------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| 1     | Tue 8:50am  | integration #119, #123                                                      | check:all green                                                                         | none                                                  |
+| 2     | Tue 9:15am  | data #114, #116, #121; engine #113; pitch #17, #15, #16; integration #126   | check:all green; offline-check and facts-check not built                                | none                                                  |
+| 3     | Tue 11:55am | data #124; engine #118, #122, #143; integration #132, #147, #149            | check:all green                                                                         | none                                                  |
+| 4     | not tagged  | data #151; integration #166, #167; ui #155, #168 to #172                    | 4:08pm: check:all green; offline 6/6; facts-check 1 fail (fixed by #167)                | none                                                  |
+| 5     | Tue 5:44pm  | data #176; engine #181; ui #180; pitch #130; science #174; integration #177 | check:all green; offline 6/6; facts-check PASS; projector by hand ok (small text: #190) | stretch-1 cut: #29, #48, #64 to #67, #86 to #89, #110 |
 
 ## Rehearsal log
 
@@ -61,7 +64,18 @@ npx tsx engine/cli/envelope.ts public/data/bundle_2026-10-28.json
 npm run check:all
 ```
 
-Then: every merged stretch CLI that writes a per-day file (none yet), the engine re-pin command (asked for on #3, due by Train 5), and the checks in section 6.5 step 4. Final by Train 5.
+Then: every merged stretch CLI that writes a per-day file (none yet) and the checks in section 6.5 step 4. No engine re-pin is needed: the pins run on `contracts/fixtures`.
+
+**Live run, Tue 5:50pm.** The Oct 28 prices were posted by 5:11pm, well before 9:16pm. `prep/refresh_tonight.py` (#176) exited 0 with 24 hours. Both engine CLIs ran, facts-check PASS, offline-check 6/6, pitch resolver 0 unresolved. Result: PR #189, **held for Craig's 11pm pick** because the race falls from 2.9x to 1.0x (story table in the PR). Its check:all waits on one more day-coupled test, `app/src/beats/Race.test.tsx:21` (asked on #4, due 10:00pm).
+
+Day-coupled tests found by the dry run and fixed before the live run: engine #181, ui #180.
+
+**Dry run, Tue 5:10pm**, on `int/refresh-dry` (never pushed):
+
+- Oct 27 rebuilt from the cache: byte-identical to the committed bundle.
+- Forced OASIS failure (dead proxy): exit 1; `public/data` hashes unchanged.
+- Synthetic Oct 28 (Oct 27 re-dated): both engine CLIs ran; facts-check PASS; build ok; offline-check PASS 6/6, 0 external requests; pitch resolver: 50 keys, none unresolved.
+- check:all: the two day-coupled tests above failed, plus three 5 s timeouts in CLI-spawning tests that pass alone. The timeouts are fixed in `vitest.config.ts`.
 
 ## Stage flag set
 
