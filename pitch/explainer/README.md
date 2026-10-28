@@ -67,6 +67,14 @@ fails the render and names it.
 To try another installed Windows voice or pace instead, pass `--voice "<voice name>"` and `--rate <n>`
 (from minus ten to ten).
 
+A slower voice can still fit the length: `--tempo <x>` speeds every clip up by x without changing its
+pitch, and `--pauses <x>` scales the silences in `PACE`.
+
+The stage cut uses ElevenLabs clips (the Megan voice, model `eleven_v4`), generated under Craig's
+ElevenLabs account. They are not in the repo; they live in the gitignored `tools/out/video/eleven/` and
+render with `--voice-dir tools/out/video/eleven --tempo 1.18 --pauses 0.65`. Their spoken text writes
+figures and units out in words, while the captions keep the written form.
+
 ## Guardrails
 
 The narration runs through the same lint as the rest of the pitch (no em dashes, no hand-typed figures,

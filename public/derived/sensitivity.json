@@ -327,9 +327,92 @@
     {
       "key": "co2_basis",
       "label": "CO2 basis: EIA average vs marginal estimate",
-      "status": "pending",
-      "pending_on": "response tables #47 (public/data/response_tables.json is not on main)",
-      "note": "Not run: needs the response_tables marginal estimate and its interval."
+      "status": "ok",
+      "unit": "basis",
+      "base": "eia_average",
+      "low": "marginal_lo",
+      "high": "marginal_hi",
+      "range_prov": "ASSUMPTION",
+      "range_note": "EIA average emissions (generated basis, as the backtest) vs the response tables' generated-basis marginal estimate by season and Mountain hour: every bin at its 5th percentile, its slope and its 95th percentile; $ and calls do not depend on the CO2 basis",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_low": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.1343971519910092,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_high": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.24365282511554714,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "delta_low": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": -0.552592409631129,
+        "calls_unanswerable_pct_points": 0
+      },
+      "delta_high": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": -0.44333673650659106,
+        "calls_unanswerable_pct_points": 0
+      },
+      "points": [
+        {
+          "value": "eia_average",
+          "gap": {
+            "usd_per_mw_day": 34.284468376185146,
+            "co2_t_per_mw_day": 0.6869895616221382,
+            "calls_unanswerable_pct_points": -21.81818181818182
+          },
+          "delta": {
+            "usd_per_mw_day": 0,
+            "co2_t_per_mw_day": 0,
+            "calls_unanswerable_pct_points": 0
+          }
+        },
+        {
+          "value": "marginal_lo",
+          "gap": {
+            "usd_per_mw_day": 34.284468376185146,
+            "co2_t_per_mw_day": 0.1343971519910092,
+            "calls_unanswerable_pct_points": -21.81818181818182
+          },
+          "delta": {
+            "usd_per_mw_day": 0,
+            "co2_t_per_mw_day": -0.552592409631129,
+            "calls_unanswerable_pct_points": 0
+          }
+        },
+        {
+          "value": "marginal",
+          "gap": {
+            "usd_per_mw_day": 34.284468376185146,
+            "co2_t_per_mw_day": 0.1816788772171954,
+            "calls_unanswerable_pct_points": -21.81818181818182
+          },
+          "delta": {
+            "usd_per_mw_day": 0,
+            "co2_t_per_mw_day": -0.5053106844049429,
+            "calls_unanswerable_pct_points": 0
+          }
+        },
+        {
+          "value": "marginal_hi",
+          "gap": {
+            "usd_per_mw_day": 34.284468376185146,
+            "co2_t_per_mw_day": 0.24365282511554714,
+            "calls_unanswerable_pct_points": -21.81818181818182
+          },
+          "delta": {
+            "usd_per_mw_day": 0,
+            "co2_t_per_mw_day": -0.44333673650659106,
+            "calls_unanswerable_pct_points": 0
+          }
+        }
+      ]
     },
     {
       "key": "dp_soc_states",
@@ -688,6 +771,7 @@
     "Variants with calls rerun the whole backtest: the same SIMULATED calls (same seed), each policy's day-ahead plan and Clearlane's re-plans.",
     "Break-evens, the two-way grid and the DP SoC grid use day-ahead plans only (no calls), which is exactly how the backtest's $ and CO2 are computed.",
     "The heatmap reading moves only the calls column. Mountain time is the stage reading; the UTC readings are a sensitivity check only.",
-    "Two axes wait on work that has not landed: the host load archetype (fleet roll-up) and the CO2 basis (response tables)."
+    "The CO2 basis axis swaps each hour's EIA average (estimated, average emissions) for the response tables' marginal estimate (DERIVED, #47: generated basis, by season and Mountain hour). Low and high set every bin to its 5th or 95th percentile at once: a stress range, not a joint confidence interval; 12 of the 72 bins the window uses are inconclusive and are used as given. The slope measures fuel-mix response, not plant heat rates. CO2 on stage stays the EIA average.",
+    "One axis waits on work that has not landed: the host load archetype (fleet roll-up #66, closed as not planned)."
   ]
 }

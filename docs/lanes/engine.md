@@ -25,6 +25,7 @@ Lane done when (from `AGENTS.md`): the pinned Oct 27 numbers pass to the cent; `
 - use the DOM, the network, `node:` modules, `Math.random`, `Date.now()` or a no-argument `new Date()` in `engine/src` (CLIs in `engine/cli` may use `node:fs` and `node:path`)
 - hard-code, cache or write a solve time anywhere
 - hand-edit a file in `public/derived/` (only a CLI writes there)
+- add a new file to `public/derived/` without naming its CLI command in the PR body: `npm run reproduce` (#32) only notes a derived file with no line in `tools/reproduce.mjs`, so Integration adds the line
 - put a Torus number on stage from a source constant (stage Torus numbers come from `public/data/torus_published.json`)
 
 **Others depend on you for:**

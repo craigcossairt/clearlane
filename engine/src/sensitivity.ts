@@ -49,6 +49,24 @@ export interface Gap {
   calls_unanswerable_pct_points: number | null;
 }
 
+// public/data/response_tables.json, tables.marginal_co2 (DERIVED, #47): bootstrap slopes in g CO2/kWh
+// by basis, meteorological season and Mountain hour, with their 5th and 95th percentiles.
+export interface MarginalCo2Bin {
+  basis: string;
+  season: string;
+  hour_mt: number;
+  slope: number;
+  lo: number;
+  hi: number;
+  inconclusive: boolean;
+}
+export interface MarginalCo2 {
+  unit: string;
+  bins: MarginalCo2Bin[];
+}
+export type Co2Basis =
+  "eia_average" | "marginal_lo" | "marginal" | "marginal_hi";
+
 export interface SensCtx {
   hist: HistDay[];
   site: Site;
@@ -58,6 +76,7 @@ export interface SensCtx {
   by_weekday: number[];
   start_mt?: string;
   end_mt?: string;
+  marginal_co2?: MarginalCo2; // without it the CO2 basis axis is pending
 }
 
 export interface SiteChange {
@@ -185,6 +204,49 @@ export function scalePrices(d: HistDay, k: number): HistDay {
   return { ...d, lmp_usd_mwh: d.lmp_usd_mwh.map((p) => m + k * (p - m)) };
 }
 
+const SEASON = [
+  "DJF",
+  "DJF",
+  "MAM",
+  "MAM",
+  "MAM",
+  "JJA",
+  "JJA",
+  "JJA",
+  "SON",
+  "SON",
+  "SON",
+  "DJF",
+];
+
+// The day with each reported hour's CO2 swapped for the generated-basis marginal estimate of its
+// season and Mountain hour: every bin at its 5th percentile, its slope or its 95th percentile. The
+// backtest's EIA average is the generated basis too. Hours EIA left null stay null, so both bases
+// cover the same days.
+export function withCo2Basis(
+  d: HistDay,
+  t: MarginalCo2 | undefined,
+  basis: Co2Basis,
+): HistDay {
+  if (basis === "eia_average") return d;
+  if (!t) throw new Error("the marginal CO2 basis needs response_tables.json");
+  const season = SEASON[Number(d.operating_day_mt.slice(5, 7)) - 1]!;
+  const field =
+    basis === "marginal_lo" ? "lo" : basis === "marginal_hi" ? "hi" : "slope";
+  return {
+    ...d,
+    co2_g_kwh: d.co2_g_kwh.map((v, h) => {
+      if (v === null) return null;
+      const bin = t.bins.find(
+        (b) =>
+          b.basis === "generated" && b.season === season && b.hour_mt === h,
+      );
+      if (!bin) throw new Error(`no marginal CO2 bin for ${season} hour ${h}`);
+      return bin[field];
+    }),
+  };
+}
+
 const windowOf = (ctx: SensCtx) => {
   const byDay = new Map(ctx.hist.map((d) => [d.operating_day_mt, d]));
   return windowDays(
@@ -200,13 +262,18 @@ export function valueGap(
   ctx: SensCtx,
   site: Site,
   W: number,
-  o: { levels?: number; price_scale?: number },
+  o: { levels?: number; price_scale?: number; co2_basis?: Co2Basis },
 ): { usd_per_mw_day: number; co2_t_per_mw_day: number } {
   const usd: Record<"c" | "f", number[]> = { c: [], f: [] };
   const co2: Record<"c" | "f", number[]> = { c: [], f: [] };
   const opts = { wear_usd_mwh: W, sch_mode: SCH_MODE };
   for (const h of windowOf(ctx)) {
-    const b = histBundle(scalePrices(h, o.price_scale ?? 1));
+    const b = histBundle(
+      scalePrices(
+        withCo2Basis(h, ctx.marginal_co2, o.co2_basis ?? "eia_average"),
+        o.price_scale ?? 1,
+      ),
+    );
     const plans = {
       f: solve(b, site, "fixed_overnight", opts),
       c:
@@ -274,7 +341,7 @@ export interface AxisSpec {
   key: string;
   label: string;
   unit: string;
-  kind: "site" | "wear" | "reading" | "grid" | "pending";
+  kind: "site" | "wear" | "reading" | "co2" | "grid" | "pending";
   change?: keyof SiteChange;
   base?: number | string;
   low?: number | string;
@@ -405,10 +472,14 @@ export const AXES: AxisSpec[] = [
     key: "co2_basis",
     label: "CO2 basis: EIA average vs marginal estimate",
     unit: "basis",
-    kind: "pending",
-    pending_on:
-      "response tables #47 (public/data/response_tables.json is not on main)",
-    range_note: "needs the response_tables marginal estimate and its interval",
+    kind: "co2",
+    base: "eia_average",
+    low: "marginal_lo",
+    high: "marginal_hi",
+    points: ["eia_average", "marginal_lo", "marginal", "marginal_hi"],
+    pending_on: "response tables #47 (public/data/response_tables.json)",
+    range_note:
+      "EIA average emissions (generated basis, as the backtest) vs the response tables' generated-basis marginal estimate by season and Mountain hour: every bin at its 5th percentile, its slope and its 95th percentile; $ and calls do not depend on the CO2 basis",
   },
   {
     key: "dp_soc_states",
@@ -441,7 +512,7 @@ export function runAxis(
   spec: AxisSpec,
   base?: BacktestResult,
 ): AxisResult {
-  if (spec.kind === "pending")
+  if (spec.kind === "pending" || (spec.kind === "co2" && !ctx.marginal_co2))
     return {
       key: spec.key,
       label: spec.label,
@@ -463,6 +534,14 @@ export function runAxis(
         return backtestGap(ctx, ctx.site, ctx.wear_usd_mwh * (v as number));
       case "reading":
         return gapOf(baseResult(), v as CallsReading);
+      case "co2": // accounting only: the plans, $ and calls are the base's
+        return {
+          ...valueGap(ctx, ctx.site, ctx.wear_usd_mwh, {
+            co2_basis: v as Co2Basis,
+          }),
+          calls_unanswerable_pct_points:
+            gapOf(baseResult()).calls_unanswerable_pct_points,
+        };
       default: // grid
         return {
           ...valueGap(ctx, ctx.site, ctx.wear_usd_mwh, {
@@ -623,6 +702,15 @@ export function buildSensitivity(
     (r) => spreadOf.get(r.operating_day_mt)! < 25,
   ).length;
 
+  // The marginal bins the window draws on, and how many of them are inconclusive (interval spans zero).
+  const seasons = new Set(
+    days.map((d) => SEASON[Number(d.operating_day_mt.slice(5, 7)) - 1]),
+  );
+  const used = (ctx.marginal_co2?.bins ?? []).filter(
+    (b) => b.basis === "generated" && seasons.has(b.season),
+  );
+  const co2Note = `The CO2 basis axis swaps each hour's EIA average (estimated, average emissions) for the response tables' marginal estimate (DERIVED, #47: generated basis, by season and Mountain hour). Low and high set every bin to its 5th or 95th percentile at once: a stress range, not a joint confidence interval; ${used.filter((b) => b.inconclusive).length} of the ${used.length} bins the window uses are inconclusive and are used as given. The slope measures fuel-mix response, not plant heat rates. CO2 on stage stays the EIA average.`;
+
   const rteAxis = [0.8, 0.84, 0.88, 0.92];
   const scaleAxis = [0.25, 0.5, 0.75, 1, 1.25, 1.5];
   return {
@@ -681,7 +769,10 @@ export function buildSensitivity(
       "Variants with calls rerun the whole backtest: the same SIMULATED calls (same seed), each policy's day-ahead plan and Clearlane's re-plans.",
       "Break-evens, the two-way grid and the DP SoC grid use day-ahead plans only (no calls), which is exactly how the backtest's $ and CO2 are computed.",
       "The heatmap reading moves only the calls column. Mountain time is the stage reading; the UTC readings are a sensitivity check only.",
-      "Two axes wait on work that has not landed: the host load archetype (fleet roll-up) and the CO2 basis (response tables).",
+      ...(ctx.marginal_co2 ? [co2Note] : []),
+      ctx.marginal_co2
+        ? "One axis waits on work that has not landed: the host load archetype (fleet roll-up #66, closed as not planned)."
+        : "Two axes wait on work that has not landed: the host load archetype (fleet roll-up #66) and the CO2 basis (response tables #47).",
     ],
   };
 }
