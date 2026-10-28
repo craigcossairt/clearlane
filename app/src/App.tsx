@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useContext } from "react";
 import { CrashBeat } from "./beats/CrashBeat";
 import { EnvelopeBeat } from "./beats/EnvelopeBeat";
 import { Race } from "./beats/Race";
@@ -44,6 +45,12 @@ export const BEATS: {
 const PLAY_MS = 15000;
 const FLEET_STEP_MW = 10;
 const EMPTY_CALL: CallState = { first: null, ghost: null, second: null };
+
+/**
+ * Fleet board (#92, ff_fleet_board), a stretch item: loaded only while its flag is on, so the
+ * flag-off stage imports and renders nothing new.
+ */
+const FleetBoard = lazy(() => import("./stretch/FleetBoard"));
 
 let cachedData: StageData | null = null;
 function defaultData(): StageData {
@@ -174,6 +181,7 @@ function Stage({
   const [phone, setPhone] = useState(false);
   const hourRef = useRef(hour);
   hourRef.current = hour;
+  const fleetBoard = useContext(FlagsContext).has("ff_fleet_board");
 
   useEffect(() => {
     if (motionOff || typeof window.matchMedia !== "function") return;
@@ -384,6 +392,11 @@ function Stage({
         <footer className="foot">
           <p>Press ? for the key map.</p>
         </footer>
+        {fleetBoard ? (
+          <Suspense fallback={null}>
+            <FleetBoard live={live} />
+          </Suspense>
+        ) : null}
         {help ? (
           <div
             className="keymap"
