@@ -21,6 +21,7 @@ import {
 } from "./engineClient";
 import { FlagsContext, parseFlags, type FlagName } from "./flags";
 import { KEYMAP, lookup, typedIntoInput } from "./keymap";
+import { ProofDrawer, ProofKeyRow } from "./proof/ProofDrawer";
 import { dayLabel, resolveStageDay } from "./stageDay";
 
 export type BeatId = 1 | 2 | 3 | 4 | 5 | 6;
@@ -386,9 +387,11 @@ function Stage({
                   <dd data-copy-ok="key action text">{b.label}</dd>
                 </div>
               ))}
+              <ProofKeyRow />
             </dl>
           </div>
         ) : null}
+        <ProofDrawer />
       </div>
     </div>
   );

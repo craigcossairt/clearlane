@@ -1,0 +1,232 @@
+/* Proof drawer (#90, ff_proof_drawer). Fixed inside the scaled 1920x1080 frame, so at the
+   projector it scales with the stage; on a phone the frame is unscaled and it covers the screen. */
+
+.proof-pill {
+  position: fixed;
+  right: 24px;
+  bottom: 16px;
+  z-index: 20;
+  font: inherit;
+  font-size: var(--body);
+  padding: 4px 24px;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.proof-pill.inline {
+  position: static;
+}
+
+.proof-pill[aria-expanded="true"] {
+  background: var(--surface-2);
+}
+
+.proof-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+}
+
+.proof-drawer {
+  box-sizing: border-box;
+  width: min(1180px, 100%);
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 24px 32px;
+  background: var(--bg);
+  border-left: 1px solid var(--line);
+  font-size: var(--body);
+}
+
+.proof-drawer:focus {
+  outline: none;
+}
+
+.proof-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.proof-head h2 {
+  margin: 0;
+}
+
+.proof-close {
+  font: inherit;
+  padding: 4px 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.proof-close:focus-visible,
+.proof-pill:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.proof-intro,
+.proof-reads,
+.proof-note {
+  color: var(--muted);
+}
+
+.proof-card {
+  margin: 16px 0;
+  padding: 16px 24px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.proof-card h3 {
+  margin: 0 0 4px;
+}
+
+.proof-reads {
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
+}
+
+.proof-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 8px 0;
+}
+
+.proof-svg text {
+  font-size: 24px;
+  fill: var(--ink);
+}
+
+.proof-svg .proof-tick {
+  fill: var(--muted);
+}
+
+/* A halo, so a row label stays readable where it crosses the zero line. */
+.proof-svg .proof-row-label {
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 8px;
+  stroke-linejoin: round;
+}
+
+/* Lists of values are detail, like the envelope table: smaller figures, same chips. */
+.proof-drawer [data-detail] .figure {
+  font-size: 28px;
+}
+
+.proof-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.proof-zero {
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+}
+
+.proof-squares {
+  max-width: 1000px;
+}
+
+.proof-sq-match {
+  fill: var(--clear);
+}
+
+.proof-sq-mismatch {
+  fill: var(--shoulder-soft);
+  stroke: var(--shoulder);
+  stroke-width: 3;
+}
+
+.proof-sq-mark {
+  stroke: var(--shoulder);
+  stroke-width: 4;
+}
+
+.proof-sq-pending,
+.proof-sq-other {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 3;
+  stroke-dasharray: 6 4;
+}
+
+.proof-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+}
+
+.proof-legend-item svg {
+  vertical-align: middle;
+}
+
+.proof-rows,
+.proof-checks {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+.proof-rows li,
+.proof-checks li {
+  margin: 4px 0;
+}
+
+.proof-state {
+  padding: 8px 12px;
+  border: 2px dashed var(--muted);
+  border-radius: 8px;
+  color: var(--muted);
+}
+
+.proof-state-broken {
+  border-style: solid;
+  border-color: var(--jam);
+  color: var(--jam);
+}
+
+.proof-state-unknown {
+  border-style: dotted;
+  border-color: var(--shoulder);
+  color: var(--shoulder);
+}
+
+@media (max-width: 767px) {
+  .proof-pill {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .proof-drawer {
+    padding: 16px;
+    border-left: 0;
+  }
+
+  .proof-card {
+    padding: 12px;
+  }
+
+  /* The SVGs scale to about a third on a phone; bigger viewBox text keeps labels readable. */
+  .proof-svg text {
+    font-size: 44px;
+  }
+
+  .proof-drawer [data-detail] .figure {
+    font-size: 20px;
+  }
+}

@@ -19,6 +19,43 @@ export const COPY = {
   failed: "failed",
   loading: "loading",
 
+  // Proof drawer (#90, ff_proof_drawer): Q&A cards, never part of the six beats.
+  proofPill: "Proof",
+  proofTitle: "Proof drawer",
+  proofIntro:
+    "Answers for questions after the demo. Each card reads one file from the repo, and every number keeps its chip.",
+  proofClose: "Close",
+  proofReads: "Reads",
+  proofNone: "No analysis files are in this build yet. Empty, not zero.",
+  proofEmpty: "No file yet. Empty, not zero.",
+  proofBroken: "The file is there but does not parse.",
+  proofUnknown: "The file parses, but not in the shape this card reads:",
+  proofBacktestTitle: "Backtest spread across every day of the window",
+  proofBacktestLead:
+    "Value to RMP's system per MW per day at day-ahead prices, one row per timetable.",
+  proofBacktestAria:
+    "One band per timetable from the low day to the high day, in dollars per MW-day, with the middle day and the mean marked",
+  proofAxis: "dollars per MW-day",
+  proofBandNote:
+    "Each band runs from the low day to the high day, the tenth to the ninetieth percentile. The tick is the middle day and the dot is the mean.",
+  proofMean: ", mean ",
+  proofBaseline: "The off-peak rule is our baseline, not Torus practice.",
+  proofCrossTitle: "Independent cross-check of the pinned numbers",
+  proofCrossLead:
+    "A separate science script re-derives each pinned number from the raw public files, against tolerances written down before it computed anything.",
+  proofCrossAria: "One square per check, marked by its status",
+  proofStatusMatch: "Match",
+  proofStatusMismatch: "Outside tolerance",
+  proofStatusPending: "Not recomputed here",
+  proofMismatchHead: "Outside tolerance, with the second path the script also ran:",
+  proofPinned: "pinned",
+  proofScience: "science",
+  proofSecondPath: "Second path",
+  proofFrom: "from",
+  proofTolerance: "Tolerance:",
+  proofSecondPathPasses: "passes tolerance",
+  proofSecondPathFails: "fails tolerance",
+
   fixedLabel: "Battery on the off-peak rule",
   clearlaneLabel: "Simulated Torus-style station on Clearlane",
   priceOnlyLabel: "Battery-only plan",

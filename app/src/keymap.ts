@@ -2,6 +2,7 @@
  * One table drives the key handler and the ? overlay. Integration mirrors it into
  * demo/keymap.md. A key bound twice in the same context is a UI bug (keymap.test.ts).
  */
+import type { FlagName } from "./flags";
 
 export type Action =
   | "next"
@@ -51,6 +52,21 @@ export const KEYMAP: Binding[] = [
 
 /** Reserved for stretch items; never bound in core. */
 export const RESERVED_KEYS = ["t", "d", "p", "f", "i"] as const;
+
+/**
+ * Stretch keys. Each is live only while its flag is on, and its own component handles it, so the
+ * core handler above never sees a reserved key. The ? overlay lists the ones whose flag is on.
+ */
+export interface StretchBinding {
+  key: (typeof RESERVED_KEYS)[number];
+  flag: FlagName;
+  keyLabel: string;
+  label: string;
+}
+
+export const PROOF_KEY: StretchBinding = { key: "p", flag: "ff_proof_drawer", keyLabel: "P", label: "Open or close the proof drawer" };
+
+export const STRETCH_KEYMAP: StretchBinding[] = [PROOF_KEY];
 
 const norm = (key: string) => (key.length === 1 ? key.toLowerCase() : key);
 
