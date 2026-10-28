@@ -44,17 +44,14 @@ The repo goes public only on Craig's go (#35). The link must be in the slides, s
 
 ## Judges' site
 
-https://clearlane-mauve.vercel.app (static, built from main; the app is at `/app.html?ff=presenter`). Put this link in the Drive folder next to the repo link.
-
-## Files
-
-- Deck: `clearlane-deck.pdf`
-- One-pagers: `one-pager-host.pdf`, `one-pager-rmp.pdf`
-- Slides: `clearlane-slides.pdf`, one page per presenter screen at its end state, 1920x1080, from `v1-stage-2` (`node tools/slides-pdf.mjs`)
-- Backup video: `clearlane-backup-presenter.mp4` from `v1-stage-2`; six-beat fallback `clearlane-backup.mp4` from `v1-stage`
+https://clearlane-mauve.vercel.app (static, built from main; the app is at `/app.html?ff=presenter`).
 
 ## Drive folder upload
 
-- [ ] `clearlane-slides.pdf` and `clearlane-deck.pdf`
-- [ ] The backup video
-- [ ] The repo link above, also in the slides
+Only current, presentable materials, in this order:
+
+1. [ ] `clearlane-slides.pdf`: the presentation, one 1920x1080 page per presenter screen at its end state, from `v1-stage-2` (`node tools/slides-pdf.mjs <baseUrl>`). Its last page carries the repo and site links.
+2. [ ] `clearlane-presentation-narrated.mp4`: the narrated presentation video (from the explainer session).
+3. [ ] The repo link (https://github.com/craigcossairt/clearlane) and the site link (https://clearlane-mauve.vercel.app).
+
+Not uploaded: the text deck (`clearlane-deck.pdf`), the one-pagers and the silent screen recordings, which stay on the site and the backup stick.
