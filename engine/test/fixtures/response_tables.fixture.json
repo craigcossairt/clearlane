@@ -1,0 +1,206 @@
+{
+  "schema": "clearlane.response_tables/v1",
+  "note": "SIMULATED test fixture for the engine's price-impact tests (#73). The slopes are invented to exercise the code (one negative hour, one evening hour whose interval spans zero); they are not estimated from any data. The real table is public/data/response_tables.json from prep/response_tables.py (#47).",
+  "price_response": {
+    "prov": "SIMULATED",
+    "unit": "$/MWh per MW",
+    "x": "net load",
+    "hours": "Mountain hour beginning",
+    "caveat": "SIMULATED slopes for tests only.",
+    "sources": ["engine/test/fixtures/response_tables.fixture.json"],
+    "bins": [
+      {
+        "hour_mt": 0,
+        "slope": 0.006,
+        "ci_lo": 0.003,
+        "ci_hi": 0.009,
+        "r2": 0.31,
+        "n": 180
+      },
+      {
+        "hour_mt": 1,
+        "slope": 0.005,
+        "ci_lo": 0.002,
+        "ci_hi": 0.008,
+        "r2": 0.28,
+        "n": 180
+      },
+      {
+        "hour_mt": 2,
+        "slope": 0.004,
+        "ci_lo": 0.001,
+        "ci_hi": 0.007,
+        "r2": 0.22,
+        "n": 180
+      },
+      {
+        "hour_mt": 3,
+        "slope": 0.003,
+        "ci_lo": 0.001,
+        "ci_hi": 0.005,
+        "r2": 0.19,
+        "n": 180
+      },
+      {
+        "hour_mt": 4,
+        "slope": -0.002,
+        "ci_lo": -0.005,
+        "ci_hi": 0.001,
+        "r2": 0.02,
+        "n": 180
+      },
+      {
+        "hour_mt": 5,
+        "slope": 0.004,
+        "ci_lo": 0.002,
+        "ci_hi": 0.006,
+        "r2": 0.21,
+        "n": 180
+      },
+      {
+        "hour_mt": 6,
+        "slope": 0.006,
+        "ci_lo": 0.003,
+        "ci_hi": 0.009,
+        "r2": 0.26,
+        "n": 180
+      },
+      {
+        "hour_mt": 7,
+        "slope": 0.008,
+        "ci_lo": 0.005,
+        "ci_hi": 0.011,
+        "r2": 0.33,
+        "n": 180
+      },
+      {
+        "hour_mt": 8,
+        "slope": 0.009,
+        "ci_lo": 0.006,
+        "ci_hi": 0.012,
+        "r2": 0.35,
+        "n": 180
+      },
+      {
+        "hour_mt": 9,
+        "slope": 0.007,
+        "ci_lo": 0.004,
+        "ci_hi": 0.01,
+        "r2": 0.3,
+        "n": 180
+      },
+      {
+        "hour_mt": 10,
+        "slope": 0.006,
+        "ci_lo": 0.003,
+        "ci_hi": 0.009,
+        "r2": 0.27,
+        "n": 180
+      },
+      {
+        "hour_mt": 11,
+        "slope": 0.005,
+        "ci_lo": 0.003,
+        "ci_hi": 0.007,
+        "r2": 0.25,
+        "n": 180
+      },
+      {
+        "hour_mt": 12,
+        "slope": 0.005,
+        "ci_lo": 0.003,
+        "ci_hi": 0.007,
+        "r2": 0.24,
+        "n": 180
+      },
+      {
+        "hour_mt": 13,
+        "slope": 0.006,
+        "ci_lo": 0.004,
+        "ci_hi": 0.008,
+        "r2": 0.26,
+        "n": 180
+      },
+      {
+        "hour_mt": 14,
+        "slope": 0.007,
+        "ci_lo": 0.004,
+        "ci_hi": 0.01,
+        "r2": 0.29,
+        "n": 180
+      },
+      {
+        "hour_mt": 15,
+        "slope": 0.008,
+        "ci_lo": 0.005,
+        "ci_hi": 0.011,
+        "r2": 0.32,
+        "n": 180
+      },
+      {
+        "hour_mt": 16,
+        "slope": 0.01,
+        "ci_lo": 0.007,
+        "ci_hi": 0.013,
+        "r2": 0.36,
+        "n": 180
+      },
+      {
+        "hour_mt": 17,
+        "slope": 0.012,
+        "ci_lo": 0.008,
+        "ci_hi": 0.016,
+        "r2": 0.38,
+        "n": 180
+      },
+      {
+        "hour_mt": 18,
+        "slope": 0.015,
+        "ci_lo": 0.01,
+        "ci_hi": 0.02,
+        "r2": 0.41,
+        "n": 180
+      },
+      {
+        "hour_mt": 19,
+        "slope": 0.006,
+        "ci_lo": -0.001,
+        "ci_hi": 0.013,
+        "r2": 0.08,
+        "n": 180
+      },
+      {
+        "hour_mt": 20,
+        "slope": 0.013,
+        "ci_lo": 0.009,
+        "ci_hi": 0.017,
+        "r2": 0.39,
+        "n": 180
+      },
+      {
+        "hour_mt": 21,
+        "slope": 0.011,
+        "ci_lo": 0.007,
+        "ci_hi": 0.015,
+        "r2": 0.37,
+        "n": 180
+      },
+      {
+        "hour_mt": 22,
+        "slope": 0.009,
+        "ci_lo": 0.006,
+        "ci_hi": 0.012,
+        "r2": 0.34,
+        "n": 180
+      },
+      {
+        "hour_mt": 23,
+        "slope": 0.007,
+        "ci_lo": 0.004,
+        "ci_hi": 0.01,
+        "r2": 0.3,
+        "n": 180
+      }
+    ]
+  }
+}
