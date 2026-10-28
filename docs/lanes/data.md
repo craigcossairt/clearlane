@@ -32,6 +32,7 @@ You are the front of the pipeline: `prep/` (Python) writes `public/data/` (REAL)
 
 - `prep/**`: Python 3.13 standard-library fetchers, parsers, builders, tests and the oracle scripts.
 - `public/data/**`: the committed REAL data files (bundles, history, Torus facts, stretch data files).
+  Any PR that adds or changes a file here also runs `node tools/reproduce.mjs --write-manifest` and commits `tools/manifest.sha256` (#32); CI's `reproduce` job fails on an unlisted or changed input.
 - `api/**`: the 2030.5-shaped export and the feed (stretch only).
 
 **You also are:** the cross-family reviewer of every engine PR (Codex reviewing Claude). Comment only.
