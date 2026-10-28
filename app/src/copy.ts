@@ -597,6 +597,8 @@ export const PRESENTER = {
   sawCalls: "of Rocky Mountain Power's calls missed in the backtest",
   sawDays: "of backtest days beat the off-peak rule",
   sawAria: "What you saw",
+  // Plain text, not a link: the stage runs offline.
+  closeRepo: "Code and data: github.com/craigcossairt/clearlane",
 
   footTitle: "Data: CAISO OASIS and EIA.",
   footTraffic: "CAISO day-ahead price and forecasts.",

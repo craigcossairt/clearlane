@@ -754,6 +754,7 @@ function FleetNum({
 function CloseHero() {
   return (
     <section className="p-close" data-slot="close-card">
+      <p className="p-repo">{PRESENTER.closeRepo}</p>
       <dl className="p-saw" aria-label={PRESENTER.sawAria}>
         <div>
           <dd>

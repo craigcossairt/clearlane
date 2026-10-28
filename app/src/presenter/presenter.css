@@ -562,6 +562,12 @@ body[data-mode="presenter"] {
   gap: 40px;
   padding-top: 12px;
 }
+[data-mode="presenter"] .p-repo {
+  margin: -24px 0 0;
+  font-size: 24px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
 [data-mode="presenter"] .p-saw {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -781,6 +787,10 @@ body[data-mode="presenter"] {
 [data-mode="presenter"].phone .p-saw .figure {
   font-size: 40px;
 }
+[data-mode="presenter"].phone .p-repo {
+  margin: 0;
+}
+[data-mode="presenter"].phone .p-repo,
 [data-mode="presenter"].phone .p-saw dt,
 [data-mode="presenter"].phone .p-campus,
 [data-mode="presenter"].phone .p-campus h3,
