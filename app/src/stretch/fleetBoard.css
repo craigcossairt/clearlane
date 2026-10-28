@@ -1,0 +1,248 @@
+/* Fleet board (#92, ff_fleet_board). Loaded with the board's lazy chunk, so none of this reaches
+   the flag-off stage. Inside the stage frame the board covers the 1920x1080 frame and scales with
+   it; on a phone the frame is unscaled and the board covers the screen and scrolls down. */
+
+.fleet-pill {
+  position: fixed;
+  top: 12px;
+  right: 24px;
+  z-index: 20;
+  font: inherit;
+  font-size: var(--body);
+  padding: 4px 24px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.fleet-pill[aria-expanded="true"] {
+  background: var(--surface-2);
+}
+
+.fleet-pill:focus-visible,
+.fleet-board button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.fleet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow-y: auto;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+
+.fleet-board {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px;
+  padding: 16px 20px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  min-width: 0;
+}
+
+.fleet-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.fleet-head h2 {
+  margin: 0;
+}
+
+.fleet-caption {
+  margin: 0;
+  color: var(--muted);
+}
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.4fr;
+  gap: 12px;
+  min-width: 0;
+}
+
+.fleet-tiles {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 12px;
+  min-width: 0;
+  height: 500px;
+}
+
+.fleet-tile,
+.fleet-call {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fleet-tile p,
+.fleet-call p {
+  margin: 0;
+}
+
+.fleet-call {
+  height: 500px;
+}
+
+.fleet-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.fleet-bar-row dt {
+  color: var(--muted);
+}
+
+.fleet-bar-row dd {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+
+.fleet-bar {
+  display: inline-block;
+  width: 160px;
+  height: 18px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface-2);
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.fleet-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+}
+
+/* Dense tile and contribution values read at 24px, like the envelope table. */
+.fleet-board [data-detail] .figure {
+  font-size: var(--body);
+}
+
+.fleet-moment {
+  display: grid;
+}
+
+.fleet-moment > span {
+  grid-area: 1 / 1;
+}
+
+.fleet-moment > .off {
+  visibility: hidden;
+}
+
+/* Two lines reserved, so the refill line never moves what follows it. */
+.fleet-refill {
+  height: 2.7em;
+}
+
+.fleet-contribution .fleet-site-name {
+  font-weight: 600;
+}
+
+.fleet-contribution dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  margin: 4px 0 0;
+}
+
+.fleet-contribution dt {
+  color: var(--muted);
+}
+
+.fleet-contribution dd {
+  margin: 0;
+}
+
+.fleet-land {
+  align-self: flex-start;
+}
+
+.fleet-strip p {
+  margin: 0;
+}
+
+.fleet-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fleet-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fleet-sch {
+  fill: color-mix(in srgb, var(--jam) 18%, transparent);
+}
+
+.fleet-charge {
+  fill: var(--ink);
+}
+
+.fleet-discharge {
+  fill: var(--muted);
+}
+
+.fleet-zero {
+  stroke: var(--line);
+  stroke-width: 3;
+}
+
+.fleet-tick {
+  fill: var(--muted);
+  font-size: 24px;
+}
+
+/* Phone: one column, natural heights, no sideways scroll. */
+.phone .fleet-pill {
+  top: auto;
+  right: auto;
+  left: 16px;
+  bottom: 16px;
+}
+
+.phone .fleet-board {
+  margin: 8px;
+  padding: 12px;
+}
+
+.phone .fleet-head {
+  flex-wrap: wrap;
+}
+
+.phone .fleet-grid,
+.phone .fleet-tiles {
+  grid-template-columns: 1fr;
+  height: auto;
+}
+
+.phone .fleet-call {
+  height: 600px;
+}
+
+/* The bar takes its own line, so a wider chip after the call never rewraps the row. */
+.phone .fleet-bar {
+  display: block;
+  width: 100%;
+}

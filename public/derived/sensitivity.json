@@ -137,7 +137,7 @@
       "label": "Host load archetype",
       "status": "pending",
       "pending_on": "fleet roll-up #66 (closed as not planned)",
-      "note": "Not run: this axis will not run; #66 was closed as not planned. Host shapes are compared, on three SIMULATED archetypes, in host_frontier.json (#71), behind ff_host_frontier."
+      "note": "Not run: #66 was closed as not planned. Host shapes are compared, on three SIMULATED archetypes, in host_frontier.json (#71), behind ff_host_frontier."
     },
     {
       "key": "enrolled_kw",

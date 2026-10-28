@@ -453,10 +453,17 @@ describe.skipIf(!existsSync(repoPath(SENS)))(
       );
       const arch = sens().axes.find((a) => a.key === "host_load_archetype")!;
       if (arch.status !== "pending") throw new Error("expected a pending axis");
-      expect(arch.note).toContain(
-        "will not run; #66 was closed as not planned",
-      );
+      // said once: the "Not run:" prefix already says it will not run
+      expect(arch.note).toMatch(/^Not run: #66 was closed as not planned\./);
+      expect(arch.note).not.toMatch(/will not run/);
       expect(arch.note).toContain("host_frontier.json (#71)");
+      expect(
+        sens().notes.some((n) =>
+          n.includes(
+            "The host load archetype axis will not run; #66 was closed as not planned.",
+          ),
+        ),
+      ).toBe(true);
       for (const n of sens().notes)
         expect(n).not.toMatch(/wait[s]? on[^.]*#66/);
     });

@@ -423,7 +423,7 @@ export const AXES: AxisSpec[] = [
     kind: "pending",
     pending_on: "fleet roll-up #66 (closed as not planned)",
     range_note:
-      "this axis will not run; #66 was closed as not planned. Host shapes are compared, on three SIMULATED archetypes, in host_frontier.json (#71), behind ff_host_frontier",
+      "#66 was closed as not planned. Host shapes are compared, on three SIMULATED archetypes, in host_frontier.json (#71), behind ff_host_frontier",
   },
   {
     key: "enrolled_kw",

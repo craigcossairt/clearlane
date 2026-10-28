@@ -299,6 +299,43 @@ describe.skipIf(!existsSync(repoPath(FILE)))(
         expect(a.day_scale.prov).toBe("SIMULATED");
       }
       expect(f.prices.prov).toBe("REAL");
+      // a break point shown on its own takes its chip from the archetype
+      expect(
+        f.notes.some(
+          (n) =>
+            n.includes("break point") &&
+            n.includes("archetype's prov") &&
+            n.includes("SIMULATED"),
+        ),
+      ).toBe(true);
+    });
+
+    it("statements name a ratchet difference only where there is one", () => {
+      const f = JSON.parse(read(FILE)) as HostFrontier;
+      for (const a of f.archetypes) {
+        const bp = a.break_point_kw;
+        const off = a.break_point_without_ratchet_kw;
+        if (bp === off) {
+          expect(a.statement).toContain(
+            `The break point is ${off} kW with or without the month-to-date ratchet.`,
+          );
+          expect(a.statement).not.toMatch(/would be/);
+        } else
+          expect(a.statement).toContain(
+            `Ignoring the month-to-date ratchet, the break point would be ${off} kW.`,
+          );
+      }
+      // both cases occur in the committed file
+      expect(
+        f.archetypes.some(
+          (a) => a.break_point_kw !== a.break_point_without_ratchet_kw,
+        ),
+      ).toBe(true);
+      expect(
+        f.archetypes.some(
+          (a) => a.break_point_kw === a.break_point_without_ratchet_kw,
+        ),
+      ).toBe(true);
     });
   },
 );

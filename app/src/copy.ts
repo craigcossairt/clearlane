@@ -531,3 +531,49 @@ export const PRESENTER = {
     "MOU and fleet sizes from Torus and Rocky Mountain Power announcements; price-taker scaling.",
   sourceClose: "Simulated campus shift on the day-ahead prices; not a Torus product.",
 } as const;
+
+/**
+ * Fleet board (#92, ff_fleet_board). Partial: the engine models one simulated site, so the board
+ * tiles that site and says plainly what is not built. No numbers here; they come from the engine
+ * or numbers.json.
+ */
+export const FLEET = {
+  pill: "Fleet board",
+  pillTitle: "F opens or closes the fleet board",
+  title: "Fleet board: simulated Torus-style sites",
+  caption:
+    "Each tile is one simulated Torus-style site, not a real one: Spin and Pulse energy, the host's quarter-hour meter against its ceiling, and when Spin is full again after a call.",
+  close: "Close",
+  tilePlanned: "Planned for the quarter hour from",
+  tileAfter: "Re-planned after the call, quarter hour from",
+  tileSpin: "Spin energy",
+  tilePulse: "Pulse energy",
+  tileMeter: "Host meter",
+  tileCeiling: "against a ceiling of",
+  tileUnavailable: "the plan has no quarter hour at the call minute",
+  refillNone: "Spin is full. No refill under way.",
+  moreTitle: "More sites",
+  moreLine:
+    "The engine models one simulated site today. A roll-up of many simulated sites, with a tile for each, is not built yet.",
+  stripTitle: "Fleet envelope, hour by hour",
+  stripLine1: "The engine's envelope for the simulated site, scaled to the",
+  stripLine2:
+    "MW MOU. It assumes identical sites and no feeder limit between them.",
+  stripLegend:
+    "Bars above the line: planned charging. Below: planned discharging. Shaded: System Critical Hours (our proposal), the grid's tightest hours, not a call forecast.",
+  stripAria:
+    "Planned fleet power for each hour of the day, charging above the line and discharging below it, with System Critical Hours shaded",
+  stripMissing: "the MOU size is not in numbers.json",
+  stripAxis: "Hour labels:",
+  callTitle: "A simulated call on the board",
+  callPrompt:
+    "Press C, or the button, to land a simulated Rocky Mountain Power call on the board.",
+  callButton: "Land a simulated call",
+  callSecondPrompt: "Press C again during the refill for a second call.",
+  colSpin: "Spin",
+  colPulse: "Pulse",
+  colDelivered: "Delivered",
+  colShortfall: "Shortfall",
+  fleetShare: "Share of the call the fleet delivered:",
+  fleetNotBuilt: "the engine does not split one call across sites yet.",
+} as const;

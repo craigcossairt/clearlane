@@ -437,7 +437,9 @@ export function buildFrontier(
         : next.deliverable
           ? `; at ${kw(next.block_kw)} it rises ${kw(next.monthly_peak_kw! - base)}.`
           : `; ${kw(next.block_kw)} is not deliverable (${next.not_deliverable_reason!.split(":")[0]}).`) +
-      ` Ignoring the month-to-date ratchet, the break point would be ${kw(bpOff)}.`;
+      (bpOff === bp
+        ? ` The break point is ${kw(bp)} with or without the month-to-date ratchet.`
+        : ` Ignoring the month-to-date ratchet, the break point would be ${kw(bpOff)}.`);
     return {
       key: a.key,
       label: a.label,
@@ -509,6 +511,7 @@ export function buildFrontier(
       "Peak shaving only (block 0): Pulse discharges just enough to hold the meter at the lowest ceiling the day allows, or at the month-to-date peak if that is higher, and charges in the cheapest intervals that stay under it. A block adds at least the block size of discharge in every HB 6pm-9pm interval.",
       "Not deliverable: Pulse's stored energy cannot hold the block for 4 hours (energy), or the host's evening load is below the block with no export allowed (export).",
       "Break point: the largest block at and below which every step leaves the month's peak where peak shaving alone puts it. Without the ratchet a host would compare each day with its own peak-shaving day; that stricter reading is break_point_without_ratchet_kw.",
+      "A break point shown on its own takes its provenance chip from its archetype's prov (SIMULATED), not from the REAL prices.",
       "days_with_higher_day_peak counts the days whose own peak is above the same day's at block 0. Under the ratchet such a day still sits at or under the month-to-date peak, so the bill moves only when peak_increase_kw is above 0.",
       "Each day starts and ends at 25 kWh, as the day-ahead plans do, and is planned with that day's prices and SIMULATED host load known.",
     ],
