@@ -144,6 +144,7 @@ const stretch = !core;
 if (stretch && existsSync(at("public/derived/call_ledger.json"))) engine("ledger.ts");
 if (stretch && existsSync(at("public/derived/scale_curve.json"))) engine("scale.ts");
 if (stretch && existsSync(at("public/derived/sensitivity.json"))) engine("sensitivity.ts");
+if (stretch && existsSync(at("public/derived/host_frontier.json"))) engine("frontier.ts");
 // The real-time replay (#227) reads the RT file for the window its committed output covers.
 if (stretch && existsSync(at("public/derived/rt_replay.json"))) {
   const w = JSON.parse(readFileSync(at("public/derived/rt_replay.json"), "utf8")).window;
