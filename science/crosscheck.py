@@ -26,6 +26,13 @@ USABLE_MWH = 2.0
 FIXED_CHARGE = [1, 2, 3, 4]      # HB 1am to 4am
 DISCHARGE = [18, 19]             # HB 6pm to 7pm
 TIMETABLE_CHARGE = [13, 14, 15]  # HB 1pm to 3pm, an Oct 27 result
+# Current FACTS pins for the backtest rows (docs/FACTS.md, after #213); the older pins are in the md history.
+FACTS_CLEARLANE_P10 = 1.28
+FACTS_CLEARLANE_P50 = 38.69
+FACTS_CLEARLANE_P90 = 116.00
+FACTS_SHARE_BEATING_PCT = 91
+FACTS_CYCLES_FIXED = 365
+FACTS_CYCLES_PRICE_ONLY = 625
 
 FUEL_COLUMNS = {
     "coal": "Net Generation (MW) from Coal (Adjusted)",
@@ -235,6 +242,21 @@ def share_beating(clear, fixed):
     return 100.0 * sum(1 for d in days if clear[d] > fixed[d]) / len(days)
 
 
+def cycles_per_year(daily_cycles):
+    """Mean of the daily Pulse cycle counts times 365, the convention of backtest.json."""
+    return 365.0 * sum(daily_cycles) / len(daily_cycles)
+
+
+def fixed_overnight_cycles(pulse_kwh, rte):
+    """Cycles on stored energy for the fixed rule: it drains the full store each evening.
+
+    Counted from the grid side so the definition is exercised: the grid receives pulse_kwh x eta, and
+    stored energy out is that divided by eta again (#213), over the usable capacity.
+    """
+    eta = math.sqrt(rte)
+    return (pulse_kwh * eta) / eta / pulse_kwh
+
+
 def window_check(hist_days, raw_hours, first, last):
     """Days in [first, last] with a hist row, and the missing ones with the raw hour count."""
     have = set(hist_days)
@@ -376,9 +398,10 @@ def backtest_checks(a):
     # ---- price_only by an independent DP
     host = [float(x) for x in site["host_load_kw_15m"]]
     st = site["station"]
-    po = {d: dp.price_only_day(hist[d], host, pulse_kw=st["pulse_kw"], pulse_kwh=st["pulse_kwh"],
-                               rte=st["rte"]["value"], export_limit_kw=site["export_limit_kw"]["value"])
-          ["usd_per_mw_day"] for d in days}
+    po_runs = {d: dp.price_only_day(hist[d], host, pulse_kw=st["pulse_kw"], pulse_kwh=st["pulse_kwh"],
+                                    rte=st["rte"]["value"], export_limit_kw=site["export_limit_kw"]["value"])
+               for d in days}
+    po = {d: po_runs[d]["usd_per_mw_day"] for d in days}
     ps = summarize(list(po.values()))
     eng_po = eng.get("price_only", {})
     diffs = {d: po[d] - eng_po[d] for d in days if d in eng_po}
@@ -414,15 +437,15 @@ def backtest_checks(a):
     cs = summarize(cl_vals) if len(cl_vals) == len(days) else None
     if cs is None:
         notes.append("clearlane_p50 left pending: backtest_days.json lacks clearlane rows for some days.")
-        checks["clearlane_p50"] = entry("clearlane_p50", "$/MW-day", 39.21, None, None, False,
+        checks["clearlane_p50"] = entry("clearlane_p50", "$/MW-day", FACTS_CLEARLANE_P50, None, None, False,
                                         "Waits on a complete backtest_days.json.", [paths["backtest_days"]])
     else:
         sci = {"p50_linear": r5(cs["linear"]["p50"]), "p50_nearest_rank": r5(cs["nearest_rank"]["p50"]),
                "n": cs["n"], "below_science_price_only_p50": cs["linear"]["p50"] <= ps["linear"]["p50"]}
-        ok = (abs(cs["linear"]["p50"] - pol["clearlane"]["p50"]) <= 0.01 and rounds_equal(cs["linear"]["p50"], 39.21, 2)
+        ok = (abs(cs["linear"]["p50"] - pol["clearlane"]["p50"]) <= 0.01 and rounds_equal(cs["linear"]["p50"], FACTS_CLEARLANE_P50, 2)
               and cs["linear"]["p50"] <= ps["linear"]["p50"])
         checks["clearlane_p50"] = entry(
-            "clearlane_p50", "$/MW-day", {"facts": 39.21, "backtest_json": r5(pol["clearlane"]["p50"])}, sci,
+            "clearlane_p50", "$/MW-day", {"facts": FACTS_CLEARLANE_P50, "backtest_json": r5(pol["clearlane"]["p50"])}, sci,
             "0.01 vs backtest.json; rounds equal at 2 dp; at or below the science price_only P50", ok,
             "P50 of backtest_days.json clearlane rows (not recomputed: needs the engine's wear, calls and "
             "re-plan), both methods; ordered against the science DP.", [paths["backtest_days"], paths["backtest"]])
@@ -435,12 +458,50 @@ def backtest_checks(a):
         sci = {"pct_engine_fixed": round(share_eng, 5), "pct_science_fixed": round(share_sci_fixed, 5),
                "days": len(days), "ties": sum(1 for d in days if clear[d] == fixed[d])}
         ok = (abs(share_sci_fixed - cl_stats["days_beating_fixed_overnight_pct"]) <= 0.01
-              and rounds_equal(share_sci_fixed, 96, 0))
+              and rounds_equal(share_sci_fixed, FACTS_SHARE_BEATING_PCT, 0))
         checks["share_days_beating"] = entry(
-            "share_days_beating", "% of days", {"facts": "96%", "backtest_json": r5(cl_stats["days_beating_fixed_overnight_pct"])},
+            "share_days_beating", "% of days", {"facts": f"{FACTS_SHARE_BEATING_PCT}%", "backtest_json": r5(cl_stats["days_beating_fixed_overnight_pct"])},
             sci, "0.01 percentage point; rounds equal at 0 dp", ok,
             "Days with clearlane (backtest_days.json) strictly above the science fixed_overnight value, of all days.",
             [paths["backtest_days"], paths["hist"], paths["backtest"]])
+
+    # ---- clearlane P10 and P90 against the current FACTS pins (#218)
+    if cs is not None:
+        want = {"p10": FACTS_CLEARLANE_P10, "p90": FACTS_CLEARLANE_P90}
+        sci = {f"{k}_linear": r5(cs["linear"][k]) for k in want}
+        ok = all(abs(cs["linear"][k] - pol["clearlane"][k]) <= 0.01 and rounds_equal(cs["linear"][k], want[k], 2)
+                 for k in want)
+        checks["clearlane_p10_p90"] = entry(
+            "clearlane_p10_p90", "$/MW-day",
+            {"facts": want, "backtest_json": {k: r5(pol["clearlane"][k]) for k in want}}, sci,
+            "0.01 vs backtest.json; rounds equal at 2 dp", ok,
+            "P10 and P90 (linear) of the backtest_days.json clearlane rows.",
+            [paths["backtest_days"], paths["backtest"]])
+
+    # ---- Pulse cycles a year on stored energy (#213, #218)
+    cyc_fixed = cycles_per_year([fixed_overnight_cycles(st["pulse_kwh"], st["rte"]["value"]) for _ in days])
+    cyc_po = cycles_per_year([po_runs[d]["pulse_cycles"] for d in days])
+    stored_gap = max(abs(po_runs[d]["pulse_cycles"] - po_runs[d]["discharged_kwh"] / math.sqrt(st["rte"]["value"])
+                         / st["pulse_kwh"]) for d in days)
+    bt_fixed = next(p for p in bt["policies"] if p["policy"] == "fixed_overnight")["pulse_cycles_per_yr"]
+    bt_po = next(p for p in bt["policies"] if p["policy"] == "price_only")["pulse_cycles_per_yr"]
+    checks["cycles_per_year_by_policy_fixed_overnight"] = entry(
+        "cycles_per_year_by_policy_fixed_overnight", "cycles/yr",
+        {"facts": FACTS_CYCLES_FIXED, "backtest_json": r5(bt_fixed)}, {"science": r5(cyc_fixed), "days": len(days)},
+        "0.01 vs backtest.json; rounds equal at 0 dp",
+        abs(cyc_fixed - bt_fixed) <= 0.01 and rounds_equal(cyc_fixed, FACTS_CYCLES_FIXED, 0),
+        "Fixed rule drains the full 500 kWh store once a day; cycles on stored energy (grid kWh / sqrt(0.88) / "
+        "500), mean per day x 365.", [paths["site"], paths["backtest"]])
+    checks["cycles_per_year_by_policy_price_only"] = entry(
+        "cycles_per_year_by_policy_price_only", "cycles/yr",
+        {"facts": FACTS_CYCLES_PRICE_ONLY, "backtest_json": r5(bt_po)},
+        {"science": r5(cyc_po), "days": len(days), "max_abs_gap_level_path_vs_grid_over_eta": round(stored_gap, 12)},
+        "0.01 vs backtest.json; rounds equal at 0 dp",
+        abs(cyc_po - bt_po) <= 0.01 and rounds_equal(cyc_po, FACTS_CYCLES_PRICE_ONLY, 0),
+        "Science DP level path: kWh leaving the store each day over 500 kWh, mean per day x 365.",
+        dp_inputs + [paths["backtest"]])
+    notes.append("Not recomputed (need the engine's wear, calls and re-plan): wear_usd_mwh, "
+                 "cycles_per_year_by_policy_clearlane, clearlane_dp_usd_mw_day, dp_race_ratio, cycles_today.")
 
     inputs = [paths[k] for k in paths] + [p for v in raw_files.values() for p in v]
     return checks, notes, inputs
