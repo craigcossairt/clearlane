@@ -20,7 +20,7 @@ On the reference day, a battery on our fixed off-peak rule is worth `{fixed_usd_
 
 At `{mou_70mw}` MW, that is `{fixed_70}` a day against `{clearlane_70}` a day. Those figures assume every MW behaves like the reference station and the fleet does not move prices.
 
-This is value to RMP's system at day-ahead prices. It is not Torus revenue, not a host bill cut, and not a settlement.
+Every dollar here is value to RMP's system at day-ahead prices, not Torus revenue, not a host bill cut. It is not a settlement.
 
 CO2 is estimated, using average emissions for PacifiCorp East, not marginal: the off-peak rule adds about `{co2_added_70}` a day at that scale, and the timetable avoids about `{co2_avoided_70}`. Average emissions can differ from marginal.
 
