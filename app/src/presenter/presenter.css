@@ -298,6 +298,9 @@ body[data-mode="presenter"] {
   letter-spacing: -0.04em;
   line-height: 1;
 }
+[data-mode="presenter"] .p-wordmark-clear {
+  color: var(--clear);
+}
 [data-mode="presenter"] .p-title-line {
   margin: 0;
   font-size: 52px;

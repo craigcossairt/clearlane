@@ -657,8 +657,10 @@ function TitleHero({ day, onStart }: { day: string; onStart: () => void }) {
   return (
     <section className="p-title" aria-labelledby="p-wordmark">
       <div className="p-brand">
-        <h1 id="p-wordmark" className="p-wordmark">
-          {COPY.title}
+        {/* "Clear" in lane green, as on the slides, site and leave-behind; reads as one word. */}
+        <h1 id="p-wordmark" className="p-wordmark" aria-label={COPY.title}>
+          <span className="p-wordmark-clear">{COPY.title.slice(0, 5)}</span>
+          {COPY.title.slice(5)}
         </h1>
       </div>
       <p className="p-title-line">{PRESENTER.titleLine}</p>
