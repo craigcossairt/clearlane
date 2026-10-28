@@ -527,17 +527,52 @@ export const PRESENTER = {
 
   envelopeHeadline: "An hourly envelope Rocky Mountain Power could plan around.",
   envelopeLine:
-    "A format Clearlane proposes: a working example, not a filing. System Critical Hours are our proposal.",
-  // "Backtested on {backtest_days} days, {window start} to {window end}." The count is a Num and the
-  // dates are the backtest window rendered as times, so no digit sits in copy (Pitch review, #217).
-  backtestHeadlinePre: "Backtested on",
-  backtestHeadlineDays: "days,",
-  backtestHeadlineTo: "to",
-  backtestLine:
-    "Each policy run on every day of the history with full data, beside the off-peak rule.",
+    "Each hour, the most the station will draw, and the power it keeps ready for RMP. A format Clearlane proposes, not a filing.",
   showBacktest: "Show the backtest",
   showEnvelope: "Show the envelope",
 
+  // #270: screens 4 to 6 read from the screen alone. No digit sits in this copy; every number
+  // is a Num or a Live engine value.
+  callTraceLegend: "Gray: what Rocky Mountain Power asked for. Blue: Spin. Gold: Pulse.",
+  callDeliveredOf: "of the call delivered",
+  callSimTitle: "Our simulation",
+  callPublishedTitle: "Torus's published record, separate from this simulation",
+  callPublishedRamp: "Ramp",
+  callPublishedDelivered: "target, delivered",
+  callSpinBack: "Spin full again at",
+  replanHero: "Re-planned in",
+  replanHeroTail: "timed live on this laptop, from the charge the call left behind.",
+  replanAxis: "Pulse battery charge",
+  replanCallMark: "RMP call,",
+  replanTakesOver: "The re-plan takes over here",
+  replanKeyPlanned: "This morning's plan",
+  replanKeyReplanned: "Re-plan after the call",
+  replanCycles: "Pulse cycles today",
+  replanCyclesBudget: "Budget",
+  replanCyclesTail: "a year",
+  envelopeDrawLabel: "Most the station will draw",
+  envelopeReadyLabel: "Kept ready for RMP",
+  envelopeSchLabel: "System Critical Hours, our proposal",
+  envelopeSchCount: "System Critical Hours today",
+  envelopeAria:
+    "Twenty-four hours, Mountain time: the most the station will draw each hour, with the System Critical Hours marked",
+  backtestScoreHeadline:
+    "Battery-only is worth more on paper. Clearlane is the plan a host and RMP would allow.",
+  backtestLinePre: "Backtested on",
+  backtestLineDays: "days,",
+  backtestLineTo: "to",
+  backtestLineBeats: "Clearlane beats the off-peak rule on",
+  backtestLineBeatsTail: "of days.",
+  scoreMoney: "Typical day per MW, on paper",
+  scoreMoneyRange: "Most days between",
+  scoreMoneyAnd: "and",
+  scoreWear: "Battery wear: cycles a year, budget",
+  scoreCeiling: "Times it broke the host's meter ceiling",
+  scoreCalls: "RMP calls it could not answer",
+  scoreCallsRule: "Pass: fewer than the off-peak rule",
+  scorePass: "Pass",
+  scoreFail: "Fail",
+  scoreBaseline: "Baseline",
   scaleHeadline: "Scale the station to the fleet the MOU allows.",
   scaleLine:
     "MOU ceiling, not installed capacity. Assumes the fleet does not move prices.",
