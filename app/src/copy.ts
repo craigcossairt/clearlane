@@ -66,10 +66,11 @@ export const COPY = {
     "Computed live by the engine on this page, so it has no key in numbers.json.",
   lineageShown: "Shown as",
   lineageClass: "Class",
-  lineageClassReal: "Public data as published.",
+  lineageClassReal: "Public data or a public statement, as published.",
   lineageClassDerived: "Computed by our code from public data.",
   lineageClassSimulated: "Our model, not a real site or a real call.",
-  lineageClassTorus: "Published by Torus on its own pages.",
+  lineageClassTorus:
+    "Published by Torus: a company claim, not an independent measurement.",
   lineageClassAssumption: "A value we chose and state.",
   lineageClassMeasured: "Timed live on this laptop.",
   lineageSource: "Source",

@@ -25,7 +25,7 @@ import {
   type ScreenKey,
 } from "./model";
 import { ProofDrawer } from "../proof/ProofDrawer";
-import { StretchKeyRows } from "../stretch/StretchKeyRows";
+import { StretchKeyRows } from "../components/StretchKeyRows";
 import { RaceScreen } from "./RaceScreen";
 import "./presenter.css";
 

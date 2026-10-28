@@ -22,8 +22,7 @@ import { KEYMAP, lookup, typedIntoInput } from "./keymap";
 import { ProofDrawer } from "./proof/ProofDrawer";
 import { dayLabel, resolveStageDay } from "./stageDay";
 import { Presenter } from "./presenter/Presenter";
-import { LineagePanel } from "./stretch/LineagePanel";
-import { StretchKeyRows } from "./stretch/StretchKeyRows";
+import { StretchKeyRows } from "./components/StretchKeyRows";
 
 export type BeatId = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -51,6 +50,11 @@ const EMPTY_CALL: CallState = { first: null, ghost: null, second: null };
  * flag-off stage imports and renders nothing new.
  */
 const FleetBoard = lazy(() => import("./stretch/FleetBoard"));
+
+/** Number lineage (#91, ff_lineage): loaded the same way, only while its flag is on. */
+const LineagePanel = lazy(() =>
+  import("./stretch/LineagePanel").then((m) => ({ default: m.LineagePanel })),
+);
 
 let cachedData: StageData | null = null;
 function defaultData(): StageData {
@@ -120,7 +124,11 @@ export function App({ data, search, now, reducedMotion, flags }: AppProps) {
             bundle={resolved.entry.bundle}
           />
         )}
-        <LineagePanel torus={stageData.torus} />
+        {flagSet.has("ff_lineage") ? (
+          <Suspense fallback={null}>
+            <LineagePanel torus={stageData.torus} />
+          </Suspense>
+        ) : null}
       </FlagsContext.Provider>
     </NumbersContext.Provider>
   );

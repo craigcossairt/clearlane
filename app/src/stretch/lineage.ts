@@ -195,6 +195,30 @@ export function openLineage(info: ChipInfo, from: HTMLElement): void {
   opener?.(info, from);
 }
 
+/** True once the stage's lazily loaded panel has mounted; tests wait on it before pressing keys. */
+export function lineageMounted(): boolean {
+  return opener !== null;
+}
+
+type KeyHandler = (event: KeyboardEvent) => void;
+let keyHandler: KeyHandler | null = null;
+
+/**
+ * The panel's keys go through one window capture listener, added when this module first loads.
+ * Chip.tsx imports this module, so the listener is in place before any component mounts, and the
+ * panel sees each key before the stage, the presenter, the proof drawer or a lazily loaded layer
+ * such as the fleet board, whatever order their code arrives in. With no panel mounted (the flag
+ * off) it does nothing.
+ */
+if (typeof window !== "undefined") {
+  window.addEventListener("keydown", (event) => keyHandler?.(event), true);
+}
+
+/** The mounted panel hands its key handler here, and null when it unmounts. */
+export function setLineageKeys(fn: KeyHandler | null): void {
+  keyHandler = fn;
+}
+
 export const LINEAGE_CHIP = ".chip[data-lineage]";
 export const LINEAGE_PANEL = ".lineage-panel";
 

@@ -29,6 +29,7 @@ import {
 import {
   crossCheckFor,
   FACTS_FILE,
+  lineageMounted,
   lineageFor,
   loadFactsRows,
   parseFactsRows,
@@ -264,17 +265,22 @@ describe("number lineage data (#91)", () => {
 });
 
 describe("number lineage on the stage (#91, ff_lineage)", () => {
-  const stage = (extra = "") =>
-    render(
+  // The stage loads the panel lazily, so each test waits for it to mount before pressing keys.
+  const mounted = () => waitFor(() => expect(lineageMounted()).toBe(true));
+  const stage = async (extra = "") => {
+    const { container } = render(
       <App
         data={data}
         now={STAGE_NOW}
         search={`?ff=lineage${extra}&beat=5&step=end&motion=off`}
       />,
-    ).container;
+    );
+    await mounted();
+    return container;
+  };
 
   it("makes every chip focusable, and Enter, I or a click opens its lineage", async () => {
-    const c = stage();
+    const c = await stage();
     const chips = [...c.querySelectorAll<HTMLElement>(".chip")];
     expect(chips.length).toBeGreaterThan(0);
     for (const chip of chips) {
@@ -307,8 +313,8 @@ describe("number lineage on the stage (#91, ff_lineage)", () => {
     }
   });
 
-  it("holds the stage still while the panel is open, and keeps Tab inside it", () => {
-    const c = stage();
+  it("holds the stage still while the panel is open, and keeps Tab inside it", async () => {
+    const c = await stage();
     const chip = keyedChip(c);
     const beat = document.body.dataset.beat;
     chip.focus();
@@ -326,8 +332,8 @@ describe("number lineage on the stage (#91, ff_lineage)", () => {
     expect(document.activeElement).toBe(chip);
   });
 
-  it("closes from its Close button and from a click outside", () => {
-    const c = stage();
+  it("closes from its Close button and from a click outside", async () => {
+    const c = await stage();
     const chip = keyedChip(c);
     fireEvent.click(chip);
     fireEvent.click(
@@ -340,8 +346,8 @@ describe("number lineage on the stage (#91, ff_lineage)", () => {
     expect(panel()).toBeNull();
   });
 
-  it("lists I in the ? overlay while the flag is on", () => {
-    stage();
+  it("lists I in the ? overlay while the flag is on", async () => {
+    await stage();
     press("?");
     const dts = [...document.querySelectorAll(".keymap dt")].map(
       (d) => d.textContent,
@@ -349,8 +355,8 @@ describe("number lineage on the stage (#91, ff_lineage)", () => {
     expect(dts).toContain(LINEAGE_KEY.keyLabel);
   });
 
-  it("opens over the proof drawer, and Esc closes the panel before the drawer", () => {
-    stage(",proof_drawer");
+  it("opens over the proof drawer, and Esc closes the panel before the drawer", async () => {
+    await stage(",proof_drawer");
     press("p");
     const drawer = document.querySelector<HTMLElement>(".proof-drawer")!;
     expect(drawer).not.toBeNull();
@@ -369,7 +375,45 @@ describe("number lineage on the stage (#91, ff_lineage)", () => {
     expect(document.querySelector(".proof-drawer")).toBeNull();
   });
 
-  it("works in presenter mode, and the clicker's PageDown closes it without turning the screen", () => {
+  it("opens over the fleet board, which takes no key while the panel is open", async () => {
+    render(
+      <App
+        data={data}
+        now={STAGE_NOW}
+        search="?ff=lineage,fleet_board&beat=3&motion=off"
+      />,
+    );
+    await waitFor(() =>
+      expect(document.querySelector(".fleet-pill")).not.toBeNull(),
+    );
+    await mounted();
+    const board = () => document.querySelector<HTMLElement>(".fleet-board");
+    keyedChip(document).focus();
+    press("i");
+    expect(panel()).not.toBeNull();
+    press("f");
+    expect(board()).toBeNull();
+    press("Escape");
+    expect(panel()).toBeNull();
+    press("f");
+    expect(board()).not.toBeNull();
+    const chip = board()!.querySelector<HTMLElement>(".chip[data-lineage]")!;
+    chip.focus();
+    press("i");
+    expect(panel()).not.toBeNull();
+    press("c");
+    expect(board()!.getAttribute("data-fleet-call")).toBe("none");
+    press("f");
+    expect(board()).not.toBeNull();
+    press("Escape");
+    expect(panel()).toBeNull();
+    expect(board()).not.toBeNull();
+    expect(document.activeElement).toBe(chip);
+    press("Escape");
+    expect(board()).toBeNull();
+  });
+
+  it("works in presenter mode, and the clicker's PageDown closes it without turning the screen", async () => {
     render(
       <App
         data={data}
@@ -377,6 +421,7 @@ describe("number lineage on the stage (#91, ff_lineage)", () => {
         search="?ff=presenter,lineage&screen=6&step=end&motion=off"
       />,
     );
+    await mounted();
     const screen = document.body.dataset.screen;
     const chip = keyedChip(document);
     chip.focus();

@@ -20,6 +20,7 @@ import {
   isLineageKey,
   lineageFor,
   loadFactsRows,
+  setLineageKeys,
   setLineageOpener,
   type ChipInfo,
   type FactsRow,
@@ -141,7 +142,7 @@ function LineageOn({
     };
   }, [open, facts.state]);
 
-  // Capture phase, so it runs before the stage's and the presenter's own key handlers.
+  // Through lineage.ts's capture listener, so it runs before every other layer's key handler.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (!openRef.current) {
@@ -171,8 +172,8 @@ function LineageOn({
         hide();
       }
     };
-    window.addEventListener("keydown", onKey, true);
-    return () => window.removeEventListener("keydown", onKey, true);
+    setLineageKeys(onKey);
+    return () => setLineageKeys(null);
   }, [hide]);
 
   if (!info) return null;
