@@ -15,13 +15,12 @@ Beats 2 and 6 say the reference timetable, `{clearlane_usd_mw_day}` per MW-day, 
 
 ## Beat 2, the race (0:25 to 0:55)
 
-> Left, a battery on a fixed off-peak rule. That rule is ours, not Torus practice. It charges at `{fixed_rule_charge_usd_mwh}`. Right, a simulated Torus-style station on Clearlane, charging in the clear lane at `{timetable_charge_usd_mwh}`. Off-peak is worth `{fixed_usd_mw_day}` per MW-day, Clearlane `{clearlane_usd_mw_day}`. At `{mou_70mw}` MW that is `{clearlane_70}` a day, as value to RMP's system at day-ahead prices. CO2 is estimated, using average emissions.
+> Left, a battery on a fixed off-peak rule. That rule is ours, not Torus practice. It charges at `{fixed_rule_charge_usd_mwh}`. Right, a simulated Torus-style station on Clearlane, at `{timetable_charge_usd_mwh}`. On the day on screen overnight is nearly as cheap as noon: `{fixed_usd_mw_day}` per MW-day against `{clearlane_usd_mw_day}`, as value to RMP's system at day-ahead prices. Across the backtest Clearlane wins on `{share_days_beating}` of days.
 
 | Craig's cue                       | Screen                                                                     |
 | --------------------------------- | -------------------------------------------------------------------------- |
 | Right arrow to beat 2, then Space | Both stations play the day side by side                                    |
 | "Clearlane"                       | End cards: the off-peak rule and Clearlane, per MW-day and at the MOU size |
-| "CO2"                             | CO2 line under the cards, added and avoided tons a day                     |
 
 ## Beat 3, the crash (0:55 to 1:40)
 

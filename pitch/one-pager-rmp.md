@@ -16,7 +16,7 @@ The envelope is a format Clearlane proposes. Torus does not know whether Lasso's
 
 ## The value, and whose it is
 
-On the reference day, a battery on our fixed off-peak rule is worth `{fixed_usd_mw_day}` per MW-day. The Clearlane timetable is worth `{clearlane_usd_mw_day}` per MW-day, about `{race_ratio}` the off-peak rule.
+On the reference day, a battery on our fixed off-peak rule is worth `{fixed_usd_mw_day}` per MW-day. The Clearlane timetable is worth `{clearlane_usd_mw_day}` per MW-day. Overnight power was nearly as cheap as noon that day, so the rule almost ties; across the May 1 to Oct 27 backtest Clearlane beats it on `{share_days_beating}` of days.
 
 At `{mou_70mw}` MW, that is `{fixed_70}` a day against `{clearlane_70}` a day. Those figures assume every MW behaves like the reference station and the fleet does not move prices.
 

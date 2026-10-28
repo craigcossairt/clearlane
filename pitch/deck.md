@@ -18,7 +18,7 @@ Notes: on stage, this slide, then the live demo, then the close. Every slide bet
 
 Ribbon of the operating day. Three numbers: 1am to 6am average `{overnight_avg}`, 9am to 5pm average `{midday_avg}`, 6pm price `{peak_price}`. These are window averages, not what any schedule paid.
 
-The day's low was `{price_min_oct27}`. The 6pm hour was `{peak_over_trough}` that low.
+The day's low was `{price_min_oct27}`. The 6pm hour was `{peak_over_trough}` that low. On this day overnight power was about as cheap as midday; the 6pm jam is the same.
 
 Caption: the biggest price jump landed at 5pm or 6pm on `{oct_step_hour_days_at_5_or_6}` of `{oct_step_hour_days_total}` October days.
 

@@ -158,9 +158,9 @@ Source: FACTS `clearlane_70`
 
 Judge: Scott Holley
 
-A: On the day on screen the fixed off-peak rule charged at `{fixed_rule_charge_usd_mwh}` and the timetable at `{timetable_charge_usd_mwh}`. Estimated, using average emissions, PacifiCorp East ran about `{co2_overnight_avg}` overnight and `{co2_midday_avg}` at midday.
+A: On the day on screen overnight nearly ties: the fixed off-peak rule charged at `{fixed_rule_charge_usd_mwh}` and the timetable at `{timetable_charge_usd_mwh}`, but across the backtest Clearlane beats the overnight rule on `{share_days_beating}` of days. Estimated, using average emissions, PacifiCorp East ran about `{co2_overnight_avg}` overnight and `{co2_midday_avg}` at midday.
 
-Source: FACTS `fixed_rule_charge_usd_mwh`, `timetable_charge_usd_mwh`, `co2_overnight_avg`, `co2_midday_avg`
+Source: FACTS `fixed_rule_charge_usd_mwh`, `timetable_charge_usd_mwh`, `share_days_beating`, `co2_overnight_avg`, `co2_midday_avg`
 
 ### What about data centers?
 
