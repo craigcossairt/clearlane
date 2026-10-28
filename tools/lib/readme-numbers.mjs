@@ -15,6 +15,9 @@ export const README_KEYS = [
   { key: "backtest_days", label: "Days in the May 1 to Oct 27 backtest" },
   { key: "share_days_beating", label: "Backtest days Clearlane beat the off-peak rule" },
   { key: "clearlane_p50", label: "Clearlane's median day in the backtest, per MW-day" },
+  { key: "calls_missed_by_policy_clearlane_mt", label: "Backtest RMP calls missed, Clearlane" },
+  { key: "calls_missed_by_policy_fixed_overnight_mt", label: "Backtest RMP calls missed, fixed overnight rule" },
+  { key: "calls_missed_by_policy_price_only_mt", label: "Backtest RMP calls missed, price-only battery plan" },
 ];
 
 /** Markdown table of the README keys. Throws, naming the key, if numbers.json lacks one. */

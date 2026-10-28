@@ -17,7 +17,7 @@ lane, stay off the road in the evening jam, and keep the flywheel ready for Rock
 
 Clearlane reads the CAISO day-ahead price for PacifiCorp East and plans a station's whole day ahead. The battery
 charges at midday, when solar makes power cheap, and holds its energy for the evening jam. The flywheel stays ready to
-answer Rocky Mountain Power's demand response calls on its own, so a call never costs the battery its evening block.
+answer Rocky Mountain Power's demand response calls, so the battery can keep its evening block.
 When a call lands, Clearlane re-plans the rest of the day from the actual state of charge.
 
 Each day ends in an hourly operating envelope that marks System Critical Hours, a format Clearlane proposes for a
