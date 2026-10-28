@@ -1,5 +1,5 @@
 import type { StageNumber } from "@contracts/types";
-import type { ReferenceRace } from "@engine";
+import type { ReferenceRace } from "../engineClient";
 import { grouped } from "../format";
 
 /**

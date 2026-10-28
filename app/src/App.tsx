@@ -22,6 +22,7 @@ import {
 import { FlagsContext, parseFlags, type FlagName } from "./flags";
 import { KEYMAP, lookup, typedIntoInput } from "./keymap";
 import { dayLabel, resolveStageDay } from "./stageDay";
+import { Presenter } from "./presenter/Presenter";
 
 export type BeatId = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -90,14 +91,25 @@ export function App({ data, search, now, reducedMotion, flags }: AppProps) {
   return (
     <NumbersContext.Provider value={numbersState}>
       <FlagsContext.Provider value={flagSet}>
-        <Stage
-          data={stageData}
-          bundleFile={resolved.entry.file}
-          query={query}
-          now={clock}
-          reducedMotion={reducedMotion}
-          bundle={resolved.entry.bundle}
-        />
+        {flagSet.has("ff_presenter") ? (
+          <Presenter
+            data={stageData}
+            bundleFile={resolved.entry.file}
+            query={query}
+            now={clock}
+            reducedMotion={reducedMotion}
+            bundle={resolved.entry.bundle}
+          />
+        ) : (
+          <Stage
+            data={stageData}
+            bundleFile={resolved.entry.file}
+            query={query}
+            now={clock}
+            reducedMotion={reducedMotion}
+            bundle={resolved.entry.bundle}
+          />
+        )}
       </FlagsContext.Provider>
     </NumbersContext.Provider>
   );
@@ -119,24 +131,10 @@ function Stage({
   reducedMotion?: boolean;
 }) {
   const params = useMemo(() => new URLSearchParams(query), [query]);
-  const live = useMemo<Live>(() => {
-    const site = defaultSite();
-    const policies: Policy[] = ["fixed_overnight", "price_only", "clearlane"];
-    const wear_usd_mwh = stageWearUsdMwh();
-    const plans = Object.fromEntries(
-      policies.map((p) => [p, solve(bundle, site, p, { wear_usd_mwh })]),
-    ) as Live["plans"];
-    return {
-      bundle,
-      bundleFile,
-      day: dayLanes(bundle),
-      site,
-      plans,
-      torus: data.torus,
-      calls: scriptedCalls(bundle, site),
-      stub: STUB_ACTIVE,
-    };
-  }, [bundle, bundleFile, data.torus]);
+  const live = useMemo<Live>(
+    () => buildLive(bundle, bundleFile, data.torus),
+    [bundle, bundleFile, data.torus],
+  );
 
   const fleetRange = useMemo(() => {
     const ctx: NumbersState = { state: "ready", numbers: data.numbers };
@@ -394,6 +392,30 @@ function Stage({
   );
 }
 
+/** Solve the stage day once: the three plans, the lanes and the scripted calls. */
+export function buildLive(
+  bundle: Live["bundle"],
+  bundleFile: string,
+  torus: Live["torus"],
+): Live {
+  const site = defaultSite();
+  const policies: Policy[] = ["fixed_overnight", "price_only", "clearlane"];
+  const wear_usd_mwh = stageWearUsdMwh();
+  const plans = Object.fromEntries(
+    policies.map((p) => [p, solve(bundle, site, p, { wear_usd_mwh })]),
+  ) as Live["plans"];
+  return {
+    bundle,
+    bundleFile,
+    day: dayLanes(bundle),
+    site,
+    plans,
+    torus,
+    calls: scriptedCalls(bundle, site),
+    stub: STUB_ACTIVE,
+  };
+}
+
 /** Hours from the bundle's first interval to the scripted call start (time arithmetic only). */
 export function callHour(live: Live): number {
   const h0 = live.bundle.hours[0]?.ts_utc;
@@ -406,7 +428,7 @@ function clampBeat(n: number): BeatId {
   return Math.max(1, Math.min(6, Math.round(n))) as BeatId;
 }
 
-function runCalls(live: Live, withSecond: boolean): CallState {
+export function runCalls(live: Live, withSecond: boolean): CallState {
   const first = crash(live.plans.clearlane, live.site, live.calls.first, live.torus);
   const ghost = crash(live.plans.price_only, live.site, live.calls.first, live.torus);
   const second = withSecond

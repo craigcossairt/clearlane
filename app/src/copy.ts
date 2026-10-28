@@ -156,3 +156,117 @@ export const COPY = {
   simulated: "Simulated.",
   emptyNotZero: "Empty, not zero.",
 } as const;
+
+/**
+ * Presenter mode (#216, ff_presenter). One idea per screen: a takeaway headline, one supporting
+ * line, labelled buttons. Written from the beat copy above and pitch/stage-script.md: same
+ * claims, shorter. Numbers never appear here; a headline that needs one renders it with Num.
+ * Buttons are named, never keys ("Call again during refill", not "Press C").
+ */
+export const PRESENTER = {
+  back: "Back",
+  next: "Next",
+  sources: "Sources",
+  closeOverlay: "Close",
+  progressAria: "Screens",
+  keysTitle: "Presenter keys",
+  keys: [
+    ["Right or Page Down", "Next"],
+    ["Left or Page Up", "Back"],
+    ["Home", "Title"],
+    ["?", "Show or hide these keys"],
+  ],
+  sourcesTitle: "Sources",
+  provenanceTitle: "What each chip means",
+  operatingDay: "Operating day",
+  checkMark: "✓",
+
+  titleLine: "A day planner for simulated Torus-style stations on Utah's grid.",
+  titleDetail:
+    "It reads the CAISO day-ahead price for PacifiCorp East, fills the battery in the midday clear lane, and keeps Spin ready for Rocky Mountain Power's calls.",
+  titleNode: "CAISO day-ahead node",
+  start: "Start",
+
+  trafficHeadline: "Power is cheapest at midday. The road jams after the evening step.",
+  trafficLine:
+    "Day-ahead price for PacifiCorp East, each hour labeled Clear, Shoulder or Jam.",
+
+  raceHeadlinePre: "Filling up at midday keeps",
+  raceHeadlinePost: "the value of the off-peak rule.",
+  raceLine:
+    "Same battery, same evening sale. Only the hours it buys in change. The off-peak rule is our baseline, not Torus practice.",
+  replay: "Replay the day",
+  keepsLabel: "value kept per MW per day, higher is better",
+  rowBuys: "Buys",
+  rowSells: "Sells",
+  rowKeeps: "Keeps",
+  at: "at",
+  equals: "=",
+  clearlaneChip: "Clearlane",
+  stripFixed: "Off-peak rule",
+  stripClear: "Clearlane",
+  markBuy: "Buy",
+  markSell: "Sell",
+  stripBuy: "Buy hours",
+  stripSell: "Sell hours",
+  stripAria:
+    "Twenty-four hours, Mountain time, marking each plan's buy hours and sell hours",
+  raceNote: "Value to RMP's system at day-ahead prices, per MW of battery.",
+
+  callHeadline: "When Rocky Mountain Power calls, Spin answers.",
+  callLine:
+    "A simulated call of about five and a half minutes. Call again during the refill, and the card shows any shortfall.",
+  callNow: "Rocky Mountain Power calls now",
+  callAgain: "Call again during refill",
+  callPrompt:
+    "Click Rocky Mountain Power calls now to drop a simulated call. This space stays put either way.",
+  secondPrompt: "A second call during the refill shows any shortfall here.",
+  secondRule:
+    "Second call inside the refill window: the call wins and Pulse diverts to cover it.",
+
+  replanHeadline: "After the call, the rest of the day is re-solved.",
+  replanLine: "The morning plan, and the plan re-solved at the call minute.",
+  replanLegend:
+    "Dashed: Pulse state of charge as planned this morning. Solid: the re-plan from the call (red line).",
+  resume: "Resume the day",
+
+  envelopeHeadline: "Every hour, a limit Rocky Mountain Power can plan around.",
+  envelopeLine:
+    "The hourly envelope is a format Clearlane proposes, and System Critical Hours are our proposal.",
+  backtestHeadline: "Backtested on every day from May to October.",
+  backtestLine:
+    "Each policy run on every day of the history, beside the off-peak rule.",
+  showBacktest: "Show the backtest",
+  showEnvelope: "Show the envelope",
+
+  scaleHeadline: "Scale the station to the fleet the MOU allows.",
+  scaleLine:
+    "MOU ceiling, not installed capacity. Assumes the fleet does not move prices.",
+  fleetMin: "MW",
+  fleetMax: "MW",
+
+  closeHeadline: "The ask: pilot the envelope.",
+
+  footTitle: "Data: CAISO OASIS and EIA.",
+  footTraffic: "CAISO day-ahead price and forecasts.",
+  footRace: "CAISO prices; engine reference race.",
+  footCall: "Our simulation; Torus's published record.",
+  footReplan: "Engine re-plan, timed on this laptop.",
+  footEnvelope: "Engine envelope and backtest.",
+  footScale: "Torus and RMP announcements.",
+  footClose: "Simulated campus; engine shift.",
+  sourceTitle:
+    "Clearlane, built for the Torus bounty. Prices and forecasts from CAISO OASIS; hourly CO2 from EIA.",
+  sourceTraffic:
+    "CAISO OASIS day-ahead price, load forecast and wind and solar forecast for PacifiCorp East.",
+  sourceRace:
+    "CAISO day-ahead prices; reference battery of one MW and two MWh (our assumption); engine reference race.",
+  sourceCall:
+    "Our simulated call and station; the event record is Torus's own published RMP case study.",
+  sourceReplan: "Engine re-plan, solved live on this laptop from the simulated call.",
+  sourceEnvelope:
+    "Engine envelope and backtest over the May to October CAISO day-ahead history.",
+  sourceScale:
+    "MOU and fleet sizes from Torus and Rocky Mountain Power announcements; price-taker scaling.",
+  sourceClose: "Simulated campus shift on the day-ahead prices; not a Torus product.",
+} as const;

@@ -188,3 +188,4 @@ export function heatmapMountain(byHour: number[]): number[] {
 export function referenceRaceFor(bundle: Bundle): ReferenceRace {
   return referenceRace(bundle);
 }
+export type { ReferenceRace };
