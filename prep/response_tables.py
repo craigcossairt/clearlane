@@ -78,6 +78,8 @@ CAVEATS = {
         "response, not plant heat rates.",
         "PACE exports in most hours, and midday curtailment is invisible in net generation, which can bias midday factors.",
         "Method after Siler-Evans, Azevedo and Morgan 2012 (citation UNVERIFIED, not opened).",
+        "The hourly factors are estimates that depend on the estimator: a load-binned estimator gives lower values "
+        "in most cells (science #112), so a single hour's factor should not be quoted as precise.",
     ],
     "forecast_residuals": [
         "Residual = EIA-930 day-ahead demand forecast minus reported demand; positive means over-forecast."
