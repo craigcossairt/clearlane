@@ -5,15 +5,16 @@ import test from "node:test";
 // Presenter-mode talk track: the stage story in plain words, cued to the eight presenter screens
 // (app/src/presenter/model.ts). Same speech budget as script.test.mjs: 2.5 words a second, a
 // {key} counts as 3 words.
+// Budgets include the optional cuts; without them the talk runs about 2:30.
 const SCREENS = [
-  ["Screen 1, title (0:00 to 0:08)", 20],
-  ["Screen 2, traffic (0:08 to 0:30)", 55],
+  ["Screen 1, title (0:00 to 0:10)", 25],
+  ["Screen 2, traffic (0:10 to 0:30)", 50],
   ["Screen 3, race (0:30 to 1:00)", 75],
   ["Screen 4, call (1:00 to 1:35)", 87],
   ["Screen 5, re-plan (1:35 to 1:50)", 37],
-  ["Screen 6, envelope (1:50 to 2:25)", 87],
-  ["Screen 7, scale (2:25 to 2:35)", 25],
-  ["Screen 8, close (2:35 to 2:45)", 25],
+  ["Screen 6, envelope (1:50 to 2:20)", 75],
+  ["Screen 7, scale (2:20 to 2:30)", 25],
+  ["Screen 8, close (2:30 to 2:45)", 37],
 ];
 
 // The presenter's button labels (PRESENTER in app/src/copy.ts).
@@ -37,9 +38,13 @@ function sections(src) {
     .slice(1)
     .map((part) => {
       const [heading, ...rest] = part.split(/\r?\n/);
-      const spoken = rest.filter((l) => l.startsWith("> ")).map((l) => l.slice(2)).join(" ");
+      const spoken = rest
+        .filter((l) => l.startsWith("> "))
+        .map((l) => l.slice(2).replace(/^_Optional:_ /, ""))
+        .join(" ");
+      const optional = rest.filter((l) => l.startsWith("> _Optional:_ ")).length;
       const field = (name) => rest.filter((l) => l.startsWith(`- **${name}:**`)).map((l) => l.slice(name.length + 7));
-      return { heading: heading.trim(), spoken, point: field("Point at"), press: field("Press"), asked: field("If asked") };
+      return { heading: heading.trim(), spoken, optional, point: field("Point at"), press: field("Press"), asked: field("If asked") };
     });
 }
 
@@ -99,6 +104,15 @@ test("cues are clicks, never stage keys", () => {
   const cues = screens.flatMap((s) => [...s.point, ...s.press]).join("\n");
   assert.doesNotMatch(cues, /[Aa]rrow|[Pp]ress [A-Z]\b|then [A-Z]\b|\bSpace\b|\bEnd\b|\bHome\b/);
   for (const b of BUTTONS) assert.ok(cues.includes(b), `no cue for ${b}`);
+});
+
+test("the two optional cuts are the second call and the 500 MW press", () => {
+  assert.deepEqual(
+    screens.filter((s) => s.optional > 0).map((s) => s.heading.split(" (")[0]),
+    ["Screen 4, call", "Screen 7, scale"],
+  );
+  assert.match(screens[3].spoken, /second call/);
+  assert.match(screens[6].spoken, /{torus_500mw}/);
 });
 
 test("guardrails hold", () => {

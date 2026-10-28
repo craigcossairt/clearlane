@@ -20,6 +20,30 @@ A: Two things put the engine's 15-minute plan, at `{clearlane_dp_usd_mw_day}`, b
 
 Source: FACTS `clearlane_usd_mw_day`, `clearlane_dp_usd_mw_day`, `wear_usd_mwh`; `engine/src/limits.ts` (`PULSE_LEVELS`); Data's re-check after the cycle fix on the engine-review issue (steps versus a continuous plan at the new wear price)
 
+### Your envelope allows charging in every System Critical Hour. What relief is that?
+
+Judge: Scott Holley
+
+A: That charge limit is the room under the host building's meter, not a plan to charge: in those hours the plan sells or sits idle, never charges. Capping charging in System Critical Hours is a next step, not in this build.
+
+Source: `public/derived/envelope_2026-10-27.json` (max_charge_kw and planned_kw in the system_critical hours)
+
+### Your race buys in hours where your envelope allows no charging.
+
+Judge: Ryan Byrd
+
+A: The race is value to RMP's system at day-ahead prices, before any host building's meter limit. The engine's own plan respects the meter and is worth `{clearlane_dp_usd_mw_day}` against the race's `{clearlane_usd_mw_day}` per MW-day; the card "Why is the engine's own plan worth less than the race card?" covers the rest.
+
+Source: FACTS `clearlane_dp_usd_mw_day`, `clearlane_usd_mw_day`; `engine/src/reference.ts` (race buy hours); `public/derived/envelope_2026-10-27.json`
+
+### Spin refills inside the evening jam, doesn't it?
+
+Judge: The Torus judge
+
+A: Yes: right after a call Spin refills from the grid for a few minutes, inside the jam, with the host meter kept under its ceiling. We do not yet price that refill or move it onto Pulse; that is a next step.
+
+Source: the call screen (Spin full again at the time it shows); FACTS `host_ceiling_kw`
+
 ### Is the timetable's `{clearlane_usd_mw_day}` before wear?
 
 Judge: Ryan Byrd
@@ -40,7 +64,7 @@ Source: FACTS `co2_overnight_avg`, `co2_midday_avg`
 
 Judge: Ryan Byrd
 
-A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A cycle is one equivalent full cycle of energy drawn out of Pulse, and a busy day like the one on screen uses `{cycles_today}`, which the meter shows.
+A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A cycle is one equivalent full cycle of energy drawn out of Pulse, and a busy day like the one on screen uses about `{cycles_today}`.
 
 Source: FACTS `wear_usd_mwh`, `pulse_cycle_budget`, `torus_pulse_cycles`, `torus_lifespan_yr`, `cycles_today`
 
