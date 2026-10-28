@@ -367,7 +367,7 @@
       ],
       "break_point_kw": 0,
       "break_point_without_ratchet_kw": 0,
-      "statement": "Machining shop (SIMULATED; the stage host's shape): any evening block in HB 6pm-9pm lifts the month's peak above where peak shaving alone puts it (692 kW, against 825 kW without storage); at 25 kW it rises 5 kW. Ignoring the month-to-date ratchet, the break point would be 0 kW."
+      "statement": "Machining shop (SIMULATED; the stage host's shape): any evening block in HB 6pm-9pm lifts the month's peak above where peak shaving alone puts it (692 kW, against 825 kW without storage); at 25 kW it rises 5 kW. The break point is 0 kW with or without the month-to-date ratchet."
     },
     {
       "key": "school",
@@ -1019,7 +1019,7 @@
       ],
       "break_point_kw": 0,
       "break_point_without_ratchet_kw": 0,
-      "statement": "Grocery refrigeration (SIMULATED): any evening block in HB 6pm-9pm lifts the month's peak above where peak shaving alone puts it (748 kW, against 835 kW without storage); at 25 kW it rises 3 kW. Ignoring the month-to-date ratchet, the break point would be 0 kW."
+      "statement": "Grocery refrigeration (SIMULATED): any evening block in HB 6pm-9pm lifts the month's peak above where peak shaving alone puts it (748 kW, against 835 kW without storage); at 25 kW it rises 3 kW. The break point is 0 kW with or without the month-to-date ratchet."
     }
   ],
   "notes": [
@@ -1031,6 +1031,7 @@
     "Peak shaving only (block 0): Pulse discharges just enough to hold the meter at the lowest ceiling the day allows, or at the month-to-date peak if that is higher, and charges in the cheapest intervals that stay under it. A block adds at least the block size of discharge in every HB 6pm-9pm interval.",
     "Not deliverable: Pulse's stored energy cannot hold the block for 4 hours (energy), or the host's evening load is below the block with no export allowed (export).",
     "Break point: the largest block at and below which every step leaves the month's peak where peak shaving alone puts it. Without the ratchet a host would compare each day with its own peak-shaving day; that stricter reading is break_point_without_ratchet_kw.",
+    "A break point shown on its own takes its provenance chip from its archetype's prov (SIMULATED), not from the REAL prices.",
     "days_with_higher_day_peak counts the days whose own peak is above the same day's at block 0. Under the ratchet such a day still sits at or under the month-to-date peak, so the bill moves only when peak_increase_kw is above 0.",
     "Each day starts and ends at 25 kWh, as the day-ahead plans do, and is planned with that day's prices and SIMULATED host load known."
   ]
