@@ -312,13 +312,15 @@ function pageHtml(title, body, day, source, catalog) {
         }</section>`,
     )
     .join("");
+  // A one-pager has room to read at screen size; the two-page packet keeps the tighter set.
+  const one = parts.length === 1;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>${CSS_BASE}
 @page { size: Letter; margin: 0; }
-body { font-size: 10.5px; line-height: 1.36; }
+body { font-size: ${one ? 13 : 10.5}px; line-height: ${one ? 1.45 : 1.36}; }
 .page { padding: 0.45in 0.55in; }
-h1 { font-size: 20px; margin: 0 0 0.3em; }
-h2 { font-size: 13px; margin: 0.8em 0 0.2em; }
-p, ul { margin: 0.25em 0; }
+h1 { font-size: ${one ? 28 : 20}px; margin: 0 0 0.3em; }
+h2 { font-size: ${one ? 16 : 13}px; margin: 0.9em 0 0.25em; }
+p, ul { margin: 0.3em 0; }
 footer { margin-top: 0.8em; }
 </style></head><body>${html}</body></html>`;
 }
