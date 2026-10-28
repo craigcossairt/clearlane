@@ -129,9 +129,10 @@ def build(out_dir: Path | None = None, raws: list[bytes] | None = None, sources=
             "Wattsmart is a Rocky Mountain Power program, so on this node the envelope is a format proposal only.",
         ]
         if name == "pge":
+            span = (date.fromisoformat(last) - date.fromisoformat(first)).days + 1
             notes.append(
                 "Portland General Electric joined EDAM on Oct 1 2026 (research/notes/utah-grid.findings.md), "
-                "so this window is only 27 days."
+                f"so this window is only {span} days, {len(days)} with all 24 hours."
             )
         meta = {
             "schema": "clearlane.hist_meta/v1",

@@ -76,6 +76,6 @@
     "price only; CO2 for PACW and PGE is out of scope: co2_g_kwh is null in every hour.",
     "Days without all 24 Mountain hours are left out and listed in missing_days, never filled.",
     "Wattsmart is a Rocky Mountain Power program, so on this node the envelope is a format proposal only.",
-    "Portland General Electric joined EDAM on Oct 1 2026 (research/notes/utah-grid.findings.md), so this window is only 27 days."
+    "Portland General Electric joined EDAM on Oct 1 2026 (research/notes/utah-grid.findings.md), so this window is only 27 days, 26 with all 24 hours."
   ]
 }
