@@ -21,7 +21,10 @@ All times Mountain (MDT, UTC-6). Integration keeps this file current at every tr
 | Wed 7:00am            | Fixes only; Craig's read                                      |
 | Wed 10:00am           | Train 7                                                       |
 | Wed noon              | Train 8, copy and polish                                      |
-| Wed 2:00pm            | Code freeze, tag `v1-stage`                                   |
+| Wed 2:00pm            | Code freeze, tag `v1-stage` (six-beat fallback)               |
+| Wed 2:45pm            | Presenter PRs #270 and #271 due                               |
+| Wed about 3:05pm      | Presenter PRs merged; freeze gate on the new main             |
+| Wed about 3:20pm      | Tag `v1-stage-2` (presenter build) on Craig's go              |
 | Wed 3:30pm            | Backup video and deck PDF copied to laptop, USB stick and Mac |
 | Wed by 5:00pm         | Craig submits                                                 |
 | Wed 5:00pm to 6:00pm  | Judging                                                       |
@@ -82,7 +85,24 @@ Day-coupled tests found by the dry run and fixed before the live run: engine #18
 
 ## Stage flag set
 
-Every flag off until Craig picks the set at Train 6.
+Every flag off in `contracts/flags.ts`. The stage opens presenter mode from the URL, `http://localhost:4173/?ff=presenter`, so no flag default changes. The six-beat stage at `http://localhost:4173/` is the fallback.
+
+## Stage cues, presenter mode
+
+The clicker only: Right or PageDown is Next, Left or PageUp is Back. C, E and B are not used.
+
+| Screen     | Next presses on it | What they do                             |
+| ---------- | ------------------ | ---------------------------------------- |
+| 1 Title    | 1                  | to Traffic                               |
+| 2 Traffic  | 1                  | to Race                                  |
+| 3 Race     | 2                  | replay; then to Call                     |
+| 4 Call     | 3                  | first call; second call; then to Re-plan |
+| 5 Re-plan  | 2                  | resume; then to Envelope                 |
+| 6 Envelope | 2                  | backtest; then to Scale                  |
+| 7 Scale    | 2                  | fleet to the maximum; then to Close      |
+| 8 Close    | 0                  | last screen                              |
+
+A Next press while the race replay is running jumps it to its end; one more press leaves the screen. Check this table against the screens after #270 and #271 merge.
 
 ## Pack list
 
