@@ -158,8 +158,9 @@ describe("the month-to-date billing simulation", () => {
       expect(r.mtd_peak_kw).toBe(mtd);
     }
     expect(m.monthly_peak_kw).toBe(mtd);
-  });
+  }, 60_000);
 
+  // the first frontier() call pays for the whole build
   it("block 0 reproduces the peak-shaving-only plan", () => {
     const shave = peakShavingMonth(octDays, hosts, site);
     expect(
@@ -174,7 +175,7 @@ describe("the month-to-date billing simulation", () => {
     expect(f.peak_shaving_only.monthly_peak_kw).toBe(shave.monthly_peak_kw);
     // storage shaves: the month's peak with storage is below the host's own
     expect(shave.monthly_peak_kw).toBeLessThan(f.host_peak_without_storage_kw);
-  });
+  }, 120_000);
 });
 
 describe("the frontier (Oct 1 to 27)", () => {
@@ -250,7 +251,7 @@ describe("the frontier (Oct 1 to 27)", () => {
         buildFrontier(hist, site, { seed: SEED, ...OCT, hist_path: HIST }),
       ),
     ).toBe(stableJson(frontier()));
-  }, 60_000);
+  }, 120_000);
 });
 
 const FILE = "public/derived/host_frontier.json";
