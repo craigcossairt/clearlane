@@ -7,7 +7,9 @@
  * 2. Turns the Markdown subset (headings, paragraphs, lists, tables, bold, code spans, links)
  *    into self-contained HTML in pitch/out/. System fonts, no external asset src or href.
  * 3. Prints each page with Edge headless (env MSEDGE, else the default install path).
- * 4. Checks page counts: one page per "## N." deck slide, one page per one-pager.
+ * 4. Checks page counts: one page per "## N." deck slide, and each other doc's `pages`.
+ *    The leave-behind is an HTML body: its ribbon and envelope excerpt are filled here from
+ *    public/data and public/derived, never typed.
  *
  * Exit 0: built and counted. Exit 1: a check failed. Exit 2: could not run.
  * When Edge is missing the PDF step reports SKIP, never PASS.
@@ -25,9 +27,64 @@ const EDGE_DEFAULT = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.e
 
 export const DOCS = [
   { name: "deck", src: "pitch/deck.md", pdf: "clearlane-deck.pdf", kind: "deck" },
-  { name: "one-pager-host", src: "pitch/one-pager-host.md", pdf: "one-pager-host.pdf", kind: "page" },
-  { name: "one-pager-rmp", src: "pitch/one-pager-rmp.md", pdf: "one-pager-rmp.pdf", kind: "page" },
+  { name: "one-pager-host", src: "pitch/one-pager-host.md", pdf: "one-pager-host.pdf", kind: "page", pages: 1 },
+  { name: "one-pager-rmp", src: "pitch/one-pager-rmp.md", pdf: "one-pager-rmp.pdf", kind: "page", pages: 1 },
+  { name: "leave-behind", src: "pitch/leave-behind.html", pdf: "leave-behind.pdf", kind: "html", pages: 1 },
+  { name: "envelope-packet", src: "pitch/envelope-packet.md", pdf: "envelope-packet.pdf", kind: "page", pages: 2 },
 ];
+
+/** A Markdown page split on "<!-- pagebreak -->" lines; each part prints as its own page. */
+export function splitPages(md) {
+  return md
+    .split(/^<!-- pagebreak -->$/m)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+// Same rule as engine/src/lanes.ts: clear is the bottom quarter of the day's price range, jam the top.
+export function lanesFromPrices(p) {
+  const min = Math.min(...p);
+  const max = Math.max(...p);
+  const q = 0.25 * (max - min);
+  return p.map((x) => (x <= min + q ? "clear" : x >= max - q ? "jam" : "shoulder"));
+}
+
+/** "2026-10-27T13:00-06:00" to "1pm". */
+export function clockMt(localMt) {
+  const h = Number(localMt.slice(11, 13));
+  return `${h % 12 || 12}${h < 12 ? "am" : "pm"}`;
+}
+
+const LANE_LETTER = { clear: "C", shoulder: "S", jam: "J" };
+
+/** The day's lanes as 24 cells, System Critical Hours outlined. Labels every third hour. */
+export function ribbonHtml(bundle, envelope) {
+  const lanes = lanesFromPrices(bundle.hours.map((h) => h.lmp_usd_mwh));
+  const sch = new Set(envelope.hours.filter((h) => h.system_critical).map((h) => h.ts_utc));
+  const cells = bundle.hours
+    .map(
+      (h, i) =>
+        `<div class="cell ${lanes[i]}${sch.has(h.ts_utc) ? " sch" : ""}"><span>${LANE_LETTER[lanes[i]]}</span><small>${i % 3 === 0 ? clockMt(h.local_mt) : ""}</small></div>`,
+    )
+    .join("");
+  const legend =
+    '<p class="legend"><span class="key clear">C</span> clear <span class="key shoulder">S</span> shoulder <span class="key jam">J</span> jam <span class="key sch">&nbsp;</span> System Critical Hour (our proposal)</p>';
+  return `<div class="ribbon">${cells}</div>${legend}`;
+}
+
+/** Envelope rows with planned Pulse power, hour in Mountain time, kW rounded to the unit. */
+export function envelopeExcerptHtml(envelope, bundle) {
+  const local = new Map(bundle.hours.map((h) => [h.ts_utc, h.local_mt]));
+  const kw = (x) => String(Math.round(x));
+  const rows = envelope.hours
+    .filter((h) => Math.round(h.planned_kw) !== 0)
+    .map(
+      (h) =>
+        `<tr class="row"><td>${clockMt(local.get(h.ts_utc))}</td><td>${h.system_critical ? "yes" : "no"}</td><td>${kw(h.reserve_kw)}</td><td>${kw(h.max_charge_kw)}</td><td>${kw(h.max_discharge_kw)}</td><td>${kw(h.planned_kw)}</td></tr>`,
+    )
+    .join("");
+  return `<table class="env"><thead><tr><th>Hour</th><th>System Critical</th><th>Reserve kW</th><th>Max charge kW</th><th>Max discharge kW</th><th>Planned kW</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
 
 const escapeHtml = (s) => s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
@@ -142,7 +199,49 @@ function deckHtml(slides, rendered, catalog, day) {
 </style></head><body>${pages.join("\n")}</body></html>`;
 }
 
+const PAGE_FOOT = (day) =>
+  `<footer>Operating day ${day}. Stations are simulated Torus-style. Every number is from public/derived/numbers.json or docs/FACTS.md.</footer>`;
+
+export function leaveBehindHtml(body, day, bundle, envelope) {
+  const filled = body
+    .replace("<!-- ribbon -->", ribbonHtml(bundle, envelope))
+    .replace("<!-- envelope-excerpt -->", envelopeExcerptHtml(envelope, bundle));
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Clearlane leave-behind</title><style>${CSS_BASE}
+@page { size: Letter; margin: 0.45in 0.5in; }
+body { font-size: 11.5px; line-height: 1.36; }
+h1 { font-size: 20px; margin: 0 0 0.2em; }
+h2 { font-size: 14px; margin: 0.7em 0 0.2em; }
+p, ul { margin: 0.2em 0; }
+ul { padding-left: 1.3em; }
+.lede { font-size: 12.5px; }
+.note { color: #3d4a57; }
+code { font-family: Consolas, monospace; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.3in; }
+.ribbon { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; margin: 0.3em 0 0.15em; }
+.cell { border: 2px solid transparent; text-align: center; padding: 2px 0 0; }
+.cell span { display: block; font-weight: 600; }
+.cell small { display: block; height: 1.2em; font-size: 9px; color: #3d4a57; }
+.clear { background: #d9efe3; }
+.shoulder { background: #eef0f2; }
+.jam { background: #f6d8cf; }
+.sch, .key.sch { border-color: #14202b; }
+.legend { font-size: 10.5px; }
+.key { display: inline-block; min-width: 1.4em; text-align: center; font-weight: 600; border: 2px solid transparent; }
+table.env th, table.env td { padding: 0.1em 0.35em; text-align: right; font-size: 10.5px; }
+table.env th:first-child, table.env td:first-child { text-align: left; }
+table.real td, table.real th { padding: 0.1em 0.4em; font-size: 10.5px; }
+footer { margin-top: 0.6em; }
+</style></head><body>${filled}${PAGE_FOOT(day)}</body></html>`;
+}
+
 function pageHtml(title, body, day) {
+  const parts = splitPages(body);
+  const html =
+    parts.length > 1
+      ? parts
+          .map((p, i) => `<section${i < parts.length - 1 ? ' style="page-break-after: always"' : ""}>${mdToHtml(p)}</section>`)
+          .join("")
+      : mdToHtml(body);
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>${CSS_BASE}
 @page { size: Letter; margin: 0.55in 0.6in; }
 body { font-size: 11px; line-height: 1.38; }
@@ -150,7 +249,7 @@ h1 { font-size: 20px; margin: 0 0 0.3em; }
 h2 { font-size: 13px; margin: 0.8em 0 0.2em; }
 p, ul { margin: 0.25em 0; }
 footer { margin-top: 0.8em; }
-</style></head><body>${mdToHtml(body)}<footer>Operating day ${day}. Stations are simulated Torus-style. Every number is from public/derived/numbers.json or docs/FACTS.md.</footer></body></html>`;
+</style></head><body>${html}${PAGE_FOOT(day)}</body></html>`;
 }
 
 /** The operating day as "Oct 27, 2026", from the as_of_mt of the race value. */
@@ -213,7 +312,9 @@ function main() {
   }
   const catalog = JSON.parse(readFileSync(join(root, "pitch", "keys.json"), "utf8")).keys;
   const numbersPath = join(root, "public", "derived", "numbers.json");
-  const day = existsSync(numbersPath) ? operatingDay(JSON.parse(readFileSync(numbersPath, "utf8"))) : "not set";
+  const rows = existsSync(numbersPath) ? JSON.parse(readFileSync(numbersPath, "utf8")) : [];
+  const day = rows.length ? operatingDay(rows) : "not set";
+  const isoDay = (rows.find((r) => r.key === "clearlane_usd_mw_day") ?? rows[0])?.as_of_mt;
   const edge = process.env.MSEDGE || EDGE_DEFAULT;
   const haveEdge = existsSync(edge);
   let failed = false;
@@ -226,9 +327,14 @@ function main() {
       const slides = splitSlides(source);
       html = deckHtml(slides, splitSlides(resolved), catalog, day);
       expected = slides.length;
+    } else if (doc.kind === "html") {
+      const envelope = JSON.parse(readFileSync(join(root, "public", "derived", `envelope_${isoDay}.json`), "utf8"));
+      const bundle = JSON.parse(readFileSync(join(root, "public", "data", `bundle_${isoDay}.json`), "utf8"));
+      html = leaveBehindHtml(resolved, day, bundle, envelope);
+      expected = doc.pages;
     } else {
       html = pageHtml(doc.name, resolved, day);
-      expected = 1;
+      expected = doc.pages;
     }
     const htmlPath = join(out, `${doc.name}.html`);
     writeFileSync(htmlPath, html, "utf8");
