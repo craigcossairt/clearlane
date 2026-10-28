@@ -475,7 +475,14 @@ export function Presenter({
       case "call":
         return <CallScreen live={live} call={callState} />;
       case "replan":
-        return <ReplanScreen live={live} call={callState} hour={replanHour} />;
+        return (
+          <ReplanScreen
+            live={live}
+            call={callState}
+            hour={replanHour}
+            resumed={isAction(1)}
+          />
+        );
       case "envelope":
         return <EnvelopeScreen live={live} backtest={isAction(1)} />;
       case "scale":
