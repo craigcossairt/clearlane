@@ -161,4 +161,89 @@ times the forecast) with consumed CO2 present. Slopes in g/kWh (t/MWh x 1000).
 `sensitivity.json` axes other than the base-case rows above and the `two_way` grid are not re-run.
 
 <!-- results:start -->
+Run by `python -I science/crosscheck_stretch.py`. 13 match, 3 mismatch, 7 not cross-checked. JSON: `science/crosscheck_stretch.json`.
+
+| Check | Output | Status | What |
+|---|---|---|---|
+| `sensitivity_base_vs_backtest` | `sensitivity.json` | match | base.gap = clearlane minus fixed_overnight means in backtest.json (CO2 estimated) |
+| `sensitivity_base_internal` | `sensitivity.json` | mismatch | every axis gap_base and the spread x 1 and wear x W scans equal base.gap |
+| `sensitivity_by_day_spread` | `sensitivity.json` | match | days where the off-peak rule ties or beats Clearlane, by daily price spread (value comparison) |
+| `ledger_recount` | `call_ledger.json` | match | calls, days, labels, delivered shares, shortfalls and density recounted from the rows |
+| `ledger_overlap_closed_form` | `call_ledger.json` | match | calls inside the prior refill window: closed form at the ledger's density vs the replay (Mountain) |
+| `ledger_overlap_recount_mt` | `call_ledger.json` | match | calls inside the prior refill window recounted from the ledger's start times (Mountain, the stage reading) |
+| `ledger_overlap_recount_utc` | `call_ledger.json` | match | calls inside the prior refill window recounted from the ledger's start times (UTC reading: a sensitivity only) |
+| `co2_reproduction` | `response_tables.json` | match | hour-of-day OLS slopes, n and R2 of the estimated marginal CO2 table, reproduced from the EIA CSV |
+| `co2_load_binned_generated` | `response_tables.json` | mismatch | estimated marginal CO2 (generated basis): load-binned value inside the hour-of-day OLS interval |
+| `co2_load_binned_consumed` | `response_tables.json` | mismatch | estimated marginal CO2 (consumed basis): load-binned value inside the hour-of-day OLS interval |
+| `scale_slopes_vs_response` | `scale_curve.json` | match | scale-curve slopes equal the price_response table, clamped at zero |
+| `scale_fixed_overnight` | `scale_curve.json` | match | Battery on the off-peak rule: repriced hour by hour from the bundle prices |
+| `scale_clearlane` | `scale_curve.json` | match | Clearlane timetable: charge in the clear lane: repriced hour by hour from the bundle prices |
+| `scale_dp_price_only` | `scale_curve.json` | not cross-checked | a re-planning DP with price impact has no second method here |
+| `scale_dp_wear10` | `scale_curve.json` | not cross-checked | a re-planning DP with price impact has no second method here |
+| `rt_hold_identity` | `rt_replay.json` | match | holding the day-ahead plan settles at its day-ahead value, day by day |
+| `rt_identities_and_summary` | `rt_replay.json` | match | regret = foresight minus policy net, never below zero; summary statistics and day counts recomputed |
+| `rt_window_prices` | `rt_replay.json` | match | midday and evening mean RT and DA prices recomputed from the REAL price files |
+| `wear_rainflow` | `wear rainflow` | not cross-checked | no trace file |
+| `fleet_envelope_sum` | `fleet envelope` | not cross-checked | no fleet file |
+| `co2_price_response` | `response_tables.json` | not cross-checked | the price_response table gets no second method here |
+| `co2_forecast_residuals` | `response_tables.json` | not cross-checked | the forecast_residuals table gets no second method here |
+| `sensitivity_other_axes` | `sensitivity.json` | not cross-checked | axes and the two_way grid are not re-run; only the base-case rows above |
+
+### Sensitivity (`public/derived/sensitivity.json` vs `public/derived/backtest.json`)
+
+- Base gap from the backtest means: $34.2845/MW-day, 0.6870 t CO2/MW-day (estimated), -21.8182 percentage points of calls unanswerable (Mountain reading). Largest difference from the file: 0.0e+00.
+- By-day spread (`backtest_days.json`, hist file): the rule ties or beats Clearlane on 16 of 179 days by value comparison (file: 16 of 179); mean daily spread $36.5105/MWh.
+
+### Call ledger (`public/derived/call_ledger.json`, `public/derived/site_default.json`)
+
+- One call takes 22.26 kWh from Spin; at 250 kW Spin is full again 650 s after the start. Under the host ceiling with no Pulse charge the window runs 60 s to 9,507 s by start time.
+- Two calls share a Mountain day with probability 0.00555. Closed-form expected count: 7.5 (full refill), 17.7 (host ceiling, central), 140.8 (Pulse charging at full rating). Accept range 3 to 161; the replay counts 22 (Mountain).
+- Recount from the ledger's own start times: 8 (full refill), 19 (host ceiling), 100 (Pulse charging).
+- At the 2025 call rate instead of the replay's density, the central closed form gives 4.3 such calls over the window (closed form only, SIMULATED).
+
+### Estimated marginal CO2 (`prep/data/eia_pace_hourly.csv` vs `public/data/response_tables.json`)
+
+- Reproduction: 192 bins, pairs skipped 24 (file 24); largest slope difference 0.050 g/kWh, largest R2 difference 0.00005; bins disagreeing: 0.
+- Load-binned, generated basis: 17 of 83 conclusive cells inside the OLS interval (20.5%), 13 inconclusive; below the interval in 66, above it in 0. Post hoc, not a test: after removing each hour's mean change, 42 of 83 fall inside. Outside: DJF 01h, DJF 02h, DJF 03h, DJF 04h, DJF 05h, DJF 06h, DJF 07h, DJF 18h, MAM 00h, MAM 01h, MAM 02h, MAM 03h, MAM 04h, MAM 05h, MAM 06h, MAM 08h, MAM 09h, MAM 10h, MAM 12h, MAM 13h, MAM 18h, MAM 21h, MAM 22h, MAM 23h, JJA 00h, JJA 01h, JJA 02h, JJA 03h, JJA 04h, JJA 05h, JJA 06h, JJA 07h, JJA 08h, JJA 09h, JJA 10h, JJA 11h, JJA 12h, JJA 13h, JJA 14h, JJA 15h, JJA 16h, JJA 17h, JJA 18h, JJA 19h, JJA 22h, JJA 23h, SON 00h, SON 01h, SON 02h, SON 03h, SON 05h, SON 06h, SON 07h, SON 08h, SON 09h, SON 10h, SON 11h, SON 12h, SON 13h, SON 14h, SON 15h, SON 17h, SON 20h, SON 21h, SON 22h, SON 23h.
+- Load-binned, consumed basis: 22 of 77 conclusive cells inside the OLS interval (28.6%), 19 inconclusive; below the interval in 45, above it in 10. Post hoc, not a test: after removing each hour's mean change, 48 of 77 fall inside. Outside: DJF 00h, DJF 02h, DJF 04h, DJF 07h, DJF 12h, DJF 15h, DJF 19h, DJF 20h, MAM 00h, MAM 06h, MAM 07h, MAM 12h, MAM 13h, MAM 14h, MAM 21h, MAM 22h, MAM 23h, JJA 00h, JJA 01h, JJA 02h, JJA 03h, JJA 04h, JJA 05h, JJA 06h, JJA 07h, JJA 08h, JJA 09h, JJA 10h, JJA 11h, JJA 12h, JJA 13h, JJA 15h, JJA 18h, JJA 19h, JJA 20h, JJA 21h, JJA 22h, JJA 23h, SON 00h, SON 05h, SON 06h, SON 07h, SON 09h, SON 10h, SON 11h, SON 12h, SON 13h, SON 14h, SON 15h, SON 17h, SON 18h, SON 20h, SON 21h, SON 22h, SON 23h.
+
+### Scale curve (`public/derived/scale_curve.json`, `public/data/bundle_2026-10-27.json`)
+
+- `fixed_overnight`: price taker $20.0647/MW-day (file $20.0647); largest point difference $1.8e-14/MW-day.
+- `clearlane`: price taker $58.4053/MW-day (file $58.4053); largest point difference $7.1e-15/MW-day.
+
+### Real-time replay (`public/derived/rt_replay.json`, `public/data/rt_2026-05-01_2026-10-27.json`)
+
+- Hold vs the backtest day values: largest difference $0.0e+00/MW-day over 179 days.
+- Replan recovers -44.26% of hold's regret; replan nets more than hold on 56 days and less on 123.
+- RT evening below RT midday on 17 days (file 17); DA on 0 (file 0); largest window-price difference $1.1e-13/MWh.
+
+### Mismatches
+
+- `sensitivity_base_internal` (owner: engine): #247 [engine] sensitivity.json: dp_soc_states gap_base has a null calls field (science #112 cross-check)
+- `co2_load_binned_generated` (owner: data): #248 [data] response_tables.json marginal CO2: hourly factors fail a load-binned second method (science #112)
+- `co2_load_binned_consumed` (owner: data): #248 [data] response_tables.json marginal CO2: hourly factors fail a load-binned second method (science #112)
 <!-- results:end -->
+
+## After the run (Wed Oct 28 2026, science-stretch session)
+
+The tolerance section above was not edited after computing. These notes explain the results; they
+change no status.
+
+- `sensitivity_base_internal` is a mismatch under the rule as written, and the cause is narrow: the
+  `dp_soc_states` axis has a null `calls_unanswerable_pct_points` in `gap_base` (its `range_note` says
+  the nested grids are solved without calls), while its dollar and CO2 fields equal `base.gap`. It may be
+  by design; #247 asks the engine lane to decide. Two axes are `pending` and carry no `gap_base`, so they
+  are listed, not tested.
+- The two marginal CO2 mismatches are a method sensitivity, not a bug in the table: our own code
+  reproduces every bin of the hour-of-day table (row `co2_reproduction`). The load-binned estimator
+  pools hours, so the daily ramp in net generation and demand, which moves little CO2, pulls its slopes
+  down; the post hoc diagnostic shows that removing each hour's mean change more than doubles the share
+  inside, still short of the threshold. Read the hourly factors as estimates that depend on the
+  estimator. #248 asks the data lane to add that caveat; no code change is requested.
+- The ledger's overlap count passes both pre-registered tests. The closed-form accept range is wide
+  because the slowest refill (Pulse charging at full rating under the host ceiling) leaves Spin empty for
+  hours at midday; the central closed form and the recount under the host ceiling both sit close to the
+  replay's count, so the replay behaves as the placement rule and the refill model predict.
+- The largest marginal CO2 slope difference equals the 0.05 g/kWh rounding allowance: it comes from
+  the file's rounding to 0.1, not from a different fit.
