@@ -34,6 +34,7 @@ git ls-remote --tags origin v1-stage
 git -C ~/Code/clearlane worktree add ../clearlane-stage --detach v1-stage
 cd ~/Code/clearlane-stage
 git describe --tags && npm ci && npm run build && node tools/offline-check.mjs
+netstat -ano | grep -E ":4173 .*LISTEN"   # must print nothing; else stop that PID: taskkill //PID <pid> //F
 npx vite preview --port 4173 --strictPort
 ```
 
@@ -43,6 +44,7 @@ In a second terminal, with the preview running:
 node app/scripts/projector-check.mjs http://localhost:4173
 ```
 
+- [ ] No stray preview holds :4173. A `vite preview` left running from another worktree (for example `../clearlane-presenter`) makes `--strictPort` fail; stop it first.
 - [ ] `git describe --tags` prints `v1-stage`.
 - [ ] Offline check PASS and projector check PASS (1920x1080 and 375px).
 - [ ] Stop the preview when done.
@@ -53,8 +55,9 @@ On the demo machine (Craig picks it). If it is not this laptop, run the stage wo
 
 1. [ ] With Wi-Fi on: `npm ci` and `npm run build` in `../clearlane-stage`.
 2. [ ] Turn Wi-Fi off. Check the tray icon shows no connection.
-3. [ ] `npx vite preview --port 4173 --strictPort`, open `http://localhost:4173/`, press F11.
+3. [ ] Confirm :4173 is free (the `netstat` line above prints nothing), then `npx vite preview --port 4173 --strictPort`, open `http://localhost:4173/`, press F11.
 4. [ ] Run beats 1 to 6 from the keyboard per `stage-script.md`, timed with a phone stopwatch. Target 2:45.
+   - Then open `http://localhost:4173/?ff=presenter` and click through every presenter screen, still offline. The offline check drives only the six beats, so this is the only offline proof for presenter mode.
 5. [ ] Still offline: `node tools/offline-check.mjs` PASS, and `npm run reproduce` prints REPRODUCED (this is the Wi-Fi-off proof for #32).
 6. [ ] Press R. Turn Wi-Fi back on.
 7. [ ] Log the time, length and anything that broke in the run-of-show rehearsal log, with build `v1-stage`.
@@ -101,6 +104,7 @@ grep -c "Oct <day>" "$TEMP/deck.txt"      # operating day: at least 1
 
 ## Before the clock starts (about 4:50pm)
 
+- [ ] No other `vite preview` running; :4173 belongs to the stage preview.
 - [ ] Wi-Fi off, preview running from `../clearlane-stage`, browser F11 on beat 1, `data-state="ready"`.
 - [ ] Backup video open in a second window, paused at 0:00.
 - [ ] Presenter remote tested (see `keymap.md`), charger plugged in, display adapter connected.

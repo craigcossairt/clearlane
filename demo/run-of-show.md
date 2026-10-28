@@ -86,5 +86,6 @@ Every flag off until Craig picks the set at Train 6.
 - [ ] Demo laptop and charger
 - [ ] Display adapter (the venue's display input is UNVERIFIED)
 - [ ] Presenter remote, tested at rehearsal 0
+- [ ] Before any stage preview: stop stray `vite preview` processes and confirm :4173 is free (`demo/freeze.md`, 2:10pm)
 - [ ] USB stick with the backup video and deck PDF
 - [ ] The Mac with a `v1-stage` build
