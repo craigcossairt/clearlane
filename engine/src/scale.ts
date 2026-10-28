@@ -32,8 +32,8 @@ const PROVS: Provenance[] = [
 
 // Published unit -> factor to $/MWh per MW.
 const UNITS: Record<string, number> = {
-  "$/MWh per MW": 1,
-  "$/MWh per GW": 1 / 1000,
+  "$/MWh per MW of net load": 1,
+  "$/MWh per GW of net load": 1 / 1000,
 };
 
 export interface SlopeBin {
@@ -49,8 +49,7 @@ export interface SlopeBin {
 export interface PriceResponse {
   prov: Provenance;
   unit: string; // as published; bins are already in $/MWh per MW
-  source: string; // repo path of the table
-  sources: string[]; // the table's own sources
+  source: string; // repo path of the table, which lists its own sources
   caveat: string;
   bins: SlopeBin[]; // 24, ascending hb
 }
@@ -59,11 +58,11 @@ const isNum = (x: unknown): x is number =>
   typeof x === "number" && Number.isFinite(x);
 const numOrNull = (x: unknown): number | null => (isNum(x) ? x : null);
 
-// Table (c) of public/data/response_tables.json: slope of DA LMP on net load per Mountain hour.
-// Throws with a plain reason when the table is not usable.
+// Table (c) of public/data/response_tables.json (`tables.price_response`): slope of DA LMP on net
+// load per Mountain hour. Throws with a plain reason when the table is not usable.
 export function readPriceResponse(raw: unknown, source: string): PriceResponse {
-  const t = (raw as { price_response?: unknown } | null)?.price_response as
-    Record<string, unknown> | undefined;
+  const t = (raw as { tables?: { price_response?: unknown } } | null)?.tables
+    ?.price_response as Record<string, unknown> | undefined;
   if (!t || typeof t !== "object")
     throw new Error(`${source}: no price_response table`);
   const unit = String(t.unit);
@@ -86,7 +85,7 @@ export function readPriceResponse(raw: unknown, source: string): PriceResponse {
       throw new Error(
         `${source}: bin hour ${String(hb)} is not a Mountain hour 0 to 23`,
       );
-    const [slope, lo, hi] = [r.slope, r.ci_lo, r.ci_hi];
+    const [slope, lo, hi] = [r.slope, r.lo, r.hi];
     if (!isNum(slope))
       throw new Error(`${source}: hour ${String(hb)} slope is not a number`);
     if (!isNum(lo) || !isNum(hi) || !(lo <= slope && slope <= hi))
@@ -112,8 +111,7 @@ export function readPriceResponse(raw: unknown, source: string): PriceResponse {
     prov,
     unit,
     source,
-    sources: Array.isArray(t.sources) ? t.sources.map(String) : [],
-    caveat: typeof t.caveat === "string" ? t.caveat : "",
+    caveat: Array.isArray(t.caveats) ? t.caveats.map(String).join(" ") : "",
     bins,
   };
 }
@@ -219,7 +217,6 @@ export interface ScaleCurve {
     bundle: string;
     snapshot: string;
     response: string;
-    response_sources: string[];
     code: string;
   };
   fleet_mw: number[];
@@ -327,7 +324,6 @@ export function scaleCurve(x: ScaleInput): ScaleCurve {
       bundle: x.bundle_path,
       snapshot: x.snapshot_path,
       response: x.response.source,
-      response_sources: x.response.sources,
       code: "engine/src/scale.ts",
     },
     fleet_mw: SCALE_FLEET_MW,

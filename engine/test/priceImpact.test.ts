@@ -2,12 +2,19 @@
 // engine/test/fixtures/response_tables.fixture.json, never from data.
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtempSync, readdirSync, readFileSync, statSync } from "node:fs";
+import {
+  existsSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { Bundle } from "@contracts/types";
 import { solveDp } from "@engine/dp";
+import { stableJson } from "@engine/json";
 import { dpHourly } from "@engine/hourly";
 import { REF_E_MWH, REF_RTE, referenceRace } from "@engine/reference";
 import {
@@ -204,30 +211,30 @@ describe("slopes from the response table", () => {
   });
 
   it.each([
-    ["23 bins", (r: any) => r.price_response.bins.pop(), /24/],
+    ["23 bins", (r: any) => r.tables.price_response.bins.pop(), /24/],
     [
       "a repeated hour",
-      (r: any) => (r.price_response.bins[1].hour_mt = 0),
+      (r: any) => (r.tables.price_response.bins[1].hour_mt = 0),
       /hour/,
     ],
     [
       "a NaN slope",
-      (r: any) => (r.price_response.bins[3].slope = "x"),
+      (r: any) => (r.tables.price_response.bins[3].slope = "x"),
       /slope/,
     ],
     [
       "an interval that misses the slope",
-      (r: any) => (r.price_response.bins[5].ci_hi = 0.001),
+      (r: any) => (r.tables.price_response.bins[5].hi = 0.001),
       /interval/,
     ],
     [
       "an unknown unit",
-      (r: any) => (r.price_response.unit = "$/MWh per kW"),
+      (r: any) => (r.tables.price_response.unit = "$/MWh per kW"),
       /unit/,
     ],
     [
       "no price_response table",
-      (r: any) => delete r.price_response,
+      (r: any) => delete r.tables.price_response,
       /price_response/,
     ],
   ])("rejects %s", (_, mutate, re) => {
@@ -356,4 +363,40 @@ describe("engine/cli/scale.ts", () => {
     expect(c.sources.response).toBe(FIXTURE);
     expect(readFileSync(a, "utf8").endsWith("}\n")).toBe(true);
   });
+});
+
+const REAL = "public/data/response_tables.json";
+const CURVE = "public/derived/scale_curve.json";
+
+describe("the real price-response table (#47)", () => {
+  it.skipIf(!existsSync(repoPath(REAL)))(
+    "reads as 24 DERIVED hourly slopes with the table's caveat",
+    () => {
+      const r = readPriceResponse(JSON.parse(read(REAL)), REAL);
+      expect(r.prov).toBe("DERIVED");
+      expect(r.bins.map((b) => b.hb)).toEqual(
+        Array.from({ length: 24 }, (_, i) => i),
+      );
+      expect(r.caveat).toMatch(/confounded/);
+    },
+  );
+
+  it.skipIf(!existsSync(repoPath(CURVE)))(
+    "scale_curve.json equals the CLI output on the real table",
+    () => {
+      const text = read(CURVE);
+      const onDisk = JSON.parse(text) as ScaleCurve;
+      const c = scaleCurve({
+        bundle,
+        bundle_path: stageBundlePath,
+        snapshot: snap,
+        snapshot_path: "research/data/pace_snapshot_2026-10-27.csv",
+        response: readPriceResponse(JSON.parse(read(REAL)), REAL),
+        generated_utc: onDisk.generated_utc,
+      });
+      expect(text).toBe(stableJson(c));
+      expect(c.prov).toBe("DERIVED");
+      expect(c.sources.response).toBe(REAL);
+    },
+  );
 });
