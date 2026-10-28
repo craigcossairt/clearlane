@@ -119,7 +119,7 @@ Stretch-2 notes and risks:
 - `lasso-feed`: Lasso's API is not public, so this is a proposed shape, never an integration. Never say Torus agreed to consume it.
 - `territories`: the PGE window is only 27 days, and the card says so. Wattsmart is an RMP program, so on other nodes the envelope is a format proposal only.
 - `proof-drawer`: the drawer never joins the six beats or their timing. Card shapes land late, so build against fixtures. The app reading `science/` JSON needs Integration to agree the paths.
-- `fleet-board`: clutter on a projector past about 24 tiles, so cap visible tiles and summarize the rest. Label "simulated Torus-style sites", no logos. The Torus judge is an events lead, not an engineer (`research/TORUS.md`), so the caption has to stand alone.
+- `fleet-board`: clutter on a projector past about 24 tiles, so cap visible tiles and summarize the rest. Label "simulated Torus-style sites", no logos. Not every judge is a grid engineer, so the caption has to stand alone.
 - `compute-drag`: Torus took its data-center pages down after August 2026 (`research/notes/torus-intel.md`), so the card stays SIMULATED. `bundle.peers` may be empty for Oct 28. Dragging live would push past 2:45, so it lives on the close card for Q&A and on the judge URL only.
 - Science stretch-2 inputs land late Tuesday; coverage is whatever merged by 9pm.
 
