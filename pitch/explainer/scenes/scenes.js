@@ -712,7 +712,7 @@
             : c.when("cl-sell", "It is worth");
         const tKeep =
           L.key === "fixed"
-            ? c.when("fixed-sell", "is worth")
+            ? c.when("fixed-sell", "buy: ")
             : c.when("cl-sell", "It is worth");
         // Each row builds left to right: what, how much, at what price, the subtotal.
         const build = (row, t0) =>
@@ -1543,7 +1543,7 @@
       "div",
       "muted",
       bt,
-      `Calls missed over ${nu("backtest_days", "days")} of real prices and simulated calls, timed by Torus's heatmap in Mountain time. Lower is better.`,
+      `Calls missed over ${nu("backtest_days", "days")} of real prices, with call times drawn from Torus's 2025 heatmap in Mountain time. Lower is better.`,
       { fontSize: "25px" },
     );
     const btRows = [

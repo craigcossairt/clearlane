@@ -33,12 +33,12 @@ const RATE = 44100;
 // Seconds of silence around the lines of each scene. The page's animations key off line starts.
 const PACE = {
   default: { lead: 0.8, gap: 0.55, tail: 1.0 },
-  title: { lead: 1.6, gap: 0.5, tail: 0.8 },
-  race: { lead: 0.8, gap: 0.8, tail: 1.6 },
-  call: { lead: 0.9, gap: 0.6, tail: 1.2 },
-  envelope: { lead: 0.8, gap: 0.7, tail: 1.6 },
-  scale: { lead: 0.8, gap: 0.9, tail: 1.4 },
-  close: { lead: 0.8, gap: 0.8, tail: 3.2 },
+  title: { lead: 1.3, gap: 0.5, tail: 0.8 },
+  race: { lead: 0.8, gap: 0.7, tail: 1.3 },
+  call: { lead: 0.9, gap: 0.6, tail: 1.0 },
+  envelope: { lead: 0.8, gap: 0.6, tail: 1.3 },
+  scale: { lead: 0.8, gap: 0.8, tail: 1.2 },
+  close: { lead: 0.8, gap: 0.8, tail: 2.6 },
 };
 
 function args(argv) {
