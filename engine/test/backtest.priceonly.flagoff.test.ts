@@ -66,13 +66,14 @@ describe("a price-only run leaves the PACE backtest byte-identical", () => {
       ...opts,
       start_mt: "2026-10-01",
       end_mt: "2026-10-27",
+      allow_price_only: true,
     });
     expect(territory.result.price_only).toBe(true);
     const hist = JSON.parse(
       read("public/data/hist_2026-05-01_2026-10-27.json"),
     ) as HistDay[];
     const run = runBacktest(hist, site, opts);
-    expect(run.result.price_only).toBeUndefined();
+    expect("price_only" in run.result).toBe(false);
     expect(stableJson(run.result)).toBe(read("public/derived/backtest.json"));
     expect(stableJson(run.days)).toBe(
       read("public/derived/backtest_days.json"),

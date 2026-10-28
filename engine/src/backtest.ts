@@ -38,6 +38,9 @@ export interface BacktestOpts {
   by_weekday: number[];
   start_mt?: string;
   end_mt?: string;
+  // Only the territory CLI sets this: without it a price-only history throws rather than reaching a
+  // caller that reads CO2 statistics as numbers, such as the sensitivity sweep.
+  allow_price_only?: true;
 }
 
 // A BacktestDay whose CO2 is null when the day is left out of the CO2 statistics.
@@ -57,8 +60,8 @@ export type BacktestOutput = Omit<BacktestResult, "policies"> & {
   notes?: string[];
 };
 
-export interface BacktestRun {
-  result: BacktestOutput;
+export interface BacktestRun<R = BacktestResult> {
+  result: R;
   days: BacktestDayRow[];
   co2_excluded_days: Record<Policy, number>;
   solve_ms: number[]; // MEASURED, printed by the CLI, never stored
@@ -188,18 +191,34 @@ export function clearlaneCalls(
   return { delivered, outcomes, executed: plan };
 }
 
+// A run with CO2 is the contract's BacktestResult. A price-only history needs `allow_price_only`
+// and gives a BacktestOutput with null CO2 statistics; without it, it throws.
+export function runBacktest(
+  hist: HistDay[],
+  site: Site,
+  o: BacktestOpts & { allow_price_only: true },
+): BacktestRun<BacktestOutput>;
+export function runBacktest(
+  hist: HistDay[],
+  site: Site,
+  o: BacktestOpts & { allow_price_only?: undefined },
+): BacktestRun;
 export function runBacktest(
   hist: HistDay[],
   site: Site,
   o: BacktestOpts,
-): BacktestRun {
+): BacktestRun<BacktestOutput> {
   const start = o.start_mt ?? BACKTEST_WINDOW.start_mt;
   const end = o.end_mt ?? BACKTEST_WINDOW.end_mt;
+  const priceOnly = isPriceOnly(hist, start, end);
+  if (priceOnly && !o.allow_price_only)
+    throw new Error(
+      `every co2_g_kwh from ${start} to ${end} is null: a price-only backtest needs allow_price_only`,
+    );
   const byDay = new Map(hist.map((d) => [d.operating_day_mt, d]));
   const all = windowDays(start, end);
   const days = all.filter((d) => usableDay(byDay.get(d)));
   const missing = all.filter((d) => !usableDay(byDay.get(d)));
-  const priceOnly = isPriceOnly(hist, start, end);
 
   const callsByReading = new Map<Reading, Map<string, CrashEvent[]>>();
   for (const reading of READINGS) {

@@ -32,6 +32,7 @@ const opts = {
   by_weekday: t.events_2025_by_weekday.value,
   start_mt: "2026-10-01",
   end_mt: "2026-10-27",
+  allow_price_only: true as const,
 };
 
 describe("price-only detection", () => {
@@ -49,6 +50,11 @@ describe("price-only detection", () => {
 });
 
 describe("runBacktest on the PGE price-only history", () => {
+  it("throws without allow_price_only, so no CO2 reader gets a null", () => {
+    const { allow_price_only: _, ...strict } = opts;
+    expect(() => runBacktest(pge, site, strict)).toThrow(/allow_price_only/);
+  });
+
   const run = runBacktest(pge, site, opts);
   const r = run.result;
 

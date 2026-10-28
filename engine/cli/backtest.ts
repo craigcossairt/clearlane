@@ -95,6 +95,7 @@ const run = runBacktest(hist, site, {
   by_weekday: torus.events_2025_by_weekday.value,
   start_mt: start,
   end_mt: end,
+  allow_price_only: true,
 });
 const totalMs = performance.now() - t0;
 
