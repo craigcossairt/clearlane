@@ -7,6 +7,8 @@
  *   --voice-dir <dir>   use recorded clips <dir>/<line id>.wav instead of the Windows voice
  *   --voice <name>      Windows voice, default "Microsoft Zira Desktop"
  *   --rate <n>          Windows voice rate, -10 to 10, default 2
+ *   --tempo <x>         speed every clip up (or down) by x, pitch kept, for a slower voice
+ *   --pauses <x>        scale the PACE pauses by x
  *   --no-music          leave the pad out
  *   --fps <n>           default 30
  *   --from <s> --to <s> render part of the video to clearlane-explainer-draft.mp4
@@ -42,13 +44,15 @@ const PACE = {
 };
 
 function args(argv) {
-  const a = { voice: "Microsoft Zira Desktop", rate: 2, music: true, fps: 30, workers: 4 };
+  const a = { voice: "Microsoft Zira Desktop", rate: 2, tempo: 1, pauses: 1, music: true, fps: 30, workers: 4 };
   for (let i = 0; i < argv.length; i++) {
     const k = argv[i];
     const v = () => argv[++i];
     if (k === "--voice-dir") a.voiceDir = v();
     else if (k === "--voice") a.voice = v();
     else if (k === "--rate") a.rate = Number(v());
+    else if (k === "--tempo") a.tempo = Number(v());
+    else if (k === "--pauses") a.pauses = Number(v());
     else if (k === "--no-music") a.music = false;
     else if (k === "--fps") a.fps = Number(v());
     else if (k === "--from") a.from = Number(v());
@@ -69,14 +73,14 @@ const run = (cmd, argv, opts = {}) => {
   return r.stdout;
 };
 
-/** Mono 16-bit PCM from a WAV file as floats, resampled with ffmpeg when it is not 44.1 kHz mono. */
-function readWav(path) {
+/** Mono 16-bit PCM from a WAV file as floats, through ffmpeg when it is not 44.1 kHz mono or needs a tempo. */
+function readWav(path, tempo = 1) {
   let buf = readFileSync(path);
   const fmtAt = buf.indexOf("fmt ");
-  const ok = fmtAt > 0 && buf.readUInt16LE(fmtAt + 8) === 1 && buf.readUInt16LE(fmtAt + 10) === 1 && buf.readUInt32LE(fmtAt + 12) === RATE && buf.readUInt16LE(fmtAt + 22) === 16;
+  const ok = tempo === 1 && fmtAt > 0 && buf.readUInt16LE(fmtAt + 8) === 1 && buf.readUInt16LE(fmtAt + 10) === 1 && buf.readUInt32LE(fmtAt + 12) === RATE && buf.readUInt16LE(fmtAt + 22) === 16;
   if (!ok) {
     const tmp = join(WORK, "convert.wav");
-    run("ffmpeg", ["-y", "-v", "error", "-i", path, "-ac", "1", "-ar", String(RATE), "-c:a", "pcm_s16le", tmp]);
+    run("ffmpeg", ["-y", "-v", "error", "-i", path, ...(tempo === 1 ? [] : ["-af", `atempo=${tempo}`]), "-ac", "1", "-ar", String(RATE), "-c:a", "pcm_s16le", tmp]);
     buf = readFileSync(tmp);
   }
   const at = buf.indexOf("data");
@@ -107,7 +111,7 @@ function voiceClips(scenes, a) {
   if (a.voiceDir) {
     const missing = lines.filter((l) => !existsSync(join(a.voiceDir, `${l.id}.wav`)));
     if (missing.length) throw new Error(`--voice-dir is missing ${missing.map((l) => `${l.id}.wav`).join(", ")}`);
-    return new Map(lines.map((l) => [l.id, trimClip(readWav(join(a.voiceDir, `${l.id}.wav`)))]));
+    return new Map(lines.map((l) => [l.id, trimClip(readWav(join(a.voiceDir, `${l.id}.wav`), a.tempo))]));
   }
   // Re-speak only the lines whose words or voice changed since the last run.
   const dir = join(WORK, "voice");
@@ -124,16 +128,16 @@ function voiceClips(scenes, a) {
     for (const l of todo) manifest[l.id] = hash(l);
     writeFileSync(manifestPath, JSON.stringify(manifest, null, 1));
   }
-  return new Map(lines.map((l) => [l.id, trimClip(readWav(join(dir, `${l.id}.wav`)))]));
+  return new Map(lines.map((l) => [l.id, trimClip(readWav(join(dir, `${l.id}.wav`), a.tempo))]));
 }
 
-/** Scene and line times on the video clock, from the clip lengths and PACE. */
-export function buildTimeline(scenes, clips) {
+/** Scene and line times on the video clock, from the clip lengths and PACE (scaled by `pauses`). */
+export function buildTimeline(scenes, clips, pauses = 1) {
   let t = 0;
   const out = [];
   const captions = [];
   for (const s of scenes) {
-    const p = { ...PACE.default, ...PACE[s.id] };
+    const p = Object.fromEntries(Object.entries({ ...PACE.default, ...PACE[s.id] }).map(([k, v]) => [k, v * pauses]));
     const start = t;
     t += p.lead;
     const lines = s.lines.map((l, i) => {
@@ -209,7 +213,7 @@ async function main() {
   if (a.scriptOnly) return console.log(`script: ${join(OUT, "recording-script.txt")}`);
 
   const clips = voiceClips(scenes, a);
-  const timeline = buildTimeline(scenes, clips);
+  const timeline = buildTimeline(scenes, clips, a.pauses);
   writeFileSync(join(WORK, "timeline.json"), JSON.stringify(timeline, null, 1));
   writeFileSync(join(OUT, `${NAME}.vtt`), toVtt(timeline.captions), "utf8");
   console.log(`timeline: ${timeline.duration.toFixed(1)} s, ${timeline.captions.length} captions`);
