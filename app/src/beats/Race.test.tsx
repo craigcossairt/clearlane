@@ -12,14 +12,18 @@ import {
   solve,
   STUB_ACTIVE,
 } from "../engineClient";
+import { resolveStageDay } from "../stageDay";
 import { Race } from "./Race";
 import type { Live } from "./types";
 
 afterEach(cleanup);
 
 const data = loadStageData();
-const entry = data.bundles["2026-10-27"];
-if (!entry) throw new Error("the Oct 27 bundle (fixture) is missing");
+// The stage day comes from the data (numbers.json, then the latest bundle), as App.test.tsx does,
+// so the to-the-cent check below compares a solve and numbers.json for the same day.
+const resolved = resolveStageDay(data, "");
+if (resolved.state !== "ready") throw new Error(`no stage day: ${resolved.reason}`);
+const entry = resolved.entry;
 const bundle = entry.bundle;
 const site = defaultSite();
 const live: Live = {
