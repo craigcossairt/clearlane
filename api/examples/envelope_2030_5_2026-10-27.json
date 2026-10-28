@@ -1,0 +1,9 @@
+{
+  "path": "/v1/envelope/2026-10-27/2030.5",
+  "status": 404,
+  "body": {
+    "schema": "clearlane.feed.error/v1",
+    "data_mode": "snapshot",
+    "reason": "no 2030.5-shaped export exists: the export-2030-5 item (#48) was cut before it shipped"
+  }
+}
