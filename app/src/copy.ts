@@ -380,6 +380,41 @@ export const COPY = {
 } as const;
 
 /**
+ * Compute drag (#93, ff_compute_drag): the close card's simulated compute block, for questions
+ * and the judge URL. Numbers never appear here; the card renders them with Num. The campus is
+ * simulated and the card makes no Torus data-center claim.
+ */
+export const DRAG = {
+  title: "Drag the simulated compute block",
+  intro:
+    "A simulated AI campus block, not a real one. Drag it along the price line, tap the line, or focus it and use the arrow keys.",
+  blockLabel: "Compute block",
+  blockAria: "Simulated compute block, start hour",
+  chartAria:
+    "Day-ahead price by hour, with the priciest hours shaded and the compute block over the hours it moves into",
+  lineLegend: "Line: day-ahead price at",
+  shadeLegend:
+    "Shaded: the day's priciest hours, which the block moves load out of.",
+  axis: "Hour labels:",
+  block: "Block:",
+  to: "to",
+  outOf: "Moves load out of",
+  value: "Value to RMP's system at day-ahead prices:",
+  co2Avoided: "CO2 avoided:",
+  co2Added: "CO2 added:",
+  overlap: "the block overlaps the hours it moves load out of",
+  spaceToggle: "Move it in space",
+  spaceLine:
+    "The same hours at the bundle's other price nodes, day-ahead $/MWh.",
+  colNode: "Node",
+  noPrice: "no price for this hour",
+  research1:
+    "This bundle has no peer prices. October research on a longer job block across the EDAM nodes: moving it in time saved",
+  research2: "of the cost, moving it in space saved",
+  researchSource: "Source:",
+} as const;
+
+/**
  * Presenter mode (#216, ff_presenter). One idea per screen: a takeaway headline, one supporting
  * line, labelled buttons. Written from the beat copy above and pitch/stage-script.md: same
  * claims, shorter. Numbers never appear here; a headline that needs one renders it with Num.
