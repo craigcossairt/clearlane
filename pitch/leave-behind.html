@@ -1,0 +1,60 @@
+<!-- Leave-behind (#13). Body only: build.mjs wraps it, fills the ribbon and the envelope excerpt from
+     public/data and public/derived, and prints one US Letter page. Every number is a key or engine output. -->
+<header>
+  <h1>Clearlane: a day planner for simulated Torus-style stations on Utah's grid</h1>
+  <p class="lede">It reads the CAISO day-ahead price for PacifiCorp East, fills Pulse in the midday clear lane, stays off the road in the evening jam, and keeps Spin ready for Rocky Mountain Power's calls. Then it writes an hourly envelope.</p>
+</header>
+
+<section>
+  <h2>The day, published the evening before</h2>
+  <!-- ribbon -->
+  <p class="note">Lanes from the day-ahead price for PacifiCorp East: clear is the cheapest quarter of the day's range, jam the dearest. The evening price reached {peak_over_trough} the day's low. Outlined hours are System Critical Hours, under our proposed rule.</p>
+</section>
+
+<div class="cols">
+  <section>
+    <h2>The race</h2>
+    <p>Same battery, same evening sale; only the charging hours change. A battery on a fixed off-peak rule is worth {fixed_usd_mw_day} per MW-day. A simulated Torus-style station on Clearlane, charging in the clear lane, is worth {clearlane_usd_mw_day}, about {race_ratio} the off-peak rule. At {mou_70mw}&nbsp;MW that is {clearlane_70} a day against {fixed_70}.</p>
+    <p class="note">Both are value to RMP's system at day-ahead prices, not Torus revenue and not a host bill cut. The off-peak rule is our baseline, not Torus practice. Across the {backtest_days}-day backtest Clearlane beats it on {share_days_beating} of days.</p>
+
+    <h2>The call</h2>
+    <p>Rocky Mountain Power calls for {enrolled_kw}&nbsp;kW. Spin answers a call of about five and a half minutes, and the host meter stays under {host_ceiling_kw}&nbsp;kW while Spin refills. A second call inside the refill window comes up {second_call_shortfall_kw}&nbsp;kW short on average, and the card says so.</p>
+    <p class="note">Our call trace is simulated. Torus's own 2025 record for Rocky Mountain Power: {rmp_events_2025} events, all unplanned calls. In the backtest, with Torus's heatmap in Mountain time, Clearlane missed {calls_missed_by_policy_clearlane_mt} of calls.</p>
+  </section>
+
+  <section>
+    <h2>The envelope</h2>
+    <p>One row per hour in <code>clearlane.envelope/v1</code>: System Critical Hours, reserve kW held for calls, charge and discharge limits after host ceilings, and the planned power. Hours with planned Pulse power on the day:</p>
+    <!-- envelope-excerpt -->
+    <p class="note">The envelope is a format Clearlane proposes: a working example, not a filing. The System Critical Hours rule is our proposal; Torus asked ROWE, the Western resource adequacy program, to define those hours transparently. The full day is in the envelope packet and the sample file.</p>
+  </section>
+</div>
+
+<div class="cols">
+  <section>
+    <h2>What is real</h2>
+    <table class="real">
+      <thead><tr><th>Class</th><th>What it covers</th></tr></thead>
+      <tbody>
+        <tr><td>REAL</td><td>CAISO day-ahead prices and forecasts, EIA hourly CO2</td></tr>
+        <tr><td>DERIVED</td><td>Lanes, net load, the race, the backtest, the envelope</td></tr>
+        <tr><td>SIMULATED</td><td>Stations, host load, call times</td></tr>
+        <tr><td>TORUS_PUBLISHED</td><td>Spin and Pulse specs, the 2025 event counts, the MOU</td></tr>
+        <tr><td>ASSUMPTION</td><td>Round-trip efficiency, the cycle budget applied to Pulse, export limit</td></tr>
+        <tr><td>MEASURED</td><td>Solve and re-plan time, timed live on stage</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Questions we asked Torus</h2>
+    <ul>
+      <li>Which time zone is the 2025 call heatmap in? Mountain time.</li>
+      <li>Were the 2025 events planned or unplanned? All unplanned.</li>
+      <li>May we quote the published Spin and Pulse specs and event data? Yes, with attribution.</li>
+      <li>Does Lasso's API accept an outside schedule or envelope? Unknown to Torus too.</li>
+    </ul>
+    <p class="note">Answers: Torus, message to Craig Cossairt, Oct 27 2026. Torus has not reviewed or endorsed this page.</p>
+  </section>
+</div>
+<!-- qr-slot: a QR code to the judge URL goes here only after public-url merges with Craig's go. -->
