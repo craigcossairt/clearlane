@@ -139,30 +139,18 @@
   // ---------- scenes ----------
   const BUILD = {};
 
+  // The Clearlane mark: a solid clear-lane dot beside the word, centred on its lowercase letters
+  // (a ring the height of the letters read as an "O").
+  const dotMark = (parent, size) =>
+    el("div", "dot", parent, "", {
+      width: `${size}px`,
+      height: `${size}px`,
+      top: `${Math.round(size * 0.35)}px`,
+    });
+
   BUILD.title = (root, c) => {
     const mark = el("div", "mark", root);
-    const svg = sv(
-      "svg",
-      { width: 150, height: 150, viewBox: "0 0 150 150" },
-      mark,
-    );
-    svg.style.position = "relative";
-    const R = 60;
-    const circ = 2 * Math.PI * R;
-    const ring = sv(
-      "circle",
-      {
-        cx: 75,
-        cy: 75,
-        r: R,
-        fill: "none",
-        stroke: C.ink,
-        "stroke-width": 15,
-        "stroke-dasharray": circ,
-        transform: "rotate(-90 75 75)",
-      },
-      svg,
-    );
+    const dot = dotMark(mark, 60);
     const word = el("div", "word", mark, "Clearlane");
     const tag = el(
       "div",
@@ -203,10 +191,9 @@
       `<div class="muted" style="font-size:25px">CAISO day-ahead node</div><div style="font-size:36px;margin-top:6px">${data.node}</div>`,
     );
     return (t) => {
-      ring.setAttribute(
-        "stroke-dashoffset",
-        String(circ * (1 - inOut(ramp(t, 0.15, 1.2)))),
-      );
+      const d = out3(ramp(t, 0.15, 0.8));
+      dot.style.opacity = String(d);
+      dot.style.transform = `scale(${0.4 + 0.6 * d})`;
       const w = out3(ramp(t, 0.55, 1.1));
       word.style.clipPath = `inset(-20px ${(1 - w) * 100}% -40px 0)`;
       word.style.opacity = String(w);
@@ -712,7 +699,7 @@
             : c.when("cl-sell", "It is worth");
         const tKeep =
           L.key === "fixed"
-            ? c.when("fixed-sell", "is worth")
+            ? c.when("fixed-sell", "buy: ")
             : c.when("cl-sell", "It is worth");
         // Each row builds left to right: what, how much, at what price, the subtotal.
         const build = (row, t0) =>
@@ -1543,7 +1530,7 @@
       "div",
       "muted",
       bt,
-      `Calls missed over ${nu("backtest_days", "days")} of real prices and simulated calls, timed by Torus's heatmap in Mountain time. Lower is better.`,
+      `Calls missed over ${nu("backtest_days", "days")} of real prices, with call times drawn from Torus's 2025 heatmap in Mountain time. Lower is better.`,
       { fontSize: "25px" },
     );
     const btRows = [
@@ -1797,17 +1784,7 @@
       left: "72px",
       top: "742px",
     });
-    const bsv = sv(
-      "svg",
-      { width: 54, height: 54, viewBox: "0 0 54 54" },
-      brand,
-    );
-    bsv.style.position = "relative";
-    sv(
-      "circle",
-      { cx: 27, cy: 27, r: 21, fill: "none", stroke: C.ink, "stroke-width": 6 },
-      bsv,
-    );
+    dotMark(brand, 15);
     el("span", "", brand, "Clearlane");
     el(
       "span",
