@@ -27,6 +27,7 @@ import {
   windowDays,
 } from "./backtest";
 import { solveDp } from "./dp";
+import type { DpResult } from "./dp";
 import type { SchMode } from "./lanes";
 import {
   DP_FLOOR_LEVEL,
@@ -155,25 +156,23 @@ export const depthSegMult = (N: number, k: number): number[] =>
     (_, i) => ((N - i) ** k - (N - i - 1) ** k) / N ** (k - 1),
   );
 
-// Clearlane's plan with the depth-aware wear price. Limits and the DP mirror dpSchedule; only the wear
+// Clearlane's DP with the depth-aware wear price. Limits and the DP mirror dpSchedule; only the wear
 // term differs.
-export function depthAwarePlan(
+export function depthAwareDp(
   b: Bundle,
   site: Site,
   W: number,
   k: number,
   schMode?: SchMode,
-): Plan {
-  const t0 = performance.now();
+): DpResult {
   const spinSoc = site.station.spin_kwh;
-  const zeros = () => Array<number>(INTERVALS).fill(0);
   const limits = stepLimits(site, {
     ceiling: true,
     sch: schFlags(b, schMode),
     spin_avail_kw: Array<number>(INTERVALS).fill(spinAvailKw(site, spinSoc)),
-    other_load_kw: zeros(),
+    other_load_kw: Array<number>(INTERVALS).fill(0),
   });
-  const r = solveDp({
+  return solveDp({
     price: hold4(prices(b)),
     levels: PULSE_LEVELS,
     dz: pulseDz(site),
@@ -187,6 +186,19 @@ export function depthAwarePlan(
     to_mwh: 1 / 1000,
     seg_mult: depthSegMult(PULSE_LEVELS, k),
   });
+}
+
+export function depthAwarePlan(
+  b: Bundle,
+  site: Site,
+  W: number,
+  k: number,
+  schMode?: SchMode,
+): Plan {
+  const t0 = performance.now();
+  const spinSoc = site.station.spin_kwh;
+  const zeros = () => Array<number>(INTERVALS).fill(0);
+  const r = depthAwareDp(b, site, W, k, schMode);
   const s: Schedule = {
     pulse_kw: r.acts.map((g) => -g / STEP_H),
     pulse_soc_kwh: r.socs.slice(1),
@@ -200,6 +212,37 @@ export function depthAwarePlan(
     solve_ms: performance.now() - t0,
     sch_mode: schMode,
   });
+}
+
+// The depth-aware wear in $ on a plan that sits on the DP's SoC grid: each discharge step pays W x the grid
+// MWh x the mean multiplier of the segments it crosses, as the DP's wear term does.
+export function depthWearUsd(
+  plan: Plan,
+  site: Site,
+  W: number,
+  k: number,
+): number {
+  const dz = pulseDz(site);
+  const e = eta(site);
+  const pre = depthSegMult(PULSE_LEVELS, k).reduce(
+    (a, m, i) => [...a, a[i]! + m],
+    [0],
+  );
+  const lv = socTrace(plan, site).map((soc) => {
+    const l = Math.round(soc / dz);
+    if (Math.abs(soc / dz - l) > 1e-6)
+      throw new Error(`SoC ${soc} kWh is off the DP grid of ${dz} kWh`);
+    return l;
+  });
+  let usd = 0;
+  for (let t = 0; t + 1 < lv.length; t++) {
+    const j = lv[t]!;
+    const kk = lv[t + 1]!;
+    if (kk >= j) continue;
+    const g = (j - kk) * dz * e; // grid kWh delivered
+    usd += (W * g * ((pre[j]! - pre[kk]!) / (j - kk))) / 1000;
+  }
+  return usd;
 }
 
 export interface ByK {
@@ -224,14 +267,18 @@ export interface PolicyWear {
 export interface DepthAware {
   k: number;
   prov: Provenance; // DERIVED
-  usd_per_mw_day: Pctl;
-  usd_per_mw_day_vs_linear: number; // mean of (depth-aware minus linear) per day
+  usd_per_mw_day: Pctl; // gross arbitrage, before wear
+  usd_per_mw_day_vs_linear: number; // mean of (depth-aware minus linear) per day, gross
   days_plan_changed: number;
   throughput_cycles_per_yr: number;
   equivalent_cycles_per_yr: number; // at this k
   life_yr: number;
   life_prov: Provenance; // ASSUMPTION
   dwell_h_above_80pct_mean: number;
+  usd_basis: string; // what usd_per_mw_day and usd_per_mw_day_vs_linear measure
+  wear_usd_per_mw_day: number; // mean depth-aware wear at this k
+  net_usd_per_mw_day: number; // mean of gross minus that wear
+  net_usd_per_mw_day_vs_linear: number; // mean of net minus the linear plan's net at the same wear
 }
 
 export interface StageDayWear {
@@ -327,21 +374,27 @@ export function wearRainflow(input: WearInput): WearRainflow {
 
   const rows = new Map<Policy, DayWear[]>(POLICIES.map((p) => [p, []]));
   const depth = new Map<number, DayWear[]>(RAINFLOW_K.map((k) => [k, []]));
+  // depth-aware wear in $ on the depth-aware plan (own) and on the linear Clearlane plan (lin)
+  const wear = new Map<number, { own: number; lin: number }[]>(
+    RAINFLOW_K.map((k) => [k, []]),
+  );
   for (const d of days) {
     const b = histBundle(d);
-    for (const p of POLICIES)
-      rows
-        .get(p)!
-        .push(
-          dayWear(
-            solve(b, site, p, { wear_usd_mwh: W, sch_mode: SCH_MODE }),
-            site,
-          ),
-        );
-    for (const k of RAINFLOW_K)
-      depth
-        .get(k)!
-        .push(dayWear(depthAwarePlan(b, site, W, k, SCH_MODE), site));
+    const plans = POLICIES.map((p) =>
+      solve(b, site, p, { wear_usd_mwh: W, sch_mode: SCH_MODE }),
+    );
+    plans.forEach((plan, i) =>
+      rows.get(POLICIES[i]!)!.push(dayWear(plan, site)),
+    );
+    const lin = plans[POLICIES.indexOf("clearlane")]!;
+    for (const k of RAINFLOW_K) {
+      const plan = depthAwarePlan(b, site, W, k, SCH_MODE);
+      depth.get(k)!.push(dayWear(plan, site));
+      wear.get(k)!.push({
+        own: depthWearUsd(plan, site, W, k),
+        lin: depthWearUsd(lin, site, W, k),
+      });
+    }
   }
 
   const policies: PolicyWear[] = POLICIES.map((p) => {
@@ -372,8 +425,11 @@ export function wearRainflow(input: WearInput): WearRainflow {
   });
 
   const linear = rows.get("clearlane")!;
+  const perMw = site.station.pulse_kw / 1000;
   const depth_aware_clearlane: DepthAware[] = RAINFLOW_K.map((k, i) => {
     const rs = depth.get(k)!;
+    const ws = wear.get(k)!;
+    const net = rs.map((r, j) => r.usd - ws[j]!.own / perMw);
     const eq = perYr(rs.map((r) => r.eq[i]!));
     return {
       k,
@@ -388,6 +444,12 @@ export function wearRainflow(input: WearInput): WearRainflow {
       life_yr: rated / eq,
       life_prov: "ASSUMPTION",
       dwell_h_above_80pct_mean: mean(rs.map((r) => r.dwell)),
+      usd_basis: "gross arbitrage, before wear",
+      wear_usd_per_mw_day: mean(ws.map((w) => w.own / perMw)),
+      net_usd_per_mw_day: mean(net),
+      net_usd_per_mw_day_vs_linear: mean(
+        net.map((x, j) => x - (linear[j]!.usd - ws[j]!.lin / perMw)),
+      ),
     };
   });
 
@@ -454,6 +516,7 @@ export function wearRainflow(input: WearInput): WearRainflow {
       "Depth-aware DP (segment approximation): the wear price split over 40 SoC segments, each priced by the increment of DoD^k across it with depth measured down from full; at k = 1 every multiplier is 1 and the plans are the linear ones. The piecewise-segment method follows Xu et al. 2018 (citation UNVERIFIED: the paper was not opened).",
       "Dwell: hours a day with SoC above 80% of capacity and at full, linear inside each 15-minute interval. Whether high-SoC dwell speeds Pulse aging is not modeled (UNVERIFIED).",
       "race_full_h: habit.py's hour lists on the stage day hold the battery full from the end of the last charge hour to the start of the first discharge hour.",
+      "depth_aware_clearlane: usd_per_mw_day and usd_per_mw_day_vs_linear are gross arbitrage, before wear. wear_usd_per_mw_day is the depth-aware wear at that k (the DP's own wear term), net_usd_per_mw_day is gross minus it, and net_usd_per_mw_day_vs_linear compares with the linear Clearlane plan priced by the same depth-aware wear.",
     ],
   };
 }

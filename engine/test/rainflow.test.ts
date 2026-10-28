@@ -26,7 +26,9 @@ import { PULSE_LEVELS } from "@engine/limits";
 import { solve } from "@engine/policies";
 import {
   RAINFLOW_K,
+  depthAwareDp,
   depthAwarePlan,
+  depthWearUsd,
   depthSegMult,
   dwellHours,
   equivalentCycles,
@@ -287,6 +289,64 @@ describe("the backtest report", () => {
     });
     expect(report.notes.join(" ")).toMatch(/Xu et al\. 2018.*UNVERIFIED/);
     expect(stableJson(report)).not.toContain(String.fromCharCode(0x2014));
+  });
+});
+
+describe("depth-aware dollars: gross arbitrage, then wear and net", () => {
+  const someDays = () => {
+    const byDay = new Map(hist.map((d) => [d.operating_day_mt, d]));
+    return windowDays("2026-05-01", "2026-10-27")
+      .map((d) => byDay.get(d))
+      .filter(usableDay)
+      .filter((_, i) => i % 30 === 0)
+      .map((d) => [histBundle(d), "price_proxy"] as [Bundle, "price_proxy"]);
+  };
+
+  it("labels usd_per_mw_day and usd_per_mw_day_vs_linear as gross arbitrage, before wear", () => {
+    for (const d of report.depth_aware_clearlane)
+      expect(d.usd_basis).toBe("gross arbitrage, before wear");
+  });
+
+  it("the wear read off a plan is the DP's own wear term (gross minus objective) to the cent", () => {
+    const cases: [Bundle, "price_proxy" | undefined][] = [
+      [bundle, undefined],
+      ...someDays(),
+    ];
+    for (const [b, mode] of cases)
+      for (const k of RAINFLOW_K) {
+        const r = depthAwareDp(b, site, W, k, mode);
+        const plan = depthAwarePlan(b, site, W, k, mode);
+        expect(plan.value_usd.toFixed(2)).toBe(r.gross.toFixed(2));
+        expect(depthWearUsd(plan, site, W, k).toFixed(2)).toBe(
+          (r.gross - r.objective).toFixed(2),
+        );
+      }
+  });
+
+  it("at k = 1 the wear is the linear price on every MWh discharged", () => {
+    const lin = solve(bundle, site, "clearlane", { wear_usd_mwh: W });
+    const mwh = lin.intervals.reduce(
+      (a, iv) => a + Math.max(0, (-iv.pulse_kw * 0.25) / 1000),
+      0,
+    );
+    expect(mwh).toBeGreaterThan(0);
+    expect(depthWearUsd(lin, site, W, 1)).toBeCloseTo(W * mwh, 9);
+  });
+
+  it("refuses a trace that is off the DP grid", () => {
+    const fixed = solve(bundle, site, "fixed_overnight");
+    expect(() => depthWearUsd(fixed, site, W, 1)).toThrow(/grid/);
+  });
+
+  it("net is gross minus wear, and never below the linear plan priced the same way", () => {
+    for (const d of report.depth_aware_clearlane) {
+      expect(d.net_usd_per_mw_day).toBeCloseTo(
+        d.usd_per_mw_day.mean - d.wear_usd_per_mw_day,
+        9,
+      );
+      expect(d.net_usd_per_mw_day_vs_linear).toBeGreaterThanOrEqual(-1e-9);
+    }
+    expect(report.depth_aware_clearlane[0]!.net_usd_per_mw_day_vs_linear).toBe(0);
   });
 });
 
