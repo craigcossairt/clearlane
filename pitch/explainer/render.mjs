@@ -31,6 +31,9 @@ const OUT = join(root, "tools", "out", "video");
 const WORK = join(OUT, "work");
 const NAME = "clearlane-explainer";
 const RATE = 44100;
+// Integrated loudness the voice track is brought to before the mix, the Windows voice's own level,
+// so a recorded or generated voice comes out of the mix as loud as the one it was tuned on.
+const VOICE_LUFS = -20.7;
 
 // Seconds of silence around the lines of each scene. The page's animations key off line starts.
 const PACE = {
@@ -88,6 +91,14 @@ function readWav(path, tempo = 1) {
   const out = new Float32Array(Math.floor(len / 2));
   for (let i = 0; i < out.length; i++) out[i] = buf.readInt16LE(at + 8 + i * 2) / 32768;
   return out;
+}
+
+/** Integrated loudness of an audio file in LUFS, from ffmpeg's EBU R128 meter. */
+function loudness(path) {
+  const r = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", path, "-af", "ebur128", "-f", "null", "-"], { encoding: "utf8" });
+  const m = [...(r.stderr ?? "").matchAll(/I:\s+(-?[\d.]+) LUFS/g)].pop();
+  if (r.status !== 0 || !m) throw new Error(`ffmpeg could not measure the loudness of ${path}:\n${r.stderr}`);
+  return Number(m[1]);
 }
 
 /** First and last sample above a quiet threshold, so captions follow the speech, not the padding. */
@@ -241,6 +252,7 @@ async function main() {
 
   const voicePath = join(WORK, "voice.wav");
   writeFileSync(voicePath, wavBytes(voiceTrack(timeline, clips), 1));
+  const voiceGain = `volume=${(VOICE_LUFS - loudness(voicePath)).toFixed(1)}dB`;
   const musicPath = join(WORK, "music.wav");
   if (a.music) writeFileSync(musicPath, wavBytes(pad(timeline.duration), 2));
 
@@ -255,11 +267,11 @@ async function main() {
   if (a.music) audioIn.push("-ss", String(from), "-t", String(to - from), "-i", musicPath);
   // The pad sits far under the voice and ducks further while anyone speaks.
   const mix = a.music
-    ? "[1:a]aformat=sample_rates=44100:channel_layouts=stereo,asplit=2[v1][v2];" +
+    ? `[1:a]aformat=sample_rates=44100:channel_layouts=stereo,${voiceGain},asplit=2[v1][v2];` +
       "[2:a]aformat=sample_rates=44100:channel_layouts=stereo,volume=-21dB[m];" +
       "[m][v1]sidechaincompress=threshold=0.02:ratio=5:attack=30:release=600[duck];" +
       "[v2][duck]amix=inputs=2:duration=first:normalize=0,volume=4dB,alimiter=limit=0.89[a]"
-    : "[1:a]aformat=sample_rates=44100:channel_layouts=stereo,volume=4dB,alimiter=limit=0.89[a]";
+    : `[1:a]aformat=sample_rates=44100:channel_layouts=stereo,${voiceGain},volume=4dB,alimiter=limit=0.89[a]`;
   const ff = spawn("ffmpeg", ["-y", "-v", "error", "-f", "image2pipe", "-framerate", String(a.fps), "-c:v", "mjpeg", "-i", "-", ...audioIn, "-filter_complex", mix, "-map", "0:v", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-r", String(a.fps), "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-shortest", mp4], { stdio: ["pipe", "inherit", "inherit"] });
   const done = new Promise((res, rej) => ff.on("close", (c) => (c === 0 ? res() : rej(new Error(`ffmpeg exited ${c}`)))));
   let last = Date.now();
