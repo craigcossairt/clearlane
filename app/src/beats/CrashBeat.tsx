@@ -85,14 +85,16 @@ export function CrashBeat({ live, call }: BeatProps) {
     <section className="beat crash-beat" aria-labelledby="beat-crash">
       <h2 id="beat-crash">{COPY.crashTitle}</h2>
       <div className="banner" data-slot="call-banner">
-        {shown ? (
-          <p>
+        {/* Both lines stay in one grid cell, the idle one hidden, so the banner keeps one size. */}
+        <div className="reserve">
+          <p className={shown ? undefined : "off"} aria-hidden={shown ? undefined : true}>
             {COPY.crashBanner} <Num k="enrolled_kw" /> {COPY.crashBannerKw}{" "}
             {COPY.crashDuration}
           </p>
-        ) : (
-          <p>{COPY.crashPrompt}</p>
-        )}
+          <p className={shown ? "off" : undefined} aria-hidden={shown ? true : undefined}>
+            {COPY.crashPrompt}
+          </p>
+        </div>
         <span className="slot-clock" data-slot="call-clock">
           {clockUtc ? (
             <>
