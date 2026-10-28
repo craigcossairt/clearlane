@@ -438,6 +438,29 @@ describe.skipIf(!existsSync(repoPath(SENS)))(
       );
     });
 
+    it("notes: the low CO2 stress names its negative bins; the archetype axis will not run", () => {
+      // May to Oct spans MAM, JJA and SON
+      const used = marginal.bins.filter(
+        (b) =>
+          b.basis === "generated" && ["MAM", "JJA", "SON"].includes(b.season),
+      );
+      const neg = used.filter((b) => b.lo < 0);
+      expect(neg.length).toBeGreaterThan(0);
+      const low = neg.reduce((a, b) => (b.lo < a.lo ? b : a));
+      const co2 = sens().notes.find((n) => n.includes("CO2 basis axis"))!;
+      expect(co2).toContain(
+        `The low stress sets every bin to its 5th-percentile slope; ${neg.length} of the ${used.length} are below zero, down to ${low.lo.toFixed(1)} g/kWh at ${low.season} hour ${low.hour_mt}, which no real hour emits`,
+      );
+      const arch = sens().axes.find((a) => a.key === "host_load_archetype")!;
+      expect(arch.status).toBe("pending");
+      expect(arch.note).toContain(
+        "will not run; #66 was closed as not planned",
+      );
+      expect(arch.note).toContain("host_frontier.json (#71)");
+      for (const n of sens().notes)
+        expect(n).not.toMatch(/wait[s]? on[^.]*#66/);
+    });
+
     it("has no em dash or en dash", () => {
       const text = read(SENS);
       expect(text).not.toContain(String.fromCharCode(0x2014));

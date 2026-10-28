@@ -137,7 +137,7 @@
       "label": "Host load archetype",
       "status": "pending",
       "pending_on": "fleet roll-up #66 (closed as not planned)",
-      "note": "Not run: needs the fleet roll-up's three host archetypes."
+      "note": "Not run: this axis will not run; #66 was closed as not planned. Host shapes are compared, on three SIMULATED archetypes, in host_frontier.json (#71), behind ff_host_frontier."
     },
     {
       "key": "enrolled_kw",
@@ -771,7 +771,7 @@
     "Variants with calls rerun the whole backtest: the same SIMULATED calls (same seed), each policy's day-ahead plan and Clearlane's re-plans.",
     "Break-evens, the two-way grid and the DP SoC grid use day-ahead plans only (no calls), which is exactly how the backtest's $ and CO2 are computed.",
     "The heatmap reading moves only the calls column. Mountain time is the stage reading; the UTC readings are a sensitivity check only.",
-    "The CO2 basis axis swaps each hour's EIA average (estimated, average emissions) for the response tables' marginal estimate (DERIVED, #47: generated basis, by season and Mountain hour). Low and high set every bin to its 5th or 95th percentile at once: a stress range, not a joint confidence interval; 12 of the 72 bins the window uses are inconclusive and are used as given. The slope measures fuel-mix response, not plant heat rates. CO2 on stage stays the EIA average.",
-    "One axis waits on work that has not landed: the host load archetype (fleet roll-up #66, closed as not planned)."
+    "The CO2 basis axis swaps each hour's EIA average (estimated, average emissions) for the response tables' marginal estimate (DERIVED, #47: generated basis, by season and Mountain hour). Low and high set every bin to its 5th or 95th percentile at once: a stress range, not a joint confidence interval; 12 of the 72 bins the window uses are inconclusive and are used as given. The low stress sets every bin to its 5th-percentile slope; 12 of the 72 are below zero, down to -186.5 g/kWh at MAM hour 20, which no real hour emits. The slope measures fuel-mix response, not plant heat rates. CO2 on stage stays the EIA average.",
+    "The host load archetype axis will not run; #66 was closed as not planned. Host shapes are compared, on three SIMULATED archetypes, in host_frontier.json (#71), behind ff_host_frontier."
   ]
 }
