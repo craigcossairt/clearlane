@@ -34,6 +34,9 @@ export type CardSource<T> =
  */
 export interface CrossCheckRow {
   status: string;
+  /** The FACTS.md key the row checks; numbers.json keeps the same name for keys it writes. */
+  facts_key?: string;
+  numbers_key?: string | string[] | null;
   unit?: string;
   tolerance?: string;
   pinned?: { facts?: unknown };

@@ -13,7 +13,7 @@ const STATUS_LABEL: Record<string, string> = {
   mismatch: COPY.proofStatusMismatch,
   pending: COPY.proofStatusPending,
 };
-const statusLabel = (s: string) => STATUS_LABEL[s] ?? s;
+export const statusLabel = (s: string) => STATUS_LABEL[s] ?? s;
 const statusClass = (s: string) => (ORDER.includes(s) ? s : "other");
 
 const PER_ROW = 20;
@@ -154,13 +154,14 @@ function Value({ value, places }: { value: unknown; places?: number }) {
  * Science's verdict stands, but a check that misses only a tolerance finer than a cent says so:
  * otherwise "outside tolerance" beside a headline reads as "the headline is wrong".
  */
-const sameToTheCent = (a: number | null, b: number | null) =>
+export const sameToTheCent = (a: number | null, b: number | null) =>
   a !== null && b !== null && Math.round(a * 100) === Math.round(b * 100);
 
+/** sameToTheCent for a check's pinned and science values. */
+export const checkSameToTheCent = (row: CrossCheckRow) =>
+  sameToTheCent(scalar(row.pinned?.facts), scalar(row.science));
+
 function OutsideRow({ name, row }: { name: string; row: CrossCheckRow }) {
-  const second = row.second_path;
-  const pinned = scalar(row.pinned?.facts);
-  const science = scalar(row.science);
   return (
     <li data-check={name}>
       <code data-copy-ok="check name">{name}</code>
@@ -170,8 +171,23 @@ function OutsideRow({ name, row }: { name: string; row: CrossCheckRow }) {
           (<span data-copy-ok="unit named in the file">{row.unit}</span>)
         </>
       ) : null}
-      :{" "}
-      {sameToTheCent(pinned, science) ? (
+      : <CheckDetail row={row} />
+    </li>
+  );
+}
+
+/**
+ * One check outside its tolerance: both values (worded same to the cent when they round to the
+ * same cents), the second path, then the tolerance. The drawer and the lineage panel (#91) both
+ * show it, so the two never word a check differently.
+ */
+export function CheckDetail({ row }: { row: CrossCheckRow }) {
+  const second = row.second_path;
+  const pinned = scalar(row.pinned?.facts);
+  const science = scalar(row.science);
+  return (
+    <>
+      {checkSameToTheCent(row) ? (
         <>
           <span data-same-cent="">{COPY.proofSameCent}</span> {COPY.proofPinned}{" "}
           <Value value={pinned} places={4} />, {COPY.proofScience}{" "}
@@ -214,6 +230,6 @@ function OutsideRow({ name, row }: { name: string; row: CrossCheckRow }) {
           .
         </>
       ) : null}
-    </li>
+    </>
   );
 }

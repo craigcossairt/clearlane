@@ -1,0 +1,188 @@
+<div class="viewport p-viewport" data-mode="presenter" tabindex="-1">
+<div class="frame p-frame" data-screen-key="call" style="transform: scale(0.5333333333333333);">
+<nav class="p-progress" aria-label="Screens">
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Title</span>
+</button>
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Traffic report</span>
+</button>
+<button type="button" class="p-seg is-done">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Race</span>
+</button>
+<button type="button" class="p-seg is-current" aria-current="step">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Call</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Re-plan</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Envelope</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Scale</span>
+</button>
+<button type="button" class="p-seg">
+<span class="p-seg-bar" aria-hidden="true">
+</span>
+<span class="p-seg-label">Close</span>
+</button>
+</nav>
+<main class="p-main">
+<header class="p-head">
+<h1 class="p-headline" data-slot="headline">When Rocky Mountain Power calls, Spin answers.</h1>
+<div class="p-subrow">
+<p class="p-line">A simulated call of about five and a half minutes. Call again during the refill, and the card shows any shortfall.</p>
+<div class="p-actions">
+<button type="button" class="p-pill p-pill-primary" aria-pressed="false" data-action="action-call-now">Rocky Mountain Power calls now</button>
+<button type="button" class="p-pill" aria-pressed="false" data-action="action-call-again">Call again during refill</button>
+</div>
+</div>
+</header>
+<div class="p-hero p-hero-call">
+<section class="beat crash-beat" aria-labelledby="beat-crash">
+<h2 id="beat-crash">The call</h2>
+<div class="banner" data-slot="call-banner">
+<div class="reserve">
+<p class="off" aria-hidden="true">Simulated Rocky Mountain Power call: <span class="num num-ok" data-num="enrolled_kw" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">250</span>
+<abbr class="chip chip-simulated" title="engine/src/site.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span> kW now. A call of about five and a half minutes.</p>
+<p>Click Rocky Mountain Power calls now to drop a simulated call. This space stays put either way.</p>
+</div>
+<span class="slot-clock" data-slot="call-clock">
+</span>
+</div>
+<div class="race">
+<article class="panel" data-slot="call-inset">
+<h3>Simulated Torus-style station on Clearlane</h3>
+<svg class="trace" viewBox="0 0 320 112" preserveAspectRatio="none" role="img" aria-label="Simulated Torus-style station on Clearlane: call trace of requested, Spin and Pulse kW, Spin energy and the host meter">
+<line x1="8" x2="308" y1="4" y2="4" stroke="var(--jam)" stroke-width="3" stroke-dasharray="6 4" vector-effect="non-scaling-stroke">
+</line>
+</svg>
+<p class="unavailable">No call yet. Empty, not zero.</p>
+</article>
+<article class="panel" data-slot="call-ghost">
+<h3>Battery-only plan</h3>
+<svg class="trace" viewBox="0 0 320 112" preserveAspectRatio="none" role="img" aria-label="Battery-only plan: call trace of requested, Spin and Pulse kW, Spin energy and the host meter">
+<line x1="8" x2="308" y1="4" y2="4" stroke="var(--jam)" stroke-width="3" stroke-dasharray="6 4" vector-effect="non-scaling-stroke">
+</line>
+</svg>
+<p class="unavailable">No call yet. Empty, not zero.</p>
+</article>
+</div>
+<p class="crash-legend muted">Gray: requested kW. Blue: Spin kW. Gold: Pulse kW. Dotted: Spin energy. Red: host meter, under the dashed ceiling. Same scales on both sides.</p>
+<p data-slot="second-call">A second call during the refill shows any shortfall here.</p>
+<div class="cards crash-cards">
+<article class="card simulated" data-slot="call-result">
+<h3>Our simulation (SIMULATED)</h3>
+<p class="unavailable">No call yet. Empty, not zero.</p>
+</article>
+<article class="card published">
+<h3>Published record (Torus, RMP case study), separate from this simulation</h3>
+<p>
+<span class="num num-ok" data-num="rmp_events_2025" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">359</span>
+<abbr class="chip chip-torus_published" title="https://www.torus.co/case-studies/case-studies-rocky-mountain-power, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
+</span> <span data-copy-ok="">events in 2025.</span> Ramp <span class="num num-ok" data-num="rmp_event_ramp_s" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">19</span>
+<abbr class="chip chip-torus_published" title="https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
+</span> against a <span class="num num-ok" data-num="rmp_event_ramp_target_s" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">30</span>
+<abbr class="chip chip-torus_published" title="https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
+</span> target. Delivered <span class="num num-ok" data-num="rmp_event_target_pct" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">102%</span>
+<abbr class="chip chip-torus_published" title="https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
+</span> against a <span class="num num-ok" data-num="rmp_event_band_min_pct" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">90%</span>
+<abbr class="chip chip-torus_published" title="https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
+</span> to <span class="num num-ok" data-num="rmp_event_band_max_pct" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 6ch;">
+<span class="figure">100%</span>
+<abbr class="chip chip-torus_published" title="https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
+</span> band.</p>
+<p class="muted">Hours in Mountain time, confirmed by Torus.</p>
+<div class="heatmaps">
+<figure class="heat">
+<figcaption>Published calls by hour of day, Mountain time</figcaption>
+<div class="bar-row" aria-hidden="true">
+<i class="lane-shoulder" style="height: 21.951219512195124%;">
+</i>
+<i class="lane-shoulder" style="height: 100%;">
+</i>
+<i class="lane-shoulder" style="height: 12.195121951219512%;">
+</i>
+<i class="lane-shoulder" style="height: 9.75609756097561%;">
+</i>
+<i class="lane-shoulder" style="height: 2.4390243902439024%;">
+</i>
+<i class="lane-shoulder" style="height: 7.317073170731707%;">
+</i>
+<i class="lane-shoulder" style="height: 9.75609756097561%;">
+</i>
+<i class="lane-shoulder" style="height: 34.146341463414636%;">
+</i>
+<i class="lane-shoulder" style="height: 56.09756097560976%;">
+</i>
+<i class="lane-shoulder" style="height: 63.41463414634146%;">
+</i>
+<i class="lane-shoulder" style="height: 60.97560975609756%;">
+</i>
+<i class="lane-shoulder" style="height: 48.78048780487805%;">
+</i>
+<i class="lane-shoulder" style="height: 36.58536585365854%;">
+</i>
+<i class="lane-shoulder" style="height: 80.48780487804879%;">
+</i>
+<i class="lane-shoulder" style="height: 46.34146341463415%;">
+</i>
+<i class="lane-shoulder" style="height: 34.146341463414636%;">
+</i>
+<i class="lane-shoulder" style="height: 34.146341463414636%;">
+</i>
+<i class="lane-shoulder" style="height: 19.51219512195122%;">
+</i>
+<i class="lane-shoulder" style="height: 14.634146341463413%;">
+</i>
+<i class="lane-shoulder" style="height: 9.75609756097561%;">
+</i>
+<i class="lane-shoulder" style="height: 12.195121951219512%;">
+</i>
+<i class="lane-shoulder" style="height: 82.92682926829268%;">
+</i>
+<i class="lane-shoulder" style="height: 58.536585365853654%;">
+</i>
+<i class="lane-shoulder" style="height: 19.51219512195122%;">
+</i>
+</div>
+</figure>
+</div>
+</article>
+</div>
+</section>
+</div>
+</main>
+<footer class="p-foot">
+<p class="p-day">Today <span data-time="">Tue, Oct 27, 2026</span>. Snapshot, fetched <span data-time="">11:07am</span> MT</p>
+<p class="p-src">Our simulation; Torus's published record.</p>
+<div class="p-nav">
+<button type="button" class="p-pill p-pill-quiet" data-action="sources">Sources</button>
+<button type="button" class="p-pill" data-action="back">Back</button>
+<button type="button" class="p-pill p-pill-primary" data-action="next">Next</button>
+</div>
+</footer>
+</div>
+</div>
