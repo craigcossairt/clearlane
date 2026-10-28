@@ -175,6 +175,9 @@ class BuildTest(unittest.TestCase):
         days = doc["tables"]["forecast_residuals"]["days"]
         self.assertEqual(days[0]["local_date"], "2026-05-01")
         self.assertTrue(all(len(d["residual_mw"]) == 24 for d in days))
+        # Science #112: a second estimator disagrees, so the table must say a single hour is not precise.
+        self.assertEqual(doc["tables"]["marginal_co2"]["caveats"], rt.CAVEATS["marginal_co2"])
+        self.assertTrue(any("depend on the estimator" in c for c in rt.CAVEATS["marginal_co2"]))
 
 
 if __name__ == "__main__":
