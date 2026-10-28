@@ -12,6 +12,7 @@ import type {
 import { simulateCrash } from "./crash";
 import { buildEnvelope } from "./envelope";
 import { hoursByMt } from "./hours";
+import { STUB_MARKER } from "./marker";
 import { buildPlan, type PlanValue } from "./plan";
 import { requireTorus } from "./published";
 
@@ -48,7 +49,7 @@ export function stubScriptedCall(
   durationS: number,
 ): CrashEvent {
   const hour18 = hoursByMt(bundle)[18];
-  if (!hour18) throw new Error("failed: the bundle has no 6pm hour");
+  if (!hour18) throw new Error(`${STUB_MARKER} failed: the bundle has no 6pm hour`);
   return {
     id: "scripted-1840",
     start_utc: new Date(Date.parse(hour18.ts_utc) + 40 * 60 * 1000)
