@@ -29,7 +29,7 @@ Severity: **fix** means settle before the freeze. **note** means a wording or sh
 
 4. **`contracts/types.ts:193`. The heatmap UTC reading does not say how many hours it shifts.**
    `calls_unanswerable_pct` has `heatmap_as_mt` and `heatmap_as_utc`. MDT is UTC-6; MST is UTC-7. A single UTC field can hide which shift was used. The source chart states no time zone (`contracts/types.ts:71`).
-   Ask: Engine records the shift in hours next to the UTC figure (in `numbers.json` or a note on `BacktestResult`). Pitch always shows both readings and names the shift.
+   Ask: Engine records the shift in hours next to the UTC figure (in `numbers.json` or a note on `BacktestResult`). Superseded Oct 27 2026: Torus confirmed Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). Pitch shows the Mountain reading only; the UTC keys stay a sensitivity check.
 
 5. **`contracts/types.ts:47`. The SP15 node id is a prose comment, not a value.**
    Research uses `TH_SP15_GEN-APND` (`research/analysis/option2/edam_where_vs_when.py:15`). The fixture already uses that id. A later bundle could pick a different SP15 node and still type-check.

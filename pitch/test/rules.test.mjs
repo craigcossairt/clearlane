@@ -200,3 +200,22 @@ test("the CLI is strict once numbers.json exists", () => {
   const src = readFileSync(new URL("../resolve.mjs", import.meta.url), "utf8");
   assert.match(src, /strict: args\.strict \|\| numbers !== null/);
 });
+
+test("retired heatmap and Lasso wording fails, the Mountain wording passes", () => {
+  for (const bad of [
+    "We show both readings.",
+    "Both heatmap readings are on the card.",
+    "The chart states no time zone.",
+    "Ask: a day-ahead envelope into Lasso.",
+    "Lasso accepts the envelope today.",
+  ]) {
+    assert.ok(rulesIn(bad).includes("banned"), bad);
+  }
+  assert.ok(!rulesIn("The envelope is a format Clearlane proposes. The heatmap is in Mountain time.").includes("banned"));
+});
+
+test("a UTC heatmap key in copy fails", () => {
+  const keyed = ctx({ keys: { calls_answered_pct_utc: { display: "x" }, calls_answered_pct_mt: { display: "y" } } });
+  assert.ok(rulesIn("{calls_answered_pct_utc}", keyed).includes("utc-key"));
+  assert.ok(!rulesIn("{calls_answered_pct_mt}", keyed).includes("utc-key"));
+});

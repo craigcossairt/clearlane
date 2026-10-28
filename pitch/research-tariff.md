@@ -82,10 +82,10 @@ Say: "our proposed rule for the hours Torus asked ROWE to define." Do not say a 
 
 ## (c) Heatmap time zone
 
-Not verified. Show both readings. The chart states no time zone.
+Answered: the hours are Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). The image itself states no time zone. Show the Mountain reading only; the UTC readings are a sensitivity check, never on stage.
 
 Image: https://www.datocms-assets.com/93357/1778881001-vpp-events-rmp.jpg from https://www.torus.co/case-studies/case-studies-rocky-mountain-power
 
 Read Tue Oct 27, 2026, 12:18am MT. The hour axis is labeled 12am through 11pm. No zone, no offset, no "MT" or "UTC." The bottom row sums to 359, matching the "359 Events" header. Weekday totals Monday to Sunday are 50, 57, 43, 57, 53, 45, 54.
 
-Show both readings. Do not pick one.
+Superseded Oct 27 2026 by Torus's answer: show the Mountain reading only.

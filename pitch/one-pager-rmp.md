@@ -12,7 +12,7 @@ Schema `clearlane.envelope/v1`. One row per hour:
 - Planned kW, charge positive and discharge negative.
 - A one-line reason, in plain words.
 
-Lasso could take the file as one more grid signal. Whether it does is not advertised. We are not saying it does today.
+The envelope is a format Clearlane proposes. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026), so we do not say it does.
 
 ## The value, and whose it is
 
@@ -28,4 +28,4 @@ CO2 is estimated, using average emissions for PacifiCorp East, not marginal: the
 
 Spin, sized to the enrolled kW, covers one call of about five and a half minutes. A second call inside the refill window is the case the crash card shows, including any shortfall.
 
-The 2025 heatmap states no time zone. We show both readings: `{calls_answered_pct_mt}` answered as Mountain time, `{calls_answered_pct_utc}` as UTC.
+The 2025 heatmap is in Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). In the backtest, calls missed: Clearlane `{calls_missed_by_policy_clearlane_mt}`, the fixed overnight rule `{calls_missed_by_policy_fixed_overnight_mt}`, price-only `{calls_missed_by_policy_price_only_mt}`.
