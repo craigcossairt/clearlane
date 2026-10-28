@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { CrashResult, CrashTracePoint } from "@contracts/types";
 import { Num } from "../components/Num";
 import { mtClock } from "../components/Time";
-import { COPY } from "../copy";
+import { COPY, PRESENTER } from "../copy";
 import { TORUS_FILE } from "../data";
 import { heatmapMountain, STUB_ACTIVE } from "../engineClient";
 import { grouped } from "../format";
@@ -49,7 +49,7 @@ function usePlayhead(playId: string | null): number {
 }
 
 /** Beat 3: the call. Live results are SIMULATED; Torus facts come from keys, in their own panel. */
-export function CrashBeat({ live, call }: BeatProps) {
+export function CrashBeat({ live, call, presenter }: BeatProps) {
   const shown = call.second ?? call.first;
   const f = usePlayhead(shown ? shown.event_id : null);
   const byHour = live.torus?.events_2025_by_hour.value ?? null;
@@ -92,7 +92,7 @@ export function CrashBeat({ live, call }: BeatProps) {
             {COPY.crashDuration}
           </p>
           <p className={shown ? "off" : undefined} aria-hidden={shown ? true : undefined}>
-            {COPY.crashPrompt}
+            {presenter ? PRESENTER.callPrompt : COPY.crashPrompt}
           </p>
         </div>
         <span className="slot-clock" data-slot="call-clock">
@@ -124,11 +124,11 @@ export function CrashBeat({ live, call }: BeatProps) {
       <p data-slot="second-call">
         {call.second ? (
           <>
-            {COPY.secondRule} {COPY.shortfall}{" "}
+            {presenter ? PRESENTER.secondRule : COPY.secondRule} {COPY.shortfall}{" "}
             <Live value={call.second.shortfall_kwh} unit="kWh" digits={1} />.
           </>
         ) : (
-          COPY.secondPrompt
+          presenter ? PRESENTER.secondPrompt : COPY.secondPrompt
         )}
       </p>
       <div className="cards crash-cards">

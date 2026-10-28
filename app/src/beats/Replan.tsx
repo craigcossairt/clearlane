@@ -1,7 +1,7 @@
 import type { Plan } from "@contracts/types";
 import { Num } from "../components/Num";
 import { hourLabel } from "../components/Time";
-import { COPY } from "../copy";
+import { COPY, PRESENTER } from "../copy";
 import { grouped } from "../format";
 import type { BeatProps } from "./types";
 
@@ -16,7 +16,7 @@ const H = 150;
  * solve_ms is MEASURED live by the engine and never cached, stored or typed; its slot is
  * reserved before the re-plan exists.
  */
-export function Replan({ live, call, hour }: BeatProps) {
+export function Replan({ live, call, hour, presenter }: BeatProps) {
   const result = call.second ?? call.first;
   const plan = live.plans.clearlane;
   const replan = result?.replan ?? null;
@@ -109,7 +109,9 @@ export function Replan({ live, call, hour }: BeatProps) {
           </text>
         ))}
       </svg>
-      <p className="muted">{COPY.replanLegend}</p>
+      <p className="muted">
+        {presenter ? PRESENTER.replanLegend : COPY.replanLegend}
+      </p>
       <p data-slot="replan-cycles">
         {COPY.cyclesToday}{" "}
         {replan ? (
