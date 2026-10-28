@@ -86,7 +86,7 @@
   },
   "notes": [
     "Every row is a SIMULATED call, not an RMP event record. Placing the calls on 2026 backtest days is our choice, not data.",
-    "The 2025 heatmap states no time zone, so the ledger replays it under both readings and shows them together.",
+    "Torus confirmed the 2025 heatmap is in Mountain time, so the Mountain reading is the stage value. The UTC reading (6-hour MDT shift) is a sensitivity check only and is never shown on stage.",
     "Each reading's hour and weekday labels equal the published by-hour and by-weekday counts exactly. The heatmap gives only those two totals, so each hour label is paired with a weekday label at random (seeded), and each call goes on a random backtest day with that weekday, at a random minute.",
     "Each policy meets the calls the way the backtest does: the simulated Torus-style station on Clearlane answers them in time order and re-plans after each; the two baselines meet each call against their day-ahead plan, without Spin (generous to them).",
     "Delivered below 90%, the floor of Torus's published band, is unanswerable. A shortfall is any undelivered energy at all.",
@@ -96,7 +96,8 @@
   "per_reading": [
     {
       "reading": "mt",
-      "label": "heatmap read as Mountain time",
+      "for_stage": true,
+      "label": "heatmap in Mountain time, as Torus confirmed: the stage reading",
       "calls": 359,
       "days_with_calls": 158,
       "max_calls_one_day": 7,
@@ -104,7 +105,8 @@
     },
     {
       "reading": "utc",
-      "label": "heatmap read as UTC: Mountain hour h takes the label for h + 6 under MDT",
+      "for_stage": false,
+      "label": "heatmap read as UTC (Mountain hour h takes the label for h + 6 under MDT): a sensitivity check only, not for stage",
       "calls": 359,
       "days_with_calls": 155,
       "max_calls_one_day": 7,
@@ -114,6 +116,7 @@
   "summary": [
     {
       "reading": "mt",
+      "for_stage": true,
       "policy": "fixed_overnight",
       "calls": 359,
       "delivered_at_or_above_90_pct_share": 74.09470752089136,
@@ -123,6 +126,7 @@
     },
     {
       "reading": "mt",
+      "for_stage": true,
       "policy": "price_only",
       "calls": 359,
       "delivered_at_or_above_90_pct_share": 58.21727019498607,
@@ -132,6 +136,7 @@
     },
     {
       "reading": "mt",
+      "for_stage": true,
       "policy": "clearlane",
       "calls": 359,
       "delivered_at_or_above_90_pct_share": 98.60724233983287,
@@ -141,6 +146,7 @@
     },
     {
       "reading": "utc",
+      "for_stage": false,
       "policy": "fixed_overnight",
       "calls": 359,
       "delivered_at_or_above_90_pct_share": 81.33704735376044,
@@ -150,6 +156,7 @@
     },
     {
       "reading": "utc",
+      "for_stage": false,
       "policy": "price_only",
       "calls": 359,
       "delivered_at_or_above_90_pct_share": 54.03899721448468,
@@ -159,6 +166,7 @@
     },
     {
       "reading": "utc",
+      "for_stage": false,
       "policy": "clearlane",
       "calls": 359,
       "delivered_at_or_above_90_pct_share": 98.8857938718663,

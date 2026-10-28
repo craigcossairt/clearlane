@@ -26,7 +26,8 @@ import { CALL_DURATION_S, RAMP_S } from "./inputs";
 import { solve } from "./policies";
 import { mulberry32 } from "./rng";
 
-// The heatmap states no time zone, so both readings always show together.
+// Torus confirmed the heatmap is Mountain time (FACTS heatmap_readings): "mt" is the stage reading and
+// "utc" (6-hour MDT shift) is kept as a sensitivity check only, never shown on stage.
 export const LEDGER_READINGS: Reading[] = ["mt", "utc"];
 export const SHORTFALL_TOL_KWH = 1e-6; // below this a call counts as fully served (float noise)
 const SCH_MODE = "price_proxy" as const; // as the backtest: HistDay has no net load
@@ -66,6 +67,7 @@ export interface LedgerRow {
 
 export interface LedgerSummary {
   reading: Reading;
+  for_stage: boolean; // false: a sensitivity check only
   policy: Policy;
   calls: number;
   delivered_at_or_above_90_pct_share: number; // percent of calls
@@ -76,6 +78,7 @@ export interface LedgerSummary {
 
 export interface LedgerReading {
   reading: Reading;
+  for_stage: boolean; // false: a sensitivity check only
   label: string;
   calls: number;
   days_with_calls: number;
@@ -121,9 +124,9 @@ export interface LedgerOpts {
 }
 
 const READING_LABEL: Record<Reading, string> = {
-  mt: "heatmap read as Mountain time",
-  utc: "heatmap read as UTC: Mountain hour h takes the label for h + 6 under MDT",
-  utc_mst: "heatmap read as UTC shifted at UTC-7",
+  mt: "heatmap in Mountain time, as Torus confirmed: the stage reading",
+  utc: "heatmap read as UTC (Mountain hour h takes the label for h + 6 under MDT): a sensitivity check only, not for stage",
+  utc_mst: "heatmap read as UTC shifted at UTC-7: a sensitivity check only, not for stage",
 };
 
 const sum = (xs: number[]) => xs.reduce((a, x) => a + x, 0);
@@ -287,6 +290,7 @@ export function buildLedger(
       }
     perReading.push({
       reading,
+      for_stage: reading === "mt",
       label: READING_LABEL[reading],
       calls: calls.length,
       days_with_calls: groups.size,
@@ -301,6 +305,7 @@ export function buildLedger(
       const short = rs.filter((r) => r.shortfall_kwh > SHORTFALL_TOL_KWH);
       summary.push({
         reading,
+        for_stage: reading === "mt",
         policy: p,
         calls: rs.length,
         delivered_at_or_above_90_pct_share:
@@ -370,7 +375,7 @@ export function buildLedger(
     },
     notes: [
       "Every row is a SIMULATED call, not an RMP event record. Placing the calls on 2026 backtest days is our choice, not data.",
-      "The 2025 heatmap states no time zone, so the ledger replays it under both readings and shows them together.",
+      "Torus confirmed the 2025 heatmap is in Mountain time, so the Mountain reading is the stage value. The UTC reading (6-hour MDT shift) is a sensitivity check only and is never shown on stage.",
       "Each reading's hour and weekday labels equal the published by-hour and by-weekday counts exactly. The heatmap gives only those two totals, so each hour label is paired with a weekday label at random (seeded), and each call goes on a random backtest day with that weekday, at a random minute.",
       "Each policy meets the calls the way the backtest does: the simulated Torus-style station on Clearlane answers them in time order and re-plans after each; the two baselines meet each call against their day-ahead plan, without Spin (generous to them).",
       "Delivered below 90%, the floor of Torus's published band, is unanswerable. A shortfall is any undelivered energy at all.",

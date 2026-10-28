@@ -221,6 +221,18 @@ describe("the call ledger", () => {
     }
   });
 
+  it("Mountain is the stage reading; UTC is marked a sensitivity check only (FACTS heatmap_readings)", () => {
+    for (const x of [...ledger.per_reading, ...ledger.summary])
+      expect(x.for_stage).toBe(x.reading === "mt");
+    expect(
+      ledger.per_reading.find((x) => x.reading === "utc")!.label,
+    ).toContain("not for stage");
+    // FACTS "Do not say": "both readings" and "the chart states no time zone"
+    const text = stableJson(ledger).toLowerCase();
+    expect(text).not.toContain("both readings");
+    expect(text).not.toContain("no time zone");
+  });
+
   it("has no em dash or en dash anywhere", () => {
     const text = stableJson(ledger);
     expect(text).not.toContain(String.fromCharCode(0x2014));
