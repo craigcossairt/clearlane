@@ -80,8 +80,11 @@ class TorusPublishedTest(unittest.TestCase):
             "359 is the RMP case study count",
             "Station lifespan",
             "500 MW is the ceiling",
+            # Torus confirmed the heatmap's hours (docs/FACTS.md heatmap_readings); "both readings" is retired.
+            "Torus confirmed the hours are Mountain time (Torus, message to Craig Cossairt, Oct 27 2026)",
         ):
             self.assertIn(phrase, notes)
+        self.assertNotIn("as UTC", notes)
 
 
 if __name__ == "__main__":

@@ -27,7 +27,10 @@ SOURCE_URLS = {
 
 FACTS = {
     "events_2025_total": (359, "torus_rmp_case_study"),
-    "events_2025_by_hour": ([9, 41, 5, 4, 1, 3, 4, 14, 23, 26, 25, 20, 15, 33, 19, 14, 14, 8, 6, 4, 5, 34, 24, 8], "torus_rmp_event_heatmap"),
+    "events_2025_by_hour": (
+        [9, 41, 5, 4, 1, 3, 4, 14, 23, 26, 25, 20, 15, 33, 19, 14, 14, 8, 6, 4, 5, 34, 24, 8],
+        "torus_rmp_event_heatmap",
+    ),
     "events_2025_by_weekday": ([50, 57, 43, 57, 53, 45, 54], "torus_rmp_event_heatmap"),
     "ramp_s": (19, "torus_rmp_event_response"),
     "ramp_target_s": (30, "torus_rmp_event_response"),
@@ -44,7 +47,9 @@ FACTS = {
 }
 
 NOTES = [
-    "The event heatmap states no time zone; always show it read as Mountain time and as UTC.",
+    "The event heatmap image states no time zone, but Torus confirmed the hours are Mountain time "
+    "(Torus, message to Craig Cossairt, Oct 27 2026). Show the Mountain reading; UTC readings are a "
+    "sensitivity check only.",
     "359 is the RMP case study count; Torus's 2025 wrap-up says more than 360. We use 359.",
     "pulse_life_yr is the Torus Station lifespan of 25 years, not a Pulse-specific rating.",
     "500 MW is the ceiling of the expanded MOU, not installed capacity.",
