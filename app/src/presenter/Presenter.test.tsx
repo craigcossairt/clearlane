@@ -404,8 +404,8 @@ describe("presenter race screen (#216)", () => {
         (e) => e.textContent,
       ),
     ).toEqual([
-      "value to RMP's system per MW per day, higher is better",
-      "value to RMP's system per MW per day, higher is better",
+      "per MW of battery per day, value to Rocky Mountain Power's grid",
+      "per MW of battery per day, value to Rocky Mountain Power's grid",
     ]);
     expect(
       [...container.querySelectorAll(".p-arith-keep th")].map(
