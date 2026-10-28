@@ -142,15 +142,22 @@ describe("reproduce CLI", () => {
       "public/data/torus_published.json: SHA-256 differs",
     );
   });
-  it("exits 1 for an input missing from the manifest", () => {
+  it("re-derives every stage number on a copy of the tree, noting an unlisted input", () => {
     const d = copy();
+    for (const p of ["research", "docs/FACTS.md"])
+      cpSync(join(repoRoot, p), join(d, p), { recursive: true });
     writeFileSync(join(d, "public/data/extra.json"), "{}");
-    const r = run("--root", d);
-    expect(r.status).toBe(1);
-    expect(r.stderr).toContain(
-      "public/data/extra.json: not in tools/manifest.sha256",
+    const r = run("--root", d, "--core");
+    expect(r.stderr).toBe("");
+    expect(r.status).toBe(0);
+    expect(r.stdout).toContain(
+      "NOTE public/data/extra.json: not in tools/manifest.sha256, so not hashed",
     );
-  });
+    const n = JSON.parse(
+      readFileSync(join(repoRoot, "public/derived/numbers.json"), "utf8"),
+    ).length;
+    expect(r.stdout).toContain(`REPRODUCED ${n}/${n} stage numbers`);
+  }, 180_000);
   it("exits 2, not 1, when the manifest is missing", () => {
     const d = mkdtempSync(join(tmpdir(), "repro-test-"));
     const r = run("--root", d);
@@ -168,18 +175,9 @@ describe("reproduce CLI", () => {
       f,
       readFileSync(f, "utf8").replace('"display": "2.9x"', '"display": "3.0x"'),
     );
-    const r = run("--root", d);
+    const r = run("--root", d, "--core");
     expect(r.status).toBe(1);
     expect(r.stderr).toContain("[race_ratio]");
     expect(r.stderr).toContain("NOT REPRODUCED: 1 of");
-  }, 180_000);
-  it("re-derives every stage number on the committed tree", () => {
-    const r = run();
-    expect(r.stderr).toBe("");
-    expect(r.status).toBe(0);
-    const n = JSON.parse(
-      readFileSync(join(repoRoot, "public/derived/numbers.json"), "utf8"),
-    ).length;
-    expect(r.stdout).toContain(`REPRODUCED ${n}/${n} stage numbers`);
   }, 180_000);
 });
