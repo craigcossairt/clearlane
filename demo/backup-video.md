@@ -35,5 +35,5 @@ The video plays if the live demo fails on stage. It follows [`demo/stage-script.
 - [ ] Length between 2:40 and 2:50
 - [ ] Every beat reaches its end state; no `failed` state on screen
 - [ ] The operating day matches the stage build
-- [ ] Both heatmap readings are visible on the crash and backtest beats
+- [ ] The heatmap on the crash and backtest beats reads "Hours in Mountain time, confirmed by Torus"; no UTC reading is shown
 - [ ] Plays from each of the three copies

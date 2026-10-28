@@ -39,12 +39,13 @@ All times Mountain (MDT, UTC-6). Integration keeps this file current at every tr
 
 ## Train log
 
-| Train | Tagged (MT) | Merged                                                                    | Gate                                                                     | Cuts |
-| ----- | ----------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ---- |
-| 1     | Tue 8:50am  | integration #119, #123                                                    | check:all green                                                          | none |
-| 2     | Tue 9:15am  | data #114, #116, #121; engine #113; pitch #17, #15, #16; integration #126 | check:all green; offline-check and facts-check not built                 | none |
-| 3     | Tue 11:55am | data #124; engine #118, #122, #143; integration #132, #147, #149          | check:all green                                                          | none |
-| 4     | not tagged  | data #151; integration #166, #167; ui #155, #168 to #172                  | 4:08pm: check:all green; offline 6/6; facts-check 1 fail (fixed by #167) | none |
+| Train | Tagged (MT) | Merged                                                                      | Gate                                                                                    | Cuts                                                  |
+| ----- | ----------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| 1     | Tue 8:50am  | integration #119, #123                                                      | check:all green                                                                         | none                                                  |
+| 2     | Tue 9:15am  | data #114, #116, #121; engine #113; pitch #17, #15, #16; integration #126   | check:all green; offline-check and facts-check not built                                | none                                                  |
+| 3     | Tue 11:55am | data #124; engine #118, #122, #143; integration #132, #147, #149            | check:all green                                                                         | none                                                  |
+| 4     | not tagged  | data #151; integration #166, #167; ui #155, #168 to #172                    | 4:08pm: check:all green; offline 6/6; facts-check 1 fail (fixed by #167)                | none                                                  |
+| 5     | Tue 5:44pm  | data #176; engine #181; ui #180; pitch #130; science #174; integration #177 | check:all green; offline 6/6; facts-check PASS; projector by hand ok (small text: #190) | stretch-1 cut: #29, #48, #64 to #67, #86 to #89, #110 |
 
 ## Rehearsal log
 
@@ -65,15 +66,9 @@ npm run check:all
 
 Then: every merged stretch CLI that writes a per-day file (none yet) and the checks in section 6.5 step 4. No engine re-pin is needed: the pins run on `contracts/fixtures`.
 
-**Data step tonight.** `prep/refresh_tonight.py` (#44) is not on main. If #44 has not merged by 8:30pm, the data step is this command instead. It is already on main and proven in the dry run. Run it from the int worktree every 5 minutes from about 9:16pm, last try 10:00pm:
+**Live run, Tue 5:50pm.** The Oct 28 prices were posted by 5:11pm, well before 9:16pm. `prep/refresh_tonight.py` (#176) exited 0 with 24 hours. Both engine CLIs ran, facts-check PASS, offline-check 6/6, pitch resolver 0 unresolved. Result: PR #189, **held for Craig's 11pm pick** because the race falls from 2.9x to 1.0x (story table in the PR). Its check:all waits on one more day-coupled test, `app/src/beats/Race.test.tsx:21` (asked on #4, due 10:00pm).
 
-```bash
-python -I prep/build_bundle.py --day 2026-10-28 --refetch --out ../clearlane-raw/refresh/bundle_2026-10-28.json
-```
-
-It validates the whole day before an atomic write, and any failure exits non-zero. Copy the file into `public/data/` only after an exit 0 with 24 hours. Then run the engine commands above.
-
-**Must merge before 9:16pm** (found by the dry run; otherwise check:all goes red on any new day): engine `numbers.test.ts:436` reads the Oct 27 bundle by name (#3); ui `App.test.tsx:121` expects "Today" for an Oct 27 clock (#4).
+Day-coupled tests found by the dry run and fixed before the live run: engine #181, ui #180.
 
 **Dry run, Tue 5:10pm**, on `int/refresh-dry` (never pushed):
 
