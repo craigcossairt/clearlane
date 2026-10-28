@@ -431,14 +431,24 @@ describe("validateNumbers rejects", () => {
 });
 
 const committed = repoPath("public/derived/numbers.json");
-// The bundle the committed file was generated from (engine.md: `npx tsx engine/cli/numbers.ts
-// public/data/bundle_2026-10-27.json`). Everything else below is a default path the CLI reads.
-const CLI_BUNDLE = "public/data/bundle_2026-10-27.json";
+// The bundle the committed file was generated from, read from the file itself so the stage day
+// is never a literal here: the `public/data/bundle_<day>.json` named in a key's `source`.
+const bundlePathFromNumbers = (text: string): string => {
+  const days = new Set(
+    [...text.matchAll(/public\/data\/bundle_(\d{4}-\d{2}-\d{2})\.json/g)].map((m) => m[1]),
+  );
+  if (days.size !== 1)
+    throw new Error(
+      `numbers.json must name exactly one public/data/bundle_<day>.json in key sources, found ${days.size}`,
+    );
+  return `public/data/bundle_${[...days][0]}.json`;
+};
 
 describe("public/derived/numbers.json", () => {
   it.skipIf(!existsSync(committed))(
     "equals the CLI output for the inputs on disk",
     () => {
+      const CLI_BUNDLE = bundlePathFromNumbers(read("public/derived/numbers.json"));
       // Same inputs, same defaults, same optional-file rule as engine/cli/numbers.ts.
       const opt = <T>(p: string, parse: (t: string) => T) =>
         existsSync(repoPath(p)) ? { data: parse(read(p)), path: p } : undefined;

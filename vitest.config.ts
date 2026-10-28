@@ -11,7 +11,14 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["engine/test/**/*.test.ts", "app/src/**/*.test.{ts,tsx}", "tools/**/*.test.ts", "api/**/*.test.ts"],
+    include: [
+      "engine/test/**/*.test.ts",
+      "app/src/**/*.test.{ts,tsx}",
+      "tools/**/*.test.ts",
+      "api/**/*.test.ts",
+    ],
     environment: "node",
+    // CLI-spawning tests take over 5 s under full-suite load on Windows (envelope, facts-check).
+    testTimeout: 20_000,
   },
 });

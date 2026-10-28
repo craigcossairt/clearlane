@@ -19,7 +19,7 @@ import {
   solve,
   STUB_ACTIVE,
 } from "./engineClient";
-import { parseFlags } from "./flags";
+import { FlagsContext, parseFlags, type FlagName } from "./flags";
 import { KEYMAP, lookup, typedIntoInput } from "./keymap";
 import { dayLabel, resolveStageDay } from "./stageDay";
 
@@ -55,9 +55,11 @@ export interface AppProps {
   search?: string;
   now?: Date;
   reducedMotion?: boolean;
+  /** Overrides `?ff=` and the defaults; the flag-off harness passes an empty set. */
+  flags?: ReadonlySet<FlagName>;
 }
 
-export function App({ data, search, now, reducedMotion }: AppProps) {
+export function App({ data, search, now, reducedMotion, flags }: AppProps) {
   const stageData = data ?? defaultData();
   const query = search ?? window.location.search;
   const clock = now ?? new Date();
@@ -66,6 +68,7 @@ export function App({ data, search, now, reducedMotion }: AppProps) {
     [stageData, query],
   );
   const numbersState: NumbersState = { state: "ready", numbers: stageData.numbers };
+  const flagSet = useMemo(() => flags ?? parseFlags(query), [flags, query]);
 
   useEffect(() => {
     const theme = new URLSearchParams(query).get("theme");
@@ -86,14 +89,16 @@ export function App({ data, search, now, reducedMotion }: AppProps) {
   }
   return (
     <NumbersContext.Provider value={numbersState}>
-      <Stage
-        data={stageData}
-        bundleFile={resolved.entry.file}
-        query={query}
-        now={clock}
-        reducedMotion={reducedMotion}
-        bundle={resolved.entry.bundle}
-      />
+      <FlagsContext.Provider value={flagSet}>
+        <Stage
+          data={stageData}
+          bundleFile={resolved.entry.file}
+          query={query}
+          now={clock}
+          reducedMotion={reducedMotion}
+          bundle={resolved.entry.bundle}
+        />
+      </FlagsContext.Provider>
     </NumbersContext.Provider>
   );
 }
@@ -114,7 +119,6 @@ function Stage({
   reducedMotion?: boolean;
 }) {
   const params = useMemo(() => new URLSearchParams(query), [query]);
-  useMemo(() => parseFlags(query), [query]); // flags are read here; no core path depends on one
   const live = useMemo<Live>(() => {
     const site = defaultSite();
     const policies: Policy[] = ["fixed_overnight", "price_only", "clearlane"];
