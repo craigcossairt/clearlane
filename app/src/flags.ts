@@ -1,3 +1,4 @@
+import { createContext, useContext } from "react";
 import { FLAGS } from "@contracts/flags";
 
 export type FlagName = keyof typeof FLAGS;
@@ -18,4 +19,14 @@ export function parseFlags(search: string): Set<FlagName> {
     if (name in FLAGS) on.add(name as FlagName);
   }
   return on;
+}
+
+/**
+ * The stage's flag set. Stretch components read it through useFlag, never by parsing the URL
+ * themselves, so the flag-off harness (app/src/test/flagsOff.ts) can force every flag off.
+ */
+export const FlagsContext = createContext<ReadonlySet<FlagName>>(new Set());
+
+export function useFlag(name: FlagName): boolean {
+  return useContext(FlagsContext).has(name);
 }
