@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { lazy, Suspense, useContext } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { CrashBeat } from "./beats/CrashBeat";
 import { EnvelopeBeat } from "./beats/EnvelopeBeat";
 import { Race } from "./beats/Race";
@@ -130,6 +131,7 @@ export function App({ data, search, now, reducedMotion, flags }: AppProps) {
           </Suspense>
         ) : null}
       </FlagsContext.Provider>
+      <Analytics />
     </NumbersContext.Provider>
   );
 }
