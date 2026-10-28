@@ -410,8 +410,8 @@ Added by integration on Oct 27 2026 with the first numbers.json generated from t
 | "404 since Aug 4" | Wayback shows 200 through Aug 6. | "offline as of Oct 26 2026". |
 | "A six-minute call" | The published event ran about 5.6 minutes (rmp_event_minutes); 6 minutes is Spin's full discharge. | "a call of about five and a half minutes" or "a call of under six minutes". |
 | "A six-minute call uses 4.6% of a Pulse" | A 6-minute call at 0.5C uses 5.0%; 4.6% is the 5.5-minute figure (pulse_share_per_call). | "about 5% of a Pulse". |
-| "The off-peak rule charges overnight at $38.71" (or "$39" from {overnight_avg}) | $38.71 is the 1am-6am mean; the rule charges 1am-5am at a mean of $39.53 (overnight_avg). | "$39.53". |
-| "Clearlane charges at $22.83" (or "$22" or "$23" from {midday_avg}) | $22.83 is the 9am-5pm mean; the timetable charges 1pm-4pm at a mean of $21.55 (midday_avg). | "$21.55". |
+| "The off-peak rule charges overnight at $38.71" (or "$39" from {overnight_avg}) | $38.71 is the 1am-6am mean; the rule charges 1am-5am at a mean of $39.53 (fixed_rule_charge_usd_mwh). | "$39.53". |
+| "Clearlane charges at $22.83" (or "$22" or "$23" from {midday_avg}) | $22.83 is the 9am-5pm mean; the timetable charges 1pm-4pm at a mean of $21.55 (timetable_charge_usd_mwh). | "$21.55". |
 | "27 of 30 July days" | C5a prints 28 of 30 (jul_step_hour_spread). | "28 of 30". |
 | "Torus asked Utah regulators" | The June 2026 comments went to ROWE. | "Torus's June 2026 comments to ROWE". |
 | "Pulse has a 25-year life" | 25 years is the Station lifespan. | "Station lifespan 25 years". |
