@@ -26,8 +26,9 @@ import {
   siteWith,
   solveAtLevels,
   valueGap,
+  withCo2Basis,
 } from "@engine/sensitivity";
-import type { Sensitivity, SensCtx } from "@engine/sensitivity";
+import type { MarginalCo2, Sensitivity, SensCtx } from "@engine/sensitivity";
 import { defaultSite } from "@engine/site";
 import { loadFixture, repoPath } from "./helpers/fixture";
 
@@ -41,6 +42,11 @@ const torus = JSON.parse(
 const backtest = JSON.parse(
   read("public/derived/backtest.json"),
 ) as BacktestResult;
+const marginal = (
+  JSON.parse(read("public/data/response_tables.json")) as {
+    tables: { marginal_co2: MarginalCo2 };
+  }
+).tables.marginal_co2;
 const site = defaultSite();
 const ctx: SensCtx = {
   hist,
@@ -49,6 +55,7 @@ const ctx: SensCtx = {
   seed: backtest.seed,
   by_hour: torus.events_2025_by_hour.value,
   by_weekday: torus.events_2025_by_weekday.value,
+  marginal_co2: marginal,
 };
 // July alone keeps the per-axis runs quick.
 const july: SensCtx = { ...ctx, start_mt: "2026-07-01", end_mt: "2026-07-31" };
@@ -119,6 +126,19 @@ describe("one input at a time", () => {
     expect(AXES.find((a) => a.key === "dp_soc_states")!.points).toEqual([
       41, 81, 161,
     ]);
+    const co2 = AXES.find((a) => a.key === "co2_basis")!;
+    expect(co2.kind).toBe("co2");
+    expect([co2.base, co2.low, co2.high]).toEqual([
+      "eia_average",
+      "marginal_lo",
+      "marginal_hi",
+    ]);
+    expect(co2.points).toEqual([
+      "eia_average",
+      "marginal_lo",
+      "marginal",
+      "marginal_hi",
+    ]);
     for (const a of AXES.filter((x) => x.kind === "pending"))
       expect(a.pending_on).toMatch(/#\d+/);
   });
@@ -143,6 +163,72 @@ describe("one input at a time", () => {
     expect(r.delta_low.usd_per_mw_day).not.toBe(0);
     expect(r.delta_high.usd_per_mw_day).not.toBe(0);
   }, 60_000);
+});
+
+describe("CO2 basis (response tables #47)", () => {
+  const bin = (season: string, h: number) =>
+    marginal.bins.find(
+      (b) => b.basis === "generated" && b.season === season && b.hour_mt === h,
+    )!;
+  const co2Spec = AXES.find((a) => a.key === "co2_basis")!;
+
+  it("the EIA average basis is the day itself", () => {
+    const d = byDay.get("2026-07-15")!;
+    expect(withCo2Basis(d, marginal, "eia_average")).toBe(d);
+  });
+
+  it("each hour takes the generated-basis bin of the day's season and Mountain hour", () => {
+    for (const [day, season] of [
+      ["2026-05-20", "MAM"],
+      ["2026-07-15", "JJA"],
+      ["2026-10-27", "SON"],
+    ] as const) {
+      const d = byDay.get(day)!;
+      const lo = withCo2Basis(d, marginal, "marginal_lo");
+      const mid = withCo2Basis(d, marginal, "marginal");
+      const hi = withCo2Basis(d, marginal, "marginal_hi");
+      for (let h = 0; h < 24; h++) {
+        if (d.co2_g_kwh[h] === null) continue;
+        expect(lo.co2_g_kwh[h]).toBe(bin(season, h).lo);
+        expect(mid.co2_g_kwh[h]).toBe(bin(season, h).slope);
+        expect(hi.co2_g_kwh[h]).toBe(bin(season, h).hi);
+      }
+      expect(mid.lmp_usd_mwh).toBe(d.lmp_usd_mwh);
+      expect(mid.operating_day_mt).toBe(d.operating_day_mt);
+    }
+  });
+
+  it("hours EIA left null stay null, so both bases cover the same days", () => {
+    const d = byDay.get("2026-07-15")!;
+    const gap = {
+      ...d,
+      co2_g_kwh: d.co2_g_kwh.map((v, h) => (h === 3 ? null : v)),
+    };
+    const m = withCo2Basis(gap, marginal, "marginal");
+    expect(m.co2_g_kwh[3]).toBeNull();
+    expect(m.co2_g_kwh[4]).toBe(bin("JJA", 4).slope);
+  });
+
+  it("moves only the CO2 column (July)", () => {
+    const r = runAxis(july, co2Spec);
+    if (r.status !== "ok") throw new Error("expected an ok axis");
+    for (const d of [
+      r.delta_low,
+      r.delta_high,
+      ...r.points!.map((p) => p.delta),
+    ]) {
+      expect(d.usd_per_mw_day).toBe(0);
+      expect(d.calls_unanswerable_pct_points).toBe(0);
+    }
+    expect(r.gap_low.co2_t_per_mw_day).not.toBe(r.gap_high.co2_t_per_mw_day);
+    expect(r.points!.map((p) => p.value)).toEqual(co2Spec.points);
+  }, 60_000);
+
+  it("without the response tables the axis is pending on #47", () => {
+    const r = runAxis({ ...july, marginal_co2: undefined }, co2Spec);
+    expect(r.status).toBe("pending");
+    if (r.status === "pending") expect(r.pending_on).toMatch(/#47/);
+  });
 });
 
 describe("site changes", () => {
@@ -309,6 +395,17 @@ describe.skipIf(!existsSync(repoPath(SENS)))(
         ...valueGap(ctx, site, ctx.wear_usd_mwh, { levels: 80 }),
         calls_unanswerable_pct_points: null,
       }).toEqual(p81.gap);
+    }, 60_000);
+
+    it("the CO2 basis axis ran, and its marginal point recomputes exactly", () => {
+      const co2 = sens().axes.find((a) => a.key === "co2_basis")!;
+      if (co2.status !== "ok") throw new Error("co2_basis should be ok");
+      const p = co2.points!.find((x) => x.value === "marginal")!;
+      expect({
+        ...valueGap(ctx, site, ctx.wear_usd_mwh, { co2_basis: "marginal" }),
+        calls_unanswerable_pct_points:
+          gapOf(backtest).calls_unanswerable_pct_points,
+      }).toEqual(p.gap);
     }, 60_000);
 
     it("break-evens are consistent with their scans", () => {
