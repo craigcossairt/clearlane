@@ -16,6 +16,10 @@ A simulated Torus-style station has two parts: Spin, a flywheel for short, sharp
 
 Notes: on stage, this slide, then the live demo, then the close. Every slide between is a Q&A backup.
 
+Presented by Craig Cossairt
+
+Code: https://github.com/craigcossairt/clearlane
+
 ## 2. Utah's rush hour is 6pm
 
 Ribbon of the operating day: CAISO's day-ahead price for PacifiCorp East (Utah, Wyoming, Idaho), what power costs each hour, set the day before. Three numbers: 1am to 6am average `{overnight_avg}`, 9am to 5pm average `{midday_avg}`, 6pm price `{peak_price}`. These are window averages, not what any schedule paid.
@@ -94,3 +98,5 @@ What Torus told us (Torus, message to Craig Cossairt, Oct 27 2026): the 2025 hea
 Clearlane: fill up when the road is clear, keep Spin ready for the crash.
 
 Ask: pilot the day-ahead envelope, a format Clearlane proposes, at a few sites in Wattsmart, RMP's battery program, this winter.
+
+Code: https://github.com/craigcossairt/clearlane
