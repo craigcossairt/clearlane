@@ -161,7 +161,7 @@
     }
   ],
   "notes": [
-    "The event heatmap states no time zone; always show it read as Mountain time and as UTC.",
+    "The event heatmap image states no time zone, but Torus confirmed the hours are Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). Show the Mountain reading; UTC readings are a sensitivity check only.",
     "359 is the RMP case study count; Torus's 2025 wrap-up says more than 360. We use 359.",
     "pulse_life_yr is the Torus Station lifespan of 25 years, not a Pulse-specific rating.",
     "500 MW is the ceiling of the expanded MOU, not installed capacity."
