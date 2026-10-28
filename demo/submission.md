@@ -42,6 +42,10 @@ https://github.com/craigcossairt/clearlane
 
 The repo goes public only on Craig's go (#35). The link must be in the slides, so check it opens signed out before uploading.
 
+## Judges' site
+
+https://clearlane-mauve.vercel.app (static, built from main; the app is at `/app.html?ff=presenter`). Put this link in the Drive folder next to the repo link.
+
 ## Files
 
 - Deck: `clearlane-deck.pdf`
