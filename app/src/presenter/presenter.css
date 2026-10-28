@@ -319,6 +319,11 @@ body[data-mode="presenter"] {
   color: var(--muted);
   font-size: 24px;
 }
+[data-mode="presenter"] .p-title-by {
+  margin: -8px 0 0;
+  font-size: 24px;
+  color: var(--muted);
+}
 [data-mode="presenter"] .p-title-facts dd {
   margin: 4px 0 0;
   font-size: 32px;
@@ -976,6 +981,7 @@ body[data-mode="presenter"] {
   border-color: var(--clear);
   color: var(--ink);
 }
+[data-mode="presenter"].phone .p-title-by,
 [data-mode="presenter"].phone .p-title-facts dt {
   font-size: 16px;
 }

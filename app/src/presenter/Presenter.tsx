@@ -665,6 +665,7 @@ function TitleHero({ day, onStart }: { day: string; onStart: () => void }) {
           <dd data-copy-ok="CAISO node id">{COPY.node}</dd>
         </div>
       </dl>
+      <p className="p-title-by">{PRESENTER.titleBy}</p>
       <div className="p-actions">
         <PillButton primary onClick={onStart} slot="action-start">
           {PRESENTER.start}

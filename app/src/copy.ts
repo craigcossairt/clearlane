@@ -480,6 +480,7 @@ export const PRESENTER = {
   titleDetail:
     "It reads the next day's power prices, fills the battery when power is cheap at midday, stops buying in the evening rush, and keeps the flywheel ready for Rocky Mountain Power's calls.",
   titleNode: "CAISO day-ahead node",
+  titleBy: "Presented by Craig Cossairt",
   start: "Start",
 
   trafficHeadline: "Power is cheapest at midday. The road jams after the evening step.",
