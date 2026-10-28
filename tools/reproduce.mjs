@@ -38,6 +38,7 @@ const CLIS = [
   { out: "call_ledger.json", cli: "ledger.ts", inputs: "hist, torus_published, backtest.json (#225)", args: () => [] },
   { out: "scale_curve.json", cli: "scale.ts", inputs: "response_tables, bundle, numbers.json (#73)", args: () => [] },
   { out: "sensitivity.json", cli: "sensitivity.ts", inputs: "hist, torus_published, backtest.json (#238)", args: () => [] },
+  { out: "wear_rainflow.json", cli: "wear.ts", inputs: "hist, torus_published, backtest.json, bundle, numbers.json (#70)", args: () => [] },
   { out: "rt_replay.json", cli: "replay.ts", inputs: "rt_<window>, hist, backtest.json (#227)", args: ({ rtArgs }) => rtArgs() },
 ];
 
