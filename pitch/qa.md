@@ -70,6 +70,14 @@ A: The backtest card covers May 1 to Oct 27, `{backtest_days}` days, with Clearl
 
 Source: FACTS `backtest_days`, `clearlane_p10`, `clearlane_p90`, `oct_step_hour_days`
 
+### Does Clearlane win every day?
+
+Judge: Angela Smith
+
+A: No: on Oct 28 overnight power cost about the same as noon, and the fixed off-peak rule almost tied. Across the backtest Clearlane beats that rule on `{share_days_beating}` of days, with a median day of `{clearlane_p50}` per MW-day.
+
+Source: FACTS `share_days_beating`, `clearlane_p50`; Oct 28 CAISO day-ahead prices, Integration's story check on the Oct 28 refresh PR
+
 ### Is Utah allowed to cycle these daily?
 
 Judge: Angela Smith
