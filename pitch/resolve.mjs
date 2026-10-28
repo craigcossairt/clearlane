@@ -86,7 +86,8 @@ function pitchFiles() {
         continue;
       }
       if (!/\.(md|html)$/.test(ent.name)) continue;
-      if (rel === "pitch/review-log.md" || /^pitch\/research-.*\.md$/.test(rel)) continue;
+      // drill.md is Craig's rehearsal sheet; it quotes the trap phrases on purpose.
+      if (rel === "pitch/review-log.md" || rel === "pitch/drill.md" || /^pitch\/research-.*\.md$/.test(rel)) continue;
       if (rel.startsWith("pitch/test/fixtures/")) continue;
       out.push(rel);
     }

@@ -12,11 +12,11 @@ A: Day-ahead prices are known the evening before, so the price leg needs no fore
 
 Source: FACTS `solve_ms`, `lasso_inputs`
 
-### Why does beat 2 say one dollar figure and beat 5 another?
+### Why is the engine's own plan worth less than the race card?
 
 Judge: Ryan Byrd
 
-A: Beats 2 and 6 use the hourly reference timetable, `{clearlane_usd_mw_day}` per MW-day, and every fleet product is that times the MWs. The engine's own 15-minute plan is `{clearlane_dp_usd_mw_day}`, a different plan, and we keep the two apart on purpose.
+A: They are two plans: the race card is the hourly reference timetable at `{clearlane_usd_mw_day}` per MW-day, and the engine's 15-minute plan is `{clearlane_dp_usd_mw_day}`. Every fleet figure on stage is built from the reference, and no card mixes the two.
 
 Source: FACTS `clearlane_usd_mw_day`, `clearlane_dp_usd_mw_day`
 
@@ -32,9 +32,9 @@ Source: FACTS `co2_overnight_avg`, `co2_midday_avg`
 
 Judge: Ryan Byrd
 
-A: Torus publishes `{torus_pulse_cycles}` Pulse cycles and a Station lifespan of `{torus_lifespan_yr}`, so our budget is `{pulse_cycle_budget}` a year; applying the Station life to Pulse is our assumption. The day's plan uses `{cycles_today}` cycles, above that budget's daily share, and the meter shows it rather than hiding it.
+A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A busy day like the one on screen uses `{cycles_today}` cycles, and the meter shows it.
 
-Source: FACTS `torus_pulse_cycles`, `torus_lifespan_yr`, `pulse_cycle_budget`, `cycles_today`
+Source: FACTS `wear_usd_mwh`, `pulse_cycle_budget`, `torus_pulse_cycles`, `torus_lifespan_yr`, `cycles_today`
 
 ### How do you know when the calls happen?
 
@@ -56,9 +56,9 @@ Source: FACTS `second_call_shortfall_kw`
 
 Judge: Ryan Byrd
 
-A: The price leg is, and on the day on screen it is worth `{clearlane_usd_mw_day}` per MW-day against `{fixed_usd_mw_day}` for a fixed off-peak rule. The rest is keeping Spin ready for RMP's calls and keeping the host meter under its ceiling, which a price-only plan does not do: in the backtest it misses `{calls_missed_by_policy_price_only_mt}` of calls.
+A: The price leg is, worth `{clearlane_usd_mw_day}` per MW-day against `{fixed_usd_mw_day}` for a fixed off-peak rule. The rest is keeping Spin ready for RMP's calls, which price alone does not do: in the backtest a price-only plan misses `{calls_missed_by_policy_price_only_mt}` of calls and Clearlane `{calls_missed_by_policy_clearlane_mt}`.
 
-Source: FACTS `clearlane_usd_mw_day`, `fixed_usd_mw_day`, `calls_missed_by_policy_price_only_mt`
+Source: FACTS `clearlane_usd_mw_day`, `fixed_usd_mw_day`, `calls_missed_by_policy_price_only_mt`, `calls_missed_by_policy_clearlane_mt`
 
 ## Angela Smith, COO of Nucleus Fund (path to reality)
 
@@ -74,7 +74,7 @@ Source: FACTS `backtest_days`, `clearlane_p10`, `clearlane_p90`, `oct_step_hour_
 
 Judge: Angela Smith
 
-A: Not verified from the tariff sheets we read. The envelope and Torus's ROWE comments are where that question belongs, not a claim we make.
+A: We found no Utah rule on it in the tariff sheets we read, and we make no claim either way. Torus's June 2026 ROWE comments ask for credit for scheduled dispatch and standards for operating envelopes, which is where that question gets settled.
 
 Source: `pitch/research-tariff.md`; https://rowesternenergy.org/wp-content/uploads/2026/06/Consolidated-Spring-Workshop-Comments_06222026.pdf
 
@@ -174,9 +174,9 @@ Source: FACTS `campus_usd`, `time_vs_space_oct`
 
 Judge: Scott Holley
 
-A: Batteries that fill when the grid is clear and stay off the road in the 6pm jam, with Spin ready for Rocky Mountain Power's calls. At `{mou_70mw}` MW that is `{clearlane_70}` a day of value to RMP's system at day-ahead prices.
+A: Batteries that fill when the grid is clear, stay off the road in the 6pm jam, and still answer Rocky Mountain Power's calls: Clearlane misses `{calls_missed_by_policy_clearlane_mt}` in the backtest. At `{mou_70mw}` MW that is `{clearlane_70}` a day of value to RMP's system at day-ahead prices.
 
-Source: FACTS `mou_70mw`, `clearlane_70`
+Source: FACTS `calls_missed_by_policy_clearlane_mt`, `mou_70mw`, `clearlane_70`
 
 ## Tanner Potter, Partner at Kickstart (market and ask)
 

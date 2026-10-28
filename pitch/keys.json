@@ -472,6 +472,14 @@
       "prov": "DERIVED",
       "note": "System Critical Hours in the day's envelope. The rule is our proposal.",
       "display": "{sch_hours_today}"
+    },
+    "wear_usd_mwh": {
+      "fact": "wear_usd_mwh",
+      "source": "numbers",
+      "unit": "$/MWh",
+      "prov": "DERIVED",
+      "note": "Backtest wear price, bisected so Clearlane uses at most 300 cycles a year.",
+      "display": "{wear_usd_mwh}"
     }
   }
 }
