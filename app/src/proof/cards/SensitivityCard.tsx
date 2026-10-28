@@ -85,7 +85,7 @@ export function SensitivityCard({ data }: { data: Sensitivity }) {
       a.gap_high.usd_per_mw_day,
     ]),
   ];
-  const ticks = niceTicks(Math.min(0, ...all), Math.max(...all), 5);
+  const ticks = niceTicks(Math.min(0, ...all), Math.max(0, ...all), 5);
   const x0 = ticks[0] ?? 0;
   const x1 = ticks[ticks.length - 1] ?? base;
   const sx = (v: number) =>
