@@ -16,9 +16,17 @@ Source: FACTS `solve_ms`, `lasso_inputs`
 
 Judge: Ryan Byrd
 
-A: The race card is the hourly reference timetable at `{clearlane_usd_mw_day}` per MW-day; the engine's 15-minute plan, at `{clearlane_dp_usd_mw_day}`, moves Pulse's state of charge in coarse fixed steps, which hold its charge and discharge below Pulse's rating, and those steps account for the whole gap. Every fleet figure on stage is built from the reference, and no card mixes the two.
+A: Two things put the engine's 15-minute plan, at `{clearlane_dp_usd_mw_day}`, below the timetable's `{clearlane_usd_mw_day}` per MW-day: it plans against a wear price on every cycle, which the timetable ignores, so it cycles less, and it moves stored energy in coarse fixed steps. The steps account for a little over half the gap and the wear price for the rest, and every fleet figure on stage is built from the timetable.
 
-Source: FACTS `clearlane_usd_mw_day`, `clearlane_dp_usd_mw_day`; `engine/src/limits.ts` (`PULSE_LEVELS`), Data's engine review on the cycle-fix issue
+Source: FACTS `clearlane_usd_mw_day`, `clearlane_dp_usd_mw_day`, `wear_usd_mwh`; `engine/src/limits.ts` (`PULSE_LEVELS`); Data's re-check after the cycle fix on the engine-review issue (steps versus a continuous plan at the new wear price)
+
+### Is the timetable's `{clearlane_usd_mw_day}` before wear?
+
+Judge: Ryan Byrd
+
+A: Yes: the timetable and the off-peak rule are both scored at day-ahead prices before wear, so the race compares like with like. The engine's 15-minute plan is scored the same way; the wear price only shapes its schedule.
+
+Source: FACTS `clearlane_usd_mw_day`, `fixed_usd_mw_day`; `engine/src/reference.ts` (both race legs), `engine/src/plan.ts` (plan value)
 
 ### Average or marginal emissions?
 
