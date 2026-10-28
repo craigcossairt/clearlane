@@ -195,7 +195,13 @@ body {
   top: 262px;
   display: flex;
   align-items: center;
-  gap: 34px;
+  gap: 28px;
+}
+.dot {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--clear);
 }
 .mark .word {
   font-size: 168px;
@@ -206,7 +212,7 @@ body {
 .wordmark-small {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   font-size: 40px;
 }
 

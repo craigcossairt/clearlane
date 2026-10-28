@@ -93,3 +93,14 @@ test("WebVTT cues run in order and refuse overlaps", () => {
   assert.match(vtt, /00:00:04\.500 --> 00:00:06\.000\nThat is the jam\./);
   assert.throws(() => toVtt([cues[1], cues[0]]), /out of order/);
 });
+
+test("--pauses scales the silence around the lines and leaves the lines alone", async () => {
+  const { buildTimeline } = await import("../explainer/render.mjs");
+  const scenes = buildNarration(data);
+  const n = scenes.flatMap((s) => s.lines).length;
+  const clips = new Map(scenes.flatMap((s) => s.lines).map((l) => [l.id, new Float32Array(44100).fill(0.5)]));
+  const full = buildTimeline(scenes, clips).duration - n;
+  const half = buildTimeline(scenes, clips, 0.5).duration - n;
+  assert.ok(full > 10);
+  assert.ok(Math.abs(half - full / 2) < 1e-9, `${half} vs ${full}`);
+});

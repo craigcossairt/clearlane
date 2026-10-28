@@ -1,0 +1,9 @@
+{
+  "path": "/v1/fleet/2026-10-27",
+  "status": 404,
+  "body": {
+    "schema": "clearlane.feed.error/v1",
+    "data_mode": "snapshot",
+    "reason": "public/derived/fleet_2026-10-27.json not found: the fleet-rollup item has not written a fleet file"
+  }
+}

@@ -4,6 +4,9 @@
 //
 // Energy is in "units" (MWh in the hourly mode, kWh in the 15-minute mode); `to_mwh` converts.
 // Grid energy g follows fix.py: + is discharge to the grid, - is charge from the grid.
+// Optional price impact (ff_price_impact): the price at step t moves by impact[t] x g, so discharge
+// lowers it and charging raises it. The reward still depends only on that step's action, so the DP
+// stays exact. Absent or 0, the step is a price taker and the arithmetic is unchanged.
 
 export interface DpInput {
   price: number[]; // $/MWh per step
@@ -18,6 +21,7 @@ export interface DpInput {
   end_level: number; // terminal SoC must be at or above this level
   to_mwh: number;
   tol?: number;
+  impact?: number[]; // per step, $/MWh per grid unit injected, >= 0
 }
 
 export interface DpResult {
@@ -53,6 +57,7 @@ export function solveDp(x: DpInput): DpResult {
     const p = x.price[t]!;
     const cmax = x.charge_max[t]!;
     const dmax = x.discharge_max[t]!;
+    const kq = x.impact?.[t] ?? 0;
     for (let j = 0; j <= N; j++) {
       if (L[j]! < x.soc_min - tol) continue;
       let best = NEG;
@@ -72,7 +77,8 @@ export function solveDp(x: DpInput): DpResult {
           if (g > dmax + tol) continue;
           c = x.W * g;
         }
-        const val = (p * g - c) * x.to_mwh + Vn[k]!;
+        const pe = kq === 0 ? p : p - kq * g;
+        const val = (pe * g - c) * x.to_mwh + Vn[k]!;
         if (val > best) {
           best = val;
           argK = k;
@@ -98,7 +104,11 @@ export function solveDp(x: DpInput): DpResult {
     level_path.push(j);
   }
   let gross = 0;
-  for (let t = 0; t < T; t++) gross += x.price[t]! * acts[t]! * x.to_mwh;
+  for (let t = 0; t < T; t++) {
+    const kq = x.impact?.[t] ?? 0;
+    const pe = kq === 0 ? x.price[t]! : x.price[t]! - kq * acts[t]!;
+    gross += pe * acts[t]! * x.to_mwh;
+  }
   return {
     feasible,
     objective: feasible ? V[0]![x.start_level]! : NEG,

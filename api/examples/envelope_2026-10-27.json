@@ -1,0 +1,669 @@
+{
+  "path": "/v1/envelope/2026-10-27",
+  "status": 200,
+  "body": {
+    "schema": "clearlane.feed.envelope/v1",
+    "envelope_schema": "clearlane.envelope/v1",
+    "operating_day_mt": "2026-10-27",
+    "generated_utc": "2026-10-27T12:00:00Z",
+    "data_mode": "snapshot",
+    "fleet_kw": {
+      "value": 250,
+      "prov": "SIMULATED"
+    },
+    "sch_rule": "System Critical Hours (our proposal): the 4 highest net-load hours of the day plus every jam hour. In these hours Pulse keeps enough spare power to cover any part of the enrolled kW that Spin cannot.",
+    "rows": [
+      {
+        "ts_utc": "2026-10-27T06:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 26.650089544451305,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse charging 27 kW",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T07:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T08:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T09:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T10:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T11:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T12:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T13:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T14:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 200,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T15:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 180,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 159.90053726670783,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "clear lane: charging, host ceiling limits charge to 180 kW",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T16:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 150,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 106.60035817780522,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "clear lane: charging, host ceiling limits charge to 150 kW",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T17:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 120,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 106.60035817780522,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "clear lane: charging, host ceiling limits charge to 120 kW",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T18:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 80,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 53.30017908890261,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "clear lane: charging, host ceiling limits charge to 80 kW",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T19:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 40,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "clear lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T20:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "clear lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T21:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "clear lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T22:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 80,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 53.30017908890261,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "clear lane: charging, host ceiling limits charge to 80 kW",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-27T23:00:00Z",
+        "system_critical": {
+          "value": false,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 200,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "shoulder lane: Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-28T00:00:00Z",
+        "system_critical": {
+          "value": true,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": -234.5207879911715,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse discharging 235 kW",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-28T01:00:00Z",
+        "system_critical": {
+          "value": true,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": -211.06870919205434,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse discharging 211 kW",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-28T02:00:00Z",
+        "system_critical": {
+          "value": true,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-28T03:00:00Z",
+        "system_critical": {
+          "value": true,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-28T04:00:00Z",
+        "system_critical": {
+          "value": true,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle",
+          "prov": "DERIVED"
+        }
+      },
+      {
+        "ts_utc": "2026-10-28T05:00:00Z",
+        "system_critical": {
+          "value": true,
+          "prov": "DERIVED"
+        },
+        "reserve_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_charge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "max_discharge_kw": {
+          "value": 250,
+          "prov": "DERIVED"
+        },
+        "planned_kw": {
+          "value": 0,
+          "prov": "DERIVED"
+        },
+        "reason": {
+          "value": "System Critical Hour (our proposal): Spin holds 250 kW; Pulse idle",
+          "prov": "DERIVED"
+        }
+      }
+    ],
+    "sources": [
+      "public/derived/envelope_2026-10-27.json"
+    ]
+  }
+}

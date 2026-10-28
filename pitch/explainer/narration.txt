@@ -11,13 +11,13 @@
 ## traffic | Traffic report
 [ribbon] This is Utah's traffic report for October 27: the day-ahead price for PacifiCorp East.
 [clear] At midday, power is cheapest. The road is clear.
-[jam] Then solar fades, and by 6pm the price is {peak_over_trough} the day's low. That is the jam.
+[jam] Then net load climbs as solar fades, and by 6pm the price is {peak_over_trough} the day's low. That is the jam.
 [october] In October, that jump hit at 5pm or 6pm on {oct_step_hour_days_at_5_or_6} of {oct_step_hour_days_total} days.
 
 ## race | Race
 [race] Now race one battery through that day, two ways.
 [fixed-buy] Left, a battery on an off-peak rule, our baseline, not Torus practice, buys overnight at {fixed_rule_charge_usd_mwh}.
-[fixed-sell] It sells in the evening jam at {race_discharge_usd_mwh}. Sell minus buy is worth {fixed_usd_mw_day}.
+[fixed-sell] It sells in the evening jam at {race_discharge_usd_mwh}. Sell minus buy: {fixed_usd_mw_day}.
 [cl-buy] Right, a simulated Torus-style station on Clearlane buys the same energy at midday, at {timetable_charge_usd_mwh}.
 [cl-sell] Same sale. It is worth {clearlane_usd_mw_day}, {race_ratio} as much.
 [value] That is value to Rocky Mountain Power's system at day-ahead prices, per MW per day. Higher is better.
@@ -35,11 +35,11 @@
 ## envelope | Envelope
 [envelope] The output is an hourly envelope: reserve, and charge and discharge limits, for every hour.
 [sch] On that day, {sch_hours_today} hours are System Critical, under a rule we propose. The envelope is a format Clearlane proposes.
-[backtest] In a backtest over {backtest_days} days of real prices and simulated calls, Clearlane missed {calls_missed_by_policy_clearlane_mt} of calls, the off-peak rule {calls_missed_by_policy_fixed_overnight_mt}, a battery-only plan {calls_missed_by_policy_price_only_mt}.
+[backtest] In a backtest over {backtest_days} days of real prices, with call times drawn from Torus's 2025 heatmap, Clearlane missed {calls_missed_by_policy_clearlane_mt} of calls, the off-peak rule {calls_missed_by_policy_fixed_overnight_mt}, a battery-only plan {calls_missed_by_policy_price_only_mt}.
 
 ## scale | Scale
-[scale-70] At the {mou_70mw} MW MOU, Clearlane is worth {clearlane_70} a day to Rocky Mountain Power's system at day-ahead prices.
-[scale-500] At an MOU for up to {torus_500mw} MW, a ceiling, not installed capacity: {clearlane_500} a day to Rocky Mountain Power's system, if the fleet does not move prices.
+[scale-70] At the {mou_70mw} MW MOU, Clearlane is worth {clearlane_70} a day to Rocky Mountain Power's system, at day-ahead prices.
+[scale-500] At an MOU for up to {torus_500mw} MW, a ceiling, not installed capacity: {clearlane_500} a day of value to Rocky Mountain Power's system, if the fleet does not move prices.
 
 ## close | Close
 [close1] {copy.closeLine1}
