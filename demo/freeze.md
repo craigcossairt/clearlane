@@ -19,12 +19,13 @@ Two decisions must be made before 1:45pm, both Craig's:
 cd "C:/Users/Craig Cossairt/Code/clearlane"
 git pull --ff-only && npm run check:all
 node tools/offline-check.mjs && node tools/facts-check.mjs
+npm run reproduce
 git tag -a v1-stage -m "Stage build, operating day <day>, flags: <list or none>"
 git push origin v1-stage
 git ls-remote --tags origin v1-stage
 ```
 
-- [ ] check:all green, offline check PASS, facts-check PASS.
+- [ ] check:all green, offline check PASS, facts-check PASS, reproduce prints "REPRODUCED n/n stage numbers" (about 2 minutes).
 - [ ] Tag pushed; write its SHA here: `________`
 
 ## 2:10pm, stage worktree from the tag
@@ -54,7 +55,7 @@ On the demo machine (Craig picks it). If it is not this laptop, run the stage wo
 2. [ ] Turn Wi-Fi off. Check the tray icon shows no connection.
 3. [ ] `npx vite preview --port 4173 --strictPort`, open `http://localhost:4173/`, press F11.
 4. [ ] Run beats 1 to 6 from the keyboard per `stage-script.md`, timed with a phone stopwatch. Target 2:45.
-5. [ ] Still offline: `node tools/offline-check.mjs` PASS.
+5. [ ] Still offline: `node tools/offline-check.mjs` PASS, and `npm run reproduce` prints REPRODUCED (this is the Wi-Fi-off proof for #32).
 6. [ ] Press R. Turn Wi-Fi back on.
 7. [ ] Log the time, length and anything that broke in the run-of-show rehearsal log, with build `v1-stage`.
 

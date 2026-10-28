@@ -1,0 +1,355 @@
+{
+  "schema": "clearlane.wear_rainflow/v1",
+  "flag": "ff_wear_rainflow",
+  "generated_utc": "2026-10-28T08:20:07Z",
+  "window": {
+    "start_mt": "2026-05-01",
+    "end_mt": "2026-10-27",
+    "days": 179
+  },
+  "wear_usd_mwh": 10.95,
+  "rating": {
+    "pulse_cycle_life": 7500,
+    "pulse_cycle_life_prov": "TORUS_PUBLISHED",
+    "rated_dod": 1,
+    "rated_dod_prov": "ASSUMPTION",
+    "station_life_yr": 25,
+    "station_life_prov": "TORUS_PUBLISHED"
+  },
+  "k": [
+    1,
+    1.5,
+    2
+  ],
+  "policies": [
+    {
+      "policy": "fixed_overnight",
+      "label": "Battery on the off-peak rule",
+      "prov": "DERIVED",
+      "throughput_cycles_per_yr": 365.00000000000006,
+      "rainflow_cycles_per_yr": 365,
+      "mean_depth_pct": 100,
+      "by_k": [
+        {
+          "k": 1,
+          "equivalent_cycles_per_yr": 365,
+          "life_yr": 20.54794520547945,
+          "life_prov": "ASSUMPTION"
+        },
+        {
+          "k": 1.5,
+          "equivalent_cycles_per_yr": 365,
+          "life_yr": 20.54794520547945,
+          "life_prov": "ASSUMPTION"
+        },
+        {
+          "k": 2,
+          "equivalent_cycles_per_yr": 365,
+          "life_yr": 20.54794520547945,
+          "life_prov": "ASSUMPTION"
+        }
+      ],
+      "dwell_h_above_80pct": {
+        "p10": 14.200000000000001,
+        "p50": 14.200000000000001,
+        "p90": 14.200000000000001,
+        "mean": 14.19999999999999
+      },
+      "full_h": {
+        "p10": 13,
+        "p50": 13,
+        "p90": 13,
+        "mean": 13
+      }
+    },
+    {
+      "policy": "price_only",
+      "label": "Battery-only plan",
+      "prov": "DERIVED",
+      "throughput_cycles_per_yr": 625.4448324022351,
+      "rainflow_cycles_per_yr": 1203.072625698324,
+      "mean_depth_pct": 51.98728813559325,
+      "by_k": [
+        {
+          "k": 1,
+          "equivalent_cycles_per_yr": 625.4448324022351,
+          "life_yr": 11.991465292300331,
+          "life_prov": "ASSUMPTION"
+        },
+        {
+          "k": 1.5,
+          "equivalent_cycles_per_yr": 554.9151575148466,
+          "life_yr": 13.51557963128686,
+          "life_prov": "ASSUMPTION"
+        },
+        {
+          "k": 2,
+          "equivalent_cycles_per_yr": 516.4482367318432,
+          "life_yr": 14.522268577120238,
+          "life_prov": "ASSUMPTION"
+        }
+      ],
+      "dwell_h_above_80pct": {
+        "p10": 3.8,
+        "p50": 7.9,
+        "p90": 10.4,
+        "mean": 7.368738361266282
+      },
+      "full_h": {
+        "p10": 2,
+        "p50": 6,
+        "p90": 9,
+        "mean": 5.58659217877095
+      }
+    },
+    {
+      "policy": "clearlane",
+      "label": "Simulated Torus-style station on Clearlane",
+      "prov": "DERIVED",
+      "throughput_cycles_per_yr": 299.74860335195524,
+      "rainflow_cycles_per_yr": 470.01396648044687,
+      "mean_depth_pct": 63.77440347071582,
+      "by_k": [
+        {
+          "k": 1,
+          "equivalent_cycles_per_yr": 299.74860335195524,
+          "life_yr": 25.020967291026004,
+          "life_prov": "ASSUMPTION"
+        },
+        {
+          "k": 1.5,
+          "equivalent_cycles_per_yr": 280.9017134442349,
+          "life_yr": 26.699730336422153,
+          "life_prov": "ASSUMPTION"
+        },
+        {
+          "k": 2,
+          "equivalent_cycles_per_yr": 269.20279329608957,
+          "life_yr": 27.860037810792452,
+          "life_prov": "ASSUMPTION"
+        }
+      ],
+      "dwell_h_above_80pct": {
+        "p10": 0,
+        "p50": 7.4,
+        "p90": 10,
+        "mean": 5.923021415270017
+      },
+      "full_h": {
+        "p10": 0,
+        "p50": 5,
+        "p90": 8,
+        "mean": 4.279329608938547
+      }
+    }
+  ],
+  "ranking_by_k": [
+    {
+      "k": 1,
+      "least_wear_first": [
+        "clearlane",
+        "fixed_overnight",
+        "price_only"
+      ]
+    },
+    {
+      "k": 1.5,
+      "least_wear_first": [
+        "clearlane",
+        "fixed_overnight",
+        "price_only"
+      ]
+    },
+    {
+      "k": 2,
+      "least_wear_first": [
+        "clearlane",
+        "fixed_overnight",
+        "price_only"
+      ]
+    }
+  ],
+  "depth_aware_clearlane": [
+    {
+      "k": 1,
+      "prov": "DERIVED",
+      "usd_per_mw_day": {
+        "p10": 1.2821246533220731,
+        "p50": 38.686189176294,
+        "p90": 115.998956020155,
+        "mean": 51.52222281976755
+      },
+      "usd_per_mw_day_vs_linear": 0,
+      "days_plan_changed": 0,
+      "throughput_cycles_per_yr": 299.74860335195524,
+      "equivalent_cycles_per_yr": 299.74860335195524,
+      "life_yr": 25.020967291026004,
+      "life_prov": "ASSUMPTION",
+      "dwell_h_above_80pct_mean": 5.923021415270017
+    },
+    {
+      "k": 1.5,
+      "prov": "DERIVED",
+      "usd_per_mw_day": {
+        "p10": 0,
+        "p50": 38.62598274376007,
+        "p90": 118.50243004916986,
+        "mean": 51.75878910307405
+      },
+      "usd_per_mw_day_vs_linear": 0.2365662833065051,
+      "days_plan_changed": 144,
+      "throughput_cycles_per_yr": 312.34008379888263,
+      "equivalent_cycles_per_yr": 295.301314263832,
+      "life_yr": 25.397787404695567,
+      "life_prov": "ASSUMPTION",
+      "dwell_h_above_80pct_mean": 6.752397579143391
+    },
+    {
+      "k": 2,
+      "prov": "DERIVED",
+      "usd_per_mw_day": {
+        "p10": 0,
+        "p50": 37.745828870118075,
+        "p90": 117.77614291079306,
+        "mean": 51.75385620151423
+      },
+      "usd_per_mw_day_vs_linear": 0.23163338174667777,
+      "days_plan_changed": 152,
+      "throughput_cycles_per_yr": 322.3826815642455,
+      "equivalent_cycles_per_yr": 289.35171089385517,
+      "life_yr": 25.920012626955835,
+      "life_prov": "ASSUMPTION",
+      "dwell_h_above_80pct_mean": 6.889734636871513
+    }
+  ],
+  "stage_day": {
+    "operating_day_mt": "2026-10-27",
+    "policies": [
+      {
+        "policy": "fixed_overnight",
+        "cycles": [
+          {
+            "range": 100,
+            "count": 0.5
+          },
+          {
+            "range": 100,
+            "count": 0.5
+          }
+        ],
+        "by_k": [
+          {
+            "k": 1,
+            "equivalent_cycles": 1
+          },
+          {
+            "k": 1.5,
+            "equivalent_cycles": 1
+          },
+          {
+            "k": 2,
+            "equivalent_cycles": 1
+          }
+        ],
+        "dwell_h_above_80pct": 14.200000000000001,
+        "full_h": 13
+      },
+      {
+        "policy": "price_only",
+        "cycles": [
+          {
+            "range": 40,
+            "count": 0.5
+          },
+          {
+            "range": 45,
+            "count": 0.5
+          },
+          {
+            "range": 100,
+            "count": 0.5
+          },
+          {
+            "range": 100,
+            "count": 0.5
+          },
+          {
+            "range": 100,
+            "count": 0.5
+          },
+          {
+            "range": 95,
+            "count": 0.5
+          }
+        ],
+        "by_k": [
+          {
+            "k": 1,
+            "equivalent_cycles": 2.4
+          },
+          {
+            "k": 1.5,
+            "equivalent_cycles": 2.2403984262663967
+          },
+          {
+            "k": 2,
+            "equivalent_cycles": 2.1325
+          }
+        ],
+        "dwell_h_above_80pct": 4.800000000000001,
+        "full_h": 3
+      },
+      {
+        "policy": "clearlane",
+        "cycles": [
+          {
+            "range": 95,
+            "count": 0.5
+          },
+          {
+            "range": 95,
+            "count": 0.5
+          }
+        ],
+        "by_k": [
+          {
+            "k": 1,
+            "equivalent_cycles": 0.95
+          },
+          {
+            "k": 1.5,
+            "equivalent_cycles": 0.9259454627568515
+          },
+          {
+            "k": 2,
+            "equivalent_cycles": 0.9025
+          }
+        ],
+        "dwell_h_above_80pct": 6.4,
+        "full_h": 1
+      }
+    ],
+    "race_full_h": {
+      "fixed_overnight": 13,
+      "timetable": 2,
+      "prov": "DERIVED"
+    }
+  },
+  "sources": {
+    "hist": "public/data/hist_2026-05-01_2026-10-27.json",
+    "torus": "public/data/torus_published.json",
+    "backtest": "public/derived/backtest.json",
+    "bundle": "public/data/bundle_2026-10-27.json",
+    "code": "engine/src/rainflow.ts"
+  },
+  "notes": [
+    "Flag ff_wear_rainflow. Nothing on stage reads this file; numbers.json, backtest.json and the calibrated wear price are unchanged.",
+    "Backtest rows are the day-ahead plans backtest.json scores (SCH by the price proxy, calls not replayed), so throughput_cycles_per_yr equals its pulse_cycles_per_yr.",
+    "Rainflow: 3-point count on the Pulse SoC at every 15-minute boundary, as research/analysis/depth/bandsplit.py counts it, except that a flat run is one turning point.",
+    "Equivalent cycles: Miner's rule with N(DoD) = 7,500 x DoD^-k, so a cycle of depth d counts as d^k rated cycles. The basis of the 7,500-cycle rating (DoD, temperature, end-of-life capacity) is not advertised; a 100% rated DoD is our ASSUMPTION, and so is k.",
+    "Life is cycle life only: 7,500 over equivalent cycles a year. Calendar aging and repowering are not modeled, so a life past the Station's published 25-year lifespan means cycling is not the limit, not that Pulse lasts longer. Lead with the ranking and the dwell hours, which need no rating assumption.",
+    "Depth-aware DP (segment approximation): the wear price split over 40 SoC segments, each priced by the increment of DoD^k across it with depth measured down from full; at k = 1 every multiplier is 1 and the plans are the linear ones. The piecewise-segment method follows Xu et al. 2018 (citation UNVERIFIED: the paper was not opened).",
+    "Dwell: hours a day with SoC above 80% of capacity and at full, linear inside each 15-minute interval. Whether high-SoC dwell speeds Pulse aging is not modeled (UNVERIFIED).",
+    "race_full_h: habit.py's hour lists on the stage day hold the battery full from the end of the last charge hour to the start of the first discharge hour."
+  ]
+}
