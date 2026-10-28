@@ -105,3 +105,14 @@ export function typedIntoInput(target: EventTarget | null): boolean {
   }
   return false;
 }
+
+/**
+ * Stretch key F (#92): the fleet board, live only while ff_fleet_board is on. The board's own
+ * handler takes it, so KEYMAP, the core handler and the ? overlay above stay as they are.
+ */
+export const FLEET_KEY = {
+  key: "f",
+  flag: "ff_fleet_board",
+  keyLabel: "F",
+  label: "Open or close the fleet board",
+} as const;

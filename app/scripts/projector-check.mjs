@@ -1,4 +1,5 @@
 // Usage: node app/scripts/projector-check.mjs [baseUrl] [--browser auto|chromium|msedge|chrome] [--presenter]
+//        [--ff name,name]
 //
 // The projector check (docs/lanes/ui.md section 4, core 12). Against a running stage build
 // (default http://localhost:4173, which is `npm run preview`) it opens each beat's end state,
@@ -18,6 +19,12 @@
 // start state for sideways scroll,
 // saving tools/out/screens/presenter<N>-<w>x<h>.png. Without the flag the six-beat run is as
 // it was.
+//
+// --ff name,name turns stage flags on for every page the run opens (&ff=..., names without the
+// ff_ prefix, as in the app). Without it no flag is on. With fleet_board in the list (#92) the
+// six-beat run also opens the fleet board with F over beat 3 at both sizes, applies the end-state
+// rules to it, saves tools/out/screens/fleetboard-<w>x<h>.png, and checks that its slots stay
+// put across the first and the second C on the board.
 //
 // The rules and the exit code live in app/src/projector/verdict.ts (pure, vitest-pinned).
 // Exit codes: 0 PASS; 1 FAIL, each violation listed; 2 COULD NOT RUN (Playwright missing,
@@ -40,15 +47,22 @@ const STATE_WAIT_MS = 5000;
 
 class CouldNotRun extends Error {}
 
+/** "&ff=..." for the six-beat run, or "" when --ff is not given. */
+const ffParam = (args) => (args.ff ? `&ff=${args.ff}` : "");
+const ffNames = (args) => (args.ff ? args.ff.split(",") : []);
+
 function parseArgs(argv) {
-  const args = { base: "http://localhost:4173", browser: "auto", presenter: false };
+  const args = { base: "http://localhost:4173", browser: "auto", presenter: false, ff: "" };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--browser") args.browser = argv[++i];
     else if (a === "--presenter") args.presenter = true;
+    else if (a === "--ff") args.ff = argv[++i] ?? "";
     else if (a.startsWith("--")) throw new CouldNotRun(`unknown option ${a}`);
     else args.base = a;
   }
+  if (args.ff !== "" && !/^[a-z0-9_]+(,[a-z0-9_]+)*$/.test(args.ff))
+    throw new CouldNotRun(`--ff takes flag names like fleet_board,proof_drawer, got ${args.ff}`);
   if (!["auto", "chromium", "msedge", "chrome"].includes(args.browser))
     throw new CouldNotRun(`--browser must be auto, chromium, msedge or chrome, got ${args.browser}`);
   try {
@@ -224,7 +238,7 @@ async function runPresenter(args, rules) {
         for (const screen of PRESENTER_SCREENS) {
           const label = `presenter${screen} ${step} ${tag}`;
           const q = step === "end" ? "&step=end" : "";
-          if (!(await openScreen(page, `${args.base}/?ff=presenter&screen=${screen}${q}&motion=off`, screen))) {
+          if (!(await openScreen(page, `${args.base}/?ff=presenter${args.ff ? `,${args.ff}` : ""}&screen=${screen}${q}&motion=off`, screen))) {
             violations.push(`${label}: the deep link never set body[data-screen="${screen}"]`);
             continue;
           }
@@ -273,7 +287,7 @@ async function run(args, rules) {
 
       for (const beat of BEATS) {
         const label = `beat${beat} ${tag}`;
-        if (!(await open(page, `${args.base}/?beat=${beat}&step=end&motion=off`, beat))) {
+        if (!(await open(page, `${args.base}/?beat=${beat}&step=end&motion=off${ffParam(args)}`, beat))) {
           violations.push(`${label}: the deep link never set body[data-beat="${beat}"]`);
           continue;
         }
@@ -290,7 +304,7 @@ async function run(args, rules) {
       for (const beat of BEATS) {
         const label = `beat${beat} ${tag} start vs end`;
         if (!endSlots[beat]) continue;
-        if (!(await open(page, `${args.base}/?beat=${beat}&motion=off`, beat))) {
+        if (!(await open(page, `${args.base}/?beat=${beat}&motion=off${ffParam(args)}`, beat))) {
           violations.push(`${label}: the deep link never set body[data-beat="${beat}"]`);
           continue;
         }
@@ -301,7 +315,7 @@ async function run(args, rules) {
       }
 
       // Before and after C on the call beat.
-      if (await open(page, `${args.base}/?beat=3&motion=off`, 3)) {
+      if (await open(page, `${args.base}/?beat=3&motion=off${ffParam(args)}`, 3)) {
         const before = await page.evaluate(measure, false);
         await page.keyboard.press("c");
         const landed = await page
@@ -314,7 +328,7 @@ async function run(args, rules) {
       } else violations.push(`beat3 ${tag}: the deep link never set body[data-beat="3"]`);
 
       // Copy JSON against Copied (or Copy failed: the label width is shared either way).
-      if (await open(page, `${args.base}/?beat=5&motion=off`, 5)) {
+      if (await open(page, `${args.base}/?beat=5&motion=off${ffParam(args)}`, 5)) {
         const before = await page.evaluate(measure, false);
         const slot = page.locator('[data-slot="copy-json"]').first();
         const clickable =
@@ -342,12 +356,66 @@ async function run(args, rules) {
         violations.push(...rules.slotChanges(`beat5 ${tag} Copy JSON vs Copied`, before.slots, after.slots));
       } else violations.push(`beat5 ${tag}: the deep link never set body[data-beat="5"]`);
 
+      if (ffNames(args).includes("fleet_board")) {
+        const r = await checkFleetBoard(page, args, rules, tag, size);
+        statesChecked += r.statesChecked;
+        violations.push(...r.violations);
+      }
+
       await context.close();
     }
   } finally {
     await browser.close().catch(() => {});
   }
   return { couldNotRun: null, statesChecked, violations };
+}
+
+/**
+ * Fleet board (#92, ff_fleet_board): F over beat 3 opens it; the end-state rules apply to the open
+ * board, and its slots must not move when the first and then the second C land on it.
+ */
+async function checkFleetBoard(page, args, rules, tag, size) {
+  const violations = [];
+  let statesChecked = 0;
+  const label = `fleetboard ${tag}`;
+  const wait = (selector) =>
+    page.waitForSelector(selector, { timeout: STATE_WAIT_MS }).then(() => true, () => false);
+  const full = size.width === 1920;
+  const rulesFor = (what, m) => {
+    violations.push(...rules.noSidewaysScroll(what, m.scrollWidth, m.clientWidth));
+    for (const n of m.nums) violations.push(...rules.numFits(what, n));
+    for (const t of m.texts) violations.push(...rules.fontTooSmall(what, t));
+  };
+  if (!(await open(page, `${args.base}/?beat=3&motion=off${ffParam(args)}`, 3))) {
+    violations.push(`${label}: the deep link never set body[data-beat="3"]`);
+    return { statesChecked, violations };
+  }
+  if (!(await wait("[data-fleet-pill]"))) {
+    violations.push(`${label}: no fleet board pill with ff=${args.ff}`);
+    return { statesChecked, violations };
+  }
+  await page.keyboard.press("f");
+  if (!(await wait('[data-fleet-board="open"]'))) {
+    violations.push(`${label}: F did not open the fleet board`);
+    return { statesChecked, violations };
+  }
+  await page.screenshot({ path: path.join(SCREENS, `fleetboard-${tag}.png`) });
+  const before = await page.evaluate(measure, full);
+  statesChecked++;
+  rulesFor(label, before);
+  for (const want of ["first", "second"]) {
+    await page.keyboard.press("c");
+    if (!(await wait(`[data-fleet-call="${want}"]`))) {
+      violations.push(`${label}: C did not land the ${want} call on the board`);
+      break;
+    }
+    await page.screenshot({ path: path.join(SCREENS, `fleetboard-${want}-${tag}.png`) });
+    const after = await page.evaluate(measure, full);
+    statesChecked++;
+    rulesFor(`${label} after the ${want} C`, after);
+    violations.push(...rules.slotChanges(`${label} before vs after the ${want} C`, before.slots, after.slots));
+  }
+  return { statesChecked, violations };
 }
 
 async function main() {
