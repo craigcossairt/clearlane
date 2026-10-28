@@ -13,6 +13,9 @@ const sample = json("pitch/torus-kit/sample-envelope.json");
 const envelope = json("public/derived/envelope_2026-10-27.json");
 const bundle = json("public/data/bundle_2026-10-27.json");
 const schema = json("contracts/envelope.v1.schema.json");
+const judgeFacing = Object.fromEntries(
+  ["pitch/leave-behind.html", "pitch/envelope-packet.md", "pitch/torus-kit/README.md", "pitch/one-pager-rmp.md", "pitch/deck.md", "pitch/qa.md", "pitch/drill.md"].map((p) => [p, read(p)]),
+);
 
 test("build lists the leave-behind at one page and the packet at two", () => {
   const byName = Object.fromEntries(DOCS.map((d) => [d.name, d]));
@@ -22,7 +25,7 @@ test("build lists the leave-behind at one page and the packet at two", () => {
   assert.equal(byName["envelope-packet"]?.pages, 2);
 });
 
-test("leave-behind carries the ribbon, race, crash, envelope, what-is-real and Torus questions", () => {
+test("leave-behind carries the ribbon, race, crash, envelope, what-is-real and what's next", () => {
   assert.match(page, /<!-- ribbon -->/);
   assert.match(page, /<!-- envelope-excerpt -->/);
   for (const key of ["fixed_usd_mw_day", "clearlane_usd_mw_day", "race_ratio", "enrolled_kw", "second_call_delivered_pct", "second_call_shortfall_kwh", "rmp_events_2025"]) {
@@ -31,7 +34,8 @@ test("leave-behind carries the ribbon, race, crash, envelope, what-is-real and T
   for (const cls of ["REAL", "DERIVED", "SIMULATED", "TORUS_PUBLISHED", "ASSUMPTION", "MEASURED"]) {
     assert.ok(page.includes(`<td>${cls}</td>`), cls);
   }
-  assert.match(page, /Questions we asked Torus/);
+  assert.match(page, /What's next/);
+  assert.match(page, /Wattsmart/);
 });
 
 test("leave-behind keeps the guardrails", () => {
@@ -55,10 +59,11 @@ test("no QR code or URL until public-url has Craig's go", () => {
   assert.match(page, /<!-- qr-slot:/);
 });
 
-test("Torus questions are the four Torus answered, nothing unconfirmed", () => {
-  const block = page.slice(page.indexOf("Questions we asked Torus"));
-  const items = [...block.matchAll(/<li>/g)].length;
-  assert.equal(items, 4);
+test("no Torus Q&A on the judge-facing pages, and no line that Torus does not know something", () => {
+  for (const [name, text] of Object.entries(judgeFacing)) {
+    assert.doesNotMatch(text, /Questions we asked Torus/, name);
+    assert.doesNotMatch(text, /unknown to Torus|Torus does not know|Torus doesn't know/i, name);
+  }
 });
 
 test("packet defines every envelope v1 field, with its unit", () => {
@@ -92,7 +97,7 @@ test("sample envelope is the derived envelope, unchanged", () => {
 test("torus-kit README frames the envelope as one more grid signal, not a replacement", () => {
   assert.match(readme, /one more grid signal/);
   assert.match(readme, /not a Lasso replacement/);
-  assert.match(readme, /Torus, message to Craig Cossairt, Oct 27 2026/);
+  assert.match(readme, /open question/);
 });
 
 test("ribbon lanes agree with the envelope's lane on every hour that is not System Critical", () => {

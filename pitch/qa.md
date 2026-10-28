@@ -180,7 +180,7 @@ Source: FACTS `lasso_dispatch_ms`, `lasso_inputs`; `research/TORUS.md` section 7
 
 Judge: The Torus judge
 
-A: We are not sure, so we say "not advertised", from Torus's own pages. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026).
+A: We are not sure, so we say "not advertised", from Torus's own pages. Whether Lasso's API accepts an outside schedule or envelope is an open question, so we do not say it does.
 
 Source: `research/TORUS.md` section 7; FACTS `lasso_external_schedule_api`
 
@@ -188,7 +188,7 @@ Source: `research/TORUS.md` section 7; FACTS `lasso_external_schedule_api`
 
 Judge: The Torus judge
 
-A: That the 2025 heatmap hours are Mountain time, that all `{rmp_events_2025}` events in 2025 were unplanned calls, and that we may quote the published Spin and Pulse specs and event data with attribution. Whether Lasso's API takes an outside envelope is unknown to Torus too (Torus, message to Craig Cossairt, Oct 27 2026).
+A: That the 2025 heatmap hours are Mountain time, that all `{rmp_events_2025}` events in 2025 were unplanned calls, and that we may quote the published Spin and Pulse specs and event data with attribution (Torus, message to Craig Cossairt, Oct 27 2026).
 
 Source: FACTS `rmp_events_2025_unplanned`, `torus_quote_permission`, `lasso_external_schedule_api`
 

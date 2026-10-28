@@ -12,7 +12,7 @@ Schema `clearlane.envelope/v1`. One row per hour:
 - Planned kW, charge positive and discharge negative.
 - A one-line reason, in plain words.
 
-The envelope is a format Clearlane proposes. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026), so we do not say it does.
+The envelope is a format Clearlane proposes. Whether Lasso's API accepts an outside schedule or envelope is an open question, so we do not say it does.
 
 ## The value, and whose it is
 
