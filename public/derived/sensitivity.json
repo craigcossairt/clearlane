@@ -1,0 +1,693 @@
+{
+  "schema": "clearlane.sensitivity/v1",
+  "flag": "ff_sensitivity",
+  "prov": "DERIVED",
+  "window": {
+    "start_mt": "2026-05-01",
+    "end_mt": "2026-10-27",
+    "days": 179
+  },
+  "wear_usd_mwh": 10.95,
+  "seed": 20261027,
+  "metric": "Clearlane minus the off-peak rule over the backtest days: mean $/MW-day (gross of wear), mean t CO2/MW-day (average emissions) and percentage points of calls unanswerable (heatmap in Mountain time; negative means Clearlane misses fewer).",
+  "base": {
+    "gap": {
+      "usd_per_mw_day": 34.284468376185146,
+      "co2_t_per_mw_day": 0.6869895616221382,
+      "calls_unanswerable_pct_points": -21.81818181818182
+    },
+    "source": "public/derived/backtest.json"
+  },
+  "axes": [
+    {
+      "key": "rte",
+      "label": "Round-trip efficiency",
+      "status": "ok",
+      "unit": "fraction",
+      "base": 0.88,
+      "low": 0.8,
+      "high": 0.92,
+      "range_prov": "ASSUMPTION",
+      "range_note": "0.80 to 0.92 around the 0.88 reference station",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_low": {
+        "usd_per_mw_day": 33.924219822226924,
+        "co2_t_per_mw_day": 0.7220937478028175,
+        "calls_unanswerable_pct_points": -22.424242424242426
+      },
+      "gap_high": {
+        "usd_per_mw_day": 34.488277502974015,
+        "co2_t_per_mw_day": 0.6776932390287657,
+        "calls_unanswerable_pct_points": -20.606060606060606
+      },
+      "delta_low": {
+        "usd_per_mw_day": -0.36024855395822186,
+        "co2_t_per_mw_day": 0.03510418618067934,
+        "calls_unanswerable_pct_points": -0.6060606060606055
+      },
+      "delta_high": {
+        "usd_per_mw_day": 0.20380912678886887,
+        "co2_t_per_mw_day": -0.009296322593372541,
+        "calls_unanswerable_pct_points": 1.2121212121212146
+      }
+    },
+    {
+      "key": "wear_usd_mwh",
+      "label": "Wear price",
+      "status": "ok",
+      "unit": "multiple of the calibrated wear price",
+      "base": 1,
+      "low": 0.5,
+      "high": 2,
+      "resolved_usd_mwh": {
+        "base": 10.95,
+        "low": 5.475,
+        "high": 21.9
+      },
+      "range_prov": "ASSUMPTION",
+      "range_note": "half to double the calibrated wear price",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_low": {
+        "usd_per_mw_day": 37.77243895153569,
+        "co2_t_per_mw_day": 0.726081021127855,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_high": {
+        "usd_per_mw_day": 22.586571087900648,
+        "co2_t_per_mw_day": 0.5532487474341683,
+        "calls_unanswerable_pct_points": -22.424242424242426
+      },
+      "delta_low": {
+        "usd_per_mw_day": 3.4879705753505448,
+        "co2_t_per_mw_day": 0.0390914595057168,
+        "calls_unanswerable_pct_points": 0
+      },
+      "delta_high": {
+        "usd_per_mw_day": -11.697897288284498,
+        "co2_t_per_mw_day": -0.1337408141879699,
+        "calls_unanswerable_pct_points": -0.6060606060606055
+      }
+    },
+    {
+      "key": "host_ceiling_slack_kw",
+      "label": "Host ceiling slack above the day's own peak",
+      "status": "ok",
+      "unit": "kW",
+      "base": 0,
+      "low": 0,
+      "high": 160,
+      "range_prov": "ASSUMPTION",
+      "range_note": "0 to 160 kW (20% of the 800 kW host peak): the month-to-date peak can sit above today's; it cannot sit below",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_low": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_high": {
+        "usd_per_mw_day": 36.93507971593242,
+        "co2_t_per_mw_day": 0.7318930726066633,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "delta_low": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": 0
+      },
+      "delta_high": {
+        "usd_per_mw_day": 2.6506113397472717,
+        "co2_t_per_mw_day": 0.04490351098452505,
+        "calls_unanswerable_pct_points": 0
+      }
+    },
+    {
+      "key": "host_load_archetype",
+      "label": "Host load archetype",
+      "status": "pending",
+      "pending_on": "fleet roll-up #66 (closed as not planned)",
+      "note": "Not run: needs the fleet roll-up's three host archetypes."
+    },
+    {
+      "key": "enrolled_kw",
+      "label": "Enrolled kW",
+      "status": "ok",
+      "unit": "kW",
+      "base": 250,
+      "low": 125,
+      "high": 375,
+      "range_prov": "ASSUMPTION",
+      "range_note": "half to one and a half times the 250 kW enrolled; calls ask for the enrolled kW",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_low": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -20.606060606060606
+      },
+      "gap_high": {
+        "usd_per_mw_day": 24.958917734123244,
+        "co2_t_per_mw_day": 0.6639864811226183,
+        "calls_unanswerable_pct_points": -49.696969696969695
+      },
+      "delta_low": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": 1.2121212121212146
+      },
+      "delta_high": {
+        "usd_per_mw_day": -9.325550642061902,
+        "co2_t_per_mw_day": -0.023003080499519934,
+        "calls_unanswerable_pct_points": -27.878787878787875
+      }
+    },
+    {
+      "key": "export_limit_kw",
+      "label": "Export limit",
+      "status": "ok",
+      "unit": "kW",
+      "base": 0,
+      "low": 0,
+      "high": 250,
+      "range_prov": "ASSUMPTION",
+      "range_note": "no export to Pulse's full 250 kW",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_low": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_high": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -23.03030303030303
+      },
+      "delta_low": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": 0
+      },
+      "delta_high": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": -1.212121212121211
+      }
+    },
+    {
+      "key": "spin_refill_min",
+      "label": "Spin refill time from empty",
+      "status": "ok",
+      "unit": "minutes",
+      "base": 6,
+      "low": 6,
+      "high": 12,
+      "range_prov": "ASSUMPTION",
+      "range_note": "6 minutes (the published 12-minute discharge and recharge less a 6-minute discharge) vs the whole 12 minutes",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_low": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_high": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "delta_low": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": 0
+      },
+      "delta_high": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": 0
+      }
+    },
+    {
+      "key": "heatmap_reading",
+      "label": "Heatmap reading (calls only)",
+      "status": "ok",
+      "unit": "reading",
+      "base": "heatmap_as_mt",
+      "low": "heatmap_as_utc",
+      "high": "heatmap_as_utc_mst",
+      "range_prov": "ASSUMPTION",
+      "range_note": "Mountain time is the stage reading (Torus confirmed); the two UTC readings are a sensitivity check only, not for stage",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -21.81818181818182
+      },
+      "gap_low": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -17.575757575757574
+      },
+      "gap_high": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": -18.78787878787879
+      },
+      "delta_low": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": 4.242424242424246
+      },
+      "delta_high": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": 3.030303030303031
+      },
+      "points": [
+        {
+          "value": "heatmap_as_mt",
+          "gap": {
+            "usd_per_mw_day": 34.284468376185146,
+            "co2_t_per_mw_day": 0.6869895616221382,
+            "calls_unanswerable_pct_points": -21.81818181818182
+          },
+          "delta": {
+            "usd_per_mw_day": 0,
+            "co2_t_per_mw_day": 0,
+            "calls_unanswerable_pct_points": 0
+          }
+        },
+        {
+          "value": "heatmap_as_utc",
+          "gap": {
+            "usd_per_mw_day": 34.284468376185146,
+            "co2_t_per_mw_day": 0.6869895616221382,
+            "calls_unanswerable_pct_points": -17.575757575757574
+          },
+          "delta": {
+            "usd_per_mw_day": 0,
+            "co2_t_per_mw_day": 0,
+            "calls_unanswerable_pct_points": 4.242424242424246
+          }
+        },
+        {
+          "value": "heatmap_as_utc_mst",
+          "gap": {
+            "usd_per_mw_day": 34.284468376185146,
+            "co2_t_per_mw_day": 0.6869895616221382,
+            "calls_unanswerable_pct_points": -18.78787878787879
+          },
+          "delta": {
+            "usd_per_mw_day": 0,
+            "co2_t_per_mw_day": 0,
+            "calls_unanswerable_pct_points": 3.030303030303031
+          }
+        }
+      ]
+    },
+    {
+      "key": "co2_basis",
+      "label": "CO2 basis: EIA average vs marginal estimate",
+      "status": "pending",
+      "pending_on": "response tables #47 (public/data/response_tables.json is not on main)",
+      "note": "Not run: needs the response_tables marginal estimate and its interval."
+    },
+    {
+      "key": "dp_soc_states",
+      "label": "DP Pulse SoC grid",
+      "status": "ok",
+      "unit": "states",
+      "base": 41,
+      "low": 41,
+      "high": 161,
+      "range_prov": "ASSUMPTION",
+      "range_note": "41 states (the engine's grid), 81 and 161: nested grids, solved without calls; the re-plan after a call stays on 41",
+      "gap_base": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": null
+      },
+      "gap_low": {
+        "usd_per_mw_day": 34.284468376185146,
+        "co2_t_per_mw_day": 0.6869895616221382,
+        "calls_unanswerable_pct_points": null
+      },
+      "gap_high": {
+        "usd_per_mw_day": 35.83456427379228,
+        "co2_t_per_mw_day": 0.704843933956433,
+        "calls_unanswerable_pct_points": null
+      },
+      "delta_low": {
+        "usd_per_mw_day": 0,
+        "co2_t_per_mw_day": 0,
+        "calls_unanswerable_pct_points": null
+      },
+      "delta_high": {
+        "usd_per_mw_day": 1.550095897607136,
+        "co2_t_per_mw_day": 0.017854372334294766,
+        "calls_unanswerable_pct_points": null
+      },
+      "points": [
+        {
+          "value": 41,
+          "gap": {
+            "usd_per_mw_day": 34.284468376185146,
+            "co2_t_per_mw_day": 0.6869895616221382,
+            "calls_unanswerable_pct_points": null
+          },
+          "delta": {
+            "usd_per_mw_day": 0,
+            "co2_t_per_mw_day": 0,
+            "calls_unanswerable_pct_points": null
+          }
+        },
+        {
+          "value": 81,
+          "gap": {
+            "usd_per_mw_day": 35.15206728199274,
+            "co2_t_per_mw_day": 0.6985605354430484,
+            "calls_unanswerable_pct_points": null
+          },
+          "delta": {
+            "usd_per_mw_day": 0.867598905807597,
+            "co2_t_per_mw_day": 0.011570973820910213,
+            "calls_unanswerable_pct_points": null
+          }
+        },
+        {
+          "value": 161,
+          "gap": {
+            "usd_per_mw_day": 35.83456427379228,
+            "co2_t_per_mw_day": 0.704843933956433,
+            "calls_unanswerable_pct_points": null
+          },
+          "delta": {
+            "usd_per_mw_day": 1.550095897607136,
+            "co2_t_per_mw_day": 0.017854372334294766,
+            "calls_unanswerable_pct_points": null
+          }
+        }
+      ]
+    }
+  ],
+  "break_even": {
+    "rte": {
+      "found": false,
+      "value": null,
+      "scanned": [
+        {
+          "x": 0.5,
+          "gap_usd_per_mw_day": 43.90302854038211
+        },
+        {
+          "x": 0.57,
+          "gap_usd_per_mw_day": 39.75019023362136
+        },
+        {
+          "x": 0.64,
+          "gap_usd_per_mw_day": 36.87944939357543
+        },
+        {
+          "x": 0.71,
+          "gap_usd_per_mw_day": 35.39933405075962
+        },
+        {
+          "x": 0.78,
+          "gap_usd_per_mw_day": 33.92072685273929
+        },
+        {
+          "x": 0.85,
+          "gap_usd_per_mw_day": 34.069827512936804
+        },
+        {
+          "x": 0.92,
+          "gap_usd_per_mw_day": 34.488277502974015
+        },
+        {
+          "x": 0.99,
+          "gap_usd_per_mw_day": 36.12387007680168
+        }
+      ],
+      "min_gap": {
+        "x": 0.78,
+        "gap_usd_per_mw_day": 33.92072685273929
+      },
+      "statement": "No break-even: Clearlane stays above the off-peak rule at every round-trip efficiency from 0.50 to 0.99. The narrowest gap is $33.92/MW-day at 0.78."
+    },
+    "daily_spread": {
+      "found": false,
+      "value": null,
+      "scanned": [
+        {
+          "x": 0,
+          "gap_usd_per_mw_day": 7.9907085112126675
+        },
+        {
+          "x": 0.1,
+          "gap_usd_per_mw_day": 5.813169149209004
+        },
+        {
+          "x": 0.2,
+          "gap_usd_per_mw_day": 4.715532699766967
+        },
+        {
+          "x": 0.3,
+          "gap_usd_per_mw_day": 6.173363979339108
+        },
+        {
+          "x": 0.4,
+          "gap_usd_per_mw_day": 8.699876378985334
+        },
+        {
+          "x": 0.5,
+          "gap_usd_per_mw_day": 11.815294432921778
+        },
+        {
+          "x": 0.6,
+          "gap_usd_per_mw_day": 15.535725685731364
+        },
+        {
+          "x": 0.7,
+          "gap_usd_per_mw_day": 19.997230673611035
+        },
+        {
+          "x": 0.8,
+          "gap_usd_per_mw_day": 25.324438989491952
+        },
+        {
+          "x": 0.9,
+          "gap_usd_per_mw_day": 29.977995937687076
+        },
+        {
+          "x": 1,
+          "gap_usd_per_mw_day": 34.284468376185146
+        },
+        {
+          "x": 1.1,
+          "gap_usd_per_mw_day": 38.75848614137421
+        },
+        {
+          "x": 1.2,
+          "gap_usd_per_mw_day": 43.370457968384514
+        },
+        {
+          "x": 1.3,
+          "gap_usd_per_mw_day": 47.8240309213212
+        },
+        {
+          "x": 1.4,
+          "gap_usd_per_mw_day": 52.40429687669273
+        },
+        {
+          "x": 1.5,
+          "gap_usd_per_mw_day": 56.58199065051207
+        },
+        {
+          "x": 1.6,
+          "gap_usd_per_mw_day": 61.17933042770993
+        },
+        {
+          "x": 1.7,
+          "gap_usd_per_mw_day": 65.8011506497185
+        },
+        {
+          "x": 1.8,
+          "gap_usd_per_mw_day": 70.60097514933202
+        },
+        {
+          "x": 1.9,
+          "gap_usd_per_mw_day": 75.2682924108988
+        },
+        {
+          "x": 2,
+          "gap_usd_per_mw_day": 80.25722141389201
+        }
+      ],
+      "min_gap": {
+        "x": 0.2,
+        "gap_usd_per_mw_day": 4.715532699766967
+      },
+      "base_mean_daily_spread_usd_mwh": 36.51046944134077,
+      "value_spread_usd_mwh": null,
+      "statement": "No break-even: with every day's spread scaled from 0 to 2 times (mean daily spread $0 to $73.02/MWh), Clearlane stays above the off-peak rule. At flat prices the rule still pays its round-trip losses while Clearlane sits idle. The narrowest gap is $4.72/MW-day at 0.20 times today's spreads."
+    },
+    "wear_usd_mwh": {
+      "found": true,
+      "value": 60.9228515625,
+      "scanned": [
+        {
+          "x": 10.95,
+          "gap_usd_per_mw_day": 34.284468376185146
+        },
+        {
+          "x": 20,
+          "gap_usd_per_mw_day": 24.280791142021666
+        },
+        {
+          "x": 40,
+          "gap_usd_per_mw_day": 8.896047386669334
+        },
+        {
+          "x": 60,
+          "gap_usd_per_mw_day": 0.23753329815300006
+        },
+        {
+          "x": 100,
+          "gap_usd_per_mw_day": -9.432286086833937
+        },
+        {
+          "x": 150,
+          "gap_usd_per_mw_day": -11.732838672933779
+        },
+        {
+          "x": 200,
+          "gap_usd_per_mw_day": -11.732838672933779
+        },
+        {
+          "x": 300,
+          "gap_usd_per_mw_day": -11.732838672933779
+        }
+      ],
+      "min_gap": {
+        "x": 60,
+        "gap_usd_per_mw_day": 0.23753329815300006
+      },
+      "statement": "Clearlane's gross value falls to the off-peak rule's only at a wear price of $60.92/MWh, 5.6 times the calibrated $10.95."
+    },
+    "by_day_spread": {
+      "days": 179,
+      "rule_ties_or_wins": 16,
+      "bands": [
+        {
+          "from_usd_mwh": 0,
+          "to_usd_mwh": 15,
+          "days": 21,
+          "rule_ties_or_wins": 9
+        },
+        {
+          "from_usd_mwh": 15,
+          "to_usd_mwh": 25,
+          "days": 55,
+          "rule_ties_or_wins": 6
+        },
+        {
+          "from_usd_mwh": 25,
+          "to_usd_mwh": 50,
+          "days": 56,
+          "rule_ties_or_wins": 0
+        },
+        {
+          "from_usd_mwh": 50,
+          "to_usd_mwh": null,
+          "days": 47,
+          "rule_ties_or_wins": 1
+        }
+      ],
+      "statement": "Day by day, the off-peak rule ties or beats Clearlane on 16 of 179 backtest days; 15 of them have a daily price spread under $25/MWh."
+    }
+  },
+  "two_way": {
+    "rte": [
+      0.8,
+      0.84,
+      0.88,
+      0.92
+    ],
+    "price_scale": [
+      0.25,
+      0.5,
+      0.75,
+      1,
+      1.25,
+      1.5
+    ],
+    "mean_daily_spread_usd_mwh": [
+      9.127617360335192,
+      18.255234720670384,
+      27.382852081005574,
+      36.51046944134077,
+      45.63808680167596,
+      54.76570416201115
+    ],
+    "usd_gap": [
+      [
+        9.493072883909417,
+        13.932005425809965,
+        23.381457528175833,
+        33.924219822226924,
+        45.09262775342158,
+        56.32397796227554
+      ],
+      [
+        7.139593257782803,
+        12.801937499259168,
+        22.681612065492505,
+        34.12650493629597,
+        45.22291703525285,
+        56.1050744489254
+      ],
+      [
+        5.4436458497430324,
+        11.815294432921778,
+        22.85685555093737,
+        34.284468376185146,
+        45.773733785361436,
+        56.58199065051207
+      ],
+      [
+        3.71144645852989,
+        11.103255104040208,
+        23.32340778360264,
+        34.488277502974015,
+        46.36477801678366,
+        57.82069323788177
+      ]
+    ]
+  },
+  "notes": [
+    "Each input moves one at a time with the others at base; the ranges are our choices (ASSUMPTION). One-at-a-time ranges ignore interactions, hence the RTE x spread grid.",
+    "Variants with calls rerun the whole backtest: the same SIMULATED calls (same seed), each policy's day-ahead plan and Clearlane's re-plans.",
+    "Break-evens, the two-way grid and the DP SoC grid use day-ahead plans only (no calls), which is exactly how the backtest's $ and CO2 are computed.",
+    "The heatmap reading moves only the calls column. Mountain time is the stage reading; the UTC readings are a sensitivity check only.",
+    "Two axes wait on work that has not landed: the host load archetype (fleet roll-up) and the CO2 basis (response tables)."
+  ]
+}

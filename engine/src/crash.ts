@@ -79,6 +79,11 @@ export function simulateCall(
   const dayStart = Date.parse(plan.intervals[0]!.ts_utc);
   const s0 = (Date.parse(event.start_utc) - dayStart) / 1000;
   const spinCap = hasSpin(plan) ? st.spin_kwh : 0;
+  // refill power that fills Spin from empty in spin_recharge_min; equals spin_kw at the default 6 minutes
+  const refillKw = Math.min(
+    st.spin_kw,
+    (st.spin_kwh * 60) / st.spin_recharge_min,
+  );
   const chain = priorChain(priors);
   const prior = chain[chain.length - 1];
   const ps = priorState(
@@ -146,7 +151,7 @@ export function simulateCall(
       const room = site.host_ceiling_kw - host - Math.max(0, planned);
       const refill = Math.max(
         0,
-        Math.min(st.spin_kw, room, (spinCap - spinSoc) * 3600),
+        Math.min(refillKw, room, (spinCap - spinSoc) * 3600),
       );
       spinSoc += refill / 3600;
       spinKw = refill;
