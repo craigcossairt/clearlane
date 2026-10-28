@@ -14,13 +14,13 @@ For Tuesday night. Twenty questions by judge, each with its answer (from `pitch/
 
 2. **Why is the engine's own plan worth less than the race card?**
 
-   A: They are two plans: the race card is the hourly reference timetable at `{clearlane_usd_mw_day}` per MW-day, and the engine's 15-minute plan is `{clearlane_dp_usd_mw_day}`. Every fleet figure on stage is built from the reference, and no card mixes the two.
+   A: Two things put the engine's 15-minute plan, at `{clearlane_dp_usd_mw_day}`, below the timetable's `{clearlane_usd_mw_day}` per MW-day: it plans against a wear price on every cycle, which the timetable ignores, so it cycles less, and it moves stored energy in coarse fixed steps. The steps account for a little over half the gap and the wear price for the rest, and every fleet figure on stage is built from the timetable.
 
    Trap: "mixes": never put both dollar figures on one card
 
 3. **What does this do to Pulse's cycle life?**
 
-   A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A busy day like the one on screen uses `{cycles_today}` cycles, and the meter shows it.
+   A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A cycle is one equivalent full cycle of energy drawn out of Pulse, and a busy day like the one on screen uses `{cycles_today}`, which the meter shows.
 
    Trap: "Pulse has a 25-year life": the Station life is Torus's, applying it to Pulse is ours
 

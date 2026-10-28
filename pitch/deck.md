@@ -42,7 +42,7 @@ Backtest, May 1 to Oct 27, three policies. P10 to P90 of dollars per MW-day: Cle
 
 Share of days Clearlane beat the fixed off-peak rule: `{share_days_beating}`.
 
-Cycles per year against the `{pulse_cycle_budget}` budget. That budget divides Torus's published `{torus_pulse_cycles}` Pulse cycles by the Station lifespan of `{torus_lifespan_yr}`. The Station life is Torus's figure. Applying it to Pulse is our assumption.
+Cycles per year against the `{pulse_cycle_budget}` budget, counted as equivalent full cycles of energy drawn out of Pulse. That budget divides Torus's published `{torus_pulse_cycles}` Pulse cycles by the Station lifespan of `{torus_lifespan_yr}`. The Station life is Torus's figure. Applying it to Pulse is our assumption.
 
 Calls missed in the backtest, with the 2025 heatmap in Mountain time (Torus, message to Craig Cossairt, Oct 27 2026): Clearlane `{calls_missed_by_policy_clearlane_mt}`, the fixed overnight rule `{calls_missed_by_policy_fixed_overnight_mt}`, price-only `{calls_missed_by_policy_price_only_mt}`. Clearlane answered `{calls_answered_pct_mt}` of simulated calls in full.
 
