@@ -39,6 +39,7 @@ const CLIS = [
   { out: "scale_curve.json", cli: "scale.ts", inputs: "response_tables, bundle, numbers.json (#73)", args: () => [] },
   { out: "sensitivity.json", cli: "sensitivity.ts", inputs: "hist, torus_published, response_tables, backtest.json (#238)", args: () => [] },
   { out: "host_frontier.json", cli: "frontier.ts", inputs: "hist (#71)", args: () => [] },
+  { out: "wear_rainflow.json", cli: "wear.ts", inputs: "hist, torus_published, backtest.json, bundle, numbers.json (#70)", args: () => [] },
   { out: "rt_replay.json", cli: "replay.ts", inputs: "rt_<window>, hist, backtest.json (#227)", args: ({ rtArgs }) => rtArgs() },
 ];
 

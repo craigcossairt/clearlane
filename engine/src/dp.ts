@@ -7,6 +7,9 @@
 // Optional price impact (ff_price_impact): the price at step t moves by impact[t] x g, so discharge
 // lowers it and charging raises it. The reward still depends only on that step's action, so the DP
 // stays exact. Absent or 0, the step is a price taker and the arithmetic is unchanged.
+// Optional depth segments (ff_wear_rainflow): seg_mult[i] scales the wear price on energy discharged
+// through the SoC segment from level i to i + 1, and a step pays W x g x the mean multiplier over the
+// segments it crosses. Absent, the wear term is unchanged; all ones gives the same plan bit for bit.
 
 export interface DpInput {
   price: number[]; // $/MWh per step
@@ -22,6 +25,7 @@ export interface DpInput {
   to_mwh: number;
   tol?: number;
   impact?: number[]; // per step, $/MWh per grid unit injected, >= 0
+  seg_mult?: number[]; // per SoC segment (levels entries), wear multiplier on discharge through it
 }
 
 export interface DpResult {
@@ -51,6 +55,10 @@ export function solveDp(x: DpInput): DpResult {
     () => new Float64Array(N + 1),
   );
   for (let j = 0; j <= N; j++) if (j >= x.end_level) V[T]![j] = 0;
+  if (x.seg_mult && x.seg_mult.length !== N)
+    throw new Error(`seg_mult needs ${N} entries, got ${x.seg_mult.length}`);
+  // pre[i]: sum of the multipliers of segments below level i
+  const pre = x.seg_mult?.reduce((a, m, i) => [...a, a[i]! + m], [0]);
 
   for (let t = T - 1; t >= 0; t--) {
     const Vn = V[t + 1]!;
@@ -75,7 +83,10 @@ export function solveDp(x: DpInput): DpResult {
         } else {
           g = -d * x.eta;
           if (g > dmax + tol) continue;
-          c = x.W * g;
+          c =
+            pre === undefined || j === k
+              ? x.W * g
+              : x.W * g * ((pre[j]! - pre[k]!) / (j - k));
         }
         const pe = kq === 0 ? p : p - kq * g;
         const val = (pe * g - c) * x.to_mwh + Vn[k]!;
