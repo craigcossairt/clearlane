@@ -2,7 +2,7 @@
 //
 // Builds the submission slides PDF: one 1920x1080 page per presenter screen at its end state
 // (?ff=presenter&screen=N&step=end&motion=off), then a last page with the repo link, which the
-// organizers ask for in the slides. Screens are found by deep-linking N = 1, 2, ... until the
+// organizers ask for in the slides, and the judges' site link. Screens are found by deep-linking N = 1, 2, ... until the
 // page stops landing on screen N, so new screens need no list. Serve the build first, for
 // example `npx vite preview --port 4176 --strictPort`.
 //
@@ -12,6 +12,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REPO_URL = "https://github.com/craigcossairt/clearlane";
+const SITE_URL = "https://clearlane-mauve.vercel.app";
 const SIZE = { width: 1920, height: 1080 };
 const MAX_SCREENS = 20;
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -86,16 +87,18 @@ img { display: block; width: 1920px; height: 1080px; }
 .end { display: flex; flex-direction: column; justify-content: center; align-items: center; color: #e8edf2;
   font: 600 64px system-ui, "Segoe UI", sans-serif; gap: 32px; }
 .end a { color: #e8edf2; font-weight: 400; font-size: 48px; }
+.end .site { font-weight: 400; font-size: 40px; }
+.end .site a { font-size: 40px; }
 </style></head><body>
 ${pages}
-<section class="end"><div>Clearlane: code, data and how every number is made</div><a href="${REPO_URL}">${REPO_URL}</a></section>
+<section class="end"><div>Clearlane: code, data and how every number is made</div><a href="${REPO_URL}">${REPO_URL}</a><div class="site">Presentation, video and documents: <a href="${SITE_URL}">${SITE_URL}</a></div></section>
 </body></html>`;
     const htmlFile = path.join(pngDir, "slides.html");
     writeFileSync(htmlFile, html);
     const pdfPage = await context.newPage();
     await pdfPage.goto(`file:///${htmlFile.split(path.sep).join("/")}`, { waitUntil: "load" });
     await pdfPage.pdf({ path: args.out, width: "1920px", height: "1080px", printBackground: true, margin: { top: 0, right: 0, bottom: 0, left: 0 } });
-    console.log(`wrote ${args.out}: ${pngs.length} screens + repo link page`);
+    console.log(`wrote ${args.out}: ${pngs.length} screens + repo and site link page`);
     return 0;
   } finally {
     await browser.close().catch(() => {});
