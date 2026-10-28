@@ -1,6 +1,6 @@
 # Submission text
 
-Plain text for Craig to paste into the event's submission (the method is not stated; `docs/JUDGING.md` section 6).
+Plain text for Craig to use in the event's submission. The method (organizers' judging-groups PDF, Oct 28; `docs/JUDGING.md` section 6): upload the presentation to the submission Google Drive folder, share the slides and the technical build, and link the GitHub repo in the slides.
 Craig submits it. Re-check after the Oct 28 pick and at Train 8. No numbers are typed here; the README's numbers block
 is generated from `numbers.json`.
 
@@ -40,8 +40,17 @@ Craig Cossairt, solo, working with six AI agent lanes.
 
 https://github.com/craigcossairt/clearlane
 
+The repo goes public only on Craig's go (#35). The link must be in the slides, so check it opens signed out before uploading.
+
 ## Files
 
 - Deck: `clearlane-deck.pdf`
 - One-pagers: `one-pager-host.pdf`, `one-pager-rmp.pdf`
-- Backup video: `clearlane-backup.mp4` (proposed name; set it when the video is recorded)
+- Slides: `clearlane-slides.pdf`, one page per presenter screen at its end state, 1920x1080, from `v1-stage-2` (`node tools/slides-pdf.mjs`)
+- Backup video: `clearlane-backup-presenter.mp4` from `v1-stage-2`; six-beat fallback `clearlane-backup.mp4` from `v1-stage`
+
+## Drive folder upload
+
+- [ ] `clearlane-slides.pdf` and `clearlane-deck.pdf`
+- [ ] The backup video
+- [ ] The repo link above, also in the slides

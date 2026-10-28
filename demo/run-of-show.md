@@ -27,7 +27,13 @@ All times Mountain (MDT, UTC-6). Integration keeps this file current at every tr
 | Wed about 3:20pm      | Tag `v1-stage-2` (presenter build) on Craig's go              |
 | Wed 3:30pm            | Backup video and deck PDF copied to laptop, USB stick and Mac |
 | Wed by 5:00pm         | Craig submits                                                 |
-| Wed 5:00pm to 6:00pm  | Judging                                                       |
+| Wed about 4:30pm      | Craig leaves for Aernata, 250 E 200 S, Suite 320              |
+| Wed by 5:00pm         | At Aernata                                                    |
+| Wed 5:15pm            | Judging starts; groups 4 to 6 judge Torus                     |
+| Wed 5:20pm            | Craig presents, Group 4, 5-minute slot (setup included)       |
+| Wed 6:15pm to 6:45pm  | Finals, if picked: present to the full panel                  |
+| Thu 8:30am            | Finalists arrive at Zero Gravity Summit                       |
+| Thu 9:00am            | Winners announced, Zero Gravity Summit main stage             |
 
 ## Beats on main
 
@@ -112,3 +118,4 @@ A Next press while the race replay is running jumps it to its end; one more pres
 - [ ] Before any stage preview: stop stray `vite preview` processes and confirm :4173 is free (`demo/freeze.md`, 2:10pm)
 - [ ] USB stick with the backup video and deck PDF
 - [ ] The Mac with a `v1-stage` build
+- [ ] At the room before 5:20pm: laptop on the presenter title screen (`http://localhost:4173/?ff=presenter`, F11), display cable plugged in. Setup comes out of the 5-minute slot.
