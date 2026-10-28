@@ -1,0 +1,5 @@
+# SHA-256 of every public/data input, LF-normalized. Written by node tools/reproduce.mjs --write-manifest.
+390e2fc0c1d7fe5cf032facf13e18ad845c109b2b16c8bddddc4f26e9e64fc1b  public/data/bundle_2026-10-27.json
+cfe0c0098def35e1ad6138c72951e0ac58a236f13722cfa6fa707c14ae9d2bd3  public/data/hist_2026-05-01_2026-10-27.json
+58a03291b706d8743c56fa44baad710bccecf5f60b52af04b7f073a1c4b61d49  public/data/hist_2026-05-01_2026-10-27.meta.json
+a5113a668928ddecdbdc09a45c99d41b1c0458e63cd3910f44ca3b8445f8334f  public/data/torus_published.json
