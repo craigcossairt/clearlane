@@ -5,8 +5,8 @@ at the Hard Tech Hackathon, Salt Lake City, October 2026.
 
 Clearlane reads the day-ahead price for PacifiCorp East, charges the battery (Pulse) in the midday clear lane when
 solar floods the grid, stays off the road in the evening jam, and keeps the flywheel (Spin) ready for Rocky Mountain
-Power's demand response calls. It exports an hourly operating envelope that marks the System Critical Hours, the hours
-the grid needs most. The envelope is a format Clearlane proposes.
+Power's demand response calls. It exports an hourly operating envelope that marks the System Critical Hours, the grid's
+tightest hours. The envelope is a format Clearlane proposes.
 
 The stations here are simulated Torus-style stations. Prices and forecasts are real public data, and everything
 simulated is labeled on screen. Dollar values are value to RMP's system at day-ahead prices, not revenue for Torus or
@@ -98,6 +98,20 @@ lists every number with its source, class and how it was checked.
   `research/data/pace_snapshot_2026-10-27.csv`. Not used by the app. CC BY 4.0; weather data by Open-Meteo.com.
 
 Sources for each file are in `research/DATA-SOURCES.md`. The code is MIT licensed.
+
+## Reproduce every number
+
+```bash
+npm ci
+npm run reproduce
+```
+
+Works offline. It checks the SHA-256 of every input in `public/data` against `tools/manifest.sha256`, re-runs the
+engine into a scratch folder, and compares every file in `public/derived` with the committed one. It ends with
+"REPRODUCED n/n stage numbers" and exits 0; any difference exits 1 and names the file and the stage key. Every number,
+with its class and source, is listed in `docs/NUMBERS.md`. `npm run reproduce -- --fetch` also re-fetches the
+operating day from CAISO OASIS and EIA and reports any difference, since OASIS can revise its data. CI runs the
+offline mode on every pull request.
 
 ## Check it
 
