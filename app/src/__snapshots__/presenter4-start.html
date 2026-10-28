@@ -46,7 +46,7 @@
 <header class="p-head">
 <h1 class="p-headline" data-slot="headline">When Rocky Mountain Power calls, Spin answers.</h1>
 <div class="p-subrow">
-<p class="p-line">A simulated call of about five and a half minutes. Call again during the refill, and the card shows any shortfall.</p>
+<p class="p-line">A simulated call of about five and a half minutes. The battery-only plan chases price alone and keeps nothing back for Rocky Mountain Power, so it has almost nothing left when the call comes.</p>
 <div class="p-actions">
 <button type="button" class="p-pill p-pill-primary" aria-pressed="false" data-action="action-call-now">Rocky Mountain Power calls now</button>
 <button type="button" class="p-pill" aria-pressed="false" data-action="action-call-again">Call again during refill</button>
@@ -54,14 +54,14 @@
 </div>
 </header>
 <div class="p-hero p-hero-call">
-<section class="beat crash-beat p-call" aria-label="The call">
-<div class="p-call-banner" data-slot="call-banner">
+<section class="beat crash-beat p-call" aria-label="The call" data-anim="off">
+<div class="p-call-banner is-waiting" data-slot="call-banner">
 <div class="reserve">
 <p class="off" aria-hidden="true">Simulated Rocky Mountain Power call: <span class="num num-ok" data-num="enrolled_kw" data-prov="SIMULATED" data-num-state="ok" style="min-width: 4ch;">
 <span class="figure">250</span>
 <abbr class="chip chip-simulated" title="engine/src/site.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
 </span> kW now.</p>
-<p>Click Rocky Mountain Power calls now to drop a simulated call. This space stays put either way.</p>
+<p>Waiting for a call from Rocky Mountain Power.</p>
 </div>
 <span class="slot-clock" data-slot="call-clock">
 </span>
@@ -70,7 +70,7 @@
 <article class="p-call-trace is-lead" data-slot="call-inset">
 <h3>Simulated Torus-style station on Clearlane</h3>
 <div class="p-call-hero">
-<span class="unavailable">No call yet. Empty, not zero.</span>
+<span class="unavailable">Waiting for a call.</span>
 </div>
 <svg class="p-call-svg" viewBox="0 0 600 220" preserveAspectRatio="none" role="img" aria-label="Simulated Torus-style station on Clearlane: call trace of requested, Spin and Pulse kW, Spin energy and the host meter">
 <line x1="0" x2="600" y1="220" y2="220" class="p-call-base">
@@ -80,7 +80,7 @@
 <article class="p-call-trace" data-slot="call-ghost">
 <h3>Battery-only plan</h3>
 <div class="p-call-hero">
-<span class="unavailable">No call yet. Empty, not zero.</span>
+<span class="unavailable">Waiting for a call.</span>
 </div>
 <svg class="p-call-svg" viewBox="0 0 600 220" preserveAspectRatio="none" role="img" aria-label="Battery-only plan: call trace of requested, Spin and Pulse kW, Spin energy and the host meter">
 <line x1="0" x2="600" y1="220" y2="220" class="p-call-base">
@@ -90,11 +90,11 @@
 </div>
 <p class="p-call-legend">
 <span class="p-key is-requested" aria-hidden="true">
-</span>Gray: what Rocky Mountain Power asked for. Blue: Spin. Gold: Pulse.</p>
+</span>Gray: what Rocky Mountain Power asked for. Blue: Spin, the flywheel. Gold: Pulse, the battery, including power it was already selling.</p>
 <div class="p-call-facts" data-detail="">
 <article class="p-call-fact is-sim" data-slot="call-result">
 <h3>Our simulation</h3>
-<p class="unavailable">No call yet. Empty, not zero.</p>
+<p class="unavailable">Waiting for a call.</p>
 <p data-slot="second-call">A second call during the refill shows any shortfall here.</p>
 </article>
 <article class="p-call-fact is-published">
@@ -103,13 +103,13 @@
 <span class="num num-ok" data-num="rmp_events_2025" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 3ch;">
 <span class="figure">359</span>
 <abbr class="chip chip-torus_published" title="https://www.torus.co/case-studies/case-studies-rocky-mountain-power, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
-</span> <span data-copy-ok="">events in 2025.</span> Ramp <span class="num num-ok" data-num="rmp_event_ramp_s" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 3ch;">
+</span> <span data-copy-ok="">events in 2025.</span> Ramped in <span class="num num-ok" data-num="rmp_event_ramp_s" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 3ch;">
 <span class="figure">19</span>
 <abbr class="chip chip-torus_published" title="https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
-</span> against a <span class="num num-ok" data-num="rmp_event_ramp_target_s" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 3ch;">
+</span> seconds against a <span class="num num-ok" data-num="rmp_event_ramp_target_s" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 3ch;">
 <span class="figure">30</span>
 <abbr class="chip chip-torus_published" title="https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
-</span> target, delivered <span class="num num-ok" data-num="rmp_event_target_pct" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 4ch;">
+</span> second target, delivered <span class="num num-ok" data-num="rmp_event_target_pct" data-prov="TORUS_PUBLISHED" data-num-state="ok" style="min-width: 4ch;">
 <span class="figure">102%</span>
 <abbr class="chip chip-torus_published" title="https://www.datocms-assets.com/93357/1778882593-unplanned-ffr-rmp-1.jpg, as of 2026-10-27" data-copy-ok="provenance class name">TORUS PUBLISHED</abbr>
 </span>.</p>
