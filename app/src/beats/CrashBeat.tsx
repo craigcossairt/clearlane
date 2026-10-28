@@ -10,7 +10,7 @@ import type { BeatProps } from "./types";
 
 const CRASH_SOURCE = STUB_ACTIVE
   ? "engineClient.crash (stub)"
-  : "engine crash (live, this laptop)";
+  : "engine crash (live, this machine)";
 /** The inset plays the whole trace (call plus refill) in about 8 s. */
 export const INSET_PLAY_MS = 8000;
 

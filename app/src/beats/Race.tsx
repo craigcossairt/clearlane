@@ -5,7 +5,7 @@ import { COPY } from "../copy";
 import { grouped } from "../format";
 import type { BeatProps } from "./types";
 
-const ENGINE_SRC = "engine solve (live, this laptop)";
+const ENGINE_SRC = "engine solve (live, this machine)";
 
 /**
  * Beat 2: the race. Both plans were solved through engineClient before Space is pressed (App

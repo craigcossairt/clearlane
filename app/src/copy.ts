@@ -12,7 +12,7 @@ export const COPY = {
   mt: "MT",
   stubBanner: "Engine stub: not engine output",
   chipLegend:
-    "REAL: measured market data. DERIVED: computed from it. SIMULATED: our model, not a real site. TORUS PUBLISHED: from Torus's own pages. ASSUMPTION: a stated input. MEASURED: timed live on this laptop.",
+    "REAL: measured market data. DERIVED: computed from it. SIMULATED: our model, not a real site. TORUS PUBLISHED: from Torus's own pages. ASSUMPTION: a stated input. MEASURED: timed live on this machine.",
   failedTitle: "This day cannot be shown",
   notComputed: "not computed",
   unavailable: "unavailable",
@@ -72,7 +72,7 @@ export const COPY = {
   lineageClassTorus:
     "Published by Torus: a company claim, not an independent measurement.",
   lineageClassAssumption: "A value we chose and state.",
-  lineageClassMeasured: "Timed live on this laptop.",
+  lineageClassMeasured: "Timed live on this machine.",
   lineageSource: "Source",
   lineageAsOf: "As of",
   lineageRetrieved: "retrieved",
@@ -372,6 +372,7 @@ export const COPY = {
   campusTitle: "Simulated AI campus, moved in time",
   campusLine1: "A simulated campus moves",
   campusLine2: "MWh of compute load into the clear midday hours. Value to RMP's system at day-ahead prices:",
+  campusLine3: "a day.",
   notTorusProduct: "This is not a Torus data-center product.",
   envelopeTitle: "Envelope",
   backtestTitle: "Backtest",
@@ -405,7 +406,7 @@ export const COPY = {
   replanTitle: "Re-plan",
   replannedIn: "Re-planned in",
   replanNote:
-    "The rest of the day, re-solved from the state of charge the call left behind, timed live on this laptop. Simulated station.",
+    "The rest of the day, re-solved from the state of charge the call left behind, timed live on this machine. Simulated station.",
   replanEmpty: "No call yet, so there is no re-plan. Press C, then come back.",
   replanAria:
     "Pulse state of charge across the day: the morning plan, dashed, and the re-plan from the call, solid",
@@ -554,7 +555,7 @@ export const PRESENTER = {
   callPublishedDelivered: "second target, delivered",
   callSpinBack: "Spin full again at",
   replanHero: "Re-planned in",
-  replanHeroTail: "timed live on this laptop, from the charge the call left behind.",
+  replanHeroTail: "timed live on this machine, from the charge the call left behind.",
   replanAxis: "Pulse battery charge",
   replanCallMark: "RMP call,",
   replanCallMarkTz: "MT",
@@ -615,7 +616,7 @@ export const PRESENTER = {
   footTraffic: "CAISO day-ahead price and forecasts.",
   footRace: "CAISO prices; engine reference race.",
   footCall: "Our simulation; Torus's published record.",
-  footReplan: "Engine re-plan, timed on this laptop.",
+  footReplan: "Engine re-plan, timed on this machine.",
   footEnvelope: "Engine envelope and backtest.",
   footScale: "Torus and RMP announcements.",
   footClose: "Simulated campus; engine shift.",
@@ -627,7 +628,7 @@ export const PRESENTER = {
     "CAISO day-ahead prices; reference battery of one MW and two MWh (our assumption); engine reference race.",
   sourceCall:
     "Our simulated call and station; the event record is Torus's own published RMP case study.",
-  sourceReplan: "Engine re-plan, solved live on this laptop from the simulated call.",
+  sourceReplan: "Engine re-plan, solved live on this machine from the simulated call.",
   sourceEnvelope:
     "Engine envelope and backtest over the May to October CAISO day-ahead history.",
   sourceScale:

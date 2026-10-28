@@ -24,7 +24,7 @@ import "./fleetBoard.css";
 
 const QUARTER_MS = 15 * 60 * 1000;
 const PLAN_SOURCE = "engine plan for the simulated site (clearlane policy)";
-const CALL_SOURCE = "engine crash and re-plan (live, this laptop)";
+const CALL_SOURCE = "engine crash and re-plan (live, this machine)";
 
 interface BoardCalls {
   first: CrashResult | null;
@@ -375,7 +375,7 @@ function CallPanel({
               value={shown.replan.solve_ms}
               display={`${grouped(shown.replan.solve_ms, 1)} ms`}
               prov="MEASURED"
-              source="performance.now inside the engine re-plan after the call, this laptop"
+              source="performance.now inside the engine re-plan after the call, this machine"
               width={9}
             />
           </p>
