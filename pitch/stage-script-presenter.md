@@ -19,7 +19,7 @@ Three words to have ready: **Spin** is Torus's flywheel, for short, sharp calls.
 
 > Clearlane is a traffic report for Utah's power grid, and a day plan for simulated Torus-style stations.
 
-- **Point at:** the operating day under the title.
+- **Point at:** the operating day under the title; "Presented by Craig Cossairt" is on the screen, so no need to say it.
 - **Press:** Start.
 - **If asked:** none of the five lands here.
 
@@ -27,7 +27,7 @@ Three words to have ready: **Spin** is Torus's flywheel, for short, sharp calls.
 
 > This is the price of power for the day on screen, hour by hour, set the evening before. Midday is cheap: the road is clear. By 6pm power costs `{peak_over_trough}` the day's low. In October that jump came at 5pm or 6pm on `{oct_step_hour_days_at_5_or_6}` of `{oct_step_hour_days_total}` days.
 
-- **Point at:** the Clear hours at midday, then the Jam hours in the evening.
+- **Point at:** the green bars at midday (the road is clear), then the red bars in the evening jam, then the "Price jumps" caption under the chart.
 - **Press:** Next.
 - **If asked:** none of the five lands here.
 
@@ -68,7 +68,7 @@ Three words to have ready: **Spin** is Torus's flywheel, for short, sharp calls.
 
 > An MOU for up to `{torus_500mw}` MW, not installed capacity. If the fleet does not move prices: `{clearlane_500}` a day.
 
-- **Point at:** the fleet figure, then the caveat line under it.
+- **Point at:** the arithmetic, one station's value per MW-day times the fleet, then the caveat line under it.
 - **Press:** the `{torus_500mw}` MW button, then Next. The `{mou_70mw}` MW button is for Q&A only.
 - **If asked:** "Is `{clearlane_70}` a day real?" It assumes every enrolled MW is an arbitrage battery and the fleet does not move prices; the MOU is demand-response capacity, some of it maybe Spin.
 
@@ -76,6 +76,6 @@ Three words to have ready: **Spin** is Torus's flywheel, for short, sharp calls.
 
 > Compute moves in time, not in space. Fill up when the road is clear, keep Spin ready for the crash. Our ask: pilot this envelope.
 
-- **Point at:** the ask.
+- **Point at:** the ask, then the three "What you saw" figures under it. The repo line is on screen for anyone who wants the code.
 - **Press:** nothing. Stay here for Q&A; the Sources button opens every screen's source line.
 - **If asked:** "Isn't this Lasso?" Lasso forecasts and dispatches; a day-ahead timetable and an hourly envelope are not advertised, and the envelope is a format Clearlane proposes.
