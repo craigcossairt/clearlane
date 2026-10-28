@@ -362,15 +362,15 @@ Torus answered four questions by message to Craig Cossairt on Oct 27 2026. The i
 | # | Answer | Who, when, channel | FACTS row |
 |---|---|---|---|
 | 1 | No answer recorded as of Tue 6:22pm MT. | | |
-| 2 | All 359 events in 2025 were unplanned calls; none were scheduled peak or congestion dispatches. | Torus, Oct 27 2026, message to Craig Cossairt | `rmp_events_2025_unplanned` |
-| 3 | The heatmap is in Mountain time. The stage shows the Mountain reading only; UTC readings are a sensitivity check. | Torus, Oct 27 2026, message to Craig Cossairt | `heatmap_readings` |
+| 2 | All 359 events in 2025 were unplanned calls; none were scheduled peak or congestion dispatches. | Torus, message to Craig Cossairt, Oct 27 2026 | `rmp_events_2025_unplanned` |
+| 3 | The heatmap is in Mountain time. The stage shows the Mountain reading only; UTC readings are a sensitivity check. | Torus, message to Craig Cossairt, Oct 27 2026 | `heatmap_readings` |
 | 4 | No answer recorded as of Tue 6:22pm MT. | | |
 | 5 | No answer recorded as of Tue 6:22pm MT. | | |
 | 6 | No answer recorded as of Tue 6:22pm MT. | | |
 | 7 | No answer recorded as of Tue 6:22pm MT. | | |
-| 8 | Torus does not know whether Lasso's API can accept an external day-ahead schedule or hourly envelope. Say "a format Clearlane proposes". | Torus, Oct 27 2026, message to Craig Cossairt | `lasso_external_schedule_api` |
+| 8 | Torus does not know whether Lasso's API can accept an external day-ahead schedule or hourly envelope. Say "a format Clearlane proposes". | Torus, message to Craig Cossairt, Oct 27 2026 | `lasso_external_schedule_api` |
 | 9 | No answer recorded as of Tue 6:22pm MT. | | |
-| 10 | Yes, with attribution, beside clearly labeled simulated stations. It does not cover Torus logos. | Torus, Oct 27 2026, message to Craig Cossairt | `torus_quote_permission` |
+| 10 | Yes, with attribution, beside clearly labeled simulated stations. It does not cover Torus logos. | Torus, message to Craig Cossairt, Oct 27 2026 | `torus_quote_permission` |
 
 ---
 
