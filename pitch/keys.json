@@ -400,6 +400,86 @@
       "prov": "SIMULATED",
       "note": "Backtest card, the price-only plan. Mountain time.",
       "display": "{calls_missed_by_policy_price_only_mt}"
+    },
+    "fixed_rule_charge_usd_mwh": {
+      "fact": "fixed_rule_charge_usd_mwh",
+      "source": "numbers",
+      "unit": "$/MWh",
+      "prov": "DERIVED",
+      "note": "Charge price of the fixed off-peak rule (HB 1am to 4am). Never overnight_avg. FACTS row is UNCHECKED; numbers.json writes it.",
+      "display": "{fixed_rule_charge_usd_mwh}"
+    },
+    "timetable_charge_usd_mwh": {
+      "fact": "timetable_charge_usd_mwh",
+      "source": "numbers",
+      "unit": "$/MWh",
+      "prov": "DERIVED",
+      "note": "Charge price of the reference timetable (HB 1pm to 3pm). Never midday_avg. FACTS row is UNCHECKED; numbers.json writes it.",
+      "display": "{timetable_charge_usd_mwh}"
+    },
+    "second_call_shortfall_kw": {
+      "fact": "second_call_shortfall_kw",
+      "source": "numbers",
+      "unit": "kW",
+      "prov": "SIMULATED",
+      "note": "Mean kW short on a second call inside Spin's refill. Display has no unit; copy writes kW after it.",
+      "display": "{second_call_shortfall_kw}"
+    },
+    "clearlane_500": {
+      "fact": "clearlane_500",
+      "source": "numbers",
+      "unit": "$/day",
+      "prov": "DERIVED",
+      "note": "Reference timetable at the 500 MW MOU ceiling (500 times clearlane_usd_mw_day).",
+      "display": "{clearlane_500}"
+    },
+    "fixed_500": {
+      "fact": "fixed_500",
+      "source": "numbers",
+      "unit": "$/day",
+      "prov": "DERIVED",
+      "note": "Fixed off-peak rule at the 500 MW MOU ceiling.",
+      "display": "{fixed_500}"
+    },
+    "cycles_today": {
+      "fact": "cycles_today",
+      "source": "numbers",
+      "unit": "cycles",
+      "prov": "DERIVED",
+      "note": "Pulse cycles in the operating day's plan.",
+      "display": "{cycles_today}"
+    },
+    "clearlane_dp_usd_mw_day": {
+      "fact": "clearlane_dp_usd_mw_day",
+      "source": "numbers",
+      "unit": "$/MW-day",
+      "prov": "DERIVED",
+      "note": "The engine's own 15-minute DP plan. Q&A and beat 5 only, labeled as the engine's plan; beats 2 and 6 say clearlane_usd_mw_day.",
+      "display": "{clearlane_dp_usd_mw_day}"
+    },
+    "backtest_days": {
+      "fact": "backtest_days",
+      "source": "numbers",
+      "unit": "days",
+      "prov": "DERIVED",
+      "note": "Days in the May 1 to Oct 27 backtest.",
+      "display": "{backtest_days}"
+    },
+    "sch_hours_today": {
+      "fact": "sch_hours_today",
+      "source": "numbers",
+      "unit": "h",
+      "prov": "DERIVED",
+      "note": "System Critical Hours in the day's envelope. The rule is our proposal.",
+      "display": "{sch_hours_today}"
+    },
+    "wear_usd_mwh": {
+      "fact": "wear_usd_mwh",
+      "source": "numbers",
+      "unit": "$/MWh",
+      "prov": "DERIVED",
+      "note": "Backtest wear price, bisected so Clearlane uses at most 300 cycles a year.",
+      "display": "{wear_usd_mwh}"
     }
   }
 }
