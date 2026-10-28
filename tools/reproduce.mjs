@@ -1,12 +1,12 @@
 // Usage: node tools/reproduce.mjs [--root <dir>] [--core] [--fetch] [--write-manifest] [--write-docs]
 // Re-derives every stage number offline (#32, flag off_reproduce):
 //   1. checks the SHA-256 of every public/data file against tools/manifest.sha256;
-//   2. re-runs the engine CLIs (backtest, numbers, envelope, site, and the ledger and replay stretch CLIs) in a scratch copy;
+//   2. re-runs every engine CLI in the CLIS table below, in a scratch copy;
 //   3. compares every public/derived JSON with the fresh one (EXCLUDED_FIELDS aside) and docs/NUMBERS.md;
 //   4. prints "REPRODUCED n/n stage numbers".
 // --fetch then re-fetches the operating day's OASIS prices and the EIA PACE workbook into ../clearlane-raw/reproduce/
 // and reports differences; it never fails the run.
-// --core re-runs only the four CLIs behind the stage numbers (backtest, numbers, envelope, site) and compares their files.
+// --core re-runs only the core rows of CLIS (the stage numbers) and compares their files.
 // --write-manifest and --write-docs regenerate tools/manifest.sha256 and docs/NUMBERS.md and exit.
 // Exit 0 reproduced, 1 a difference (named), 2 could not run (missing tool, input or CLI failure).
 import { spawnSync } from "node:child_process";
@@ -24,6 +24,22 @@ import {
   renderNumbersDoc,
   sha256,
 } from "./lib/reproduce.mjs";
+
+/**
+ * Every engine CLI that writes public/derived, in run order (each reads the files the rows above it wrote).
+ * A stretch PR that adds a derived file adds one row. Core rows always run; the others run when their file
+ * is committed, and --core skips them. `out` is the file the row writes; `inputs` is documentation.
+ */
+const CLIS = [
+  { out: "backtest.json", also: ["backtest_days.json"], cli: "backtest.ts", core: true, inputs: "hist, torus_published", args: () => [] },
+  { out: "numbers.json", cli: "numbers.ts", core: true, inputs: "bundle, backtest.json, torus, hist, research/, docs/FACTS.md", args: ({ bundle }) => [bundle] },
+  { out: "envelope_<day>.json", cli: "envelope.ts", core: true, inputs: "bundle; --now pins generated_utc", args: ({ bundle, now }) => [bundle, ...(now ? ["--now", now] : [])] },
+  { out: "site_default.json", cli: "site.ts", core: true, inputs: "none", args: () => [] },
+  { out: "call_ledger.json", cli: "ledger.ts", inputs: "hist, torus_published, backtest.json (#225)", args: () => [] },
+  { out: "scale_curve.json", cli: "scale.ts", inputs: "response_tables, bundle, numbers.json (#73)", args: () => [] },
+  { out: "sensitivity.json", cli: "sensitivity.ts", inputs: "hist, torus_published, backtest.json (#238)", args: () => [] },
+  { out: "rt_replay.json", cli: "replay.ts", inputs: "rt_<window>, hist, backtest.json (#227)", args: ({ rtArgs }) => rtArgs() },
+];
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -135,25 +151,17 @@ const engine = (cli, ...rest) => {
     cannot(`engine/cli/${cli} exited ${r.status}: ${(r.stderr || r.stdout || "").trim().split("\n").slice(-3).join(" / ")}`);
   }
 };
-engine("backtest.ts");
-engine("numbers.ts", bundle);
-engine("envelope.ts", bundle, ...(now ? ["--now", now] : []));
-engine("site.ts");
-// Stretch outputs: re-run only when their file is committed. A new public/derived file needs a line here.
-const stretch = !core;
-if (stretch && existsSync(at("public/derived/call_ledger.json"))) engine("ledger.ts");
-if (stretch && existsSync(at("public/derived/scale_curve.json"))) engine("scale.ts");
-if (stretch && existsSync(at("public/derived/sensitivity.json"))) engine("sensitivity.ts");
-// The real-time replay (#227) reads the RT file for the window its committed output covers.
-if (stretch && existsSync(at("public/derived/rt_replay.json"))) {
+const rtArgs = () => {
   const w = JSON.parse(readFileSync(at("public/derived/rt_replay.json"), "utf8")).window;
-  engine("replay.ts", "--rt", `public/data/rt_${w.start_mt}_${w.end_mt}.json`);
-}
+  return ["--rt", `public/data/rt_${w.start_mt}_${w.end_mt}.json`];
+};
+const runs = CLIS.filter((c) => (c.core || !core) && (c.core || existsSync(at("public/derived", c.out))));
+for (const c of runs) engine(c.cli, ...c.args({ bundle, now, rtArgs }));
 
 // 3. Compare.
-const CORE_FILES = ["backtest.json", "backtest_days.json", `envelope_${day}.json`, "numbers.json", "site_default.json"];
+const coreFiles = CLIS.filter((c) => c.core).flatMap((c) => [c.out.replace("<day>", day), ...(c.also ?? [])]);
 const derived = readdirSync(at("public/derived"))
-  .filter((f) => f.endsWith(".json") && (!core || CORE_FILES.includes(f)))
+  .filter((f) => f.endsWith(".json") && (!core || coreFiles.includes(f)))
   .sort();
 const fresh = readdirSync(tmp).filter((f) => f.endsWith(".json")).sort();
 let same = 0;
@@ -161,7 +169,7 @@ let notCompared = 0;
 let changedNumbers = [];
 for (const f of derived) {
   if (!fresh.includes(f)) {
-    console.log(`NOTE public/derived/${f}: no line in tools/reproduce.mjs re-runs its CLI, so not compared`);
+    console.log(`NOTE public/derived/${f}: no row in the CLIS table of tools/reproduce.mjs, so not compared`);
     notCompared++;
     continue;
   }
