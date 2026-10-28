@@ -480,6 +480,38 @@
       "prov": "DERIVED",
       "note": "Backtest wear price, bisected so Clearlane uses at most 300 cycles a year.",
       "display": "{wear_usd_mwh}"
+    },
+    "rt_replay_days": {
+      "fact": "rt_replay_days",
+      "source": "facts",
+      "unit": "days",
+      "prov": "DERIVED",
+      "note": "Not in numbers.json. FACTS row from public/derived/rt_replay.json (#227, #235); forecast ASSUMPTION, settlement UNVERIFIED, no RMP calls replayed. Q&A only, never stage.",
+      "display": "179"
+    },
+    "rt_hold_beats_replan_days": {
+      "fact": "rt_hold_beats_replan_days",
+      "source": "facts",
+      "unit": "days",
+      "prov": "DERIVED",
+      "note": "Not in numbers.json. FACTS row from public/derived/rt_replay.json (#227, #235); forecast ASSUMPTION, settlement UNVERIFIED, no RMP calls replayed. Q&A only, never stage.",
+      "display": "123"
+    },
+    "rt_replan_regret_increase": {
+      "fact": "rt_replan_regret_increase",
+      "source": "facts",
+      "unit": "%",
+      "prov": "DERIVED",
+      "note": "Not in numbers.json. FACTS row from public/derived/rt_replay.json (#227, #235); forecast ASSUMPTION, settlement UNVERIFIED, no RMP calls replayed. Q&A only, never stage.",
+      "display": "44%"
+    },
+    "rt_evening_below_midday_days": {
+      "fact": "rt_evening_below_midday_days",
+      "source": "facts",
+      "unit": "days",
+      "prov": "DERIVED",
+      "note": "Not in numbers.json. FACTS row from public/derived/rt_replay.json (#227, #235); forecast ASSUMPTION, settlement UNVERIFIED, no RMP calls replayed. Q&A only, never stage.",
+      "display": "17"
     }
   }
 }
