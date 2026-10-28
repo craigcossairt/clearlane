@@ -12,6 +12,15 @@ The stations here are simulated Torus-style stations. Prices and forecasts are r
 simulated is labeled on screen. Dollar values are value to RMP's system at day-ahead prices, not revenue for Torus or
 savings for a host.
 
+## See it
+
+- **Judges' site:** https://clearlane-mauve.vercel.app has the presentation, the narrated video, the slides and the
+  documents.
+- **Stage mode:** after `npx vite preview` (below), open `/?ff=presenter` for the eight presenter screens. Right or
+  PageDown is Next, Left or PageUp is Back. `/` alone is the six-beat walkthrough.
+- **Reproduce:** `npm run reproduce` re-derives every stage number offline; see
+  [Reproduce every number](#reproduce-every-number).
+
 ## Run it offline
 
 ```bash
@@ -98,6 +107,8 @@ lists every number with its source, class and how it was checked.
   `research/data/pace_snapshot_2026-10-27.csv`. Not used by the app. CC BY 4.0; weather data by Open-Meteo.com.
 
 Sources for each file are in `research/DATA-SOURCES.md`. The code is MIT licensed.
+MIT covers the code only: CAISO OASIS and EIA data keep their publishers' terms, and Torus figures are quoted with
+attribution from Torus's public pages.
 
 ## Reproduce every number
 
