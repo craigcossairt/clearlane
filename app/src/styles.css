@@ -50,12 +50,12 @@ input {
   border-bottom: 0;
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: 0.75rem;
+  font-size: var(--body);
 }
 
 .top h1 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: var(--body);
   letter-spacing: -0.02em;
 }
 
@@ -101,7 +101,7 @@ input {
 
 h2 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: var(--body);
 }
 
 .muted {
@@ -166,7 +166,7 @@ h2 {
 .card h3,
 .panel h3 {
   margin: 0 0 8px;
-  font-size: 1rem;
+  font-size: var(--body);
 }
 
 .legend {
@@ -174,7 +174,7 @@ h2 {
   flex-wrap: wrap;
   gap: 8px 14px;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: var(--body);
 }
 
 .swatch {
@@ -423,7 +423,24 @@ td {
 
 .legend-line {
   color: var(--muted);
-  font-size: 18px;
+  font-size: var(--body);
+}
+/* #190: header, legend and footer text are 24px on the projector; these trims keep every beat
+   inside the 1080px frame at that size. */
+.legend-line {
+  margin: 4px 0;
+  padding: 0 16px;
+}
+.foot {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.main {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.banner p {
+  margin: 0;
 }
 
 .slot-clock {
