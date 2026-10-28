@@ -16,9 +16,9 @@ Source: FACTS `solve_ms`, `lasso_inputs`
 
 Judge: Ryan Byrd
 
-A: They are two plans: the race card is the hourly reference timetable at `{clearlane_usd_mw_day}` per MW-day, and the engine's 15-minute plan is `{clearlane_dp_usd_mw_day}`. Every fleet figure on stage is built from the reference, and no card mixes the two.
+A: The race card is the hourly reference timetable at `{clearlane_usd_mw_day}` per MW-day; the engine's 15-minute plan, at `{clearlane_dp_usd_mw_day}`, moves Pulse's state of charge in coarse fixed steps, which hold its charge and discharge below Pulse's rating, and those steps account for the whole gap. Every fleet figure on stage is built from the reference, and no card mixes the two.
 
-Source: FACTS `clearlane_usd_mw_day`, `clearlane_dp_usd_mw_day`
+Source: FACTS `clearlane_usd_mw_day`, `clearlane_dp_usd_mw_day`; `engine/src/limits.ts` (`PULSE_LEVELS`), Data's engine review on the cycle-fix issue
 
 ### Average or marginal emissions?
 
@@ -32,7 +32,7 @@ Source: FACTS `co2_overnight_avg`, `co2_midday_avg`
 
 Judge: Ryan Byrd
 
-A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A busy day like the one on screen uses `{cycles_today}` cycles, and the meter shows it.
+A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A cycle is one equivalent full cycle of energy drawn out of Pulse, and a busy day like the one on screen uses `{cycles_today}`, which the meter shows.
 
 Source: FACTS `wear_usd_mwh`, `pulse_cycle_budget`, `torus_pulse_cycles`, `torus_lifespan_yr`, `cycles_today`
 
