@@ -434,3 +434,184 @@ export const UNKNOWN_SCALE_CURVE = JSON.stringify({
   slopes: { clamped_hb: [], inconclusive_hb: [] },
   series: [],
 });
+
+export const SENSITIVITY_KEY = "../../../public/derived/sensitivity.json";
+
+const sensGap = (usd: number) => ({
+  usd_per_mw_day: usd,
+  co2_t_per_mw_day: 0.69,
+  calls_unanswerable_pct_points: -21.8,
+});
+
+const sensAxis = (
+  key: string,
+  label: string,
+  unit: string,
+  low: number,
+  high: number,
+  gapLow: number,
+  gapHigh: number,
+) => ({
+  key,
+  label,
+  status: "ok",
+  unit,
+  low,
+  high,
+  range_prov: "ASSUMPTION",
+  gap_low: sensGap(gapLow),
+  gap_high: sensGap(gapHigh),
+});
+
+const breakEven = (
+  found: boolean,
+  value: number | null,
+  scanned: [number, number][],
+  min: [number, number],
+) => ({
+  found,
+  value,
+  scanned: scanned.map(([x, gap_usd_per_mw_day]) => ({
+    x,
+    gap_usd_per_mw_day,
+  })),
+  min_gap: { x: min[0], gap_usd_per_mw_day: min[1] },
+});
+
+const band = (from: number, to: number | null, days: number, wins: number) => ({
+  from_usd_mwh: from,
+  to_usd_mwh: to,
+  days,
+  rule_ties_or_wins: wins,
+});
+
+export const sensitivity = (
+  opts: { rteFound?: boolean; wearFound?: boolean } = {},
+) =>
+  JSON.stringify({
+    schema: "clearlane.sensitivity/v1",
+    prov: "DERIVED",
+    window: { start_mt: "2026-05-01", end_mt: "2026-10-27", days: 179 },
+    wear_usd_mwh: 10.95,
+    base: { gap: sensGap(34.28), source: "public/derived/backtest.json" },
+    axes: [
+      sensAxis(
+        "rte",
+        "Round-trip efficiency",
+        "fraction",
+        0.8,
+        0.92,
+        33.92,
+        34.49,
+      ),
+      sensAxis(
+        "wear_usd_mwh",
+        "Wear price",
+        "multiple of the calibrated wear price",
+        0.5,
+        2,
+        37.77,
+        22.59,
+      ),
+      sensAxis("export_limit_kw", "Export limit", "kW", 0, 250, 34.28, 34.28),
+      {
+        key: "heatmap_reading",
+        label: "Heatmap reading (calls only)",
+        status: "ok",
+        unit: "reading",
+        low: "heatmap_as_utc",
+        high: "heatmap_as_utc_mst",
+        range_prov: "ASSUMPTION",
+        gap_low: sensGap(34.28),
+        gap_high: sensGap(34.28),
+      },
+      {
+        key: "host_load_archetype",
+        label: "Host load archetype",
+        status: "pending",
+        pending_on: "fleet roll-up",
+      },
+    ],
+    break_even: {
+      rte: opts.rteFound
+        ? breakEven(
+            true,
+            0.62,
+            [
+              [0.5, -3],
+              [0.99, 40],
+            ],
+            [0.5, -3],
+          )
+        : breakEven(
+            false,
+            null,
+            [
+              [0.5, 43.9],
+              [0.78, 33.92],
+              [0.99, 36],
+            ],
+            [0.78, 33.92],
+          ),
+      daily_spread: breakEven(
+        false,
+        null,
+        [
+          [0, 7.99],
+          [0.2, 4.72],
+          [2, 70],
+        ],
+        [0.2, 4.72],
+      ),
+      wear_usd_mwh:
+        opts.wearFound === false
+          ? breakEven(
+              false,
+              null,
+              [
+                [10.95, 34.28],
+                [60, 0.24],
+              ],
+              [60, 0.24],
+            )
+          : breakEven(
+              true,
+              60.92,
+              [
+                [10.95, 34.28],
+                [60, 0.24],
+              ],
+              [60, 0.24],
+            ),
+      by_day_spread: {
+        days: 179,
+        rule_ties_or_wins: 16,
+        bands: [
+          band(0, 15, 21, 9),
+          band(15, 25, 55, 6),
+          band(25, 50, 56, 0),
+          band(50, null, 47, 1),
+        ],
+      },
+    },
+  });
+
+export const SENSITIVITY_OK = sensitivity();
+
+export const UNKNOWN_SENSITIVITY = JSON.stringify({
+  schema: "clearlane.sensitivity/v1",
+  prov: "DERIVED",
+  wear_usd_mwh: 10.95,
+  base: { gap: sensGap(34.28) },
+  axes: [
+    sensAxis(
+      "rte",
+      "Round-trip efficiency",
+      "fraction",
+      0.8,
+      0.92,
+      33.92,
+      34.49,
+    ),
+  ],
+});

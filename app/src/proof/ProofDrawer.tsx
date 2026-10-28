@@ -16,6 +16,7 @@ import { IntervalsCard } from "./cards/IntervalsCard";
 import { RtReplayCard } from "./cards/RtReplayCard";
 import { ScaleCurveCard } from "./cards/ScaleCurveCard";
 import { SchStudyCard } from "./cards/SchStudyCard";
+import { SensitivityCard } from "./cards/SensitivityCard";
 import { StepStatsCard } from "./cards/StepStatsCard";
 import {
   loadProofSources,
@@ -115,6 +116,15 @@ const CARDS: Record<ProofCardId, (s: ProofSources) => ReactNode> = {
       source={s.scaleCurve}
     >
       {(data) => <ScaleCurveCard data={data} />}
+    </ProofCard>
+  ),
+  sensitivity: (s) => (
+    <ProofCard
+      id="sensitivity"
+      title={COPY.proofSensTitle}
+      source={s.sensitivity}
+    >
+      {(data) => <SensitivityCard data={data} />}
     </ProofCard>
   ),
   crosscheck: (s) => (

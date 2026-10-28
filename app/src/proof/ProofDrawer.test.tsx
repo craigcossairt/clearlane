@@ -132,6 +132,11 @@ const FIXTURES: Record<
     ok: F.SCALE_CURVE_OK,
     unknown: F.UNKNOWN_SCALE_CURVE,
   },
+  sensitivity: {
+    key: F.SENSITIVITY_KEY,
+    ok: F.SENSITIVITY_OK,
+    unknown: F.UNKNOWN_SENSITIVITY,
+  },
   crosscheck: {
     key: F.CROSSCHECK_KEY,
     ok: F.CROSSCHECK_OK,
@@ -147,6 +152,7 @@ const ON_MAIN: ProofCardId[] = [
   "rtReplay",
   "schStudy",
   "scaleCurve",
+  "sensitivity",
   "crosscheck",
 ];
 const IDS = Object.keys(PROOF_FILES) as ProofCardId[];
@@ -747,6 +753,102 @@ describe("scale-curve card", () => {
       figures(c.querySelector('[data-series-row="fixed_overnight"]')),
     ).toContain("-$1.50");
     expect(c.textContent).not.toContain("$-");
+  });
+});
+
+describe("sensitivity card", () => {
+  const card = (raw = F.SENSITIVITY_OK) => {
+    renderDrawer(assembleProof({ [F.SENSITIVITY_KEY]: raw }));
+    return openDrawer().querySelector('[data-card="sensitivity"]')!;
+  };
+  const provs = (el: Element | null | undefined) =>
+    [...(el?.querySelectorAll("[data-num]") ?? [])].map((n) =>
+      n.getAttribute("data-prov"),
+    );
+
+  it("draws one bar pair per swept input, widest swing first, and leaves out the heatmap reading", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("g[data-sens-axis]")].map((g) =>
+        g.getAttribute("data-sens-axis"),
+      ),
+    ).toEqual(["wear_usd_mwh", "rte", "export_limit_kw"]);
+    expect(
+      c.querySelectorAll('g[data-sens-axis="wear_usd_mwh"] rect[data-end]'),
+    ).toHaveLength(2);
+    expect(c.querySelector("line[data-base]")).not.toBeNull();
+    expect(c.querySelector('[data-axis-row="heatmap_reading"]')).toBeNull();
+    expect(c.textContent).not.toMatch(/UTC|heatmap/i);
+  });
+
+  it("reads each range as an assumption, then the gap at each end", () => {
+    const c = card();
+    const rte = c.querySelector('[data-axis-row="rte"]');
+    expect(figures(rte)).toEqual(["0.80", "0.92", "$33.92", "$34.49"]);
+    expect(provs(rte)).toEqual([
+      "ASSUMPTION",
+      "ASSUMPTION",
+      "DERIVED",
+      "DERIVED",
+    ]);
+    expect(
+      c.querySelector('[data-axis-row="wear_usd_mwh"]')?.textContent,
+    ).toContain(`${COPY.proofSensTimes} the calibrated wear price`);
+    expect(
+      c.querySelector('[data-axis-row="export_limit_kw"]')?.textContent,
+    ).toContain(COPY.proofSensNoChange);
+    expect(c.querySelector("[data-sens-pending]")?.textContent).toContain(
+      COPY.proofSensArchetype,
+    );
+  });
+
+  it("says where the gap closes, against the pinned wear price", () => {
+    const c = card();
+    const wear = c.querySelector('[data-be="wear_usd_mwh"]');
+    expect(figures(wear)).toEqual(["$60.92", "5.6x", "$10.95"]);
+    expect(
+      wear
+        ?.querySelector('[data-num="wear_usd_mwh"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    const rte = c.querySelector('[data-be="rte"]');
+    expect(rte?.textContent).toContain(COPY.proofSensRteNone);
+    expect(figures(rte)).toEqual(["0.50", "0.99", "$33.92", "0.78"]);
+    // The scanned range is our choice; where the gap is narrowest is what the scan found.
+    expect(provs(rte)).toEqual([
+      "ASSUMPTION",
+      "ASSUMPTION",
+      "DERIVED",
+      "DERIVED",
+    ]);
+    expect(c.querySelector('[data-be="daily_spread"]')?.textContent).toContain(
+      COPY.proofSensFlat,
+    );
+    cleanup();
+    const flipped = card(F.sensitivity({ rteFound: true, wearFound: false }));
+    expect(flipped.querySelector('[data-be="rte"]')?.textContent).toContain(
+      COPY.proofSensRteFound,
+    );
+    expect(
+      flipped.querySelector('[data-be="wear_usd_mwh"]')?.textContent,
+    ).toContain(COPY.proofSensWearNone);
+  });
+
+  it("splits the days the rule ties or wins by the day's price spread", () => {
+    const c = card();
+    expect(
+      figures(c.querySelector('[data-be="by_day_spread"]')).slice(0, 2),
+    ).toEqual(["16", "179"]);
+    const bands = c.querySelectorAll("[data-sens-band]");
+    expect(bands).toHaveLength(4);
+    expect(figures(bands[0])).toEqual(["$0", "$15", "9", "21"]);
+    expect(provs(bands[0])).toEqual([
+      "ASSUMPTION",
+      "ASSUMPTION",
+      "DERIVED",
+      "DERIVED",
+    ]);
+    expect(bands[3]?.textContent).toContain(COPY.proofSensAndOver);
   });
 });
 

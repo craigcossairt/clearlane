@@ -15,6 +15,7 @@ export const PROOF_FILES = {
   rtReplay: "public/derived/rt_replay.json",
   schStudy: "science/sch_study.json",
   scaleCurve: "public/derived/scale_curve.json",
+  sensitivity: "public/derived/sensitivity.json",
   crosscheck: "science/crosscheck.json",
 } as const;
 
@@ -219,6 +220,56 @@ export interface ScaleCurve {
   series: ScaleSeries[];
 }
 
+export interface SensAxis {
+  key: string;
+  label: string;
+  status: string;
+  unit?: string;
+  low?: number | string;
+  high?: number | string;
+  range_prov?: Provenance;
+  gap_low?: { usd_per_mw_day: number };
+  gap_high?: { usd_per_mw_day: number };
+}
+
+export interface SensScan {
+  x: number;
+  gap_usd_per_mw_day: number;
+}
+
+export interface SensBreakEven {
+  found: boolean;
+  value: number | null;
+  scanned: SensScan[];
+  min_gap: SensScan;
+}
+
+export interface SensSpreadBand {
+  from_usd_mwh: number;
+  to_usd_mwh: number | null;
+  days: number;
+  rule_ties_or_wins: number;
+}
+
+/** public/derived/sensitivity.json (#69): Clearlane minus the off-peak rule as inputs move. */
+export interface Sensitivity {
+  schema: "clearlane.sensitivity/v1";
+  prov: Provenance;
+  wear_usd_mwh: number;
+  base: { gap: { usd_per_mw_day: number } };
+  axes: SensAxis[];
+  break_even: {
+    rte: SensBreakEven;
+    daily_spread: SensBreakEven;
+    wear_usd_mwh: SensBreakEven;
+    by_day_spread: {
+      days: number;
+      rule_ties_or_wins: number;
+      bands: SensSpreadBand[];
+    };
+  };
+}
+
 export interface ProofSources {
   stepStats: CardSource<StepStats>;
   backtest: CardSource<BacktestResult>;
@@ -227,6 +278,7 @@ export interface ProofSources {
   rtReplay: CardSource<RtReplay>;
   schStudy: CardSource<SchStudy>;
   scaleCurve: CardSource<ScaleCurve>;
+  sensitivity: CardSource<Sensitivity>;
   crosscheck: CardSource<CrossCheck>;
 }
 
@@ -510,6 +562,62 @@ export const readScaleCurve: Reader<ScaleCurve> = (json) => {
   return json as unknown as ScaleCurve;
 };
 
+const scan = (v: unknown) =>
+  isObj(v) && finite(v.x) && finite(v.gap_usd_per_mw_day);
+const usdGap = (v: unknown) => isObj(v) && finite(v.usd_per_mw_day);
+
+const readBreakEven = (v: unknown) =>
+  isObj(v) &&
+  typeof v.found === "boolean" &&
+  (v.value === null || finite(v.value)) &&
+  Array.isArray(v.scanned) &&
+  v.scanned.length > 0 &&
+  v.scanned.every(scan) &&
+  scan(v.min_gap);
+
+export const readSensitivity: Reader<Sensitivity> = (json) => {
+  if (!isObj(json) || json.schema !== "clearlane.sensitivity/v1")
+    return "schema is not clearlane.sensitivity/v1";
+  if (!isProv(json.prov)) return "no provenance";
+  if (!finite(json.wear_usd_mwh)) return "no wear price";
+  if (!isObj(json.base) || !usdGap(json.base.gap)) return "no base gap";
+  if (!Array.isArray(json.axes) || json.axes.length === 0) return "no axes";
+  for (const a of json.axes) {
+    if (
+      !isObj(a) ||
+      typeof a.key !== "string" ||
+      typeof a.label !== "string" ||
+      typeof a.status !== "string"
+    )
+      return "an axis has no key, label or status";
+    if (a.range_prov !== undefined && !isProv(a.range_prov))
+      return `${a.key} has an unknown range provenance`;
+    if (a.status === "ok" && !(usdGap(a.gap_low) && usdGap(a.gap_high)))
+      return `${a.key} has no gap at the ends of its range`;
+  }
+  const be = json.break_even;
+  if (!isObj(be)) return "no break-evens";
+  for (const k of ["rte", "daily_spread", "wear_usd_mwh"])
+    if (!readBreakEven(be[k])) return `break-even ${k} has no scan`;
+  const byDay = be.by_day_spread;
+  if (
+    !isObj(byDay) ||
+    !finite(byDay.days) ||
+    !finite(byDay.rule_ties_or_wins) ||
+    !Array.isArray(byDay.bands) ||
+    !byDay.bands.every(
+      (b) =>
+        isObj(b) &&
+        finite(b.from_usd_mwh) &&
+        (b.to_usd_mwh === null || finite(b.to_usd_mwh)) &&
+        finite(b.days) &&
+        finite(b.rule_ties_or_wins),
+    )
+  )
+    return "no by-day spread bands";
+  return json as unknown as Sensitivity;
+};
+
 const repoPath = (globKey: string) => globKey.replace(/^(\.\.\/)+/, "");
 
 /** A glob entry is raw text to parse, or a file Vite has already parsed (the call ledger). */
@@ -545,6 +653,7 @@ export function assembleProof(raw: Record<string, unknown>): ProofSources {
     rtReplay: read(raw, PROOF_FILES.rtReplay, readRtReplay),
     schStudy: read(raw, PROOF_FILES.schStudy, readSchStudy),
     scaleCurve: read(raw, PROOF_FILES.scaleCurve, readScaleCurve),
+    sensitivity: read(raw, PROOF_FILES.sensitivity, readSensitivity),
     crosscheck: read(raw, PROOF_FILES.crosscheck, readCrossCheck),
   };
 }
@@ -648,6 +757,7 @@ export function loadProofSources(): ProofSources {
         "../../../public/derived/backtest.json",
         "../../../science/backtest_intervals.json",
         "../../../public/derived/scale_curve.json",
+        "../../../public/derived/sensitivity.json",
         "../../../science/crosscheck.json",
       ],
       {
