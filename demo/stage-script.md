@@ -32,7 +32,7 @@ Every value on screen is a `{key}` from `public/derived/numbers.json`, shown wit
 
 - **Keys:** C for the 6:40pm call. C again during Spin's refill for the second call.
 - **Expect:** `data-beat="3"`, `data-state="call"` after each press.
-- **On screen:** `{enrolled_kw}`, `{call_duration_s}`, `{rmp_events_2025}`, `{rmp_event_ramp_s}`, `{reserve_cost_pct}`, `{meter_peak_refill_kw}`, `{second_call_shortfall_kw}`.
+- **On screen:** `{enrolled_kw}`, `{call_duration_s}`, `{rmp_events_2025}`, `{rmp_event_ramp_s}`, `{reserve_cost_pct}`, `{meter_peak_refill_kw}`, `{second_call_delivered_pct}` delivered, `{second_call_shortfall_kwh}` kWh short.
 - **The judge must see:** Spin answers the call alone. The battery-only ghost misses it or gives up its evening block. The second call shows an honest shortfall.
 - **Rehearsal trim:** if the run is long, skip the second C press first.
 - **Video timestamp:** 0:55.
