@@ -46,7 +46,7 @@ The repo goes public only on Craig's go (#35). The link must be in the slides, s
 
 https://clearlane-mauve.vercel.app (static, built from main; the app is at `/app.html?ff=presenter`).
 
-Stage build: `v1-stage-3` (presenter mode, served on :4173); fallback `v1-stage-2`.
+Stage build: `v1-stage-4` (presenter mode, served on :4173); fallback `v1-stage-3`.
 
 ## Drive folder upload
 
