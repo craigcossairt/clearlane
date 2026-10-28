@@ -2,7 +2,7 @@
 
 Everything #36 needs on Wednesday, in order, so the day is execution only. Times are Mountain. The procedure behind it is `docs/lanes/integration.md` section 6.6; the beats are in [`stage-script.md`](stage-script.md); the video is in [`backup-video.md`](backup-video.md).
 
-**Stage mode: presenter.** The stage runs presenter mode from the URL `http://localhost:4173/?ff=presenter`. No flag default changes: every flag stays off in `contracts/flags.ts`, and the URL turns presenter mode on. The clicker drives it with Right or PageDown (Next) and Left or PageUp (Back); C, E and B are not used. `v1-stage` (2:00pm) stays the six-beat fallback, and `v1-stage-2` (about 3:20pm) is the presenter build.
+**Stage mode: presenter.** The stage runs presenter mode from the URL `http://localhost:4173/?ff=presenter`. No flag default changes: every flag stays off in `contracts/flags.ts`, and the URL turns presenter mode on. The clicker drives it with Right or PageDown (Next) and Left or PageUp (Back); C, E and B are not used. `v1-stage-4` is the presenter stage build Craig serves on :4173, `v1-stage-3` is its fallback, and `v1-stage` (2:00pm) stays the six-beat fallback.
 
 Two decisions must be made before 1:45pm, both Craig's:
 
@@ -85,8 +85,20 @@ git push origin v1-stage-2
 ```
 
 - [ ] Every check green. If one is red, do not tag: the stage runs `v1-stage` in the six-beat mode.
-- [ ] Tag pushed; write its SHA here: `________`
+- [x] Tag pushed: `v1-stage-2` at `18faaba`.
 - [ ] Rebuild the stage worktree from `v1-stage-2` (the 2:10pm steps with `v1-stage-2`), then repeat the 2:20pm airplane-mode run on it.
+
+## About 3:40pm, tag `v1-stage-3` (presenter stage build, Craig's go)
+
+Craig: "Yes, re-tag". After #285 (green "Clear" in the presenter title wordmark) merged, the orchestrator ran the `v1-stage-2` gate above on main in a fresh detached worktree and tagged `v1-stage-3` at `64e7079`. `v1-stage-2` stays the fallback. The presenter video is not re-recorded.
+
+- [x] Stage worktree `../clearlane-stage3`, detached at `v1-stage-3` (64e7079), npm ci and build done. Now the fallback.
+
+## About 4:00pm, tag `v1-stage-4` (presenter stage build, Craig's go)
+
+Craig: "Apply all updates". After #287 (two Close and timing wordings, no number changed) merged, the orchestrator ran the freeze gate on main and tagged `v1-stage-4` at `fe597b7`. `v1-stage-3` is the fallback. The narrated video is unchanged.
+
+- [x] Stage worktree `../clearlane-stage4`, detached at `v1-stage-4` (fe597b7). Serve it from that folder with `npx vite preview --port 4173 --strictPort`.
 
 ## 2:35pm, backup video
 
@@ -130,7 +142,7 @@ grep -c "Oct <day>" "$TEMP/deck.txt"      # operating day: at least 1
 ## Before the clock starts (about 4:50pm)
 
 - [ ] No other `vite preview` running; :4173 belongs to the stage preview.
-- [ ] Wi-Fi off, preview running from `../clearlane-stage` (at `v1-stage-2`), browser F11 on `http://localhost:4173/?ff=presenter`, screen 1: `data-mode="presenter"`, `data-screen="1"`.
+- [ ] Wi-Fi off, preview running from `../clearlane-stage4` (at `v1-stage-4`; fallback `../clearlane-stage3` at `v1-stage-3`), browser F11 on `http://localhost:4173/?ff=presenter`, screen 1: `data-mode="presenter"`, `data-screen="1"`.
 - [ ] The six-beat fallback is one URL away: `http://localhost:4173/`.
 - [ ] Backup video open in a second window, paused at 0:00.
 - [ ] Presenter remote tested (see `keymap.md`), charger plugged in, display adapter connected.

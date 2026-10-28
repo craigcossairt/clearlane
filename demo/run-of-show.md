@@ -25,6 +25,8 @@ All times Mountain (MDT, UTC-6). Integration keeps this file current at every tr
 | Wed 2:45pm            | Presenter PRs #270 and #271 due                               |
 | Wed about 3:05pm      | Presenter PRs merged; freeze gate on the new main             |
 | Wed about 3:20pm      | Tag `v1-stage-2` (presenter build) on Craig's go              |
+| Wed about 3:40pm      | Tag `v1-stage-3`, the stage build; `v1-stage-2` is fallback   |
+| Wed about 4:00pm      | Tag `v1-stage-4`, the stage build; `v1-stage-3` is fallback   |
 | Wed 3:30pm            | Backup video and deck PDF copied to laptop, USB stick and Mac |
 | Wed by 5:00pm         | Craig submits                                                 |
 | Wed about 4:30pm      | Craig leaves for Aernata, 250 E 200 S, Suite 320              |

@@ -46,11 +46,13 @@ The repo goes public only on Craig's go (#35). The link must be in the slides, s
 
 https://clearlane-mauve.vercel.app (static, built from main; the app is at `/app.html?ff=presenter`).
 
+Stage build: `v1-stage-4` (presenter mode, served on :4173); fallback `v1-stage-3`.
+
 ## Drive folder upload
 
 Only current, presentable materials, in this order:
 
-1. [ ] `clearlane-slides.pdf`: the presentation, one 1920x1080 page per presenter screen at its end state, from `v1-stage-2` (`node tools/slides-pdf.mjs <baseUrl>`). Its last page carries the repo and site links.
+1. [ ] `clearlane-slides.pdf`: the presentation, one 1920x1080 page per presenter screen at its end state, from `v1-stage-3` (`node tools/slides-pdf.mjs <baseUrl>`). Its last page carries the repo and site links.
 2. [ ] `clearlane-presentation-narrated.mp4`: the narrated presentation video (from the explainer session).
 3. [ ] The repo link (https://github.com/craigcossairt/clearlane) and the site link (https://clearlane-mauve.vercel.app).
 
