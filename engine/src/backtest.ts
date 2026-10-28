@@ -119,19 +119,20 @@ const breaches = (plan: Plan, site: Site) =>
 
 // Clearlane answers the day's calls in time order and re-plans after each. A call that starts while
 // Spin is still refilling from the previous one joins a chain: it is met with every call of the chain
-// as its priors, against the plan the chain's first call saw. Returns the delivered percentages and the
-// executed plan.
-function clearlaneCalls(
+// as its priors, against the plan the chain's first call saw. Returns the delivered percentages, each
+// call's outcome and the executed plan.
+export function clearlaneCalls(
   da: Plan,
   site: Site,
   b: Bundle,
   events: CrashEvent[],
-): { delivered: number[]; executed: Plan } {
+): { delivered: number[]; outcomes: CrashOutcome[]; executed: Plan } {
   let plan = da;
   let chain: CrashOutcome[] = [];
   let chainBase = da;
   let lastEnd = -Infinity;
   const delivered: number[] = [];
+  const outcomes: CrashOutcome[] = [];
   for (const ev of events) {
     if (Date.parse(ev.start_utc) >= lastEnd) {
       chain = [];
@@ -148,11 +149,12 @@ function clearlaneCalls(
       },
     );
     delivered.push(out.delivered_pct);
+    outcomes.push(out);
     chain = [...chain, out];
     lastEnd = Date.parse(ev.start_utc) + out.trace.length * 1000;
     plan = out.replan;
   }
-  return { delivered, executed: plan };
+  return { delivered, outcomes, executed: plan };
 }
 
 export function runBacktest(
