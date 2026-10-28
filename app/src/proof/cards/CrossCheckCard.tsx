@@ -13,7 +13,7 @@ const STATUS_LABEL: Record<string, string> = {
   mismatch: COPY.proofStatusMismatch,
   pending: COPY.proofStatusPending,
 };
-const statusLabel = (s: string) => STATUS_LABEL[s] ?? s;
+export const statusLabel = (s: string) => STATUS_LABEL[s] ?? s;
 const statusClass = (s: string) => (ORDER.includes(s) ? s : "other");
 
 const PER_ROW = 20;

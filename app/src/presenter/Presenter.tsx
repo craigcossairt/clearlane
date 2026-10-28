@@ -24,7 +24,8 @@ import {
   type PresenterState,
   type ScreenKey,
 } from "./model";
-import { ProofDrawer, ProofKeyRow } from "../proof/ProofDrawer";
+import { ProofDrawer } from "../proof/ProofDrawer";
+import { StretchKeyRows } from "../stretch/StretchKeyRows";
 import { RaceScreen } from "./RaceScreen";
 import "./presenter.css";
 
@@ -607,7 +608,7 @@ export function Presenter({
                       <dd>{v}</dd>
                     </div>
                   ))}
-                  <ProofKeyRow />
+                  <StretchKeyRows />
                 </dl>
               </>
             ) : (

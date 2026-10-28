@@ -9,6 +9,7 @@ import {
 import { COPY } from "../copy";
 import { useFlag } from "../flags";
 import { PROOF_KEY, typedIntoInput } from "../keymap";
+import { lineageOwnsKey } from "../stretch/lineage";
 import { BacktestSpread } from "./cards/BacktestSpread";
 import { CallLedgerCard } from "./cards/CallLedgerCard";
 import { CrossCheckCard } from "./cards/CrossCheckCard";
@@ -52,17 +53,6 @@ export function ProofDrawer({
       pillClassName={pillClassName}
       onClosed={onClosed}
     />
-  );
-}
-
-/** The P row of the ? overlay, there only while the drawer's flag is on. */
-export function ProofKeyRow() {
-  if (!useFlag(PROOF_KEY.flag)) return null;
-  return (
-    <div style={{ display: "contents" }}>
-      <dt data-copy-ok="key names">{PROOF_KEY.keyLabel}</dt>
-      <dd data-copy-ok="key action text">{PROOF_KEY.label}</dd>
-    </div>
   );
 }
 
@@ -143,7 +133,7 @@ const CLOSE_KEYS = new Set(["Escape", "PageUp", "PageDown"]);
 const FOCUSABLE = 'button, [href], input, [tabindex]:not([tabindex="-1"])';
 
 /** Tab and Shift+Tab cycle through the drawer's own controls, as the presenter's dialogs do. */
-function trapTab(panel: HTMLElement | null, back: boolean) {
+export function trapTab(panel: HTMLElement | null, back: boolean) {
   const items = [...(panel?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])];
   if (items.length === 0) return;
   const at = items.indexOf(document.activeElement as HTMLElement);
@@ -219,6 +209,8 @@ function DrawerOn({
         }
         return;
       }
+      // A lineage panel opened from a chip in a card takes its keys first (ff_lineage, #91).
+      if (lineageOwnsKey(event)) return;
       // Open, the drawer owns the keyboard: beat keys must not move the stage underneath it.
       // This listener stops the event before React sees it, so Tab is kept inside here.
       // Enter and Space still do their default work on the drawer's own controls.

@@ -66,7 +66,9 @@ export interface StretchBinding {
 
 export const PROOF_KEY: StretchBinding = { key: "p", flag: "ff_proof_drawer", keyLabel: "P", label: "Open or close the proof drawer" };
 
-export const STRETCH_KEYMAP: StretchBinding[] = [PROOF_KEY];
+export const LINEAGE_KEY: StretchBinding = { key: "i", flag: "ff_lineage", keyLabel: "I, Enter", label: "Show where the focused number comes from" };
+
+export const STRETCH_KEYMAP: StretchBinding[] = [PROOF_KEY, LINEAGE_KEY];
 
 const norm = (key: string) => (key.length === 1 ? key.toLowerCase() : key);
 

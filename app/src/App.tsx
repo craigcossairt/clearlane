@@ -18,9 +18,11 @@ import { crash } from "./engineClient";
 import { buildLive, callHour, runCalls } from "./live";
 import { FlagsContext, parseFlags, type FlagName } from "./flags";
 import { KEYMAP, lookup, typedIntoInput } from "./keymap";
-import { ProofDrawer, ProofKeyRow } from "./proof/ProofDrawer";
+import { ProofDrawer } from "./proof/ProofDrawer";
 import { dayLabel, resolveStageDay } from "./stageDay";
 import { Presenter } from "./presenter/Presenter";
+import { LineagePanel } from "./stretch/LineagePanel";
+import { StretchKeyRows } from "./stretch/StretchKeyRows";
 
 export type BeatId = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -111,6 +113,7 @@ export function App({ data, search, now, reducedMotion, flags }: AppProps) {
             bundle={resolved.entry.bundle}
           />
         )}
+        <LineagePanel torus={stageData.torus} />
       </FlagsContext.Provider>
     </NumbersContext.Provider>
   );
@@ -395,7 +398,7 @@ function Stage({
                   <dd data-copy-ok="key action text">{b.label}</dd>
                 </div>
               ))}
-              <ProofKeyRow />
+              <StretchKeyRows />
             </dl>
           </div>
         ) : null}
