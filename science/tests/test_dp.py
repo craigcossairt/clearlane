@@ -74,5 +74,31 @@ class SiteReachTests(unittest.TestCase):
         self.assertLess(capped, full)
 
 
+class StoredCycleTests(unittest.TestCase):
+    """Cycles count on stored energy (#213), not on energy delivered to the grid."""
+
+    def test_stored_cycles_from_the_level_path(self):
+        # 40 levels of 12.5 kWh: 0 -> 40 -> 0 drains the full 500 kWh once; half-way twice is one cycle
+        self.assertAlmostEqual(dp.stored_cycles([0, 40, 0], 12.5, 500.0), 1.0, places=12)
+        self.assertAlmostEqual(dp.stored_cycles([0, 20, 0, 20, 0], 12.5, 500.0), 1.0, places=12)
+        self.assertAlmostEqual(dp.stored_cycles([0, 40], 12.5, 500.0), 0.0, places=12)
+
+    def test_hand_checked_250_kwh_to_the_grid(self):
+        # 250 kWh sold to the grid at sqrt(0.88): 250 / 0.938 / 500 = 0.5330 cycles (the #213 example)
+        eta = math.sqrt(0.88)
+        stored_out = 250.0 / eta
+        self.assertAlmostEqual(stored_out / 500.0, 0.53300, places=4)
+
+    def test_price_only_day_cycles_equal_grid_kwh_over_eta_over_capacity(self):
+        host = [300.0] * 96
+        p = [30.0] * 24
+        p[3], p[18] = 0.0, 100.0
+        r = dp.price_only_day(p, host)
+        want = r["discharged_kwh"] / math.sqrt(0.88) / dp.PULSE_KWH
+        self.assertAlmostEqual(r["pulse_cycles"], want, places=9)
+        self.assertGreater(r["pulse_cycles"], 0.0)
+        self.assertLess(r["pulse_cycles"], 1.0 + 1e-9)  # one 250 kW hour in and out at most per swing here
+
+
 if __name__ == "__main__":
     unittest.main()

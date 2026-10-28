@@ -99,5 +99,22 @@ class BeatingTests(unittest.TestCase):
         self.assertAlmostEqual(xc.share_beating(clear, fixed), 50.0)
 
 
+class CycleTests(unittest.TestCase):
+    def test_cycles_per_year_is_the_daily_mean_times_365(self):
+        self.assertAlmostEqual(xc.cycles_per_year([1.0, 1.0, 1.0]), 365.0)
+        self.assertAlmostEqual(xc.cycles_per_year([0.5, 1.5]), 365.0)
+        self.assertAlmostEqual(xc.cycles_per_year([0.0, 1.0, 2.0, 1.0]), 365.0)
+
+    def test_fixed_overnight_is_one_cycle_a_day_on_stored_energy(self):
+        # the pre-#213 grid-side count would give sqrt(0.88) = 0.938 here
+        self.assertAlmostEqual(xc.fixed_overnight_cycles(500.0, 0.88), 1.0, places=12)
+        self.assertAlmostEqual(xc.cycles_per_year([xc.fixed_overnight_cycles(500.0, 0.88)] * 179), 365.0, places=9)
+
+    def test_current_facts_pins(self):
+        self.assertEqual((xc.FACTS_CLEARLANE_P10, xc.FACTS_CLEARLANE_P50, xc.FACTS_CLEARLANE_P90), (1.28, 38.69, 116.00))
+        self.assertEqual(xc.FACTS_SHARE_BEATING_PCT, 91)
+        self.assertEqual((xc.FACTS_CYCLES_FIXED, xc.FACTS_CYCLES_PRICE_ONLY), (365, 625))
+
+
 if __name__ == "__main__":
     unittest.main()

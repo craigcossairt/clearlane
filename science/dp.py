@@ -86,6 +86,14 @@ def solve(prices, levels, level_kwh, eta, start_level, end_level, step_h, charge
     return {"value_usd": v_next[start_level], "levels": path, "grid_kwh": grid_kwh}
 
 
+def stored_cycles(levels, level_kwh, pulse_kwh):
+    """Equivalent full Pulse cycles on stored energy (#213): kWh that leaves the store over the day,
+    divided by the usable capacity. Read off the level path, so it does not depend on the efficiency split.
+    """
+    out = sum(max(0, levels[t] - levels[t + 1]) for t in range(len(levels) - 1)) * level_kwh
+    return out / pulse_kwh
+
+
 def price_only_day(lmp24, host_kw_15m, pulse_kw=PULSE_KW, pulse_kwh=PULSE_KWH, levels=LEVELS, rte=RTE,
                    start_level=START_LEVEL, export_limit_kw=EXPORT_LIMIT_KW):
     """One Mountain day of the price_only policy, in $ per MW-day (value / (pulse_kw / 1000))."""
@@ -98,4 +106,5 @@ def price_only_day(lmp24, host_kw_15m, pulse_kw=PULSE_KW, pulse_kwh=PULSE_KWH, l
               charge_kw=pulse_kw, discharge_kw=discharge)
     discharged = sum(g for g in r["grid_kwh"] if g > 0)
     return {"usd_per_mw_day": r["value_usd"] / (pulse_kw / 1000.0), "value_usd": r["value_usd"],
-            "discharged_kwh": discharged, "levels": r["levels"]}
+            "discharged_kwh": discharged, "levels": r["levels"],
+            "pulse_cycles": stored_cycles(r["levels"], pulse_kwh / levels, pulse_kwh)}

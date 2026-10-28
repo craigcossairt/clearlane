@@ -197,6 +197,35 @@
       "tolerance": "rounds equal at 1 dp",
       "unit": "$/day"
     },
+    "clearlane_p10_p90": {
+      "facts_key": "clearlane_p10_p90",
+      "inputs": [
+        "public/derived/backtest.json",
+        "public/derived/backtest_days.json"
+      ],
+      "method": "P10 and P90 (linear) of the backtest_days.json clearlane rows.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "backtest_json": {
+            "p10": 1.28212,
+            "p90": 115.99896
+          },
+          "facts": {
+            "p10": 1.28,
+            "p90": 116.0
+          }
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "p10_linear": 1.28212,
+        "p90_linear": 115.99896
+      },
+      "status": "match",
+      "tolerance": "0.01 vs backtest.json; rounds equal at 2 dp",
+      "unit": "$/MW-day"
+    },
     "clearlane_p50": {
       "facts_key": "clearlane_p50",
       "inputs": [
@@ -207,16 +236,16 @@
       "numbers_key": null,
       "pinned": {
         "facts": {
-          "backtest_json": 39.21367,
-          "facts": 39.21
+          "backtest_json": 38.68619,
+          "facts": 38.69
         },
         "numbers_json": null
       },
       "science": {
         "below_science_price_only_p50": true,
         "n": 179,
-        "p50_linear": 39.21367,
-        "p50_nearest_rank": 39.21367
+        "p50_linear": 38.68619,
+        "p50_nearest_rank": 38.68619
       },
       "status": "match",
       "tolerance": "0.01 vs backtest.json; rounds equal at 2 dp; at or below the science price_only P50",
@@ -244,6 +273,54 @@
       "status": "mismatch",
       "tolerance": "rounds equal at 4 dp and within 0.01",
       "unit": "$/MW-day"
+    },
+    "cycles_per_year_by_policy_fixed_overnight": {
+      "facts_key": "cycles_per_year_by_policy_fixed_overnight",
+      "inputs": [
+        "public/derived/backtest.json",
+        "public/derived/site_default.json"
+      ],
+      "method": "Fixed rule drains the full 500 kWh store once a day; cycles on stored energy (grid kWh / sqrt(0.88) / 500), mean per day x 365.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "backtest_json": 365.0,
+          "facts": 365
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "days": 179,
+        "science": 365.0
+      },
+      "status": "match",
+      "tolerance": "0.01 vs backtest.json; rounds equal at 0 dp",
+      "unit": "cycles/yr"
+    },
+    "cycles_per_year_by_policy_price_only": {
+      "facts_key": "cycles_per_year_by_policy_price_only",
+      "inputs": [
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        "public/derived/backtest.json",
+        "public/derived/site_default.json"
+      ],
+      "method": "Science DP level path: kWh leaving the store each day over 500 kWh, mean per day x 365.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "backtest_json": 625.44483,
+          "facts": 625
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "days": 179,
+        "max_abs_gap_level_path_vs_grid_over_eta": 0.0,
+        "science": 625.44483
+      },
+      "status": "match",
+      "tolerance": "0.01 vs backtest.json; rounds equal at 0 dp",
+      "unit": "cycles/yr"
     },
     "fixed_500": {
       "facts_key": "fixed_500",
@@ -621,15 +698,15 @@
       "numbers_key": null,
       "pinned": {
         "facts": {
-          "backtest_json": 95.53073,
-          "facts": "96%"
+          "backtest_json": 91.06145,
+          "facts": "91%"
         },
         "numbers_json": null
       },
       "science": {
         "days": 179,
-        "pct_engine_fixed": 95.53073,
-        "pct_science_fixed": 95.53073,
+        "pct_engine_fixed": 91.06145,
+        "pct_science_fixed": 91.06145,
         "ties": 0
       },
       "status": "match",
@@ -648,11 +725,11 @@
     },
     {
       "path": "public/derived/backtest.json",
-      "sha256": "3009fbdc04bc54b74d8923a933e5370880a5fadfe7e9b969e90376742f110c2d"
+      "sha256": "ad4210272203c00fa69578fc52fb31b6f71c19247231dd7ff31dd3c355c8ee6d"
     },
     {
       "path": "public/derived/backtest_days.json",
-      "sha256": "a33c7e0c23ddc6541b07edc1d3ca077363d227a4a7476f53e91d6df148c8600a"
+      "sha256": "b2b6f00f5ec995e540a7d73c4256ccb797c305e6ca17a0a991b4781458173c57"
     },
     {
       "path": "public/derived/site_default.json",
@@ -704,7 +781,8 @@
     "Raw OASIS vs snapshot, HB 1 to 23: max abs difference 0.00487 $/MWh.",
     "caiso4 rows are hourly; no sub-hourly averaging was needed.",
     "caiso3 filter: TAC_AREA_NAME == PACE and MARKET_RUN_ID == DAM (24 rows, LOAD_TYPE 1). caiso4 filter: BAA_GRP_ID == PACE.",
-    "hist vs raw: May 1 is not in the hist file (23 hours), so May compares May 2 to 23 (528 hours)."
+    "hist vs raw: May 1 is not in the hist file (23 hours), so May compares May 2 to 23 (528 hours).",
+    "Not recomputed (need the engine's wear, calls and re-plan): wear_usd_mwh, cycles_per_year_by_policy_clearlane, clearlane_dp_usd_mw_day, dp_race_ratio, cycles_today."
   ],
   "operating_day_mt": "2026-10-27",
   "schema": "clearlane.science.crosscheck/v1",

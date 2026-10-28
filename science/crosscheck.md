@@ -110,11 +110,14 @@ and `backtest.json` only (no engine code read):
 | hist_vs_raw_prices | raw OASIS, ELAP_PACE-APND | every hour of May 1 to 23, Jul 1 to 30, Oct 1 to 27 within $0.00001; hours compared reported | max abs diff | node, LMP type, Mountain-day grouping or rounding differs |
 | bundle_oct27_hb0 | raw 30.21857 (crosscheck item 13; the issue's "$30.22857" is that item's typo) | within the bundle's stored precision of 30.21857 (cents: 30.22) and not 46.11 | abs diff | the bundle borrowed Oct 28's hour |
 
+The clearlane_p50 and share_days_beating pins in this table are the Oct 27 values before #213; the
+current pins and tolerances are in the #218 section below.
+
 ## Note for #107, Tue Oct 27 2026 about 6:10pm MT (after the real run)
 
 The #107 tolerance section above is unchanged since its own commit (d242552).
 
-- Every #107 row matches. The fixed overnight rule from the hist file reproduces `backtest_days.json` on
+- Every #107 row matched on Oct 27 (before #213; see the #218 note below). The fixed overnight rule from the hist file reproduces `backtest_days.json` on
   all 179 days (max difference under $0.000000001) and `backtest.json`'s P10, P50, P90 and mean under
   linear interpolation. Nearest-rank gives the same P50 (179 is odd) but a different P10 (-14.49) and
   P90 (58.04), so the engine used linear, as `docs/lanes/engine.md` 6.4 says.
@@ -122,15 +125,74 @@ The #107 tolerance section above is unchanged since its own commit (d242552).
   $0.000000001, so its P50 ($44.91) matches too.
 - Dominance holds at P10, P50 and P90, against the engine's price_only and against the science DP, and on
   every single day (no day has clearlane above the science price_only value).
-- `clearlane_p50` ($39.21) and `share_days_beating` (95.53%, displayed 96%; no ties) are recomputed from
-  the per-day file, not from a clearlane re-solve: clearlane needs the engine's wear price, sampled calls
-  and re-plan, which this lane does not re-implement. The share uses the science fixed overnight values.
+- `clearlane_p50` and `share_days_beating` are recomputed from the per-day file, not from a clearlane
+  re-solve: clearlane needs the engine's wear price, sampled calls and re-plan, which this lane does not
+  re-implement. The share uses the science fixed overnight values. Their values moved in #213 (the Oct 27
+  values quoted here were $39.21 and 95.53%); the current values are in the #218 note below.
 - The hist file matches raw OASIS exactly at every hour compared. May 1 is not in the hist file (23
   priced hours in raw `caiso7`), so the May span compares May 2 to 23 (528 hours).
 - The bundle stores Oct 27 HB 0 as $30.22, which is raw $30.21857 to the cent, not Oct 28's $46.11.
 - Independence. No code in `engine/**`, `research/analysis/**`, `prep/**` or FACTS Appendix A was read.
   Definitions came from `contracts/types.ts`, `docs/lanes/engine.md` 6.4, `docs/plan/synthesis.json`,
   `public/derived/site_default.json` and `backtest.json`.
+
+## Re-run after #213: definitions and tolerances (written before computing)
+
+Issue #218, written Wed Oct 28 2026 by a stand-in science session, before the re-run was read.
+PR #213 changed two engine definitions: Pulse cycles are now counted on stored energy (energy drawn
+out of Pulse, grid kWh divided by sqrt(0.88), divided by 500 kWh), and the wear price was re-calibrated
+by the engine's own bisection. FACTS now pins `clearlane_p50` at $38.69 and `share_days_beating` at
+91%; the pins written in the #107 tolerance table above (39.21 and 96%) are the old values and that
+table is left as written. No tolerance below is wider than the one it replaces.
+
+- The existing rows `clearlane_p50` and `share_days_beating` keep their tolerances and test; only the
+  pinned FACTS value they compare to moves, to the current FACTS value.
+- `science/dp.py` now also reports Pulse cycles for the day on stored energy, taken from the level path
+  (kWh that leaves the store, divided by 500 kWh), which is the definition in FACTS and does not
+  depend on the efficiency split. It must equal grid kWh sold divided by sqrt(0.88) divided by 500.
+- Not recomputed here, and said so: the wear price (it is bisected inside the engine so that Clearlane
+  stays at or under 300 cycles a year), Clearlane's own cycle count, and the Oct 27 site plan value
+  `clearlane_dp_usd_mw_day` with its ratio `dp_race_ratio`. All three need the engine's wear, calls and
+  re-plan, which this lane does not re-implement. The reference race rows did not change in #213.
+
+| Check | Pinned | Tolerance | Test | A mismatch would mean |
+|---|---|---|---|---|
+| clearlane_p50 | FACTS $38.69 | within $0.01 of `backtest.json` clearlane P50, rounds equal to the FACTS value at 2 dp, at or below the science price_only P50 | abs diff | the summary does not come from the per-day file, or FACTS and the backtest are out of step |
+| share_days_beating | FACTS 91% | within 0.01 percentage point of `backtest.json`; rounds equal to the FACTS value at 0 dp | abs diff | tie rule or day set differs, or FACTS and the backtest are out of step |
+| clearlane_p10_p90 (new) | FACTS $1.28 and $116.00 | each within $0.01 of `backtest.json`, each rounds equal to the FACTS value at 2 dp, each linear percentile of the per-day file | abs diff | same |
+| cycles_fixed_overnight (new) | FACTS 365 a year | 365 within 0.01 of `backtest.json` `pulse_cycles_per_yr`, and rounds equal to FACTS at 0 dp | abs diff | the count is not on stored energy for the fixed rule, or the rule does not drain the full 500 kWh |
+| cycles_price_only (new) | FACTS 625 a year | science DP mean daily cycles x 365 within 0.01 of `backtest.json`, rounds equal to FACTS at 0 dp | abs diff | the count convention, the DP, or the day set differs |
+
+Cycles a year is the mean of the daily cycle counts over the 179 backtest days times 365.
+
+## Note for #218, Wed Oct 28 2026 (after the real run)
+
+The #218 tolerance section above is unchanged since its own commit (ab59e0e). Re-run after #213 with
+`python -I science/crosscheck.py` on the committed `public/derived/backtest.json` and
+`backtest_days.json` (their sha256 are in `science/crosscheck.json`); the raw inputs are unchanged.
+
+- Against the old pins, before the pins in the script were moved to the current FACTS values, the
+  re-run reported two mismatches: `clearlane_p50` FACTS 39.21 against 38.68619 from the per-day file, and
+  `share_days_beating` FACTS 96% against 91.06145. That is the expected effect of #213: FACTS now says
+  $38.69 and 91%. The script now compares to those and both rows match. No tolerance was widened and no
+  science value was changed to fit.
+- The independent price_only DP does not price wear, so the new cycle count does not touch it. It still
+  reproduces `price_only` on all 179 days (P50 44.90588, max per-day difference 0.0). Dominance still holds
+  at P10, P50 and P90 and on every day.
+- Cycles on stored energy are reproduced independently. Fixed overnight is 365.0 a year. The price_only
+  plan from the science DP is 625.44483 a year, equal to `backtest.json` and to FACTS 625. The count read
+  from the DP's level path equals grid kWh over sqrt(0.88) over 500 on every day (gap 0.0 in the JSON).
+- Clearlane P10 and P90 from the per-day file are 1.28212 and 115.99896, which round to the FACTS $1.28
+  and $116.00.
+- The six reference-race mismatches (fixed and timetable values, and the 70 and 500 MW lines) are the
+  same six as before #213. The race does not use cycles or wear, so none moved. They remain the
+  cent-rounding finding in the Oct 27 note above.
+- Not checked, and why: wear_usd_mwh, Clearlane's own cycles a year, cycles_today,
+  `clearlane_dp_usd_mw_day` and `dp_race_ratio`. The wear price is bisected inside the engine, and the
+  site plan needs its wear, host ceiling, calls and re-plan. This lane does not re-implement them.
+- Independence. No code in `engine/**`, `prep/**` or `research/analysis/**` was read for the re-run. The
+  stored-energy definition was taken from FACTS and the text of PR #213, and the science count is read
+  from the DP's level path, not from an efficiency division.
 
 ## Results
 
@@ -151,8 +213,8 @@ The #107 tolerance section above is unchanged since its own commit (d242552).
 | fossil_priciest_oct | top_lmp 67.3; top_share_pct 85.1; bottom_lmp 23.0; bottom_share_pct 39.8 | top_lmp 67.33642; top_share_pct 85.08028; bottom_lmp 23.02664; bottom_share_pct 39.75382; n_hours 600; unmatched_hours 0; blank_fuel_cells 600 | LMP rounds equal at 1 dp; shares within 0.1 point | match |
 | fossil_priciest_jul | top_lmp 65.2; top_share_pct 76.3; bottom_lmp 12.9; bottom_share_pct 52.2 | top_lmp 65.19189; top_share_pct 76.28715; bottom_lmp 12.90268; bottom_share_pct 52.21035; n_hours 720; unmatched_hours 0; blank_fuel_cells 720 | LMP rounds equal at 1 dp; shares within 0.1 point | match |
 | net_load_climb_mw | hb15 604.6; hb18 4259.1; climb 3654.51 | raw_hb15 604.62; raw_hb18 4259.13; raw_climb 3654.51; snapshot_hb15 604.62; snapshot_hb18 4259.13; snapshot_climb 3654.51; max_abs_diff_raw_vs_snapshot_mw 0.0; hours_compared 24 | within 0.1 MW each; paths within 0.1 MW at every hour | match |
-| clearlane_p50 | facts 39.21; backtest_json 39.21367 | p50_linear 39.21367; p50_nearest_rank 39.21367; n 179; below_science_price_only_p50 True | 0.01 vs backtest.json; rounds equal at 2 dp; at or below the science price_only P50 | match |
-| share_days_beating | facts 96%; backtest_json 95.53073 | pct_engine_fixed 95.53073; pct_science_fixed 95.53073; days 179; ties 0 | 0.01 percentage point; rounds equal at 0 dp | match |
+| clearlane_p50 | facts 38.69; backtest_json 38.68619 | p50_linear 38.68619; p50_nearest_rank 38.68619; n 179; below_science_price_only_p50 True | 0.01 vs backtest.json; rounds equal at 2 dp; at or below the science price_only P50 | match |
+| share_days_beating | facts 91%; backtest_json 91.06145 | pct_engine_fixed 91.06145; pct_science_fixed 91.06145; days 179; ties 0 | 0.01 percentage point; rounds equal at 0 dp | match |
 | backtest_days | facts_days 179; backtest_json days 179; missing_days 2026-05-01 | days 179; missing_days 2026-05-01; raw_hours_on_missing 2026-05-01 23; hist_rows_not_24_finite none | exact | match |
 | hist_vs_raw_prices | raw OASIS, every hour | may hours 528; max_abs_diff 0.0; worst day 2026-05-02; hb 0; days_absent none; jul hours 720; max_abs_diff 0.0; worst day 2026-07-01; hb 0; days_absent none; oct hours 648; max_abs_diff 0.0; worst day 2026-10-01; hb 0; days_absent none | within 0.00001 every hour | match |
 | bundle_oct27_hb0 | raw 30.21857; not 46.11 | bundle_hb0 30.22; raw_hb0 30.21857; ts_utc 2026-10-27T06:00:00Z; hist_hb0 30.21857 | bundle within its cent precision of raw; not 46.11 | match |
@@ -160,8 +222,11 @@ The #107 tolerance section above is unchanged since its own commit (d242552).
 | percentile_method | linear (engine.md 6.4) | matches linear | the matching method | match |
 | backtest_price_only_p50 | 44.90588 | p50_linear 44.90588; p50_nearest_rank 44.90588; p10_linear 20.97331; p90_linear 133.42112; mean 60.66428; days_compared 179; days_over_0.01 0; max_abs_diff_per_day 0.0; worst_day 2026-08-19; first_days_over none | 0.01 on P50 (linear) | match |
 | backtest_dominance | clearlane <= price_only at P10, P50, P90 | violations_vs_backtest_json none; violations_vs_science_dp none; days_clearlane_above_science_price_only 0; first_such_days none | each <= | match |
+| clearlane_p10_p90 | facts p10 1.28; p90 116.0; backtest_json p10 1.28212; p90 115.99896 | p10_linear 1.28212; p90_linear 115.99896 | 0.01 vs backtest.json; rounds equal at 2 dp | match |
+| cycles_per_year_by_policy_fixed_overnight | facts 365; backtest_json 365.0 | science 365.0; days 179 | 0.01 vs backtest.json; rounds equal at 0 dp | match |
+| cycles_per_year_by_policy_price_only | facts 625; backtest_json 625.44483 | science 625.44483; days 179; max_abs_gap_level_path_vs_grid_over_eta 0.0 | 0.01 vs backtest.json; rounds equal at 0 dp | match |
 
-Scoreboard: 17 match, 6 mismatch, 0 pending.
+Scoreboard: 20 match, 6 mismatch, 0 pending.
 
 Notes:
 
@@ -170,4 +235,5 @@ Notes:
 - caiso4 rows are hourly; no sub-hourly averaging was needed.
 - caiso3 filter: TAC_AREA_NAME == PACE and MARKET_RUN_ID == DAM (24 rows, LOAD_TYPE 1). caiso4 filter: BAA_GRP_ID == PACE.
 - hist vs raw: May 1 is not in the hist file (23 hours), so May compares May 2 to 23 (528 hours).
+- Not recomputed (need the engine's wear, calls and re-plan): wear_usd_mwh, cycles_per_year_by_policy_clearlane, clearlane_dp_usd_mw_day, dp_race_ratio, cycles_today.
 <!-- results:end -->
