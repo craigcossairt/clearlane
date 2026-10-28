@@ -138,3 +138,39 @@ describe("option 2 destination hours", () => {
     ).toThrow(/free hours/);
   });
 });
+
+// #216: the presenter race screen shows each leg's buy, sell and keep. These are the cg, dg,
+// cost and rev that leg() already computed; exporting them moves no published value.
+describe("reference race arithmetic legs on the Oct 27 fixture (#216)", () => {
+  it("pins the MWh bought and sold (1 MW / 2 MWh, RTE 0.88)", () => {
+    for (const l of [race.fixed, race.timetable]) {
+      expect(l.charge_mwh.toFixed(3)).toBe("2.132");
+      expect(l.discharge_mwh.toFixed(3)).toBe("1.876");
+      expect(l.charge_mwh).toBeCloseTo(2 / Math.sqrt(0.88), 12);
+      expect(l.discharge_mwh).toBeCloseTo(2 * Math.sqrt(0.88), 12);
+    }
+  });
+
+  it("pins the buy and sell subtotals", () => {
+    expect(race.fixed.buy_usd_per_mw_day.toFixed(2)).toBe("84.28");
+    expect(race.timetable.buy_usd_per_mw_day.toFixed(2)).toBe("45.94");
+    expect(race.fixed.sell_usd_per_mw_day.toFixed(2)).toBe("104.34");
+    expect(race.timetable.sell_usd_per_mw_day.toFixed(2)).toBe("104.34");
+    expect(Math.round(race.fixed.buy_usd_per_mw_day)).toBe(84);
+    expect(Math.round(race.timetable.buy_usd_per_mw_day)).toBe(46);
+    expect(Math.round(race.fixed.sell_usd_per_mw_day)).toBe(104);
+  });
+
+  it("sell minus buy is the published value per MW-day to 1e-9", () => {
+    for (const l of [race.fixed, race.timetable]) {
+      expect(
+        Math.abs(l.sell_usd_per_mw_day - l.buy_usd_per_mw_day - l.usd_per_mw_day),
+      ).toBeLessThan(1e-9);
+      expect(l.buy_usd_per_mw_day).toBeCloseTo(l.charge_mwh * l.charge_mean_usd_mwh, 9);
+      expect(l.sell_usd_per_mw_day).toBeCloseTo(
+        l.discharge_mwh * l.discharge_mean_usd_mwh,
+        9,
+      );
+    }
+  });
+});
