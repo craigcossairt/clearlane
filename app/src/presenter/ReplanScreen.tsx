@@ -70,7 +70,7 @@ export function ReplanScreen({
                 value={replan.solve_ms}
                 display={`${grouped(replan.solve_ms, 1)} ms`}
                 prov="MEASURED"
-                source="performance.now inside the engine solve, this laptop"
+                source="performance.now inside the engine solve, this machine"
                 width={9}
               />
             </span>{" "}

@@ -6,7 +6,7 @@ import { COPY, PRESENTER } from "../copy";
 import { referenceRaceFor } from "../engineClient";
 import { raceCards, type ArithRow, type RaceCard } from "./race";
 
-const ENGINE_SRC = "engine referenceRace (live, this laptop)";
+const ENGINE_SRC = "engine referenceRace (live, this machine)";
 const STATION_SRC =
   "reference battery, 1 MW / 2 MWh at 88% round trip (FACTS ref_station)";
 
