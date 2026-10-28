@@ -2,6 +2,8 @@
 
 Everything #36 needs on Wednesday, in order, so the day is execution only. Times are Mountain. The procedure behind it is `docs/lanes/integration.md` section 6.6; the beats are in [`stage-script.md`](stage-script.md); the video is in [`backup-video.md`](backup-video.md).
 
+**Stage mode: presenter.** The stage runs presenter mode from the URL `http://localhost:4173/?ff=presenter`. No flag default changes: every flag stays off in `contracts/flags.ts`, and the URL turns presenter mode on. The clicker drives it with Right or PageDown (Next) and Left or PageUp (Back); C, E and B are not used. `v1-stage` (2:00pm) stays the six-beat fallback, and `v1-stage-2` (about 3:20pm) is the presenter build.
+
 Two decisions must be made before 1:45pm, both Craig's:
 
 - **Operating day:** Oct 27 (on main now) or Oct 28 (PR #189, held).
@@ -42,11 +44,13 @@ In a second terminal, with the preview running:
 
 ```bash
 node app/scripts/projector-check.mjs http://localhost:4173
+node app/scripts/projector-check.mjs http://localhost:4173 --presenter
+node tools/offline-check.mjs --presenter
 ```
 
 - [ ] No stray preview holds :4173. A `vite preview` left running from another worktree (for example `../clearlane-presenter`) makes `--strictPort` fail; stop it first.
 - [ ] `git describe --tags` prints `v1-stage`.
-- [ ] Offline check PASS and projector check PASS (1920x1080 and 375px).
+- [ ] Offline check PASS (six beats and `--presenter`: 8 screens, 6 actions) and projector check PASS, default and `--presenter` (1920x1080 and 375px).
 - [ ] Stop the preview when done.
 
 ## 2:20pm, airplane-mode run
@@ -55,20 +59,41 @@ On the demo machine (Craig picks it). If it is not this laptop, run the stage wo
 
 1. [ ] With Wi-Fi on: `npm ci` and `npm run build` in `../clearlane-stage`.
 2. [ ] Turn Wi-Fi off. Check the tray icon shows no connection.
-3. [ ] Confirm :4173 is free (the `netstat` line above prints nothing), then `npx vite preview --port 4173 --strictPort`, open `http://localhost:4173/`, press F11.
-4. [ ] Run beats 1 to 6 from the keyboard per `stage-script.md`, timed with a phone stopwatch. Target 2:45.
-   - Then open `http://localhost:4173/?ff=presenter` and click through every presenter screen, still offline. The offline check drives only the six beats, so this is the only offline proof for presenter mode.
-5. [ ] Still offline: `node tools/offline-check.mjs` PASS, and `npm run reproduce` prints REPRODUCED (this is the Wi-Fi-off proof for #32).
+3. [ ] Confirm :4173 is free (the `netstat` line above prints nothing), then `npx vite preview --port 4173 --strictPort`, open `http://localhost:4173/?ff=presenter`, press F11.
+4. [ ] Run the eight presenter screens with the clicker only (Right or PageDown), timed with a phone stopwatch. Target 2:45. Each screen action (the race replay, both calls, resume, the backtest, the fleet) is one Next press; Next on a screen with no action left moves to the next screen.
+   - Then open `http://localhost:4173/` and run beats 1 to 6 from the keyboard per `stage-script.md`, still offline: this is the fallback.
+5. [ ] Still offline: `node tools/offline-check.mjs` and `node tools/offline-check.mjs --presenter` PASS, and `npm run reproduce` prints REPRODUCED (this is the Wi-Fi-off proof for #32).
 6. [ ] Press R. Turn Wi-Fi back on.
 7. [ ] Log the time, length and anything that broke in the run-of-show rehearsal log, with build `v1-stage`.
 
 If a beat fails: stop, note the beat and the `data-state` on screen, and post on #4. A fix after 2:00pm means a new tag (`v1-stage` is moved only with Craig's go).
 
+## About 3:05pm to 3:20pm, tag `v1-stage-2` (presenter build, on Craig's go)
+
+After the presenter PRs merge (about 3:05pm), on the new main in a fresh detached worktree:
+
+```bash
+git fetch origin && git worktree add ../clearlane-stage2 --detach origin/main
+cd ../clearlane-stage2 && npm ci
+npm run check:all
+node tools/offline-check.mjs && node tools/offline-check.mjs --presenter && node tools/facts-check.mjs
+npm run reproduce && node tools/readme-numbers.mjs --check
+npx vite preview --port 4176 --strictPort   # any free port from 4176 up; :4173 is for the stage
+node app/scripts/projector-check.mjs http://localhost:4176 && node app/scripts/projector-check.mjs http://localhost:4176 --presenter
+git tag -a v1-stage-2 -m "Stage build, presenter mode by URL, operating day <day>, flags: none"
+git push origin v1-stage-2
+```
+
+- [ ] Every check green. If one is red, do not tag: the stage runs `v1-stage` in the six-beat mode.
+- [ ] Tag pushed; write its SHA here: `________`
+- [ ] Rebuild the stage worktree from `v1-stage-2` (the 2:10pm steps with `v1-stage-2`), then repeat the 2:20pm airplane-mode run on it.
+
 ## 2:35pm, backup video
 
 Record from the airplane-mode setup, Wi-Fi still off, per [`backup-video.md`](backup-video.md).
 
-- [ ] Recorded, checked (length, size, last frame) and named `clearlane-backup.mp4`.
+- [ ] Recorded, checked (length, size, last frame) and named `clearlane-backup.mp4` (six beats, from `v1-stage`).
+- [ ] After `v1-stage-2`: a presenter take from that tag, named `clearlane-backup-presenter.mp4`.
 
 ## 3:00pm, deck PDF check
 
@@ -105,6 +130,7 @@ grep -c "Oct <day>" "$TEMP/deck.txt"      # operating day: at least 1
 ## Before the clock starts (about 4:50pm)
 
 - [ ] No other `vite preview` running; :4173 belongs to the stage preview.
-- [ ] Wi-Fi off, preview running from `../clearlane-stage`, browser F11 on beat 1, `data-state="ready"`.
+- [ ] Wi-Fi off, preview running from `../clearlane-stage` (at `v1-stage-2`), browser F11 on `http://localhost:4173/?ff=presenter`, screen 1: `data-mode="presenter"`, `data-screen="1"`.
+- [ ] The six-beat fallback is one URL away: `http://localhost:4173/`.
 - [ ] Backup video open in a second window, paused at 0:00.
 - [ ] Presenter remote tested (see `keymap.md`), charger plugged in, display adapter connected.
