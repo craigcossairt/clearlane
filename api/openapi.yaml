@@ -1,0 +1,150 @@
+openapi: 3.1.0
+info:
+  title: Clearlane grid-signal feed (proposed shape)
+  version: 1.0.0
+  description: >-
+    A proposed shape for a versioned, keyless feed a fleet controller such as Lasso could poll after the
+    CAISO day-ahead post (about 9:16pm Mountain). Lasso's API is not public, so this is a proposed shape,
+    never an integration, and no one has agreed to consume it. Every value carries its provenance class.
+    It is served from committed files (api/feed.ts); there is no hosted deployment. The stations are
+    simulated Torus-style stations, and System Critical Hours are our proposal.
+servers: []
+paths:
+  /v1/signal/{day}:
+    get:
+      summary: Hourly grid signal for one Mountain operating day
+      description: 24 rows, one per Mountain hour, with lane, System Critical Hour flag, day-ahead price, net load and CO2.
+      parameters:
+        - $ref: "#/components/parameters/day"
+      responses:
+        "200":
+          description: Signal rows. Example api/examples/signal_2026-10-27.json.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Signal" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /v1/envelope/{day}:
+    get:
+      summary: Hourly operating envelope for one Mountain operating day
+      description: The engine's clearlane.envelope/v1 file, with a provenance class beside every value.
+      parameters:
+        - $ref: "#/components/parameters/day"
+      responses:
+        "200":
+          description: Envelope rows. Example api/examples/envelope_2026-10-27.json.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Envelope" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /v1/fleet/{day}:
+    get:
+      summary: Fleet envelope for simulated sites (not available)
+      description: >-
+        Reserved for the fleet-rollup output. No fleet file is committed, so this route returns 404 with a reason.
+        Example api/examples/fleet_2026-10-27.json.
+      parameters:
+        - $ref: "#/components/parameters/day"
+      responses:
+        "200":
+          description: The fleet file, when one exists.
+          content:
+            application/json:
+              schema: { type: object }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /v1/envelope/{day}/2030.5:
+    get:
+      summary: IEEE 2030.5-shaped envelope (not available)
+      description: >-
+        Reserved for a 2030.5-shaped, not certified, export. That item was cut, so this route returns 404 with a
+        reason. Example api/examples/envelope_2030_5_2026-10-27.json.
+      parameters:
+        - $ref: "#/components/parameters/day"
+      responses:
+        "404": { $ref: "#/components/responses/NotFound" }
+components:
+  parameters:
+    day:
+      name: day
+      in: path
+      required: true
+      description: Mountain operating day, YYYY-MM-DD.
+      schema: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$" }
+  responses:
+    NotFound:
+      description: No committed source file for this route and day.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+  schemas:
+    Prov:
+      type: string
+      enum: [REAL, DERIVED, SIMULATED, TORUS_PUBLISHED, ASSUMPTION, MEASURED]
+    Cell:
+      type: object
+      required: [value, prov]
+      properties:
+        value: {}
+        prov: { $ref: "#/components/schemas/Prov" }
+    Head:
+      type: object
+      required: [schema, generated_utc, data_mode]
+      properties:
+        schema: { type: string }
+        generated_utc: { type: string, format: date-time }
+        data_mode: { const: snapshot }
+        operating_day_mt: { type: string }
+        sources: { type: array, items: { type: string } }
+    Signal:
+      allOf:
+        - $ref: "#/components/schemas/Head"
+        - type: object
+          properties:
+            schema: { const: clearlane.feed.signal/v1 }
+            node: { type: string }
+            sch_rule: { type: string }
+            rows:
+              type: array
+              minItems: 24
+              maxItems: 24
+              items:
+                type: object
+                required: [ts_utc, hour_mt, lane, system_critical, lmp_usd_mwh, net_load_mw, co2_g_kwh]
+                properties:
+                  ts_utc: { type: string, format: date-time }
+                  hour_mt: { type: integer, minimum: 0, maximum: 23 }
+                  lane: { $ref: "#/components/schemas/Cell" }
+                  system_critical: { $ref: "#/components/schemas/Cell" }
+                  lmp_usd_mwh: { $ref: "#/components/schemas/Cell" }
+                  net_load_mw: { $ref: "#/components/schemas/Cell" }
+                  co2_g_kwh: { $ref: "#/components/schemas/Cell" }
+    Envelope:
+      allOf:
+        - $ref: "#/components/schemas/Head"
+        - type: object
+          properties:
+            schema: { const: clearlane.feed.envelope/v1 }
+            envelope_schema: { const: clearlane.envelope/v1 }
+            fleet_kw: { $ref: "#/components/schemas/Cell" }
+            sch_rule: { type: string }
+            rows:
+              type: array
+              minItems: 24
+              maxItems: 24
+              items:
+                type: object
+                required: [ts_utc, system_critical, reserve_kw, max_charge_kw, max_discharge_kw, planned_kw, reason]
+                properties:
+                  ts_utc: { type: string, format: date-time }
+                  system_critical: { $ref: "#/components/schemas/Cell" }
+                  reserve_kw: { $ref: "#/components/schemas/Cell" }
+                  max_charge_kw: { $ref: "#/components/schemas/Cell" }
+                  max_discharge_kw: { $ref: "#/components/schemas/Cell" }
+                  planned_kw: { $ref: "#/components/schemas/Cell" }
+                  reason: { $ref: "#/components/schemas/Cell" }
+    Error:
+      type: object
+      required: [schema, data_mode, reason]
+      properties:
+        schema: { const: clearlane.feed.error/v1 }
+        data_mode: { const: snapshot }
+        reason: { type: string }
