@@ -91,3 +91,54 @@ export const UNKNOWN_CROSSCHECK = JSON.stringify({
   schema: "clearlane.science.crosscheck/v1",
   checks: { a: { method: "no status" } },
 });
+
+export const STEP_STATS_KEY = "../../../science/step_stats.json";
+
+const binom = (n: number, k: number, p_value: number) => ({
+  n,
+  k,
+  p_value,
+  p0: "2/23",
+  expected: (2 * n) / 23,
+});
+
+export const STEP_STATS_OK = JSON.stringify({
+  schema: "clearlane.science.step_stats/v1",
+  class: "DERIVED",
+  flag: "off_step_stats",
+  script: "science/step_stats.py",
+  seed: 108,
+  target_hb: [17, 18],
+  windows: {
+    october: ["2026-10-01", "2026-10-27"],
+    july: ["2026-07-01", "2026-07-30"],
+  },
+  per_day: {
+    "2026-07-01": { hb: 14, step: 5 },
+    "2026-07-02": { hb: 19, step: 6 },
+    "2026-07-31": { hb: 18, step: 7 },
+    "2026-10-01": { hb: 18, step: 15 },
+    "2026-10-02": { hb: 17, step: 12 },
+    "2026-10-03": { hb: 18, step: 16 },
+    "2026-10-04": { hb: 6, step: 3 },
+  },
+  binomial: { october: binom(4, 3, 0.0012), july: binom(2, 0, 1) },
+  permutation: {
+    october_vs_july: {
+      b_perms: 1000,
+      seed: 108,
+      observed: { tvd: 0.75 },
+      tvd: { n_ge: 3, p_value: 0.004 },
+    },
+  },
+  months: {
+    "2026-07": { days: 3, modal_hb: [14, 18, 19], count_at_mode: 1, median_step: 6 },
+    "2026-10": { days: 4, modal_hb: [18], count_at_mode: 2, median_step: 13.5 },
+  },
+  reproduction: { a: { status: "match" }, b: { status: "match" }, c: { status: "mismatch" } },
+});
+
+export const UNKNOWN_STEP_STATS = JSON.stringify({
+  schema: "clearlane.science.step_stats/v1",
+  per_day: {},
+});

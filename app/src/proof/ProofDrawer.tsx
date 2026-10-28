@@ -11,6 +11,7 @@ import { useFlag } from "../flags";
 import { PROOF_KEY, typedIntoInput } from "../keymap";
 import { BacktestSpread } from "./cards/BacktestSpread";
 import { CrossCheckCard } from "./cards/CrossCheckCard";
+import { StepStatsCard } from "./cards/StepStatsCard";
 import {
   loadProofSources,
   PROOF_FILES,
@@ -27,15 +28,24 @@ import "./proof.css";
  */
 export function ProofDrawer({
   sources,
-  inline = false,
+  pillClassName = "proof-pill",
+  onClosed,
 }: {
   /** Tests pass fixture files; the stage reads the bundled ones. */
   sources?: ProofSources;
-  /** In a footer next to other buttons, instead of pinned to the frame's corner. */
-  inline?: boolean;
+  /** The presenter footer passes its own pill classes; the stage pins the pill to the corner. */
+  pillClassName?: string;
+  /** Called on close instead of refocusing what had focus when the drawer opened. */
+  onClosed?: () => void;
 }) {
   if (!useFlag(PROOF_KEY.flag)) return null;
-  return <DrawerOn sources={sources ?? loadProofSources()} inline={inline} />;
+  return (
+    <DrawerOn
+      sources={sources ?? loadProofSources()}
+      pillClassName={pillClassName}
+      onClosed={onClosed}
+    />
+  );
 }
 
 /** The P row of the ? overlay, there only while the drawer's flag is on. */
@@ -51,6 +61,11 @@ export function ProofKeyRow() {
 
 /** One renderer per file, so adding a file to PROOF_FILES without its card fails typecheck. */
 const CARDS: Record<ProofCardId, (s: ProofSources) => ReactNode> = {
+  stepStats: (s) => (
+    <ProofCard id="stepStats" title={COPY.proofStepTitle} source={s.stepStats}>
+      {(data) => <StepStatsCard data={data} />}
+    </ProofCard>
+  ),
   backtest: (s) => (
     <ProofCard
       id="backtest"
@@ -73,13 +88,18 @@ const CARDS: Record<ProofCardId, (s: ProofSources) => ReactNode> = {
 
 function DrawerOn({
   sources,
-  inline,
+  pillClassName,
+  onClosed,
 }: {
   sources: ProofSources;
-  inline: boolean;
+  pillClassName: string;
+  onClosed?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
+  const wasOpen = useRef(false);
+  const closed = useRef(onClosed);
+  closed.current = onClosed;
   const returnTo = useRef<HTMLElement | null>(null);
   const panel = useRef<HTMLDivElement>(null);
   const pill = useRef<HTMLButtonElement>(null);
@@ -99,10 +119,12 @@ function DrawerOn({
   useEffect(() => {
     if (open) {
       panel.current?.focus();
-    } else if (returnTo.current) {
-      returnTo.current.focus();
+    } else if (wasOpen.current) {
+      if (closed.current) closed.current();
+      else returnTo.current?.focus();
       returnTo.current = null;
     }
+    wasOpen.current = open;
   }, [open]);
 
   // Capture phase, so it runs before the stage's own key handler on window.
@@ -141,7 +163,7 @@ function DrawerOn({
       <button
         ref={pill}
         type="button"
-        className={`proof-pill${inline ? " inline" : ""}`}
+        className={pillClassName}
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-keyshortcuts="P"

@@ -55,6 +55,40 @@ export const COPY = {
   proofTolerance: "Tolerance:",
   proofSecondPathPasses: "passes tolerance",
   proofSecondPathFails: "fails tolerance",
+  proofStepTitle: "Is the evening price step real?",
+  proofStepLead:
+    "Could the day's largest price step land in the same evening hour by chance? A separate science script tests it on the real day-ahead prices for PacifiCorp East.",
+  proofStepAria:
+    "Two bar charts of days by the hour their largest upward price step landed in, October above July, with the target hours shaded",
+  proofOctober: "October",
+  proofJuly: "July",
+  proofDaysWord: "days",
+  proofStepShaded: "Shaded: the target hours,",
+  proofAnd: "and",
+  proofStepBars:
+    ". Bars: days whose largest upward hour-to-hour price step landed in that hour.",
+  proofStepWindows: "Windows:",
+  proofStepOctPre: "In October,",
+  proofStepJulPre: "In July,",
+  proofOf: "of",
+  proofStepDaysIn: "days had their largest step in the target hours.",
+  proofStepChance:
+    "If every hour were equally likely, the chance of that many or more is",
+  proofStepBinom: "(exact binomial test).",
+  proofChance: ", chance",
+  proofPermPre: "October against July, the test to quote: of",
+  proofPermMid:
+    "random relabelings of the days as October or July,",
+  proofPermPost:
+    "gave step-hour distributions as far apart as the real ones. Distance between the two (total variation):",
+  proofPermP: "; p about",
+  proofPermFloor: ", the smallest this test can report.",
+  proofMonthDays: "days. Most often at",
+  proofMonthOn: ", on",
+  proofMonthMedian: "days. Median step",
+  proofPerMwh: "per MWh.",
+  proofStepRepro: "Reproduction of the pinned step-hour numbers:",
+  proofChecksMatch: "checks match.",
 
   fixedLabel: "Battery on the off-peak rule",
   clearlaneLabel: "Simulated Torus-style station on Clearlane",

@@ -27,6 +27,7 @@ import {
   assembleProof,
   loadProofSources,
   PROOF_FILES,
+  type ProofCardId,
   type ProofSources,
 } from "./sources";
 
@@ -90,50 +91,44 @@ function strayDigits(root: Element): string[] {
   return out;
 }
 
+/** Per card: its glob key, a file of the expected shape and one of another shape. */
+const FIXTURES: Record<ProofCardId, { key: string; ok: string; unknown: string }> = {
+  stepStats: { key: F.STEP_STATS_KEY, ok: F.STEP_STATS_OK, unknown: F.UNKNOWN_STEP_STATS },
+  backtest: { key: F.BACKTEST_KEY, ok: F.BACKTEST_OK, unknown: F.UNKNOWN_BACKTEST },
+  crosscheck: { key: F.CROSSCHECK_KEY, ok: F.CROSSCHECK_OK, unknown: F.UNKNOWN_CROSSCHECK },
+};
+const IDS = Object.keys(PROOF_FILES) as ProofCardId[];
+const every = (pick: (f: (typeof FIXTURES)[ProofCardId]) => string) =>
+  Object.fromEntries(IDS.map((id) => [FIXTURES[id].key, pick(FIXTURES[id])]));
+
 describe("proof sources", () => {
   it("a missing file is the empty state", () => {
     const s = assembleProof({});
-    expect(s.backtest).toEqual({ state: "empty", file: PROOF_FILES.backtest });
-    expect(s.crosscheck).toEqual({
-      state: "empty",
-      file: PROOF_FILES.crosscheck,
-    });
+    for (const id of IDS) expect(s[id]).toEqual({ state: "empty", file: PROOF_FILES[id] });
   });
 
   it("a file that does not parse is broken", () => {
-    const s = assembleProof({
-      [F.BACKTEST_KEY]: F.BROKEN_TEXT,
-      [F.CROSSCHECK_KEY]: F.BROKEN_TEXT,
-    });
-    expect(s.backtest.state).toBe("broken");
-    expect(s.crosscheck.state).toBe("broken");
+    const s = assembleProof(every(() => F.BROKEN_TEXT));
+    for (const id of IDS) expect(s[id].state, id).toBe("broken");
   });
 
   it("a file of another shape is unknown, with the reason", () => {
-    const s = assembleProof({
-      [F.BACKTEST_KEY]: F.UNKNOWN_BACKTEST,
-      [F.CROSSCHECK_KEY]: F.UNKNOWN_CROSSCHECK,
-    });
-    expect(s.backtest.state).toBe("unknown");
-    expect(s.crosscheck.state).toBe("unknown");
-    if (s.backtest.state === "unknown")
-      expect(s.backtest.reason).toMatch(/schema/);
+    const s = assembleProof(every((f) => f.unknown));
+    for (const id of IDS) {
+      const src = s[id];
+      expect(src.state, id).toBe("unknown");
+      if (src.state === "unknown") expect(src.reason.length, id).toBeGreaterThan(0);
+    }
   });
 
   it("files of the expected shape are ok", () => {
-    const s = assembleProof({
-      [F.BACKTEST_KEY]: F.BACKTEST_OK,
-      [F.CROSSCHECK_KEY]: F.CROSSCHECK_OK,
-    });
-    expect(s.backtest.state).toBe("ok");
-    expect(s.crosscheck.state).toBe("ok");
+    const s = assembleProof(every((f) => f.ok));
+    for (const id of IDS) expect(s[id].state, id).toBe("ok");
   });
 
   it("every card wired in this build reads a file that is on main and parses", () => {
     const s = loadProofSources();
-    for (const id of Object.keys(PROOF_FILES) as (keyof ProofSources)[]) {
-      expect(s[id].state, `${id}: ${s[id].file}`).toBe("ok");
-    }
+    for (const id of IDS) expect(s[id].state, `${id}: ${s[id].file}`).toBe("ok");
   });
 });
 
@@ -344,5 +339,84 @@ describe("stretch keys", () => {
         expect(lookup(b.key, beat)).toBeNull();
       expect(KEYMAP.some((k) => k.keys.includes(b.key))).toBe(false);
     }
+  });
+});
+
+describe("step-stats card", () => {
+  const card = () => {
+    renderDrawer(assembleProof({ [F.STEP_STATS_KEY]: F.STEP_STATS_OK }));
+    return openDrawer().querySelector('[data-card="stepStats"]')!;
+  };
+  const days = (c: Element, month: string, hb: number) =>
+    c.querySelector(`[data-hist="${month}"] rect[data-hour="${hb}"]`)?.getAttribute("data-days");
+
+  it("draws October and July step hours from per_day, only inside each window", () => {
+    const c = card();
+    expect(days(c, "october", 18)).toBe("2");
+    expect(days(c, "october", 17)).toBe("1");
+    expect(days(c, "october", 6)).toBe("1");
+    expect(days(c, "july", 14)).toBe("1");
+    // 2026-07-31 is outside the July window [07-01, 07-30].
+    expect(days(c, "july", 18)).toBe("0");
+    expect(c.querySelectorAll("[data-hist] rect[data-hour]")).toHaveLength(48);
+  });
+
+  it("shades the target hours as a band on both months", () => {
+    const c = card();
+    const bands = c.querySelectorAll('rect[data-band="target-hours"]');
+    expect(bands).toHaveLength(2);
+    for (const b of bands) expect(Number(b.getAttribute("width"))).toBeGreaterThan(0);
+  });
+
+  it("shows the tests with chips: binomial k of n and p, permutation hits of draws and p", () => {
+    const c = card();
+    const fig = (sel: string) => c.querySelector(`${sel} .figure`)?.textContent;
+    expect(fig('[data-stat="october-k"]')).toBe("3");
+    expect(fig('[data-stat="october-n"]')).toBe("4");
+    expect(fig('[data-stat="october-p"]')).toBe("0.0012");
+    expect(fig('[data-stat="perm-hits"]')).toBe("3");
+    expect(fig('[data-stat="perm-draws"]')).toBe("1,000");
+    expect(fig('[data-stat="perm-p"]')).toBe("0.004");
+    expect(fig('[data-stat="repro-match"]')).toBe("2");
+    expect(fig('[data-stat="repro-total"]')).toBe("3");
+    expect(c.querySelectorAll('[data-month]')).toHaveLength(2);
+    expect(strayDigits(c)).toEqual([]);
+  });
+
+  it("writes a tiny p-value in powers of ten, never as zero", async () => {
+    const { pValue } = await import("./cards/StepStatsCard");
+    expect(pValue(7.867257622032662e-23)).toBe("7.9 × 10⁻²³");
+    expect(pValue(9.99990000099999e-6)).toBe("1.0 × 10⁻⁵");
+    expect(pValue(0.012776650692456148)).toBe("0.013");
+    expect(pValue(0.0012)).toBe("0.0012");
+  });
+});
+
+describe("proof drawer in presenter mode", () => {
+  it("sits next to Sources in the footer, opens, and Esc hands focus back to the presenter", () => {
+    const { container } = render(
+      <App
+        data={data}
+        now={STAGE_NOW}
+        search="?ff=presenter,proof_drawer&screen=3&motion=off"
+      />,
+    );
+    const nav = container.querySelector<HTMLElement>(".p-nav")!;
+    const buttons = [...nav.querySelectorAll("button")];
+    const sources = nav.querySelector<HTMLButtonElement>('[data-action="sources"]')!;
+    const proof = within(nav).getByRole("button", { name: COPY.proofPill });
+    expect(buttons.indexOf(proof)).toBe(buttons.indexOf(sources) + 1);
+    expect(proof.className).toContain("p-pill");
+    const where = () => `${document.body.dataset.screen}/${document.body.dataset.actions}`;
+    const start = where();
+    fireEvent.click(proof);
+    expect(drawer()).not.toBeNull();
+    press("ArrowRight");
+    expect(where()).toBe(start);
+    press("Escape");
+    expect(drawer()).toBeNull();
+    expect(document.activeElement?.getAttribute("data-mode")).toBe("presenter");
+    press("ArrowRight");
+    expect(where()).not.toBe(start);
   });
 });

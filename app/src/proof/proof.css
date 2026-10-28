@@ -16,10 +16,6 @@
   cursor: pointer;
 }
 
-.proof-pill.inline {
-  position: static;
-}
-
 .proof-pill[aria-expanded="true"] {
   background: var(--surface-2);
 }
@@ -164,6 +160,26 @@
   stroke: var(--muted);
   stroke-width: 3;
   stroke-dasharray: 6 4;
+}
+
+.proof-target {
+  fill: var(--jam-soft);
+  stroke: var(--jam);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+
+.proof-bar {
+  fill: var(--muted);
+}
+
+.proof-bar-target {
+  fill: var(--jam);
+}
+
+.proof-base {
+  stroke: var(--muted);
+  stroke-width: 2;
 }
 
 .proof-legend {
