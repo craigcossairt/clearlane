@@ -10,6 +10,17 @@ export const LANE_WORD: Record<Lane, string> = {
   jam: "Jam",
 };
 
+/**
+ * The hours (Mountain, hour beginning) engine/src/numbers.ts stepHourDays counts for
+ * oct_step_hour_days_at_5_or_6, its default. Ribbon.test.tsx recounts the key's history file with
+ * them, so the caption names the hours the number was counted in.
+ */
+export const STEP_HOURS = [17, 18];
+/** "5pm or 6pm": the hour labels joined as alternatives by the locale. */
+const STEP_HOURS_LABEL = new Intl.ListFormat("en-US", {
+  type: "disjunction",
+}).format(STEP_HOURS.map(hourLabel));
+
 // Chart geometry (viewBox units, not data).
 const X0 = 56;
 const CELL = 36;
@@ -135,8 +146,9 @@ export function Ribbon({ live }: BeatProps) {
       <p className="ribbon-caption" data-slot="ribbon-lanes">
         {COPY.ribbonLanes1} <Num k="lane_clear_max_usd" />
         {COPY.ribbonLanes2} <Num k="lane_jam_min_usd" />
-        {COPY.ribbonLanes3} <Num k="oct_step_hour_days_at_5_or_6" />{" "}
-        {COPY.ribbonOf} <Num k="oct_step_hour_days_total" /> {COPY.ribbonStep}
+        {COPY.ribbonLanes3} <span data-time="">{STEP_HOURS_LABEL}</span>{" "}
+        {COPY.ribbonOn} <Num k="oct_step_hour_days_at_5_or_6" /> {COPY.ribbonOf}{" "}
+        <Num k="oct_step_hour_days_total" /> {COPY.ribbonStep}
       </p>
     </section>
   );
