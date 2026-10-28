@@ -4,9 +4,9 @@ Clearlane plans a day for a simulated Torus-style station on your site. Pulse ru
 
 ## What you see
 
-The host meter, in kW, against a ceiling of `{host_ceiling_kw}`. The ceiling is the month-to-date 15-minute peak the plan must not cross. It is simulated for the stage site.
+The host meter, in kW, against a ceiling of `{host_ceiling_kw}` kW. The ceiling is the month-to-date 15-minute peak the plan must not cross. It is simulated for the stage site.
 
-During a call, and while Spin refills, the meter line stays at or under that ceiling. The enrolled commitment on the stage site is `{enrolled_kw}`.
+During a call, and while Spin refills, the meter line stays at or under that ceiling. The enrolled commitment on the stage site is `{enrolled_kw}` kW.
 
 ## Why kW, not dollars
 
@@ -14,7 +14,7 @@ Rocky Mountain Power's Utah sheets bill demand on the 15-minute interval (Schedu
 
 Schedule 6 has no time-of-day window, so a midday charge and a 6pm charge set the same demand charge. The host result that matters on that sheet is whether the 15-minute peak moved.
 
-Riders adjust the posted base rates. We have not applied them. No host savings figure until that is done. Detail: `pitch/research-tariff.md`.
+Riders adjust the posted base rates. We have not applied them. No host savings figure until that is done. Detail and sheet links: `pitch/research-tariff.md`. Schedule 6A sheet: https://www.rockymountainpower.net/content/dam/pcorp/documents/en/rockymountainpower/rates-regulation/utah/rates/006A_General_Service_Energy_Time_of_Day_Option.pdf
 
 ## What is simulated
 

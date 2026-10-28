@@ -80,6 +80,8 @@ function pitchFiles() {
       const rel = relative(root, abs).replaceAll("\\", "/");
       if (ent.isDirectory()) {
         if (rel === "pitch/test/fixtures" || rel.startsWith("pitch/test/fixtures/")) continue;
+        // pitch/out holds build.mjs output: resolved copies, not source copy.
+        if (rel === "pitch/out") continue;
         walk(abs);
         continue;
       }
