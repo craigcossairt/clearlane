@@ -315,7 +315,7 @@ export interface FrontierStep {
   not_deliverable_reason: string | null;
   monthly_peak_kw: number | null;
   peak_increase_kw: number | null;
-  days_above_own_shaving_peak: number | null;
+  days_with_higher_day_peak: number | null;
   grid_value_usd_per_mw_day: number | null;
   mtd_peak_kw: number[] | null;
 }
@@ -461,7 +461,7 @@ export function buildFrontier(
         not_deliverable_reason: r.not_deliverable_reason,
         monthly_peak_kw: r.monthly_peak_kw,
         peak_increase_kw: r.deliverable ? r.monthly_peak_kw! - base : null,
-        days_above_own_shaving_peak: r.deliverable
+        days_with_higher_day_peak: r.deliverable
           ? r.days.filter(
               (d, k) =>
                 d.meter_peak_kw > on[0]!.days[k]!.meter_peak_kw + PEAK_TOL_KW,
@@ -509,6 +509,7 @@ export function buildFrontier(
       "Peak shaving only (block 0): Pulse discharges just enough to hold the meter at the lowest ceiling the day allows, or at the month-to-date peak if that is higher, and charges in the cheapest intervals that stay under it. A block adds at least the block size of discharge in every HB 6pm-9pm interval.",
       "Not deliverable: Pulse's stored energy cannot hold the block for 4 hours (energy), or the host's evening load is below the block with no export allowed (export).",
       "Break point: the largest block at and below which every step leaves the month's peak where peak shaving alone puts it. Without the ratchet a host would compare each day with its own peak-shaving day; that stricter reading is break_point_without_ratchet_kw.",
+      "days_with_higher_day_peak counts the days whose own peak is above the same day's at block 0. Under the ratchet such a day still sits at or under the month-to-date peak, so the bill moves only when peak_increase_kw is above 0.",
       "Each day starts and ends at 25 kWh, as the day-ahead plans do, and is planned with that day's prices and SIMULATED host load known.",
     ],
   };

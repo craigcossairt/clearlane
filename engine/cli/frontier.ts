@@ -42,7 +42,7 @@ for (const a of f.archetypes) {
     console.log(
       `    ${String(s.block_kw).padStart(5)} kW: ` +
         (s.deliverable
-          ? `peak ${s.monthly_peak_kw!.toFixed(1)} kW (+${s.peak_increase_kw!.toFixed(1)}), ${s.days_above_own_shaving_peak} days above their own shaving peak, grid value $${s.grid_value_usd_per_mw_day!.toFixed(2)}/MW-day`
+          ? `peak ${s.monthly_peak_kw!.toFixed(1)} kW (+${s.peak_increase_kw!.toFixed(1)}), ${s.days_with_higher_day_peak} days with a higher day peak, grid value $${s.grid_value_usd_per_mw_day!.toFixed(2)}/MW-day`
           : `not deliverable (${s.not_deliverable_reason})`),
     );
 }

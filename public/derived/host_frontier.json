@@ -120,7 +120,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 692.162161437155,
           "peak_increase_kw": 0,
-          "days_above_own_shaving_peak": 0,
+          "days_with_higher_day_peak": 0,
           "grid_value_usd_per_mw_day": -6.472210124353914,
           "mtd_peak_kw": [
             692.162161437155,
@@ -158,7 +158,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 697.3416274846479,
           "peak_increase_kw": 5.1794660474929515,
-          "days_above_own_shaving_peak": 26,
+          "days_with_higher_day_peak": 26,
           "grid_value_usd_per_mw_day": -0.3720886816664451,
           "mtd_peak_kw": [
             697.3416274846479,
@@ -196,7 +196,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 713.631737755504,
           "peak_increase_kw": 21.469576318349027,
-          "days_above_own_shaving_peak": 26,
+          "days_with_higher_day_peak": 26,
           "grid_value_usd_per_mw_day": 7.63892971043148,
           "mtd_peak_kw": [
             713.631737755504,
@@ -234,7 +234,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 730.6385404765923,
           "peak_increase_kw": 38.47637903943735,
-          "days_above_own_shaving_peak": 26,
+          "days_with_higher_day_peak": 26,
           "grid_value_usd_per_mw_day": 15.451954807847915,
           "mtd_peak_kw": [
             730.6385404765923,
@@ -272,7 +272,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 748.7798319271521,
           "peak_increase_kw": 56.61767048999718,
-          "days_above_own_shaving_peak": 26,
+          "days_with_higher_day_peak": 26,
           "grid_value_usd_per_mw_day": 23.016563375550568,
           "mtd_peak_kw": [
             748.7798319271521,
@@ -310,7 +310,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 125 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -320,7 +320,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 150 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -330,7 +330,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 175 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -340,7 +340,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 200 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -350,7 +350,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 225 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -360,7 +360,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 250 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         }
@@ -446,7 +446,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 706.0164329610423,
           "peak_increase_kw": 0,
-          "days_above_own_shaving_peak": 0,
+          "days_with_higher_day_peak": 0,
           "grid_value_usd_per_mw_day": -9.902109689368237,
           "mtd_peak_kw": [
             688.5602341455533,
@@ -484,7 +484,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 706.0164329610423,
           "peak_increase_kw": 0,
-          "days_above_own_shaving_peak": 8,
+          "days_with_higher_day_peak": 8,
           "grid_value_usd_per_mw_day": -2.8954925006605943,
           "mtd_peak_kw": [
             688.5602341455533,
@@ -522,7 +522,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 706.0164329610423,
           "peak_increase_kw": 0,
-          "days_above_own_shaving_peak": 8,
+          "days_with_higher_day_peak": 8,
           "grid_value_usd_per_mw_day": 3.838684708056137,
           "mtd_peak_kw": [
             688.5602341455533,
@@ -560,7 +560,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 706.0164329610423,
           "peak_increase_kw": 0,
-          "days_above_own_shaving_peak": 8,
+          "days_with_higher_day_peak": 8,
           "grid_value_usd_per_mw_day": 10.197905662341137,
           "mtd_peak_kw": [
             688.5602341455533,
@@ -598,7 +598,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 706.0164329610423,
           "peak_increase_kw": 0,
-          "days_above_own_shaving_peak": 8,
+          "days_with_higher_day_peak": 8,
           "grid_value_usd_per_mw_day": 14.972046995544003,
           "mtd_peak_kw": [
             688.5602341455533,
@@ -636,7 +636,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 125 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -646,7 +646,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 150 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -656,7 +656,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 175 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -666,7 +666,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 200 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -676,7 +676,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 225 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -686,7 +686,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 250 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         }
@@ -772,7 +772,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 748.3907158729087,
           "peak_increase_kw": 0,
-          "days_above_own_shaving_peak": 0,
+          "days_with_higher_day_peak": 0,
           "grid_value_usd_per_mw_day": 2.3204111645426697,
           "mtd_peak_kw": [
             707.5338871670351,
@@ -810,7 +810,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 751.6067123508408,
           "peak_increase_kw": 3.2159964779320944,
-          "days_above_own_shaving_peak": 26,
+          "days_with_higher_day_peak": 26,
           "grid_value_usd_per_mw_day": 6.01828516506515,
           "mtd_peak_kw": [
             710.5722452592897,
@@ -848,7 +848,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 759.5144703791217,
           "peak_increase_kw": 11.123754506213004,
-          "days_above_own_shaving_peak": 26,
+          "days_with_higher_day_peak": 26,
           "grid_value_usd_per_mw_day": 11.029289991103811,
           "mtd_peak_kw": [
             718.035907323376,
@@ -886,7 +886,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 777.3885980025816,
           "peak_increase_kw": 28.997882129672917,
-          "days_above_own_shaving_peak": 26,
+          "days_with_higher_day_peak": 26,
           "grid_value_usd_per_mw_day": 18.295545491275615,
           "mtd_peak_kw": [
             735.5547581754809,
@@ -924,7 +924,7 @@
           "not_deliverable_reason": null,
           "monthly_peak_kw": 805.3362903648926,
           "peak_increase_kw": 56.94557449198396,
-          "days_above_own_shaving_peak": 26,
+          "days_with_higher_day_peak": 26,
           "grid_value_usd_per_mw_day": 26.268085254054853,
           "mtd_peak_kw": [
             763.058354573597,
@@ -962,7 +962,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 125 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -972,7 +972,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 150 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -982,7 +982,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 175 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -992,7 +992,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 200 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -1002,7 +1002,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 225 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         },
@@ -1012,7 +1012,7 @@
           "not_deliverable_reason": "energy: Pulse's 500 kWh cannot hold 250 kW for 4 hours",
           "monthly_peak_kw": null,
           "peak_increase_kw": null,
-          "days_above_own_shaving_peak": null,
+          "days_with_higher_day_peak": null,
           "grid_value_usd_per_mw_day": null,
           "mtd_peak_kw": null
         }
@@ -1031,6 +1031,7 @@
     "Peak shaving only (block 0): Pulse discharges just enough to hold the meter at the lowest ceiling the day allows, or at the month-to-date peak if that is higher, and charges in the cheapest intervals that stay under it. A block adds at least the block size of discharge in every HB 6pm-9pm interval.",
     "Not deliverable: Pulse's stored energy cannot hold the block for 4 hours (energy), or the host's evening load is below the block with no export allowed (export).",
     "Break point: the largest block at and below which every step leaves the month's peak where peak shaving alone puts it. Without the ratchet a host would compare each day with its own peak-shaving day; that stricter reading is break_point_without_ratchet_kw.",
+    "days_with_higher_day_peak counts the days whose own peak is above the same day's at block 0. Under the ratchet such a day still sits at or under the month-to-date peak, so the bill moves only when peak_increase_kw is above 0.",
     "Each day starts and ends at 25 kWh, as the day-ahead plans do, and is planned with that day's prices and SIMULATED host load known."
   ]
 }
