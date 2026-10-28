@@ -111,13 +111,13 @@ Never say these on stage or in Q&A, even loosely:
 
 13. **How sure are you this is not already inside Lasso?**
 
-   A: We are not sure, so we say "not advertised", from Torus's own pages. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026).
+   A: We are not sure, so we say "not advertised", from Torus's own pages. Whether Lasso's API accepts an outside schedule or envelope is an open question, so we do not say it does.
 
-   Trap: "Lasso accepts": Torus does not know
+   Trap: "Lasso accepts": that is an open question
 
 14. **What did Torus tell you?**
 
-   A: That the 2025 heatmap hours are Mountain time, that all `{rmp_events_2025}` events in 2025 were unplanned calls, and that we may quote the published Spin and Pulse specs and event data with attribution. Whether Lasso's API takes an outside envelope is unknown to Torus too (Torus, message to Craig Cossairt, Oct 27 2026).
+   A: That the 2025 heatmap hours are Mountain time, that all `{rmp_events_2025}` events in 2025 were unplanned calls, and that we may quote the published Spin and Pulse specs and event data with attribution (Torus, message to Craig Cossairt, Oct 27 2026).
 
    Trap: naming the Torus person
 

@@ -52,5 +52,5 @@ On that day the clear-lane plan is worth `{clearlane_usd_mw_day}` per MW-day aga
 
 - Not a filing, a tariff proposal or a settlement.
 - Not Torus practice, and not endorsed by Torus.
-- Not a Lasso replacement. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026), so we do not say it does.
+- Not a Lasso replacement. Whether Lasso's API accepts an outside schedule or envelope is an open question, so we do not say it does.
 - Not a forecast of Rocky Mountain Power's calls. The call times in the demo are simulated, set beside Torus's published 2025 record.

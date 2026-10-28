@@ -64,7 +64,7 @@ System Critical Hours are the hours the grid is tightest. Our rule for picking t
 
 ## 7. Where it plugs in
 
-Lasso, Torus's own control software, forecasts from load, weather, grid signals and rate schedules, and dispatches in under `{lasso_dispatch_ms}` (Torus-published). Clearlane adds what is not advertised: a day-ahead timetable keyed to prices in EDAM, the western day-ahead market, and an hourly envelope, a format Clearlane proposes. Torus does not know whether Lasso's API accepts an outside schedule or envelope (Torus, message to Craig Cossairt, Oct 27 2026).
+Lasso, Torus's own control software, forecasts from load, weather, grid signals and rate schedules, and dispatches in under `{lasso_dispatch_ms}` (Torus-published). Clearlane adds what is not advertised: a day-ahead timetable keyed to prices in EDAM, the western day-ahead market, and an hourly envelope, a format Clearlane proposes. Whether Lasso's API accepts an outside schedule or envelope is an open question, so we do not say it does.
 
 Value to RMP's system at day-ahead prices, not Torus revenue. RMP's customers capture it today. Torus and hosts share it only if scheduled dispatch is credited.
 
@@ -91,7 +91,7 @@ The ceiling is about `{mou_share_of_peak_oct27}` of the operating day's peak loa
 | ASSUMPTION      | Round-trip efficiency, the cycle budget applied to Pulse, export limit |
 | MEASURED        | Solve time and re-plan time, timed live                                |
 
-What Torus told us (Torus, message to Craig Cossairt, Oct 27 2026): the 2025 heatmap hours are Mountain time, and all `{rmp_events_2025}` events were unplanned calls. Whether Lasso's API accepts an outside envelope is unknown to Torus too. Questions we have not asked Torus yet: how Spin refills, how event delivery is baselined, and whether sites export.
+What Torus told us (Torus, message to Craig Cossairt, Oct 27 2026): the 2025 heatmap hours are Mountain time, and all `{rmp_events_2025}` events were unplanned calls. Questions we have not asked Torus yet: how Spin refills, how event delivery is baselined, and whether sites export.
 
 ## 11. Close
 
