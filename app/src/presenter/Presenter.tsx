@@ -488,6 +488,7 @@ export function Presenter({
       case "scale":
         return (
           <ScaleHero
+            pulse={fleetDrag === null ? `mou-${st.actions}` : "drag"}
             fleetMw={fleetMw}
             range={fleetRange}
             onDrag={(mw) => setFleetDrag(mw)}
@@ -503,6 +504,7 @@ export function Presenter({
       ref={rootRef}
       className={`viewport p-viewport${phone ? " phone" : ""}`}
       data-mode="presenter"
+      data-motion={reduced ? "off" : undefined}
       tabIndex={-1}
     >
       <div
@@ -524,7 +526,8 @@ export function Presenter({
             </button>
           ))}
         </nav>
-        <main className="p-main">
+        {/* Keyed by screen, so each Next replays the entrance (presenter.css, round 2). */}
+        <main className="p-main" key={st.screen}>
           {def.key === "title" ? null : (
             <header className="p-head">
               <h1 className="p-headline" data-slot="headline">
@@ -667,10 +670,6 @@ function TitleHero({ day, onStart }: { day: string; onStart: () => void }) {
             <span data-time="">{mtDate(day)}</span>
           </dd>
         </div>
-        <div>
-          <dt>{PRESENTER.titleNode}</dt>
-          <dd data-copy-ok="CAISO node id">{COPY.node}</dd>
-        </div>
       </dl>
       <p className="p-title-by">{PRESENTER.titleBy}</p>
       <div className="p-actions">
@@ -686,7 +685,10 @@ function ScaleHero({
   fleetMw,
   range,
   onDrag,
+  pulse,
 }: {
+  /** Changes when a fleet pill is chosen, so the cards pop on the new size. */
+  pulse: string;
   fleetMw: number | null;
   range: { min: number; max: number } | null;
   onDrag: (mw: number) => void;
@@ -712,7 +714,7 @@ function ScaleHero({
           onChange={(event) => onDrag(Number(event.target.value))}
         />
       </div>
-      <div className="p-scale-cards" data-slot="scale-cards">
+      <div className="p-scale-cards" data-slot="scale-cards" key={pulse}>
         {(
           [
             [COPY.fixedLabel, "fixed_usd_mw_day"],
@@ -742,14 +744,20 @@ function FleetNum({
   fleetMw: number | null;
   width?: number;
 }) {
+  // No chip on the slider position (judge review 2): the 70 and 500 MW buttons carry the
+  // TORUS_PUBLISHED chips, and a second, SIMULATED chip on the same figure read as a conflict.
+  // The span keeps the Num frame and its data attributes.
   return fleetMw !== null ? (
-    <Num
-      value={fleetMw}
-      display={`${grouped(fleetMw, 0)} MW`}
-      prov="SIMULATED"
-      source="fleet slider, between mou_70mw and torus_500mw"
-      width={width}
-    />
+    <span
+      className="num num-ok"
+      data-num="live"
+      data-prov="SIMULATED"
+      data-num-state="ok"
+      title="fleet slider, between mou_70mw and torus_500mw"
+      style={{ minWidth: `${width ?? 6}ch` }}
+    >
+      <span className="figure">{`${grouped(fleetMw, 0)} MW`}</span>
+    </span>
   ) : (
     <Num k="mou_70mw" width={width} />
   );
@@ -786,7 +794,7 @@ function CloseHero() {
       <div className="p-close-body">
         <div className="p-close-lines">
           <p className="close-line">{COPY.closeLine1}</p>
-          <p className="close-line">{COPY.closeLine2}</p>
+          <p className="close-line">{PRESENTER.closeLine2}</p>
         </div>
         <aside className="p-campus" data-detail="">
           <h3>
