@@ -175,6 +175,23 @@ class SummaryTests(unittest.TestCase):
         self.assertFalse(cs.close(None, 1.0, 1e-9))
 
 
+class MethodsNoteTests(unittest.TestCase):
+    NOTE = common.ROOT / "science/methods.md"
+
+    def test_header_length_and_coverage(self):
+        import textwrap
+
+        text = self.NOTE.read_text(encoding="utf-8")
+        self.assertIn("Flag: off_science_methods (not read by the stage app)", text.splitlines()[2])
+        # under 4 printed pages: at most 55 lines of 95 characters a page
+        lines = sum(max(1, len(textwrap.wrap(line, 95))) for line in text.split("\n"))
+        self.assertLessEqual(lines, 4 * 55)
+        scripts = sorted(p.name for p in (common.ROOT / "science").glob("*.py"))
+        for name in scripts:
+            if name not in ("__init__.py", "common.py", "svgplot.py"):
+                self.assertIn(name, text, name)
+
+
 @unittest.skipUnless(LEDGER.exists() and EIA.exists(), "inputs not on this branch")
 class RerunTests(unittest.TestCase):
     def test_same_inputs_identical_bytes(self):
