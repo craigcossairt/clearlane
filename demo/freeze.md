@@ -92,7 +92,7 @@ git push origin v1-stage-2
 
 Craig: "Yes, re-tag". After #285 (green "Clear" in the presenter title wordmark) merged, the orchestrator ran the `v1-stage-2` gate above on main in a fresh detached worktree and tagged `v1-stage-3` at `64e7079`. `v1-stage-2` stays the fallback. The presenter video is not re-recorded.
 
-- [ ] Rebuild the stage worktree from `v1-stage-3` (the 2:10pm steps with `v1-stage-3`) and serve it on :4173.
+- [x] Stage worktree `../clearlane-stage3`, detached at `v1-stage-3` (64e7079), npm ci and build done. Serve it from that folder with `npx vite preview --port 4173 --strictPort`.
 
 ## 2:35pm, backup video
 
@@ -136,7 +136,7 @@ grep -c "Oct <day>" "$TEMP/deck.txt"      # operating day: at least 1
 ## Before the clock starts (about 4:50pm)
 
 - [ ] No other `vite preview` running; :4173 belongs to the stage preview.
-- [ ] Wi-Fi off, preview running from `../clearlane-stage` (at `v1-stage-3`; fallback `v1-stage-2`), browser F11 on `http://localhost:4173/?ff=presenter`, screen 1: `data-mode="presenter"`, `data-screen="1"`.
+- [ ] Wi-Fi off, preview running from `../clearlane-stage3` (at `v1-stage-3`; fallback `v1-stage-2`), browser F11 on `http://localhost:4173/?ff=presenter`, screen 1: `data-mode="presenter"`, `data-screen="1"`.
 - [ ] The six-beat fallback is one URL away: `http://localhost:4173/`.
 - [ ] Backup video open in a second window, paused at 0:00.
 - [ ] Presenter remote tested (see `keymap.md`), charger plugged in, display adapter connected.
