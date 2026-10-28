@@ -478,14 +478,15 @@ export const PRESENTER = {
 
   titleLine: "A day planner for simulated Torus-style stations on Utah's grid.",
   titleDetail:
-    "It reads the next day's power prices, fills the battery when power is cheap at midday, stops buying in the evening rush, and keeps the flywheel ready for Rocky Mountain Power's calls.",
+    "It reads tomorrow's power prices, fills Pulse, the battery, when power is cheap at midday, sells in the evening rush, and keeps Spin, the flywheel, ready for calls from Rocky Mountain Power (RMP), the local utility.",
   titleNode: "CAISO day-ahead node",
   titleBy: "Presented by Craig Cossairt",
   start: "Start",
 
-  trafficHeadline: "Power is cheapest at midday. The road jams after the evening step.",
+  trafficHeadline:
+    "Power is cheapest at midday. The road jams in the evening.",
   trafficLine:
-    "Like a traffic report published the evening before: each bar is one hour's price, green when the road is clear and red in the evening jam.",
+    "Like a traffic report published the evening before. Each bar is one hour's price: green is the clear lane, amber is in between, red is the evening jam.",
   // Screen 2's one caption sentence: "Price jumps {peak_over_trough} from the midday low to the
   // {peak_hour_mt} peak."
   trafficPeak1: "Price jumps",
@@ -497,7 +498,8 @@ export const PRESENTER = {
   raceLine:
     "Same battery, selling in the same evening hours. The only difference is when it fills up. The off-peak rule is our baseline, not Torus practice.",
   replay: "Replay the day",
-  keepsLabel: "value to RMP's system per MW per day, higher is better",
+  keepsLabel:
+    "per MW of battery per day, value to Rocky Mountain Power's grid",
   rowBuys: "Buys",
   rowSells: "Sells",
   rowKeeps: "Net",
@@ -512,56 +514,60 @@ export const PRESENTER = {
   stripSell: "Sell hours",
   stripAria:
     "Twenty-four hours, Mountain time, marking each plan's buy hours and sell hours",
-  raceNote: "Value to RMP's system at day-ahead prices, per MW of battery.",
+  raceNote:
+    "Value to Rocky Mountain Power's grid at day-ahead prices, per MW of battery, before any host building's meter limit.",
 
   callHeadline: "When Rocky Mountain Power calls, Spin answers.",
   callLine:
-    "A simulated call of about five and a half minutes. Call again during the refill, and the card shows any shortfall.",
+    "A simulated call of about five and a half minutes. The battery-only plan chases price alone and keeps nothing back for Rocky Mountain Power, so it has almost nothing left when the call comes.",
   callNow: "Rocky Mountain Power calls now",
   callAgain: "Call again during refill",
-  callPrompt:
-    "Click Rocky Mountain Power calls now to drop a simulated call. This space stays put either way.",
+  callPrompt: "Waiting for a call from Rocky Mountain Power.",
   secondPrompt: "A second call during the refill shows any shortfall here.",
   secondRule:
     "Second call inside the refill window: the call wins and Pulse diverts to cover it.",
 
   replanHeadline: "After the call, the rest of the day is re-solved.",
-  replanLine: "The morning plan, and the plan re-solved at the call minute.",
+  replanLine:
+    "Blue is the plan re-solved from the charge the call left behind. It sits almost on top of this morning's plan: answering the call barely changes the evening.",
   replanLegend:
     "Dashed: Pulse state of charge as planned this morning. Solid: the re-plan from the call (red line).",
   resume: "Resume the day",
 
   envelopeHeadline: "An hourly envelope Rocky Mountain Power could plan around.",
   envelopeLine:
-    "Each hour, the most the station will draw, and the power it keeps ready for RMP. A format Clearlane proposes, not a filing.",
+    "Each hour, what the station plans to do: charge when power is cheap, sell in the evening rush, and keep Spin's power ready for RMP. In System Critical Hours it does not charge. A format Clearlane proposes, not a filing.",
   showBacktest: "Show the backtest",
   showEnvelope: "Show the envelope",
 
   // #270: screens 4 to 6 read from the screen alone. No digit sits in this copy; every number
   // is a Num or a Live engine value.
-  callTraceLegend: "Gray: what Rocky Mountain Power asked for. Blue: Spin. Gold: Pulse.",
+  callTraceLegend:
+    "Gray: what Rocky Mountain Power asked for. Blue: Spin, the flywheel. Gold: Pulse, the battery, including power it was already selling.",
+  callWaiting: "Waiting for a call.",
   callDeliveredOf: "of the call delivered",
+  callSecondDeliveredOf: "of the second call delivered",
   callSimTitle: "Our simulation",
   callPublishedTitle: "Torus's published record, separate from this simulation",
-  callPublishedRamp: "Ramp",
-  callPublishedDelivered: "target, delivered",
+  callPublishedRamp: "Ramped in",
+  callPublishedSeconds: "seconds against a",
+  callPublishedDelivered: "second target, delivered",
   callSpinBack: "Spin full again at",
   replanHero: "Re-planned in",
   replanHeroTail: "timed live on this laptop, from the charge the call left behind.",
   replanAxis: "Pulse battery charge",
   replanCallMark: "RMP call,",
+  replanCallMarkTz: "MT",
   replanTakesOver: "The re-plan takes over here",
   replanKeyPlanned: "This morning's plan",
   replanKeyReplanned: "Re-plan after the call",
-  replanCycles: "Pulse cycles today",
-  replanCyclesBudget: "Budget",
-  replanCyclesTail: "a year",
-  envelopeDrawLabel: "Most the station will draw",
+  envelopeChargeKey: "Planned charging",
+  envelopeSellKey: "Planned selling",
   envelopeReadyLabel: "Kept ready for RMP",
   envelopeSchLabel: "System Critical Hours, our proposal",
   envelopeSchCount: "System Critical Hours today",
   envelopeAria:
-    "Twenty-four hours, Mountain time: the most the station will draw each hour, with the System Critical Hours marked",
+    "Twenty-four hours, Mountain time: the power the station plans to charge, up, or sell, down, each hour, with the System Critical Hours marked",
   backtestScoreHeadline:
     "Battery-only is worth more on paper. Clearlane is the plan a host and RMP would allow.",
   backtestLinePre: "Backtested on",
@@ -581,17 +587,21 @@ export const PRESENTER = {
   scoreBaseline: "Baseline",
   scaleHeadline: "Scale the station to the fleet the MOU allows.",
   scaleLine:
-    "One station's daily value per MW, multiplied by the fleet in Torus's agreement (MOU) with Rocky Mountain Power.",
+    "One station's value per MW on the reference day, multiplied by the fleet in Torus's agreement (MOU) with Rocky Mountain Power.",
   scaleTimes: "×",
   scalePerMw: "per MW-day",
   scaleCaveat:
-    "This assumes every enrolled MW is a two-hour battery like our reference station, and that the fleet does not move prices. The MOU is a ceiling, not installed capacity.",
+    "This assumes every enrolled MW is a two-hour battery like our reference station, and that the fleet does not move prices. The MOU is a ceiling, not installed capacity. A typical backtest day is worth less.",
   fleetMin: "MW",
   fleetMax: "MW",
 
   closeHeadline: "The ask: pilot the envelope.",
   closeLine:
-    "Pilot the day-ahead envelope, a format Clearlane proposes, at a few Wattsmart sites this winter.",
+    "Pilot the day-ahead envelope, a format Clearlane proposes, at a few sites in Rocky Mountain Power's Wattsmart program this winter.",
+  // Presenter-only close line (judge review 2): "calls", as screen 4 says, not "crash". The
+  // six-beat close keeps COPY.closeLine2.
+  closeLine2:
+    "Clearlane: fill up when the road is clear, and keep Spin ready for Rocky Mountain Power's calls.",
   closeWhat:
     "Each hour it tells Rocky Mountain Power the reserve held for its calls and the most the station will charge or discharge.",
   sawRatio: "what filling up at midday is worth, against the off-peak rule",

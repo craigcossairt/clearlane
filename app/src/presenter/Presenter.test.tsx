@@ -158,6 +158,46 @@ describe("presenter mode (#216, ff_presenter)", () => {
     ).toContain(PRESENTER.secondRule);
   });
 
+  it("draws no Pulse line on the battery-only card, and lands with motion off (#4)", () => {
+    const { container } = renderPresenter("screen=4&step=end&motion=off");
+    expect(
+      container.querySelector('[data-slot="call-ghost"] [data-series="pulse"]'),
+    ).toBeNull();
+    expect(
+      container.querySelector('[data-slot="call-inset"] [data-series="pulse"]'),
+    ).toBeTruthy();
+    // Torus's 19 s is their published record, not our result.
+    expect(
+      container.querySelector('[data-slot="call-result"] [data-num]')
+        ?.textContent,
+    ).not.toMatch(/s/);
+    expect(container.querySelector(".p-call-pct-label")?.textContent).toBe(
+      PRESENTER.callSecondDeliveredOf,
+    );
+    expect(container.querySelector(".p-call")?.getAttribute("data-anim")).toBe(
+      "off",
+    );
+    expect(
+      [...container.querySelectorAll(".p-call-trace")].map((t) =>
+        t.getAttribute("data-done"),
+      ),
+    ).toEqual(["yes", "yes"]);
+  });
+
+  it("waits plainly before the call (#4)", () => {
+    const { container } = renderPresenter("screen=4&motion=off");
+    expect(container.querySelector(".p-call-banner.is-waiting")).toBeTruthy();
+    expect(container.textContent).toContain(PRESENTER.callWaiting);
+    expect(container.textContent).not.toContain("Empty, not zero");
+  });
+
+  it("the re-plan ring mounts only after Resume (#4)", () => {
+    const { container } = renderPresenter("screen=5&motion=off");
+    expect(container.querySelector(".p-replan-ring")).toBeNull();
+    click(container, "action-resume");
+    expect(container.querySelector(".p-replan-ring")).toBeTruthy();
+  });
+
   it("the re-plan screen names its axis and the call, and leads with the measured time (#270)", () => {
     const { container } = renderPresenter("screen=5&step=end&motion=off");
     const chart = container.querySelector('[data-slot="replan-chart"]')!;
@@ -404,8 +444,8 @@ describe("presenter race screen (#216)", () => {
         (e) => e.textContent,
       ),
     ).toEqual([
-      "value to RMP's system per MW per day, higher is better",
-      "value to RMP's system per MW per day, higher is better",
+      "per MW of battery per day, value to Rocky Mountain Power's grid",
+      "per MW of battery per day, value to Rocky Mountain Power's grid",
     ]);
     expect(
       [...container.querySelectorAll(".p-arith-keep th")].map(

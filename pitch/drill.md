@@ -12,6 +12,14 @@ Drill these before the twenty below. Each has its card in `pitch/qa.md`.
 4. "So your System Critical Hours predict calls?" No. They mark the tightest hours, and no rule we tested catches call hours better than chance. Card: "Do your System Critical Hours predict RMP's calls?"
 5. "Isn't this Lasso?" Lasso forecasts and dispatches; a day-ahead timetable and an hourly envelope are not advertised, and the envelope is a format Clearlane proposes. Card: "Isn't this what Lasso already does?"
 
+## Three the judge review predicts
+
+Short answers; each has its card in `pitch/qa.md`.
+
+- "Your envelope allows charging in every System Critical Hour." The limit is the host meter's room, not a plan to charge: the plan sells or sits idle in those hours. A cap there is a next step, not in this build.
+- "Your race buys when your envelope allows no charging." The race is value at day-ahead prices before any host meter limit; the engine's own plan respects the meter and is worth `{clearlane_dp_usd_mw_day}`.
+- "Spin refills inside the jam." Yes, for a few minutes, under the host's meter ceiling. Pricing the refill or moving it onto Pulse is a next step.
+
 ## Do not ad-lib
 
 Never say these on stage or in Q&A, even loosely:
@@ -39,7 +47,7 @@ Never say these on stage or in Q&A, even loosely:
 
 3. **What does this do to Pulse's cycle life?**
 
-   A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A cycle is one equivalent full cycle of energy drawn out of Pulse, and a busy day like the one on screen uses `{cycles_today}`, which the meter shows.
+   A: The backtest prices wear at `{wear_usd_mwh}`, set so Clearlane uses at most `{pulse_cycle_budget}` cycles a year, a budget built from Torus's published `{torus_pulse_cycles}` cycles over the Station life of `{torus_lifespan_yr}` (applying that life to Pulse is our assumption). A cycle is one equivalent full cycle of energy drawn out of Pulse, and a busy day like the one on screen uses about `{cycles_today}`.
 
    Trap: "Pulse has a 25-year life": the Station life is Torus's, applying it to Pulse is ours
 

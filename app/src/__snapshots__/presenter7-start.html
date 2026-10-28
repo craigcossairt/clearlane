@@ -1,4 +1,4 @@
-<div class="viewport p-viewport" data-mode="presenter" tabindex="-1">
+<div class="viewport p-viewport" data-mode="presenter" data-motion="off" tabindex="-1">
 <div class="frame p-frame" data-screen-key="scale" style="transform: scale(0.5333333333333333);">
 <nav class="p-progress" aria-label="Screens">
 <button type="button" class="p-seg is-done">
@@ -46,7 +46,7 @@
 <header class="p-head">
 <h1 class="p-headline" data-slot="headline">Scale the station to the fleet the MOU allows.</h1>
 <div class="p-subrow">
-<p class="p-line">One station's daily value per MW, multiplied by the fleet in Torus's agreement (MOU) with Rocky Mountain Power.</p>
+<p class="p-line">One station's value per MW on the reference day, multiplied by the fleet in Torus's agreement (MOU) with Rocky Mountain Power.</p>
 <div class="p-actions">
 <span class="p-detail-actions" data-detail="">
 <button type="button" class="p-pill" aria-pressed="true" data-action="action-fleet-min">
@@ -67,9 +67,8 @@
 <section class="p-scale" aria-label="Scale">
 <div class="p-scale-row">
 <p class="p-scale-size">Fleet size <span class="slot-fleet" data-slot="fleet-value">
-<span class="num num-ok" data-num="live" data-prov="SIMULATED" data-num-state="ok" style="min-width: 8ch;">
+<span class="num num-ok" data-num="live" data-prov="SIMULATED" data-num-state="ok" title="fleet slider, between mou_70mw and torus_500mw" style="min-width: 8ch;">
 <span class="figure">70 MW</span>
-<abbr class="chip chip-simulated" title="fleet slider, between mou_70mw and torus_500mw" data-copy-ok="provenance class name">SIMULATED</abbr>
 </span>
 </span>
 </p>
@@ -89,9 +88,8 @@
 <span class="num num-ok" data-num="fixed_usd_mw_day" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
 <span class="figure">$20.06</span>
 <abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> per MW-day <span class="p-op">×</span> <span class="num num-ok" data-num="live" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
+</span> per MW-day <span class="p-op">×</span> <span class="num num-ok" data-num="live" data-prov="SIMULATED" data-num-state="ok" title="fleet slider, between mou_70mw and torus_500mw" style="min-width: 6ch;">
 <span class="figure">70 MW</span>
-<abbr class="chip chip-simulated" title="fleet slider, between mou_70mw and torus_500mw" data-copy-ok="provenance class name">SIMULATED</abbr>
 </span>
 </p>
 </div>
@@ -108,14 +106,13 @@
 <span class="num num-ok" data-num="clearlane_usd_mw_day" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
 <span class="figure">$58.41</span>
 <abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> per MW-day <span class="p-op">×</span> <span class="num num-ok" data-num="live" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
+</span> per MW-day <span class="p-op">×</span> <span class="num num-ok" data-num="live" data-prov="SIMULATED" data-num-state="ok" title="fleet slider, between mou_70mw and torus_500mw" style="min-width: 6ch;">
 <span class="figure">70 MW</span>
-<abbr class="chip chip-simulated" title="fleet slider, between mou_70mw and torus_500mw" data-copy-ok="provenance class name">SIMULATED</abbr>
 </span>
 </p>
 </div>
 </div>
-<p class="p-scale-caveat">This assumes every enrolled MW is a two-hour battery like our reference station, and that the fleet does not move prices. The MOU is a ceiling, not installed capacity.</p>
+<p class="p-scale-caveat">This assumes every enrolled MW is a two-hour battery like our reference station, and that the fleet does not move prices. The MOU is a ceiling, not installed capacity. A typical backtest day is worth less.</p>
 </section>
 </div>
 </main>

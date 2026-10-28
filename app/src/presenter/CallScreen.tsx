@@ -7,25 +7,17 @@ import { mtClock } from "../components/Time";
 import { COPY, PRESENTER } from "../copy";
 import { STUB_ACTIVE } from "../engineClient";
 import { grouped } from "../format";
+import { motionOff } from "./motion";
 
 const CRASH_SOURCE = STUB_ACTIVE
   ? "engineClient.crash (stub)"
   : "engine crash (live, this laptop)";
 
-function reducedMotion(): boolean {
-  if (typeof window === "undefined") return true;
-  if (new URLSearchParams(window.location.search).get("motion") === "off")
-    return true;
-  return typeof window.matchMedia === "function"
-    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    : true;
-}
-
 /** The traces draw over INSET_PLAY_MS, keyed by the call's event id, as on the stage. */
 function usePlayhead(playId: string | null): number {
   const [f, setF] = useState(1);
   useEffect(() => {
-    if (!playId || reducedMotion()) {
+    if (!playId || motionOff()) {
       setF(1);
       return;
     }
@@ -92,8 +84,15 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
   const scales = { maxKw, maxT };
 
   return (
-    <section className="beat crash-beat p-call" aria-label={COPY.crashTitle}>
-      <div className="p-call-banner" data-slot="call-banner">
+    <section
+      className="beat crash-beat p-call"
+      aria-label={COPY.crashTitle}
+      data-anim={motionOff() ? "off" : "on"}
+    >
+      <div
+        className={`p-call-banner${shown ? "" : " is-waiting"}`}
+        data-slot="call-banner"
+      >
         <div className="reserve">
           <p
             className={shown ? undefined : "off"}
@@ -126,6 +125,7 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
           f={f}
           scales={scales}
           lead
+          second={call.second !== null}
         />
         <Trace
           title={COPY.priceOnlyLabel}
@@ -144,7 +144,6 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
           <h3>{PRESENTER.callSimTitle}</h3>
           {shown ? (
             <p>
-              {COPY.ramp} <Live value={shown.ramp_s} unit="s" digits={0} />.{" "}
               {PRESENTER.callSpinBack}{" "}
               <span data-time="">{mtClock(shown.spin_full_again_utc)}</span>{" "}
               {COPY.mt}. {COPY.meterRefill}{" "}
@@ -156,9 +155,7 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
               .
             </p>
           ) : (
-            <p className="unavailable">
-              {COPY.noCallYet} {COPY.emptyNotZero}
-            </p>
+            <p className="unavailable">{PRESENTER.callWaiting}</p>
           )}
           <p data-slot="second-call">
             {call.second ? (
@@ -179,7 +176,8 @@ export function CallScreen({ live, call }: { live: Live; call: CallState }) {
             {/* The year is part of the FACTS wording for rmp_events_2025, not a stage number. */}
             <span data-copy-ok="">{COPY.eventsTail}</span>{" "}
             {PRESENTER.callPublishedRamp} <Num k="rmp_event_ramp_s" width={3} />{" "}
-            {COPY.against} <Num k="rmp_event_ramp_target_s" width={3} />{" "}
+            {PRESENTER.callPublishedSeconds}{" "}
+            <Num k="rmp_event_ramp_target_s" width={3} />{" "}
             {PRESENTER.callPublishedDelivered}{" "}
             <Num k="rmp_event_target_pct" width={4} />.
           </p>
@@ -213,6 +211,7 @@ function Trace({
   f,
   scales,
   lead,
+  second,
 }: {
   title: string;
   result: CrashResult | null;
@@ -220,6 +219,8 @@ function Trace({
   f: number;
   scales: { maxKw: number; maxT: number };
   lead?: boolean;
+  /** This card shows the second call. */
+  second?: boolean;
 }) {
   const rows = result
     ? result.trace.slice(0, Math.max(1, Math.ceil(f * result.trace.length)))
@@ -230,6 +231,7 @@ function Trace({
         scales,
       )},${H}`
     : "";
+  const done = f >= 1;
   const line = (
     key: string,
     cls: string,
@@ -248,6 +250,7 @@ function Trace({
     <article
       className={`p-call-trace${lead ? " is-lead" : ""}`}
       data-slot={slot}
+      data-done={result ? (done ? "yes" : "no") : undefined}
     >
       <h3>{title}</h3>
       <div className="p-call-hero">
@@ -262,13 +265,13 @@ function Trace({
               />
             </span>
             <span className="p-call-pct-label">
-              {PRESENTER.callDeliveredOf}
+              {second
+                ? PRESENTER.callSecondDeliveredOf
+                : PRESENTER.callDeliveredOf}
             </span>
           </>
         ) : (
-          <span className="unavailable">
-            {COPY.noCallYet} {COPY.emptyNotZero}
-          </span>
+          <span className="unavailable">{PRESENTER.callWaiting}</span>
         )}
       </div>
       <svg
@@ -286,8 +289,13 @@ function Trace({
               className="p-call-asked"
               points={asked}
             />
-            {line("spin", "p-call-spin", (p) => Math.abs(p.spin_kw))}
-            {line("pulse", "p-call-pulse", (p) => Math.abs(p.pulse_kw))}
+            {/* Pulse's line includes power it was already selling, so the battery-only card
+                does not draw it: there it would read as answering the call (judge review 2). */}
+            {lead
+              ? line("pulse", "p-call-pulse", (p) => Math.max(0, -p.pulse_kw))
+              : null}
+            {/* Spin answering: discharge only, so the refill after the call is not drawn as help. */}
+            {line("spin", "p-call-spin", (p) => Math.max(0, -p.spin_kw))}
           </>
         ) : null}
       </svg>
