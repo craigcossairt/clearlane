@@ -54,9 +54,10 @@ const usdWhole = (x: number) => (Number.isInteger(x) ? `$${x}` : usdPerMw(x));
 
 /**
  * public/derived/sensitivity.json (#69): how far Clearlane stays ahead of the off-peak rule as
- * one input at a time moves across its range, then where the gap would close. The heatmap
- * reading moves only the calls column and its other readings are not for stage, so it has no
- * bar here: an axis is drawn only when both ends of its range are numbers.
+ * one input at a time moves across its range, then where the gap would close. An axis is drawn
+ * only when both ends of its range are numbers: the heatmap reading and the CO2 basis are named
+ * readings that move calls or CO2, never dollars, and the heatmap's other readings are not for
+ * stage.
  */
 export function SensitivityCard({ data }: { data: Sensitivity }) {
   const live = (value: number, display: string, prov = data.prov) => (
