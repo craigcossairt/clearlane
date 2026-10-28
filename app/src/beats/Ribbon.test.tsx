@@ -1,11 +1,15 @@
 // @vitest-environment jsdom
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { cleanup, render } from "@testing-library/react";
 import type { StageNumber } from "@contracts/types";
+import { stepHourDays } from "@engine";
 import { afterEach, describe, expect, it } from "vitest";
 import { NumbersContext } from "../components/Num";
+import { COPY } from "../copy";
 import { loadStageData } from "../data";
 import { dayLanes, defaultSite, scriptedCalls, solve } from "../engineClient";
-import { Ribbon } from "./Ribbon";
+import { Ribbon, STEP_HOURS } from "./Ribbon";
 import type { Live } from "./types";
 
 afterEach(cleanup);
@@ -46,7 +50,9 @@ function renderRibbon(numbers: StageNumber[] | null) {
 }
 
 const laneWords = (root: HTMLElement) =>
-  [...root.querySelectorAll("[data-lane] .lane-word")].map((n) => n.textContent);
+  [...root.querySelectorAll("[data-lane] .lane-word")].map(
+    (n) => n.textContent,
+  );
 
 describe("beat 1 ribbon on the Oct 27 fixture", () => {
   it("labels each hour with its engine lane word: 9 to 16 Clear, 17 Shoulder, 18 to 23 Jam", () => {
@@ -74,6 +80,39 @@ describe("beat 1 ribbon on the Oct 27 fixture", () => {
     expect(ticks.length).toBeGreaterThanOrEqual(8);
   });
 
+  it("says the evening step landed at 5pm or 6pm, not in one hour", () => {
+    const { container } = renderRibbon(data.numbers);
+    const caption = container.querySelector('[data-slot="ribbon-lanes"]')!;
+    expect(caption.querySelector("[data-time]")?.textContent).toBe(
+      "5pm or 6pm",
+    );
+    expect(caption.textContent).not.toContain("same hour");
+    expect(COPY.ribbonLanes3).not.toContain("same hour");
+  });
+
+  it("names the hours the engine counts for oct_step_hour_days_at_5_or_6", () => {
+    const n = data.numbers!.find(
+      (x) => x.key === "oct_step_hour_days_at_5_or_6",
+    )!;
+    // The key's source names the history file the engine counted.
+    const file = n.source
+      .split(" + ")
+      .find((s) => s.startsWith("public/data/hist_"))!;
+    const hist = JSON.parse(
+      readFileSync(path.resolve(import.meta.dirname, "../../..", file), "utf8"),
+    ) as { operating_day_mt: string; lmp_usd_mwh: number[] }[];
+    const oct = hist
+      .filter(
+        (d) =>
+          d.operating_day_mt >= "2026-10-01" &&
+          d.operating_day_mt <= "2026-10-27",
+      )
+      .map((d) => d.lmp_usd_mwh);
+    expect(stepHourDays(oct, STEP_HOURS).days).toBe(n.value);
+    // FACTS oct_step_hour_days: 9 days at HB 5pm and 15 at HB 6pm.
+    expect(STEP_HOURS.map((h) => stepHourDays(oct, [h]).days)).toEqual([9, 15]);
+  });
+
   it("renders a missing key as 'not computed', never as 0", () => {
     const { container } = renderRibbon(null);
     const nums = [...container.querySelectorAll("[data-num]")];
@@ -95,7 +134,8 @@ describe("beat 1 ribbon on the Oct 27 fixture", () => {
       as_of_mt: "2026-10-27",
     } as StageNumber;
     const { container } = renderRibbon([peak]);
-    const el = container.querySelector('[data-num][data-key="peak_hour_mt"]') ??
+    const el =
+      container.querySelector('[data-num][data-key="peak_hour_mt"]') ??
       [...container.querySelectorAll("[data-num]")].find((n) =>
         n.textContent?.includes("6pm"),
       );
