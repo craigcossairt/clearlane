@@ -1,0 +1,4970 @@
+{
+  "schema": "clearlane.rt_replay/v1",
+  "flag": "ff_rt_replay",
+  "inputs": {
+    "rt": "public/data/rt_2026-05-01_2026-10-27.json",
+    "da": "public/data/hist_2026-05-01_2026-10-27.json"
+  },
+  "node": "ELAP_PACE-APND",
+  "window": {
+    "start_mt": "2026-05-01",
+    "end_mt": "2026-10-27",
+    "days": 179,
+    "skipped_days": [
+      {
+        "day": "2026-05-01",
+        "reason": "no usable DA day in the history file"
+      }
+    ]
+  },
+  "site_id": "sim-utah-manufacturer",
+  "station": "Simulated Torus-style station on Clearlane: wear W, host ceiling, export limit, System Critical Hours by the price proxy (jam hours plus the 4 highest-price hours; the history has no net load), Spin full. No RMP calls are replayed.",
+  "wear_usd_mwh": 10.95,
+  "sch_mode": "price_proxy",
+  "settlement": {
+    "rule": "DA price x DA schedule + RT price x (actual - DA schedule), per 15-minute interval",
+    "prov": "ASSUMPTION",
+    "status": "UNVERIFIED",
+    "note": "EDAM settlement structure UNVERIFIED against CAISO's EDAM business practice manual. A behind-the-meter station is not itself a market participant, so these are values to RMP's system at CAISO prices, not Torus revenue."
+  },
+  "policies": {
+    "hold": "Hold the day-ahead plan all day.",
+    "replan": "Re-plan at the top of every hour from the actual state of charge over the rest of the day. Forecast: day-ahead prices, with the last observed hour's mean RT minus DA gap carried over the next hour (ASSUMPTION).",
+    "foresight": "Perfect foresight: the plan solved on the day's real-time prices. Not achievable; it is the yardstick for regret."
+  },
+  "regret": "Regret is the foresight value minus the policy's value, net of wear at W: the objective all three plans maximize, so it is never below zero. replan_recovers_pct is the share of hold's summed regret that hourly re-planning wins back; it is negative when re-planning does worse than holding.",
+  "windows_mt": {
+    "midday_hb": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "evening_hb": [
+      18,
+      19,
+      20,
+      21
+    ]
+  },
+  "prov": {
+    "da_prices": "REAL",
+    "rt_prices": "REAL",
+    "site": "SIMULATED",
+    "values": "DERIVED",
+    "forecast": "ASSUMPTION"
+  },
+  "summary": {
+    "days": 179,
+    "settled_usd_per_mw_day": {
+      "hold": {
+        "p10": 1.2821246533220731,
+        "p50": 38.686189176294,
+        "p90": 115.998956020155,
+        "mean": 51.52222281976755
+      },
+      "replan": {
+        "p10": -0.2100628623244033,
+        "p50": 34.59090560579809,
+        "p90": 102.51388350232324,
+        "mean": 38.50145103904544
+      },
+      "foresight": {
+        "p10": 30.899051333874898,
+        "p50": 69.1767238374226,
+        "p90": 150.4933652889169,
+        "mean": 87.76105185384722
+      }
+    },
+    "net_usd_per_mw_day": {
+      "hold": {
+        "p10": 0.2549236019207418,
+        "p50": 19.169369199668708,
+        "p90": 95.39949963344928,
+        "mean": 34.65087594200267
+      },
+      "replan": {
+        "p10": -11.181877958293061,
+        "p50": 18.576504037518422,
+        "p90": 72.14575793441792,
+        "mean": 20.43074650908574
+      },
+      "foresight": {
+        "p10": 15.42919964150989,
+        "p50": 45.60205275023464,
+        "p90": 127.51113283879019,
+        "mean": 66.77803149379719
+      }
+    },
+    "regret_usd_per_mw_day": {
+      "hold": {
+        "p10": 8.578720484581261,
+        "p50": 19.10819600848645,
+        "p90": 53.97559610569167,
+        "mean": 32.127155551794516
+      },
+      "replan": {
+        "p10": 10.906620406274115,
+        "p50": 27.155264633682464,
+        "p90": 68.34643441332543,
+        "mean": 46.347284984711465
+      }
+    },
+    "regret_sum_usd_per_mw": {
+      "hold": 5750.760843771219,
+      "replan": 8296.164012263353
+    },
+    "replan_recovers_pct": -44.2620244110676,
+    "days_replan_above_hold": 56,
+    "days_replan_below_hold": 123,
+    "days_replan_equal_hold": 0,
+    "rt_evening_below_midday_days": 17,
+    "da_evening_below_midday_days": 0
+  },
+  "measured": {
+    "prov": "MEASURED",
+    "stored": false,
+    "replans_per_day": 24,
+    "replans": 4296,
+    "note": "Re-plan times are timed with performance.now() around each hourly re-solve and printed by engine/cli/replay.ts (median, p90, max). They are never written to this file."
+  },
+  "days": [
+    {
+      "operating_day_mt": "2026-05-02",
+      "settled_usd_per_mw_day": {
+        "hold": 126.45104083957102,
+        "replan": 86.6266482985073,
+        "foresight": 163.70069896083263
+      },
+      "net_usd_per_mw_day": {
+        "hold": 105.9070198115444,
+        "replan": 67.10982832188202,
+        "foresight": 135.452670047296
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 29.54565023575161,
+        "replan": 68.34284172541399
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.029493539121037,
+        "foresight": 4.419650850051803
+      },
+      "rt_midday_usd_mwh": -24.913356249999993,
+      "rt_evening_usd_mwh": 28.213151875,
+      "da_midday_usd_mwh": -41.41408499999999,
+      "da_evening_usd_mwh": 17.3353375,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-03",
+      "settled_usd_per_mw_day": {
+        "hold": 41.09602710512305,
+        "replan": 41.059558653548855,
+        "foresight": 64.34357324676932
+      },
+      "net_usd_per_mw_day": {
+        "hold": 20.552006077096422,
+        "replan": 20.51553762552223,
+        "foresight": 41.23154959023937
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 20.679543513142946,
+        "replan": 20.716011964717136
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.8761663039293721,
+        "foresight": 4.295994434565549
+      },
+      "rt_midday_usd_mwh": 2.0538765625,
+      "rt_evening_usd_mwh": 15.998419375000001,
+      "da_midday_usd_mwh": 0.64781625,
+      "da_evening_usd_mwh": 18.168815,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-04",
+      "settled_usd_per_mw_day": {
+        "hold": 72.05534215003637,
+        "replan": 71.8197218433108,
+        "foresight": 80.86503457729265
+      },
+      "net_usd_per_mw_day": {
+        "hold": 59.728929533220395,
+        "replan": 59.49330922649483,
+        "foresight": 75.72902932028599
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.000099787065594,
+        "replan": 16.23572009379116
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.155370602063034,
+        "foresight": 3.406947447362654
+      },
+      "rt_midday_usd_mwh": 13.1735146875,
+      "rt_evening_usd_mwh": 16.157511875,
+      "da_midday_usd_mwh": 4.9029912499999995,
+      "da_evening_usd_mwh": 17.016332499999997,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-05",
+      "settled_usd_per_mw_day": {
+        "hold": 2.5380739383427597,
+        "replan": 9.379817153278584,
+        "foresight": 80.45881112129953
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.4836718355400973,
+        "replan": 8.352616101877253,
+        "foresight": 58.37398851617091
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 57.89031668063081,
+        "replan": 50.02137241429366
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 0.41360938972988426,
+        "foresight": 4.709603824295435
+      },
+      "rt_midday_usd_mwh": 29.2683065625,
+      "rt_evening_usd_mwh": 22.405531249999996,
+      "da_midday_usd_mwh": 5.719617499999998,
+      "da_evening_usd_mwh": 15.249895000000004,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-05-06",
+      "settled_usd_per_mw_day": {
+        "hold": 42.586644900647265,
+        "replan": 0.5156559298468377,
+        "foresight": 102.6939070147873
+      },
+      "net_usd_per_mw_day": {
+        "hold": 26.151428078225965,
+        "replan": -13.8651587897718,
+        "foresight": 56.46985970172741
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 30.318431623501443,
+        "replan": 70.33501849149921
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.545439272701615,
+        "foresight": 7.564361416297058
+      },
+      "rt_midday_usd_mwh": 21.962206250000005,
+      "rt_evening_usd_mwh": 7.7364049999999995,
+      "da_midday_usd_mwh": 6.31049125,
+      "da_evening_usd_mwh": 10.861312500000002,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-05-07",
+      "settled_usd_per_mw_day": {
+        "hold": 119.26191166069638,
+        "replan": 82.899763413433,
+        "foresight": 140.96973337921995
+      },
+      "net_usd_per_mw_day": {
+        "hold": 98.71789063266976,
+        "replan": 75.7093560536237,
+        "foresight": 118.88491077409132
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 20.16702014142156,
+        "replan": 43.17555472046763
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.370614685290013,
+        "foresight": 4.833260239781686
+      },
+      "rt_midday_usd_mwh": 5.087823124999999,
+      "rt_evening_usd_mwh": 24.890033125,
+      "da_midday_usd_mwh": -37.04186000000002,
+      "da_evening_usd_mwh": 16.291442500000002,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-08",
+      "settled_usd_per_mw_day": {
+        "hold": 39.253683474518056,
+        "replan": 45.97752940095832,
+        "foresight": 60.939800358073214
+      },
+      "net_usd_per_mw_day": {
+        "hold": 18.709662446491432,
+        "replan": 24.40630732153036,
+        "foresight": 35.259774073039935
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.550111626548503,
+        "replan": 10.853466751509576
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.479612971507936,
+        "foresight": 3.794972751129864
+      },
+      "rt_midday_usd_mwh": -1.8263834375,
+      "rt_evening_usd_mwh": 22.3121025,
+      "da_midday_usd_mwh": -2.0266062500000004,
+      "da_evening_usd_mwh": 13.844624999999997,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-09",
+      "settled_usd_per_mw_day": {
+        "hold": 115.95271571841933,
+        "replan": 91.39464257559496,
+        "foresight": 171.56825983168144
+      },
+      "net_usd_per_mw_day": {
+        "hold": 95.40869469039271,
+        "replan": 71.87782259896966,
+        "foresight": 140.23862776394085
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 44.82993307354815,
+        "replan": 68.3608051649712
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.922715900358856,
+        "foresight": 6.005864179737546
+      },
+      "rt_midday_usd_mwh": 9.3514759375,
+      "rt_evening_usd_mwh": 18.1439425,
+      "da_midday_usd_mwh": -35.76624624999999,
+      "da_evening_usd_mwh": 14.5274675,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-10",
+      "settled_usd_per_mw_day": {
+        "hold": 34.994667339719804,
+        "replan": 25.36806673284742,
+        "foresight": 86.78421349908724
+      },
+      "net_usd_per_mw_day": {
+        "hold": 14.45064631169318,
+        "replan": 18.177659373038104,
+        "foresight": 52.37297827714266
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 37.92233196544947,
+        "replan": 34.19531890410455
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.370614685290014,
+        "foresight": 6.777650772944854
+      },
+      "rt_midday_usd_mwh": 18.999805312500005,
+      "rt_evening_usd_mwh": 18.910489999999996,
+      "da_midday_usd_mwh": 1.7337525,
+      "da_evening_usd_mwh": 16.927235000000007,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-05-11",
+      "settled_usd_per_mw_day": {
+        "hold": 113.55980682191192,
+        "replan": 104.77961659810325,
+        "foresight": 135.92770552689782
+      },
+      "net_usd_per_mw_day": {
+        "hold": 93.0157857938853,
+        "replan": 79.09959031306997,
+        "foresight": 114.35648344746987
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 21.34069765358457,
+        "replan": 35.2568931343999
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.063605653737934,
+        "foresight": 2.754553255314487
+      },
+      "rt_midday_usd_mwh": 1.932675625,
+      "rt_evening_usd_mwh": 28.668290624999994,
+      "da_midday_usd_mwh": -37.19190749999999,
+      "da_evening_usd_mwh": 15.796427500000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-12",
+      "settled_usd_per_mw_day": {
+        "hold": 14.482914410674177,
+        "replan": -29.818559646248733,
+        "foresight": 190.4404622829483
+      },
+      "net_usd_per_mw_day": {
+        "hold": 4.210903896660865,
+        "replan": -43.172173314466036,
+        "foresight": 153.4612244325004
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 149.25032053583953,
+        "replan": 196.6333977469664
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.4773923240521936,
+        "foresight": 7.001511525118245
+      },
+      "rt_midday_usd_mwh": 15.863287187500005,
+      "rt_evening_usd_mwh": 77.73150249999999,
+      "da_midday_usd_mwh": 13.278378750000005,
+      "da_evening_usd_mwh": 23.133024999999993,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-13",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 3.5315234401786944,
+        "foresight": 86.68087325702345
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 2.5043223887773634,
+        "foresight": 43.02482857246689
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 43.02482857246689,
+        "replan": 40.52050618368953
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 0.20040867337427382,
+        "foresight": 8.517368618406636
+      },
+      "rt_midday_usd_mwh": 18.0012146875,
+      "rt_evening_usd_mwh": 15.406166249999998,
+      "da_midday_usd_mwh": 13.65581875,
+      "da_evening_usd_mwh": 16.34364,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-05-14",
+      "settled_usd_per_mw_day": {
+        "hold": 114.38338532706038,
+        "replan": 102.24348862797889,
+        "foresight": 119.9504884021581
+      },
+      "net_usd_per_mw_day": {
+        "hold": 93.83936429903376,
+        "replan": 81.69946759995227,
+        "foresight": 99.40646737413148
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 5.5671030750977195,
+        "replan": 17.70699977417921
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.843920275599468,
+        "foresight": 2.554144581940213
+      },
+      "rt_midday_usd_mwh": -6.5527253125,
+      "rt_evening_usd_mwh": 10.418484375,
+      "da_midday_usd_mwh": -37.520348750000004,
+      "da_evening_usd_mwh": 3.205500000000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-15",
+      "settled_usd_per_mw_day": {
+        "hold": 121.48671904118177,
+        "replan": 107.955961780041,
+        "foresight": 165.93568582272104
+      },
+      "net_usd_per_mw_day": {
+        "hold": 100.94269801315515,
+        "replan": 80.22153339220506,
+        "foresight": 129.98364902367445
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 29.040951010519294,
+        "replan": 49.762115631469385
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.673182421930606,
+        "foresight": 8.037667006606513
+      },
+      "rt_midday_usd_mwh": -2.376429375,
+      "rt_evening_usd_mwh": 6.595563125,
+      "da_midday_usd_mwh": -36.75101500000001,
+      "da_evening_usd_mwh": 15.523525000000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-16",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -4.958554036769554,
+        "foresight": 35.07571409963738
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -4.958554036769554,
+        "foresight": 17.61329622581475
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 17.61329622581475,
+        "replan": 22.571850262584306
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.492405014489273,
+        "foresight": 3.4069474473626546
+      },
+      "rt_midday_usd_mwh": 8.572320625000001,
+      "rt_evening_usd_mwh": 9.119515,
+      "da_midday_usd_mwh": 12.69853875,
+      "da_evening_usd_mwh": 16.591812500000003,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-17",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -1.6873994556716962,
+        "foresight": 66.81259654726155
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -1.6873994556716962,
+        "foresight": 42.673371839330265
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 42.673371839330265,
+        "replan": 44.36077129500196
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.025406805378299,
+        "foresight": 5.295905794273361
+      },
+      "rt_midday_usd_mwh": 0.16362312499999948,
+      "rt_evening_usd_mwh": 5.749155625,
+      "da_midday_usd_mwh": 11.805698749999998,
+      "da_evening_usd_mwh": 13.407320000000002,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-18",
+      "settled_usd_per_mw_day": {
+        "hold": 38.27733211581198,
+        "replan": 29.194242069738152,
+        "foresight": 56.816258354468786
+      },
+      "net_usd_per_mw_day": {
+        "hold": 18.760512139186687,
+        "replan": 9.67742209311286,
+        "foresight": 36.27223732644216
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 17.511725187255472,
+        "replan": 26.5948152333293
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.739363284293032,
+        "foresight": 3.8930450806534465
+      },
+      "rt_midday_usd_mwh": -3.0150234375,
+      "rt_evening_usd_mwh": 16.381981875,
+      "da_midday_usd_mwh": 6.198263750000001,
+      "da_evening_usd_mwh": 21.44828,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-19",
+      "settled_usd_per_mw_day": {
+        "hold": 1.0667894822586825,
+        "replan": 40.58685782839141,
+        "foresight": 80.5268884978799
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.03958843085735131,
+        "replan": 20.042836800364785,
+        "foresight": 45.60205275023464
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 45.56246431937729,
+        "replan": 25.559215949869856
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.0209655104668105,
+        "foresight": 7.014303568099581
+      },
+      "rt_midday_usd_mwh": 5.290420312499999,
+      "rt_evening_usd_mwh": 20.99966875,
+      "da_midday_usd_mwh": 12.564596250000001,
+      "da_evening_usd_mwh": 19.2706975,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-20",
+      "settled_usd_per_mw_day": {
+        "hold": 27.788132966043626,
+        "replan": 15.998668080295063,
+        "foresight": 52.071934857475064
+      },
+      "net_usd_per_mw_day": {
+        "hold": 7.244111938017003,
+        "replan": -4.545352947731564,
+        "foresight": 27.41910962384312
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 20.174997685826117,
+        "replan": 31.964462571574686
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.622191530589633,
+        "foresight": 4.502799129430491
+      },
+      "rt_midday_usd_mwh": 10.792721875,
+      "rt_evening_usd_mwh": 29.169371875000003,
+      "da_midday_usd_mwh": 8.007124999999997,
+      "da_evening_usd_mwh": 23.2360575,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-21",
+      "settled_usd_per_mw_day": {
+        "hold": 16.341926926086717,
+        "replan": 17.019373801312046,
+        "foresight": 69.14627512939475
+      },
+      "net_usd_per_mw_day": {
+        "hold": 5.0427153606720765,
+        "replan": 5.720162235897405,
+        "foresight": 35.7622409588515
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 30.719525598179423,
+        "replan": 30.042078722954095
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.345207879911715,
+        "foresight": 6.781914787271965
+      },
+      "rt_midday_usd_mwh": 12.891620000000001,
+      "rt_evening_usd_mwh": 21.67762625,
+      "da_midday_usd_mwh": 13.657731250000001,
+      "da_evening_usd_mwh": 22.232700000000005,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-22",
+      "settled_usd_per_mw_day": {
+        "hold": 11.80490063893278,
+        "replan": 25.351191213905587,
+        "foresight": 35.724014454170224
+      },
+      "net_usd_per_mw_day": {
+        "hold": 1.5328901249194686,
+        "replan": 5.834371237280294,
+        "foresight": 16.20719447754493
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 14.674304352625462,
+        "replan": 10.372823240264637
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.935685223924569,
+        "foresight": 4.447366943178032
+      },
+      "rt_midday_usd_mwh": 8.65272625,
+      "rt_evening_usd_mwh": 22.940045625,
+      "da_midday_usd_mwh": 13.723204999999993,
+      "da_evening_usd_mwh": 21.570907500000008,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-23",
+      "settled_usd_per_mw_day": {
+        "hold": 107.11736530983211,
+        "replan": 105.86174521098147,
+        "foresight": 115.31177982831113
+      },
+      "net_usd_per_mw_day": {
+        "hold": 86.57334428180549,
+        "replan": 83.2633220801522,
+        "foresight": 94.76775880028451
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 8.194414518479022,
+        "replan": 11.504436720132318
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.368571318418645,
+        "foresight": 3.006130100614107
+      },
+      "rt_midday_usd_mwh": 0.006260624999999478,
+      "rt_evening_usd_mwh": 15.559701874999998,
+      "da_midday_usd_mwh": -21.08998875,
+      "da_evening_usd_mwh": 26.091225000000005,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-24",
+      "settled_usd_per_mw_day": {
+        "hold": 72.41792109550369,
+        "replan": 61.23577957848505,
+        "foresight": 85.89250146028976
+      },
+      "net_usd_per_mw_day": {
+        "hold": 51.87390006747706,
+        "replan": 39.664557499057096,
+        "foresight": 61.75327675235848
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 9.879376684881422,
+        "replan": 22.088719253301385
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.1553706020630337,
+        "foresight": 5.647686976260119
+      },
+      "rt_midday_usd_mwh": -0.6201284375000001,
+      "rt_evening_usd_mwh": 11.098855625,
+      "da_midday_usd_mwh": -2.58877875,
+      "da_evening_usd_mwh": 26.95584999999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-25",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 39.120525065545046,
+        "foresight": 82.02979345576907
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 18.576504037518422,
+        "foresight": 58.91776979923912
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 58.91776979923912,
+        "replan": 40.34126576172069
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.008173467485476,
+        "foresight": 4.50919515092116
+      },
+      "rt_midday_usd_mwh": 23.737589375,
+      "rt_evening_usd_mwh": 15.574598749999998,
+      "da_midday_usd_mwh": 13.855999999999998,
+      "da_evening_usd_mwh": 19.106897499999995,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-05-26",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 17.19829538160957,
+        "foresight": 78.45880809803809
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 8.980686970398919,
+        "foresight": 40.965969721889515
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 40.965969721889515,
+        "replan": 31.985282751490594
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.6032693869941907,
+        "foresight": 7.314916578160993
+      },
+      "rt_midday_usd_mwh": 21.722174062500002,
+      "rt_evening_usd_mwh": 24.146995000000004,
+      "da_midday_usd_mwh": 13.09833375,
+      "da_evening_usd_mwh": 19.692522500000006,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-27",
+      "settled_usd_per_mw_day": {
+        "hold": 23.15776898295451,
+        "replan": 13.511471188299469,
+        "foresight": 48.97910655763452
+      },
+      "net_usd_per_mw_day": {
+        "hold": 3.640949006329219,
+        "replan": -0.8693435313191653,
+        "foresight": 21.75827869549925
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 18.11732968917003,
+        "replan": 22.627622226818417
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.0828823585021263,
+        "foresight": 5.724439234148139
+      },
+      "rt_midday_usd_mwh": 9.299855625,
+      "rt_evening_usd_mwh": 21.88278875,
+      "da_midday_usd_mwh": 11.761570000000003,
+      "da_evening_usd_mwh": 20.888485000000003,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-28",
+      "settled_usd_per_mw_day": {
+        "hold": 20.69265015510134,
+        "replan": 47.70581883522059,
+        "foresight": 79.0620054146245
+      },
+      "net_usd_per_mw_day": {
+        "hold": 4.257433332680041,
+        "replan": 23.05299360158864,
+        "foresight": 53.89557965529188
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 49.638146322611846,
+        "replan": 30.842586053703243
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.950343353192897,
+        "foresight": 5.984544108101984
+      },
+      "rt_midday_usd_mwh": 21.3369584375,
+      "rt_evening_usd_mwh": 11.5470225,
+      "da_midday_usd_mwh": 13.616234999999998,
+      "da_evening_usd_mwh": 22.184000000000008,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-05-29",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -4.525037307310893,
+        "foresight": 26.89537912194567
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -13.769846769922875,
+        "foresight": 8.405760196721708
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 8.405760196721708,
+        "replan": 22.175606966644583
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.8696816421465163,
+        "foresight": 3.607356120736928
+      },
+      "rt_midday_usd_mwh": 10.215976562500002,
+      "rt_evening_usd_mwh": 14.236348125,
+      "da_midday_usd_mwh": 13.96620875,
+      "da_evening_usd_mwh": 19.316235000000002,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-30",
+      "settled_usd_per_mw_day": {
+        "hold": 50.20039451872896,
+        "replan": 29.239515604297488,
+        "foresight": 69.1767238374226
+      },
+      "net_usd_per_mw_day": {
+        "hold": 29.656373490702336,
+        "replan": 28.212314552896157,
+        "foresight": 43.49669755238932
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.840324061686985,
+        "replan": 15.284382999493165
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.061562286866566,
+        "foresight": 5.095497120899088
+      },
+      "rt_midday_usd_mwh": -11.553793437499998,
+      "rt_evening_usd_mwh": 5.248934375000001,
+      "da_midday_usd_mwh": -8.009605000000002,
+      "da_evening_usd_mwh": 9.8095025,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-05-31",
+      "settled_usd_per_mw_day": {
+        "hold": 119.73774717598641,
+        "replan": 71.8403037714262,
+        "foresight": 126.64605670742543
+      },
+      "net_usd_per_mw_day": {
+        "hold": 99.1937261479598,
+        "replan": 43.07867433218894,
+        "foresight": 106.10203567939881
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 6.908309531439016,
+        "replan": 63.02336134720987
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.611442854479667,
+        "foresight": 1.7908860173871277
+      },
+      "rt_midday_usd_mwh": -11.15995375,
+      "rt_evening_usd_mwh": 10.278560625,
+      "da_midday_usd_mwh": -36.25533750000001,
+      "da_evening_usd_mwh": 14.7650175,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-01",
+      "settled_usd_per_mw_day": {
+        "hold": 33.091187124495534,
+        "replan": 17.840122258831492,
+        "foresight": 42.99649534854709
+      },
+      "net_usd_per_mw_day": {
+        "hold": 12.54716609646891,
+        "replan": -2.7038987691951313,
+        "foresight": 22.452474320520466
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 9.905308224051556,
+        "replan": 25.156373089715597
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.264014327112209,
+        "foresight": 3.342987232455971
+      },
+      "rt_midday_usd_mwh": 10.625691562499998,
+      "rt_evening_usd_mwh": 22.770816250000003,
+      "da_midday_usd_mwh": 13.1848425,
+      "da_evening_usd_mwh": 25.521772499999994,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-02",
+      "settled_usd_per_mw_day": {
+        "hold": 29.94173847081028,
+        "replan": 8.604839520989366,
+        "foresight": 36.777221174630746
+      },
+      "net_usd_per_mw_day": {
+        "hold": 10.424918494184986,
+        "replan": -10.911980455635927,
+        "foresight": 16.23320014660412
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 5.808281652419133,
+        "replan": 27.145180602240046
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.099761135226198,
+        "foresight": 2.9677539716700965
+      },
+      "rt_midday_usd_mwh": 10.198328749999996,
+      "rt_evening_usd_mwh": 28.599361249999998,
+      "da_midday_usd_mwh": 14.527091250000003,
+      "da_evening_usd_mwh": 26.500014999999998,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-03",
+      "settled_usd_per_mw_day": {
+        "hold": 15.400393205808104,
+        "replan": 22.852527150820226,
+        "foresight": 36.46235147530678
+      },
+      "net_usd_per_mw_day": {
+        "hold": 4.101181640393463,
+        "replan": 2.3085061227936023,
+        "foresight": 14.891129395878824
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 10.789947755485361,
+        "replan": 12.582623273085222
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.148885940280178,
+        "foresight": 3.6457322496809375
+      },
+      "rt_midday_usd_mwh": 12.091493124999996,
+      "rt_evening_usd_mwh": 24.04416875,
+      "da_midday_usd_mwh": 14.439018749999999,
+      "da_evening_usd_mwh": 23.991037500000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-04",
+      "settled_usd_per_mw_day": {
+        "hold": 22.74962038845292,
+        "replan": 20.242930363080305,
+        "foresight": 31.047461473965804
+      },
+      "net_usd_per_mw_day": {
+        "hold": 4.26000146322896,
+        "replan": 0.7261103864550122,
+        "foresight": 16.666646754347166
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 12.406645291118206,
+        "replan": 15.940536367892154
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.415120914848128,
+        "foresight": 4.025229524793923
+      },
+      "rt_midday_usd_mwh": 9.134884374999999,
+      "rt_evening_usd_mwh": 16.067646875,
+      "da_midday_usd_mwh": 12.315062499999998,
+      "da_evening_usd_mwh": 22.033832499999995,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-05",
+      "settled_usd_per_mw_day": {
+        "hold": 34.664933798133255,
+        "replan": 40.431225270985145,
+        "foresight": 49.25103701440239
+      },
+      "net_usd_per_mw_day": {
+        "hold": 15.148113821507962,
+        "replan": 20.914405294359852,
+        "foresight": 30.247817563477764
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 15.099703741969801,
+        "replan": 9.333412269117911
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.082527797333376,
+        "foresight": 5.553878661063651
+      },
+      "rt_midday_usd_mwh": 13.918191874999998,
+      "rt_evening_usd_mwh": 19.368635625,
+      "da_midday_usd_mwh": 13.651747500000004,
+      "da_evening_usd_mwh": 29.670305,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-06",
+      "settled_usd_per_mw_day": {
+        "hold": 1.2479000369511688,
+        "replan": 3.052810354820024,
+        "foresight": 38.83047291032816
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.22069898554983758,
+        "replan": -7.219200159193288,
+        "foresight": 16.74565030519954
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.524951319649702,
+        "replan": 23.96485046439283
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.082882358502127,
+        "foresight": 4.321578520528224
+      },
+      "rt_midday_usd_mwh": 13.234580312499999,
+      "rt_evening_usd_mwh": 10.46127,
+      "da_midday_usd_mwh": 14.46553375,
+      "da_evening_usd_mwh": 21.453160000000008,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-06-07",
+      "settled_usd_per_mw_day": {
+        "hold": 76.98685883948025,
+        "replan": 74.91017711257795,
+        "foresight": 84.5690909956631
+      },
+      "net_usd_per_mw_day": {
+        "hold": 56.44283781145363,
+        "replan": 44.094145570538025,
+        "foresight": 64.02506996763648
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 7.5822321561828545,
+        "replan": 19.930924397098458
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.733055903094551,
+        "foresight": 3.091410387156351
+      },
+      "rt_midday_usd_mwh": -10.2376796875,
+      "rt_evening_usd_mwh": 8.6209275,
+      "da_midday_usd_mwh": -16.381495000000005,
+      "da_evening_usd_mwh": 15.122805,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-08",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 8.432368349685254,
+        "foresight": 14.582000339043454
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -11.084451626940039,
+        "foresight": 3.7963892993294763
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 3.7963892993294763,
+        "replan": 14.880840926269515
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.807764794111202,
+        "foresight": 2.104291070429875
+      },
+      "rt_midday_usd_mwh": 12.3493928125,
+      "rt_evening_usd_mwh": 18.64426125,
+      "da_midday_usd_mwh": 22.051815000000005,
+      "da_evening_usd_mwh": 30.84384,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-09",
+      "settled_usd_per_mw_day": {
+        "hold": 59.93354286584234,
+        "replan": 51.382026485659026,
+        "foresight": 69.02529962763639
+      },
+      "net_usd_per_mw_day": {
+        "hold": 39.389521837815714,
+        "replan": 30.838005457632402,
+        "foresight": 48.48127859960976
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 9.091756761794045,
+        "replan": 17.643273141977357
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.49018436703353,
+        "foresight": 2.234343507406798
+      },
+      "rt_midday_usd_mwh": 1.6708087500000002,
+      "rt_evening_usd_mwh": 13.23431875,
+      "da_midday_usd_mwh": 0.2273049999999999,
+      "da_evening_usd_mwh": 20.570415,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-10",
+      "settled_usd_per_mw_day": {
+        "hold": 115.94122189724004,
+        "replan": 89.97459903552064,
+        "foresight": 122.67122444208658
+      },
+      "net_usd_per_mw_day": {
+        "hold": 95.39720086921342,
+        "replan": 82.78419167571133,
+        "foresight": 102.12720341405995
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 6.730002544846528,
+        "replan": 19.343011738348622
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.370614685290013,
+        "foresight": 3.5732440061200306
+      },
+      "rt_midday_usd_mwh": 2.3663775,
+      "rt_evening_usd_mwh": 15.43963375,
+      "da_midday_usd_mwh": -36.64620625,
+      "da_evening_usd_mwh": 3.20322,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-11",
+      "settled_usd_per_mw_day": {
+        "hold": 155.44857985626575,
+        "replan": 144.2712057631057,
+        "foresight": 164.0955696705604
+      },
+      "net_usd_per_mw_day": {
+        "hold": 133.87735777683778,
+        "replan": 109.34637001546045,
+        "foresight": 144.5787496939351
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 10.701391917097311,
+        "replan": 35.23237967847464
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.1210812068617635,
+        "foresight": 3.4325315333253275
+      },
+      "rt_midday_usd_mwh": 13.657654375,
+      "rt_evening_usd_mwh": 22.826841875,
+      "da_midday_usd_mwh": -17.543245000000006,
+      "da_evening_usd_mwh": 29.945587499999995,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-12",
+      "settled_usd_per_mw_day": {
+        "hold": 33.02535163872793,
+        "replan": 25.772834454349255,
+        "foresight": 52.097054805478216
+      },
+      "net_usd_per_mw_day": {
+        "hold": 13.50853166210264,
+        "replan": 20.6368291973426,
+        "foresight": 31.55303377745159
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 18.044502115348948,
+        "replan": 10.916204580108989
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.419739490343991,
+        "foresight": 7.001511525118243
+      },
+      "rt_midday_usd_mwh": 22.984128125000005,
+      "rt_evening_usd_mwh": 27.362019999999998,
+      "da_midday_usd_mwh": 11.719866250000006,
+      "da_evening_usd_mwh": 24.090004999999994,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-13",
+      "settled_usd_per_mw_day": {
+        "hold": 33.13017164300374,
+        "replan": 30.597345576333865,
+        "foresight": 43.21370707393971
+      },
+      "net_usd_per_mw_day": {
+        "hold": 13.613351666378449,
+        "replan": 10.053324548307241,
+        "foresight": 22.669686045913082
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 9.056334379534633,
+        "replan": 12.61636149760584
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.5029764100148664,
+        "foresight": 2.5541445819402133
+      },
+      "rt_midday_usd_mwh": 15.948790937500002,
+      "rt_evening_usd_mwh": 30.8584075,
+      "da_midday_usd_mwh": 12.907591250000007,
+      "da_evening_usd_mwh": 26.340125000000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-14",
+      "settled_usd_per_mw_day": {
+        "hold": 37.04516398916011,
+        "replan": 41.386534443869344,
+        "foresight": 61.53090452494655
+      },
+      "net_usd_per_mw_day": {
+        "hold": 17.528344012534816,
+        "replan": 20.842513415842717,
+        "foresight": 37.391679817015266
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 19.86333580448045,
+        "replan": 16.54916640117255
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.8889583469107087,
+        "foresight": 4.338634577836671
+      },
+      "rt_midday_usd_mwh": 9.438025625,
+      "rt_evening_usd_mwh": 31.811038124999996,
+      "da_midday_usd_mwh": 15.92915875,
+      "da_evening_usd_mwh": 34.16570750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-15",
+      "settled_usd_per_mw_day": {
+        "hold": 79.0369254630757,
+        "replan": 60.1438275933602,
+        "foresight": 100.49961594827687
+      },
+      "net_usd_per_mw_day": {
+        "hold": 58.492904435049084,
+        "replan": 31.382198154122932,
+        "foresight": 79.95559492025023
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 21.46269048520115,
+        "replan": 48.5733967661273
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.014480848683958,
+        "foresight": 6.4130775479767586
+      },
+      "rt_midday_usd_mwh": 20.829093437500003,
+      "rt_evening_usd_mwh": 30.080136875000004,
+      "da_midday_usd_mwh": 14.12149125,
+      "da_evening_usd_mwh": 36.1170375,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-16",
+      "settled_usd_per_mw_day": {
+        "hold": 30.53386423155618,
+        "replan": 29.4721057532017,
+        "foresight": 39.34366839730791
+      },
+      "net_usd_per_mw_day": {
+        "hold": 9.989843203529556,
+        "replan": 8.928084725175072,
+        "foresight": 18.79964736928128
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 8.809804165751725,
+        "replan": 9.87156264410621
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 0.9466111806189104,
+        "foresight": 2.9123217854176384
+      },
+      "rt_midday_usd_mwh": 8.612333125000001,
+      "rt_evening_usd_mwh": 27.784111250000002,
+      "da_midday_usd_mwh": 11.955754999999998,
+      "da_evening_usd_mwh": 22.070137499999998,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-17",
+      "settled_usd_per_mw_day": {
+        "hold": 120.43484128606656,
+        "replan": 107.99483343008997,
+        "foresight": 120.81550491833853
+      },
+      "net_usd_per_mw_day": {
+        "hold": 99.89082025803994,
+        "replan": 68.96119347683938,
+        "foresight": 105.40748914731857
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 5.516668889278634,
+        "replan": 36.44629567047919
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.886560418870591,
+        "foresight": 2.033934834032524
+      },
+      "rt_midday_usd_mwh": 15.1456778125,
+      "rt_evening_usd_mwh": 22.065321250000004,
+      "da_midday_usd_mwh": -0.8255537499999999,
+      "da_evening_usd_mwh": 27.9530225,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-18",
+      "settled_usd_per_mw_day": {
+        "hold": 42.46934706860587,
+        "replan": 36.664144588852764,
+        "foresight": 58.67356085089565
+      },
+      "net_usd_per_mw_day": {
+        "hold": 21.925326040579247,
+        "replan": 25.364933023438123,
+        "foresight": 37.61593929716835
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 15.690613256589106,
+        "replan": 12.25100627373023
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.443280209435295,
+        "foresight": 3.8951770878170016
+      },
+      "rt_midday_usd_mwh": 22.215921875,
+      "rt_evening_usd_mwh": 33.64197562499999,
+      "da_midday_usd_mwh": 15.647042500000001,
+      "da_evening_usd_mwh": 31.028149999999993,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-19",
+      "settled_usd_per_mw_day": {
+        "hold": 1.0840625778963806,
+        "replan": -0.7283634063451561,
+        "foresight": 17.781560733784442
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.056861526495049386,
+        "replan": -8.945971817555806,
+        "foresight": 7.50955021977113
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 7.45268869327608,
+        "replan": 16.455522037326936
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.6160614299755276,
+        "foresight": 1.9912946907614018
+      },
+      "rt_midday_usd_mwh": 23.21544875,
+      "rt_evening_usd_mwh": 28.21803125,
+      "da_midday_usd_mwh": 23.004833750000014,
+      "da_evening_usd_mwh": 26.709282500000008,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-20",
+      "settled_usd_per_mw_day": {
+        "hold": 70.65005939099836,
+        "replan": 63.28492924711951,
+        "foresight": 88.52364013369055
+      },
+      "net_usd_per_mw_day": {
+        "hold": 50.106038362971745,
+        "replan": 42.74090821909289,
+        "foresight": 75.68362699117391
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 25.577588628202165,
+        "replan": 32.94271877208102
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.8782096708007403,
+        "foresight": 5.55387866106365
+      },
+      "rt_midday_usd_mwh": 7.860762187500001,
+      "rt_evening_usd_mwh": 14.883323749999999,
+      "da_midday_usd_mwh": 12.836492499999997,
+      "da_evening_usd_mwh": 30.601027499999994,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-21",
+      "settled_usd_per_mw_day": {
+        "hold": 67.32278795086754,
+        "replan": 65.02405100469844,
+        "foresight": 90.75495540208247
+      },
+      "net_usd_per_mw_day": {
+        "hold": 46.778766922840916,
+        "replan": 36.26242156546117,
+        "foresight": 68.15653227125318
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 21.377765348412268,
+        "replan": 31.894110705792016
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.735276550550295,
+        "foresight": 3.6755803499707227
+      },
+      "rt_midday_usd_mwh": 14.253093750000001,
+      "rt_evening_usd_mwh": 26.585255625000002,
+      "da_midday_usd_mwh": 4.3006225,
+      "da_evening_usd_mwh": 27.3554525,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-22",
+      "settled_usd_per_mw_day": {
+        "hold": 25.64648337368891,
+        "replan": 68.06006436240042,
+        "foresight": 111.5089824829706
+      },
+      "net_usd_per_mw_day": {
+        "hold": 6.1296633970636165,
+        "replan": 52.65204859138046,
+        "foresight": 86.85615724933865
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 80.72649385227504,
+        "replan": 34.20410865795819
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.534690596591646,
+        "foresight": 8.05472306391496
+      },
+      "rt_midday_usd_mwh": 39.6788146875,
+      "rt_evening_usd_mwh": 30.562612499999997,
+      "da_midday_usd_mwh": 18.80482999999999,
+      "da_evening_usd_mwh": 29.782600000000002,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-06-23",
+      "settled_usd_per_mw_day": {
+        "hold": 24.88797769270554,
+        "replan": 24.573017553637673,
+        "foresight": 46.8455240966254
+      },
+      "net_usd_per_mw_day": {
+        "hold": 5.371157716080248,
+        "replan": 5.05619757701238,
+        "foresight": 26.301503068598773
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 20.930345352518525,
+        "replan": 21.245305491586393
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.630719559243858,
+        "foresight": 6.216932888929598
+      },
+      "rt_midday_usd_mwh": 28.461665312500003,
+      "rt_evening_usd_mwh": 35.41354375,
+      "da_midday_usd_mwh": 24.745744999999996,
+      "da_evening_usd_mwh": 33.41004999999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-24",
+      "settled_usd_per_mw_day": {
+        "hold": 26.823006667693814,
+        "replan": 23.776910877554766,
+        "foresight": 97.9438345391569
+      },
+      "net_usd_per_mw_day": {
+        "hold": 6.278985639667191,
+        "replan": 22.749709826153435,
+        "foresight": 72.26380825412362
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 65.98482261445642,
+        "replan": 49.51409842797018
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.020965510466812,
+        "foresight": 6.566582063752801
+      },
+      "rt_midday_usd_mwh": 38.7118040625,
+      "rt_evening_usd_mwh": 37.673613124999996,
+      "da_midday_usd_mwh": 22.470420000000004,
+      "da_evening_usd_mwh": 34.753845,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-06-25",
+      "settled_usd_per_mw_day": {
+        "hold": 19.837399702814984,
+        "replan": 25.53002444382625,
+        "foresight": 39.48084382757812
+      },
+      "net_usd_per_mw_day": {
+        "hold": 8.538188137400343,
+        "replan": -3.2316049954110184,
+        "foresight": 24.072828056558155
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 15.534639919157812,
+        "replan": 27.304433051969173
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.752155327274369,
+        "foresight": 4.571023358664287
+      },
+      "rt_midday_usd_mwh": 19.294982812500002,
+      "rt_evening_usd_mwh": 25.465701249999995,
+      "da_midday_usd_mwh": 22.25836499999999,
+      "da_evening_usd_mwh": 33.3485225,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-26",
+      "settled_usd_per_mw_day": {
+        "hold": 7.076893072960674,
+        "replan": 4.867636979127726,
+        "foresight": 19.639353762419503
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.913686764552688,
+        "replan": -15.676384048898898,
+        "foresight": 13.989747979712183
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.076061215159495,
+        "replan": 29.66613202861108
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.9314212095974557,
+        "foresight": 2.304699743804149
+      },
+      "rt_midday_usd_mwh": 17.007063125000002,
+      "rt_evening_usd_mwh": 13.725498749999998,
+      "da_midday_usd_mwh": 18.33305875,
+      "da_evening_usd_mwh": 26.8823075,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-06-27",
+      "settled_usd_per_mw_day": {
+        "hold": 67.53177889115828,
+        "replan": 71.11112352917647,
+        "foresight": 102.49769327870798
+      },
+      "net_usd_per_mw_day": {
+        "hold": 46.98775786313166,
+        "replan": 49.53990144974851,
+        "foresight": 81.4400717249807
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 34.452313861849035,
+        "replan": 31.900170275232185
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.7011644359333964,
+        "foresight": 6.229724931910936
+      },
+      "rt_midday_usd_mwh": -3.3473571875,
+      "rt_evening_usd_mwh": 2.596841875,
+      "da_midday_usd_mwh": -7.705726249999996,
+      "da_evening_usd_mwh": 17.672267500000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-28",
+      "settled_usd_per_mw_day": {
+        "hold": 65.30380496835332,
+        "replan": 29.320948278831732,
+        "foresight": 56.93658856161897
+      },
+      "net_usd_per_mw_day": {
+        "hold": 44.7597839403267,
+        "replan": 29.320948278831732,
+        "foresight": 53.34138488171431
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 8.581600941387613,
+        "replan": 24.02043660288258
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.90157310930767,
+        "foresight": 4.443102928850921
+      },
+      "rt_midday_usd_mwh": -10.852472500000001,
+      "rt_evening_usd_mwh": 4.09104375,
+      "da_midday_usd_mwh": -3.267425000000002,
+      "da_evening_usd_mwh": 21.250924999999995,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-29",
+      "settled_usd_per_mw_day": {
+        "hold": 94.46672378072516,
+        "replan": 81.51032747988046,
+        "foresight": 104.50030289392761
+      },
+      "net_usd_per_mw_day": {
+        "hold": 67.75949644429056,
+        "replan": 67.12951276026183,
+        "foresight": 83.95628186590099
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.19678542161043,
+        "replan": 16.82676910563916
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.596784725211335,
+        "foresight": 4.545439272701613
+      },
+      "rt_midday_usd_mwh": -2.6976753124999995,
+      "rt_evening_usd_mwh": 10.8966725,
+      "da_midday_usd_mwh": -7.311367499999999,
+      "da_evening_usd_mwh": 21.513352500000007,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-06-30",
+      "settled_usd_per_mw_day": {
+        "hold": 20.55477380615601,
+        "replan": -14.14765283035338,
+        "foresight": 27.193878886506567
+      },
+      "net_usd_per_mw_day": {
+        "hold": 1.0379538295307178,
+        "replan": -23.392462292965362,
+        "foresight": 8.190659435581939
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 7.152705606051221,
+        "replan": 31.5831217285473
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.677446436257719,
+        "foresight": 3.801368772620533
+      },
+      "rt_midday_usd_mwh": 4.647311562499999,
+      "rt_evening_usd_mwh": 10.583860625,
+      "da_midday_usd_mwh": 13.641880000000008,
+      "da_evening_usd_mwh": 20.8499875,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-01",
+      "settled_usd_per_mw_day": {
+        "hold": 26.33375345060025,
+        "replan": 16.667308486730597,
+        "foresight": 39.009756313561425
+      },
+      "net_usd_per_mw_day": {
+        "hold": 6.816933473974956,
+        "replan": -2.849511489894695,
+        "foresight": 15.384132131330809
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 8.567198657355853,
+        "replan": 18.233643621225504
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.647775616552305,
+        "foresight": 3.492227733904899
+      },
+      "rt_midday_usd_mwh": 10.390316562500002,
+      "rt_evening_usd_mwh": 18.090993124999997,
+      "da_midday_usd_mwh": 13.990730000000003,
+      "da_evening_usd_mwh": 21.449779999999997,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-02",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 36.717219031023205,
+        "foresight": 50.36712012260793
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 16.173198002996582,
+        "foresight": 24.68709383757465
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 24.68709383757465,
+        "replan": 8.513895834578069
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.008173467485476,
+        "foresight": 5.010216834356844
+      },
+      "rt_midday_usd_mwh": 17.810176874999996,
+      "rt_evening_usd_mwh": 19.0548625,
+      "da_midday_usd_mwh": 12.906152500000001,
+      "da_evening_usd_mwh": 21.081675,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-03",
+      "settled_usd_per_mw_day": {
+        "hold": 13.067260801270058,
+        "replan": 22.93085125230965,
+        "foresight": 35.37931607714173
+      },
+      "net_usd_per_mw_day": {
+        "hold": 2.7952502872567457,
+        "replan": 3.4140312756843585,
+        "foresight": 15.862496100516438
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.067245813259692,
+        "replan": 12.44846482483208
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.935685223924568,
+        "foresight": 3.701164435933396
+      },
+      "rt_midday_usd_mwh": 6.817464375000001,
+      "rt_evening_usd_mwh": 20.083321250000004,
+      "da_midday_usd_mwh": 11.481600000000004,
+      "da_evening_usd_mwh": 21.281765,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-04",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 4.968888557733603,
+        "foresight": 19.026408376079544
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -3.2487198534770467,
+        "foresight": 5.159194182161574
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 5.159194182161574,
+        "replan": 8.40791403563862
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.6032693869941907,
+        "foresight": 2.7055170905526955
+      },
+      "rt_midday_usd_mwh": 11.752480312500001,
+      "rt_evening_usd_mwh": 19.892528125000002,
+      "da_midday_usd_mwh": 13.029901249999998,
+      "da_evening_usd_mwh": 23.16699,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-05",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 8.438759552839734,
+        "foresight": 45.6050794542044
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 0.22115114162908434,
+        "foresight": 26.088259477579108
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 26.088259477579108,
+        "replan": 25.86710833595002
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.603269386994191,
+        "foresight": 3.807764794111202
+      },
+      "rt_midday_usd_mwh": 14.236990312500003,
+      "rt_evening_usd_mwh": 31.0355775,
+      "da_midday_usd_mwh": 15.673903750000003,
+      "da_evening_usd_mwh": 23.072275,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-06",
+      "settled_usd_per_mw_day": {
+        "hold": 8.68099760980097,
+        "replan": 7.658392696802691,
+        "foresight": 36.70993091377508
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.46338919859032046,
+        "replan": -0.5592157144079586,
+        "foresight": 14.62510830864646
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 14.16171911005614,
+        "replan": 15.184324023054419
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.5009330431434977,
+        "foresight": 5.059252999118635
+      },
+      "rt_midday_usd_mwh": 24.4400353125,
+      "rt_evening_usd_mwh": 30.311094374999993,
+      "da_midday_usd_mwh": 16.442388750000006,
+      "da_evening_usd_mwh": 23.398897500000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-07",
+      "settled_usd_per_mw_day": {
+        "hold": 33.41812534884983,
+        "replan": 24.241414540249693,
+        "foresight": 45.24842124187079
+      },
+      "net_usd_per_mw_day": {
+        "hold": 13.901305372224535,
+        "replan": 13.969404026236381,
+        "foresight": 24.70440021384416
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 10.803094841619625,
+        "replan": 10.734996187607779
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.0978950489392068,
+        "foresight": 5.556010668227207
+      },
+      "rt_midday_usd_mwh": 28.16768375,
+      "rt_evening_usd_mwh": 34.43542,
+      "da_midday_usd_mwh": 17.485407499999994,
+      "da_evening_usd_mwh": 31.292229999999996,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-08",
+      "settled_usd_per_mw_day": {
+        "hold": 31.694734883288127,
+        "replan": 27.99950036943931,
+        "foresight": 45.027937546404345
+      },
+      "net_usd_per_mw_day": {
+        "hold": 12.177914906662835,
+        "replan": 16.70028880402467,
+        "foresight": 24.48391651837772
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 12.306001611714883,
+        "replan": 7.783627714353049
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.0445062295581167,
+        "foresight": 4.319446513364667
+      },
+      "rt_midday_usd_mwh": 21.830448125000004,
+      "rt_evening_usd_mwh": 33.882243125,
+      "da_midday_usd_mwh": 18.305408749999994,
+      "da_evening_usd_mwh": 27.4759975,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-09",
+      "settled_usd_per_mw_day": {
+        "hold": 48.251914710545805,
+        "replan": 50.986461359878,
+        "foresight": 73.27054672717063
+      },
+      "net_usd_per_mw_day": {
+        "hold": 28.735094733920512,
+        "replan": 33.52404348605537,
+        "foresight": 51.69932464774267
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 22.96422991382216,
+        "replan": 18.175281161687302
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.632940206699602,
+        "foresight": 6.054900344499335
+      },
+      "rt_midday_usd_mwh": 29.608235312499993,
+      "rt_evening_usd_mwh": 35.69645874999999,
+      "da_midday_usd_mwh": 20.336625000000005,
+      "da_evening_usd_mwh": 39.295415000000006,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-10",
+      "settled_usd_per_mw_day": {
+        "hold": 31.217922993997483,
+        "replan": 15.782349068941961,
+        "foresight": 41.406114158057306
+      },
+      "net_usd_per_mw_day": {
+        "hold": 20.945912479984173,
+        "replan": 4.48313750352732,
+        "foresight": 23.943696284234676
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 2.9977838042505027,
+        "replan": 19.460558780707355
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.6457322496809383,
+        "foresight": 2.340943865584603
+      },
+      "rt_midday_usd_mwh": 28.6442015625,
+      "rt_evening_usd_mwh": 34.714625625,
+      "da_midday_usd_mwh": 21.552954999999997,
+      "da_evening_usd_mwh": 33.004292500000005,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-11",
+      "settled_usd_per_mw_day": {
+        "hold": 25.892896881399686,
+        "replan": -7.5257913813015245,
+        "foresight": 37.82099389131298
+      },
+      "net_usd_per_mw_day": {
+        "hold": 6.3760769047743935,
+        "replan": -8.552992432702856,
+        "foresight": 17.276972863286353
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 10.90089595851196,
+        "replan": 25.82996529598921
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.008173467485475,
+        "foresight": 2.9293778427260877
+      },
+      "rt_midday_usd_mwh": 21.228625625000003,
+      "rt_evening_usd_mwh": 38.72434625,
+      "da_midday_usd_mwh": 18.868443749999994,
+      "da_evening_usd_mwh": 29.499465000000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-12",
+      "settled_usd_per_mw_day": {
+        "hold": 27.5878560933522,
+        "replan": 12.055465249871286,
+        "foresight": 52.569562875868
+      },
+      "net_usd_per_mw_day": {
+        "hold": 8.071036116726908,
+        "replan": 2.8106557872593054,
+        "foresight": 30.998340796440043
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 22.927304679713135,
+        "replan": 28.18768500918074
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.119037839990393,
+        "foresight": 6.737142636837289
+      },
+      "rt_midday_usd_mwh": 35.960278124999995,
+      "rt_evening_usd_mwh": 41.675243125,
+      "da_midday_usd_mwh": 18.997185,
+      "da_evening_usd_mwh": 30.919619999999988,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-13",
+      "settled_usd_per_mw_day": {
+        "hold": 39.21366936711043,
+        "replan": -0.10013470533317914,
+        "foresight": 70.14374615106304
+      },
+      "net_usd_per_mw_day": {
+        "hold": 19.696849390485134,
+        "replan": -5.236139962339835,
+        "foresight": 49.59972512303642
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 29.902875732551287,
+        "replan": 54.835865085376255
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.9570052955601285,
+        "foresight": 4.84818428992658
+      },
+      "rt_midday_usd_mwh": 48.838257812500004,
+      "rt_evening_usd_mwh": 60.7356775,
+      "da_midday_usd_mwh": 29.652798750000013,
+      "da_evening_usd_mwh": 41.642955000000015,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-14",
+      "settled_usd_per_mw_day": {
+        "hold": 61.63960036900519,
+        "replan": 61.243395811635644,
+        "foresight": 76.02046107601835
+      },
+      "net_usd_per_mw_day": {
+        "hold": 40.068378289577225,
+        "replan": 41.72657583501035,
+        "foresight": 56.50364109939306
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.435262809815832,
+        "replan": 14.777065264382706
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.1809546880257065,
+        "foresight": 5.901395828723294
+      },
+      "rt_midday_usd_mwh": 35.556580624999995,
+      "rt_evening_usd_mwh": 49.520127499999994,
+      "da_midday_usd_mwh": 23.2893375,
+      "da_evening_usd_mwh": 51.18640249999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-15",
+      "settled_usd_per_mw_day": {
+        "hold": 48.79761750771029,
+        "replan": 40.97994573240898,
+        "foresight": 85.26787160868993
+      },
+      "net_usd_per_mw_day": {
+        "hold": 29.280797531085,
+        "replan": 35.84394047540232,
+        "foresight": 61.128646900758646
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 31.847849369673646,
+        "replan": 25.284706425356326
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.9570052955601294,
+        "foresight": 8.048327042424294
+      },
+      "rt_midday_usd_mwh": 43.15951218750001,
+      "rt_evening_usd_mwh": 50.974456249999996,
+      "da_midday_usd_mwh": 35.337086250000006,
+      "da_evening_usd_mwh": 51.9052825,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-16",
+      "settled_usd_per_mw_day": {
+        "hold": 41.53463726365566,
+        "replan": 35.08491548011406,
+        "foresight": 59.19651990732104
+      },
+      "net_usd_per_mw_day": {
+        "hold": 20.990616235629037,
+        "replan": 14.54089445208744,
+        "foresight": 45.32930571340307
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 24.338689477774036,
+        "replan": 30.788411261315634
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.696723141021908,
+        "foresight": 5.724439234148139
+      },
+      "rt_midday_usd_mwh": 40.04476468749999,
+      "rt_evening_usd_mwh": 35.01716875,
+      "da_midday_usd_mwh": 33.320445,
+      "da_evening_usd_mwh": 48.46964499999998,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-07-17",
+      "settled_usd_per_mw_day": {
+        "hold": 31.18217179227321,
+        "replan": 28.62142977812562,
+        "foresight": 41.081825101844245
+      },
+      "net_usd_per_mw_day": {
+        "hold": 10.638150764246586,
+        "replan": 8.077408750098996,
+        "foresight": 40.05462405044291
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 29.416473286196325,
+        "replan": 31.977215300343914
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.123124573733131,
+        "foresight": 3.9953814245041395
+      },
+      "rt_midday_usd_mwh": 28.165349999999997,
+      "rt_evening_usd_mwh": 25.8075725,
+      "da_midday_usd_mwh": 32.79013375000001,
+      "da_evening_usd_mwh": 46.469327500000006,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-07-18",
+      "settled_usd_per_mw_day": {
+        "hold": 25.166005540720683,
+        "replan": 32.364030157044006,
+        "foresight": 32.08716261128751
+      },
+      "net_usd_per_mw_day": {
+        "hold": 5.64918556409539,
+        "replan": 12.847210180418713,
+        "foresight": 28.491958931382854
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 22.842773367287464,
+        "replan": 15.64474875096414
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.975927439155571,
+        "foresight": 4.402594792743354
+      },
+      "rt_midday_usd_mwh": 20.487456249999997,
+      "rt_evening_usd_mwh": 27.663075624999998,
+      "da_midday_usd_mwh": 26.03577875,
+      "da_evening_usd_mwh": 37.508445,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-19",
+      "settled_usd_per_mw_day": {
+        "hold": 37.74582887011808,
+        "replan": 58.52657076828817,
+        "foresight": 82.56409651723038
+      },
+      "net_usd_per_mw_day": {
+        "hold": 18.22900889349279,
+        "replan": 39.009750791662874,
+        "foresight": 60.47927391210176
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 42.25026501860897,
+        "replan": 21.469523120438886
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.90992385737752,
+        "foresight": 7.101715861805383
+      },
+      "rt_midday_usd_mwh": 29.2222140625,
+      "rt_evening_usd_mwh": 43.44255875,
+      "da_midday_usd_mwh": 26.119581249999996,
+      "da_evening_usd_mwh": 42.10091750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-20",
+      "settled_usd_per_mw_day": {
+        "hold": 41.29191289586042,
+        "replan": -2.637130487653331,
+        "foresight": 115.1802822955587
+      },
+      "net_usd_per_mw_day": {
+        "hold": 21.775092919235128,
+        "replan": -3.664331539054662,
+        "foresight": 78.71464497081145
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 56.93955205157632,
+        "replan": 82.3789765098661
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.008173467485475,
+        "foresight": 7.890558512321141
+      },
+      "rt_midday_usd_mwh": 58.816762187500004,
+      "rt_evening_usd_mwh": 74.937523125,
+      "da_midday_usd_mwh": 36.035227500000005,
+      "da_evening_usd_mwh": 49.24060499999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-21",
+      "settled_usd_per_mw_day": {
+        "hold": 74.73942114103693,
+        "replan": 57.8629818330256,
+        "foresight": 121.1025991268167
+      },
+      "net_usd_per_mw_day": {
+        "hold": 55.222601164411635,
+        "replan": 46.56377026761096,
+        "foresight": 94.39537179038209
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 39.17277062597045,
+        "replan": 47.83160152277112
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.30665447038333,
+        "foresight": 6.012260201228213
+      },
+      "rt_midday_usd_mwh": 47.4354940625,
+      "rt_evening_usd_mwh": 78.707771875,
+      "da_midday_usd_mwh": 32.789778749999996,
+      "da_evening_usd_mwh": 59.09180250000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-22",
+      "settled_usd_per_mw_day": {
+        "hold": 49.77126769862043,
+        "replan": 70.85990697176743,
+        "foresight": 105.57387744634417
+      },
+      "net_usd_per_mw_day": {
+        "hold": 29.227246670593804,
+        "replan": 57.50629330355012,
+        "foresight": 82.46185378981423
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 53.23460711922043,
+        "replan": 24.955560486264105
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.720263860113214,
+        "foresight": 6.38536145485053
+      },
+      "rt_midday_usd_mwh": 50.8784653125,
+      "rt_evening_usd_mwh": 56.12511125000001,
+      "da_midday_usd_mwh": 39.77500375000002,
+      "da_evening_usd_mwh": 52.50887750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-23",
+      "settled_usd_per_mw_day": {
+        "hold": 92.783985191194,
+        "replan": 91.39037105660262,
+        "foresight": 128.0589227174632
+      },
+      "net_usd_per_mw_day": {
+        "hold": 72.23996416316737,
+        "replan": 65.71034477156934,
+        "foresight": 104.43329853523258
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 32.19333437206521,
+        "replan": 38.72295376366324
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.281247665005031,
+        "foresight": 2.861153613492293
+      },
+      "rt_midday_usd_mwh": 34.98846968750001,
+      "rt_evening_usd_mwh": 75.65240812500001,
+      "da_midday_usd_mwh": 32.95477375,
+      "da_evening_usd_mwh": 69.12820250000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-24",
+      "settled_usd_per_mw_day": {
+        "hold": 109.27728428477204,
+        "replan": -784.3824348608488,
+        "foresight": 233.28273032265068
+      },
+      "net_usd_per_mw_day": {
+        "hold": 88.73326325674542,
+        "replan": -814.1712653514874,
+        "foresight": 206.0619024605154
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 117.32863920376998,
+        "replan": 1020.2331678120028
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.9590486624314964,
+        "foresight": 2.8803416779642967
+      },
+      "rt_midday_usd_mwh": 53.938523125,
+      "rt_evening_usd_mwh": 408.3625768749999,
+      "da_midday_usd_mwh": 35.647157500000006,
+      "da_evening_usd_mwh": 77.0829075,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-25",
+      "settled_usd_per_mw_day": {
+        "hold": 53.65035759846438,
+        "replan": -159.4989389657353,
+        "foresight": 341.5225820536436
+      },
+      "net_usd_per_mw_day": {
+        "hold": 33.10633657043776,
+        "replan": -166.68934632554462,
+        "foresight": 298.8937384204884
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 265.7874018500506,
+        "replan": 465.583084746033
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.797016118001234,
+        "foresight": 6.756330701309294
+      },
+      "rt_midday_usd_mwh": 42.994266875,
+      "rt_evening_usd_mwh": 165.781184375,
+      "da_midday_usd_mwh": 26.159340000000007,
+      "da_evening_usd_mwh": 42.639039999999994,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-26",
+      "settled_usd_per_mw_day": {
+        "hold": 45.16138134585625,
+        "replan": 21.917640154754608,
+        "foresight": 313.88633850134926
+      },
+      "net_usd_per_mw_day": {
+        "hold": 24.617360317829625,
+        "replan": 10.618428589339967,
+        "foresight": 281.52950538220733
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 256.9121450643777,
+        "replan": 270.9110767928674
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.8930450806534465,
+        "foresight": 6.359777368887859
+      },
+      "rt_midday_usd_mwh": 45.948910000000005,
+      "rt_evening_usd_mwh": 164.028549375,
+      "da_midday_usd_mwh": 26.779172500000005,
+      "da_evening_usd_mwh": 42.79105250000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-27",
+      "settled_usd_per_mw_day": {
+        "hold": 41.122392273230155,
+        "replan": -50.18832539673663,
+        "foresight": 264.567997474645
+      },
+      "net_usd_per_mw_day": {
+        "hold": 20.578371245203527,
+        "replan": -65.59634116775659,
+        "foresight": 233.75196593260506
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 213.17359468740153,
+        "replan": 299.34830710036164
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.285334398747771,
+        "foresight": 7.909746576793147
+      },
+      "rt_midday_usd_mwh": 42.24894593749999,
+      "rt_evening_usd_mwh": 138.54668125,
+      "da_midday_usd_mwh": 38.29792124999997,
+      "da_evening_usd_mwh": 46.1105525,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-28",
+      "settled_usd_per_mw_day": {
+        "hold": 117.15069659852188,
+        "replan": 105.06073186965212,
+        "foresight": 146.82757993417744
+      },
+      "net_usd_per_mw_day": {
+        "hold": 90.44346926208726,
+        "replan": 73.21749927621086,
+        "foresight": 123.20195575194683
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 32.758486489859564,
+        "replan": 49.98445647573597
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.747714032362881,
+        "foresight": 3.7821807081485295
+      },
+      "rt_midday_usd_mwh": 31.0654646875,
+      "rt_evening_usd_mwh": 80.760309375,
+      "da_midday_usd_mwh": 49.11521624999999,
+      "da_evening_usd_mwh": 84.88519999999998,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-29",
+      "settled_usd_per_mw_day": {
+        "hold": 86.18563792630995,
+        "replan": 70.8345303514218,
+        "foresight": 106.93089141395875
+      },
+      "net_usd_per_mw_day": {
+        "hold": 57.42400848707268,
+        "replan": 50.290509323395185,
+        "foresight": 85.35966933453079
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 27.93566084745811,
+        "replan": 35.06916001113561
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 9.431999691572207,
+        "foresight": 5.487786438993412
+      },
+      "rt_midday_usd_mwh": 32.83294218750001,
+      "rt_evening_usd_mwh": 46.18452624999999,
+      "da_midday_usd_mwh": 51.035875,
+      "da_evening_usd_mwh": 71.8414625,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-30",
+      "settled_usd_per_mw_day": {
+        "hold": 109.99216129604284,
+        "replan": 87.91280618064502,
+        "foresight": 124.54650649604488
+      },
+      "net_usd_per_mw_day": {
+        "hold": 89.44814026801622,
+        "replan": 49.90636727879578,
+        "foresight": 104.00248546801825
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 14.554345200002032,
+        "replan": 54.09611818922247
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.94829998632153,
+        "foresight": 3.9612693098872414
+      },
+      "rt_midday_usd_mwh": 29.031195625,
+      "rt_evening_usd_mwh": 47.151546249999996,
+      "da_midday_usd_mwh": 25.447964999999986,
+      "da_evening_usd_mwh": 65.49478,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-07-31",
+      "settled_usd_per_mw_day": {
+        "hold": 83.70486500641891,
+        "replan": 52.13107189653584,
+        "foresight": 116.75230839677528
+      },
+      "net_usd_per_mw_day": {
+        "hold": 63.16084397839229,
+        "replan": 25.423844560101237,
+        "foresight": 82.34107317483068
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 19.18022919643839,
+        "replan": 56.917228614729446
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.751978046689995,
+        "foresight": 5.656215004914345
+      },
+      "rt_midday_usd_mwh": 41.083465000000004,
+      "rt_evening_usd_mwh": 60.956173125,
+      "da_midday_usd_mwh": 36.3043925,
+      "da_evening_usd_mwh": 70.09901749999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-01",
+      "settled_usd_per_mw_day": {
+        "hold": 108.75046403545304,
+        "replan": 68.88046939620595,
+        "foresight": 123.09526497534519
+      },
+      "net_usd_per_mw_day": {
+        "hold": 87.17924195602508,
+        "replan": 40.11883995696868,
+        "foresight": 99.98324131881523
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 12.803999362790151,
+        "replan": 59.864401361846554
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.197833464749782,
+        "foresight": 2.347339887075271
+      },
+      "rt_midday_usd_mwh": 31.002224375000004,
+      "rt_evening_usd_mwh": 56.497918125000005,
+      "da_midday_usd_mwh": 27.018559999999997,
+      "da_evening_usd_mwh": 68.196715,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-02",
+      "settled_usd_per_mw_day": {
+        "hold": 59.585707176312454,
+        "replan": 48.60566608035239,
+        "foresight": 77.25295684953109
+      },
+      "net_usd_per_mw_day": {
+        "hold": 39.04168614828583,
+        "replan": 27.034444000924434,
+        "foresight": 57.736136872905796
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 18.69445072461997,
+        "replan": 30.70169287198136
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.300169808600474,
+        "foresight": 2.9293778427260873
+      },
+      "rt_midday_usd_mwh": 26.682804375000003,
+      "rt_evening_usd_mwh": 41.28539374999999,
+      "da_midday_usd_mwh": 26.633736250000016,
+      "da_evening_usd_mwh": 48.924745,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-03",
+      "settled_usd_per_mw_day": {
+        "hold": 83.59000141487661,
+        "replan": 71.45774845183816,
+        "foresight": 125.10327588147314
+      },
+      "net_usd_per_mw_day": {
+        "hold": 62.018779335448656,
+        "replan": 49.8865263724102,
+        "foresight": 96.85524696793654
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 34.83646763248788,
+        "replan": 46.968720595526335
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 8.016346934970949,
+        "foresight": 6.521809913318122
+      },
+      "rt_midday_usd_mwh": 33.33066281249999,
+      "rt_evening_usd_mwh": 46.16165250000001,
+      "da_midday_usd_mwh": 25.4858125,
+      "da_evening_usd_mwh": 59.767457499999985,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-04",
+      "settled_usd_per_mw_day": {
+        "hold": 79.34575846939637,
+        "replan": 46.9259656223494,
+        "foresight": 92.62774270917839
+      },
+      "net_usd_per_mw_day": {
+        "hold": 58.80173744136975,
+        "replan": 19.191537234513465,
+        "foresight": 69.00211852694778
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 10.20038108557803,
+        "replan": 49.81058129243432
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.730657975054431,
+        "foresight": 2.711913112043365
+      },
+      "rt_midday_usd_mwh": 35.0790753125,
+      "rt_evening_usd_mwh": 50.664183124999994,
+      "da_midday_usd_mwh": 45.703073749999994,
+      "da_evening_usd_mwh": 78.07322500000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-05",
+      "settled_usd_per_mw_day": {
+        "hold": 116.18391722709774,
+        "replan": 119.29825854522211,
+        "foresight": 141.97598641555584
+      },
+      "net_usd_per_mw_day": {
+        "hold": 95.63989619907112,
+        "replan": 90.53662910598484,
+        "foresight": 121.43196538752922
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 25.7920691884581,
+        "replan": 30.895336281544374
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.743450018035767,
+        "foresight": 5.624234897461002
+      },
+      "rt_midday_usd_mwh": 36.702263437499994,
+      "rt_evening_usd_mwh": 46.53149937499999,
+      "da_midday_usd_mwh": 27.66989125,
+      "da_evening_usd_mwh": 73.4132175,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-06",
+      "settled_usd_per_mw_day": {
+        "hold": 95.18009371877218,
+        "replan": 76.27715422682877,
+        "foresight": 119.29538946054198
+      },
+      "net_usd_per_mw_day": {
+        "hold": 74.63607269074556,
+        "replan": 41.35231847918351,
+        "foresight": 94.64256422691003
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 20.00649153616446,
+        "replan": 53.290245747726516
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.033757553448149,
+        "foresight": 5.462202353030738
+      },
+      "rt_midday_usd_mwh": 36.948933124999996,
+      "rt_evening_usd_mwh": 50.704423125,
+      "da_midday_usd_mwh": 27.937633750000003,
+      "da_evening_usd_mwh": 66.882345,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-07",
+      "settled_usd_per_mw_day": {
+        "hold": 111.78836637282204,
+        "replan": 94.1944712416351,
+        "foresight": 137.6039964364048
+      },
+      "net_usd_per_mw_day": {
+        "hold": 90.21714429339409,
+        "replan": 56.188032339785856,
+        "foresight": 113.46477172847352
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 23.247627435079437,
+        "replan": 57.276739388687666
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.722307226984585,
+        "foresight": 5.144533285660878
+      },
+      "rt_midday_usd_mwh": 40.42608531250001,
+      "rt_evening_usd_mwh": 61.749883749999995,
+      "da_midday_usd_mwh": 32.393492499999994,
+      "da_evening_usd_mwh": 78.343355,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-08",
+      "settled_usd_per_mw_day": {
+        "hold": 124.83500951353666,
+        "replan": 103.97163425835805,
+        "foresight": 143.18727664885785
+      },
+      "net_usd_per_mw_day": {
+        "hold": 103.2637874341087,
+        "replan": 71.10120061351546,
+        "foresight": 119.04805194092657
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 15.784264506817863,
+        "replan": 47.94685132741111
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.7202638601132145,
+        "foresight": 3.6137521422275958
+      },
+      "rt_midday_usd_mwh": 35.77181125,
+      "rt_evening_usd_mwh": 53.522415625,
+      "da_midday_usd_mwh": 32.70770875000001,
+      "da_evening_usd_mwh": 79.28794000000002,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-09",
+      "settled_usd_per_mw_day": {
+        "hold": 64.35638294276998,
+        "replan": 46.29131467615863,
+        "foresight": 98.56403508191426
+      },
+      "net_usd_per_mw_day": {
+        "hold": 43.812361914743356,
+        "replan": 22.66569049392801,
+        "foresight": 74.93841089968365
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 31.12604898494029,
+        "replan": 52.272720405755635
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.9953814245041386,
+        "foresight": 4.076397696719271
+      },
+      "rt_midday_usd_mwh": 36.0281309375,
+      "rt_evening_usd_mwh": 71.20217562500001,
+      "da_midday_usd_mwh": 29.770860000000003,
+      "da_evening_usd_mwh": 61.317642500000005,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-10",
+      "settled_usd_per_mw_day": {
+        "hold": 69.83089260563335,
+        "replan": 56.962423478224444,
+        "foresight": 86.7691612513516
+      },
+      "net_usd_per_mw_day": {
+        "hold": 49.28687157760673,
+        "replan": 27.173592987585845,
+        "foresight": 63.657137594821656
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 14.370266017214924,
+        "replan": 36.483544607235814
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.9186291666161197,
+        "foresight": 4.688283752659872
+      },
+      "rt_midday_usd_mwh": 40.32826531250001,
+      "rt_evening_usd_mwh": 53.857443124999996,
+      "da_midday_usd_mwh": 29.122383749999997,
+      "da_evening_usd_mwh": 58.47425,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-11",
+      "settled_usd_per_mw_day": {
+        "hold": 81.2870800635279,
+        "replan": 79.06653324351804,
+        "foresight": 119.96927125734865
+      },
+      "net_usd_per_mw_day": {
+        "hold": 61.7702600869026,
+        "replan": 58.52251221549142,
+        "foresight": 97.37084812651936
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 35.60058803961676,
+        "replan": 38.848335911027945
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.815938261596678,
+        "foresight": 6.212668874602487
+      },
+      "rt_midday_usd_mwh": 45.862100937499996,
+      "rt_evening_usd_mwh": 58.716651875000004,
+      "da_midday_usd_mwh": 48.356748749999994,
+      "da_evening_usd_mwh": 70.94886000000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-12",
+      "settled_usd_per_mw_day": {
+        "hold": 25.64775426315908,
+        "replan": 41.45526340447906,
+        "foresight": 54.168025972513036
+      },
+      "net_usd_per_mw_day": {
+        "hold": 6.130934286533787,
+        "replan": 21.93844342785377,
+        "foresight": 50.57282229260838
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 44.44188800607459,
+        "replan": 28.63437886475461
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.615529588222403,
+        "foresight": 4.50919515092116
+      },
+      "rt_midday_usd_mwh": 35.2991521875,
+      "rt_evening_usd_mwh": 34.0372475,
+      "da_midday_usd_mwh": 46.31092499999999,
+      "da_evening_usd_mwh": 61.1369275,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-08-13",
+      "settled_usd_per_mw_day": {
+        "hold": 20.892238858520518,
+        "replan": 22.83342754332543,
+        "foresight": 34.21073896571605
+      },
+      "net_usd_per_mw_day": {
+        "hold": 4.457022036099218,
+        "replan": 3.3166075667001387,
+        "foresight": 29.074733708709392
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 24.617711672610174,
+        "replan": 25.758126142009253
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.669095688187868,
+        "foresight": 3.927157195270344
+      },
+      "rt_midday_usd_mwh": 28.853554374999998,
+      "rt_evening_usd_mwh": 31.803436875000003,
+      "da_midday_usd_mwh": 44.30786624999998,
+      "da_evening_usd_mwh": 54.00040750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-14",
+      "settled_usd_per_mw_day": {
+        "hold": 40.82487323196455,
+        "replan": 28.58862430673909,
+        "foresight": 48.57170231079395
+      },
+      "net_usd_per_mw_day": {
+        "hold": 20.28085220393793,
+        "replan": 8.044603278712465,
+        "foresight": 44.46289810518863
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 24.1820459012507,
+        "replan": 36.41829482647616
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.549526006444351,
+        "foresight": 4.234166226822422
+      },
+      "rt_midday_usd_mwh": 26.282399687499996,
+      "rt_evening_usd_mwh": 31.2308775,
+      "da_midday_usd_mwh": 30.03166999999999,
+      "da_evening_usd_mwh": 52.15455500000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-15",
+      "settled_usd_per_mw_day": {
+        "hold": 47.188854663138045,
+        "replan": 36.89312693391475,
+        "foresight": 60.294176290812686
+      },
+      "net_usd_per_mw_day": {
+        "hold": 26.64483363511142,
+        "replan": 16.349105905888127,
+        "foresight": 41.290956839888054
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 14.646123204776632,
+        "replan": 24.941850933999927
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.270321708310689,
+        "foresight": 3.6436002425173815
+      },
+      "rt_midday_usd_mwh": 24.300542812499994,
+      "rt_evening_usd_mwh": 36.62696875,
+      "da_midday_usd_mwh": 25.609594999999995,
+      "da_evening_usd_mwh": 47.73318999999998,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-16",
+      "settled_usd_per_mw_day": {
+        "hold": 90.48979521934275,
+        "replan": 79.91983941187158,
+        "foresight": 100.49492875184792
+      },
+      "net_usd_per_mw_day": {
+        "hold": 69.94577419131613,
+        "replan": 58.348617332443624,
+        "foresight": 78.92370667241997
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 8.977932481103835,
+        "replan": 20.575089339976344
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.726571241311694,
+        "foresight": 4.669095688187867
+      },
+      "rt_midday_usd_mwh": 26.510129374999998,
+      "rt_evening_usd_mwh": 46.15509062499999,
+      "da_midday_usd_mwh": 29.113830000000007,
+      "da_evening_usd_mwh": 66.93289250000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-17",
+      "settled_usd_per_mw_day": {
+        "hold": 129.79115920054758,
+        "replan": 107.69059304436057,
+        "foresight": 150.005027449099
+      },
+      "net_usd_per_mw_day": {
+        "hold": 108.21993712111963,
+        "replan": 77.90176255372197,
+        "foresight": 126.89300379256906
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 18.673066671449433,
+        "replan": 48.991241238847095
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.227681565039566,
+        "foresight": 3.093542394319907
+      },
+      "rt_midday_usd_mwh": 36.05902,
+      "rt_evening_usd_mwh": 62.783506249999995,
+      "da_midday_usd_mwh": 36.392413749999996,
+      "da_evening_usd_mwh": 92.143145,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-18",
+      "settled_usd_per_mw_day": {
+        "hold": 140.89288784601848,
+        "replan": 103.59546299970049,
+        "foresight": 173.48089492830624
+      },
+      "net_usd_per_mw_day": {
+        "hold": 113.15845945818255,
+        "replan": 67.6434262006539,
+        "foresight": 149.85527074607563
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 36.696811287893084,
+        "replan": 82.21184454542173
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.2128461551868615,
+        "foresight": 6.50688586317323
+      },
+      "rt_midday_usd_mwh": 35.077817812499994,
+      "rt_evening_usd_mwh": 60.311092499999994,
+      "da_midday_usd_mwh": 39.323915,
+      "da_evening_usd_mwh": 84.99635250000003,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-19",
+      "settled_usd_per_mw_day": {
+        "hold": 207.47667030622344,
+        "replan": 186.8317099107199,
+        "foresight": 273.6694414587081
+      },
+      "net_usd_per_mw_day": {
+        "hold": 179.7422419183875,
+        "replan": 166.28768888269326,
+        "foresight": 250.04381727647748
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 70.30157535808999,
+        "replan": 83.75612839378422
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.0995838546418275,
+        "foresight": 6.1742927456584775
+      },
+      "rt_midday_usd_mwh": 40.123614687499995,
+      "rt_evening_usd_mwh": 80.77039437500002,
+      "da_midday_usd_mwh": 55.29067625,
+      "da_evening_usd_mwh": 133.4458075,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-20",
+      "settled_usd_per_mw_day": {
+        "hold": 137.05979902817842,
+        "replan": 178.68479487019937,
+        "foresight": 277.5366416023225
+      },
+      "net_usd_per_mw_day": {
+        "hold": 115.48857694875046,
+        "replan": 158.14077384217273,
+        "foresight": 248.77501216308525
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 133.2864352143348,
+        "replan": 90.63423832091252
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.897131814396183,
+        "foresight": 7.713601917745984
+      },
+      "rt_midday_usd_mwh": 52.137165624999994,
+      "rt_evening_usd_mwh": 94.131235625,
+      "da_midday_usd_mwh": 47.392513750000006,
+      "da_evening_usd_mwh": 105.33018249999996,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-21",
+      "settled_usd_per_mw_day": {
+        "hold": 83.6778642443362,
+        "replan": 74.66024022850863,
+        "foresight": 141.17494173372114
+      },
+      "net_usd_per_mw_day": {
+        "hold": 62.10664216490825,
+        "replan": 54.11621920048201,
+        "foresight": 111.8997117687832
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 49.793069603874955,
+        "replan": 57.7834925683012
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.897131814396182,
+        "foresight": 8.009950913480282
+      },
+      "rt_midday_usd_mwh": 54.203633125,
+      "rt_evening_usd_mwh": 55.319719375000005,
+      "da_midday_usd_mwh": 70.01288124999998,
+      "da_evening_usd_mwh": 86.51686500000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-22",
+      "settled_usd_per_mw_day": {
+        "hold": 36.42635151098669,
+        "replan": 15.995597329057333,
+        "foresight": 52.22477789670853
+      },
+      "net_usd_per_mw_day": {
+        "hold": 15.882330482960064,
+        "replan": -12.766032110179935,
+        "foresight": 41.439166856994554
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 25.55683637403449,
+        "replan": 54.20519896717449
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.553790020771463,
+        "foresight": 4.176602033406407
+      },
+      "rt_midday_usd_mwh": 31.051153750000005,
+      "rt_evening_usd_mwh": 34.5748175,
+      "da_midday_usd_mwh": 30.16930124999999,
+      "da_evening_usd_mwh": 46.868764999999996,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-23",
+      "settled_usd_per_mw_day": {
+        "hold": 73.75244607591515,
+        "replan": 66.1802324772347,
+        "foresight": 87.50876338421895
+      },
+      "net_usd_per_mw_day": {
+        "hold": 52.18122399648719,
+        "replan": 44.60901039780674,
+        "foresight": 65.937541304791
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.756317308303807,
+        "replan": 21.328530906984255
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.7056057308448835,
+        "foresight": 1.978502647780065
+      },
+      "rt_midday_usd_mwh": 27.071019062500003,
+      "rt_evening_usd_mwh": 58.40205875000001,
+      "da_midday_usd_mwh": 24.6170575,
+      "da_evening_usd_mwh": 53.2398375,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-24",
+      "settled_usd_per_mw_day": {
+        "hold": 152.0268610531113,
+        "replan": 125.8052295394414,
+        "foresight": 212.20303643988032
+      },
+      "net_usd_per_mw_day": {
+        "hold": 131.48284002508467,
+        "replan": 94.98919799740148,
+        "foresight": 182.92780647494237
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 51.4449664498577,
+        "replan": 87.9386084775409
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.266057693983577,
+        "foresight": 7.09745184747827
+      },
+      "rt_midday_usd_mwh": 48.41836906249999,
+      "rt_evening_usd_mwh": 75.373595,
+      "da_midday_usd_mwh": 34.425878749999995,
+      "da_evening_usd_mwh": 99.49351249999998,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-25",
+      "settled_usd_per_mw_day": {
+        "hold": 189.5341260394934,
+        "replan": 180.59684931467314,
+        "foresight": 218.56689312731467
+      },
+      "net_usd_per_mw_day": {
+        "hold": 167.96290396006543,
+        "replan": 151.83521987543588,
+        "foresight": 191.85966579088006
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 23.896761830814626,
+        "replan": 40.024445915444176
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.895265728109189,
+        "foresight": 4.370614685290013
+      },
+      "rt_midday_usd_mwh": 52.341690312500006,
+      "rt_evening_usd_mwh": 97.02767062499998,
+      "da_midday_usd_mwh": 47.100705000000005,
+      "da_evening_usd_mwh": 116.32504750000003,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-26",
+      "settled_usd_per_mw_day": {
+        "hold": 178.46419457526116,
+        "replan": 312.7689083057374,
+        "foresight": 735.894646987528
+      },
+      "net_usd_per_mw_day": {
+        "hold": 156.8929724958332,
+        "replan": 276.8168715066908,
+        "foresight": 704.5650149197874
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 547.6720424239542,
+        "replan": 427.74814341309656
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.027095611080917,
+        "foresight": 7.0633397328613725
+      },
+      "rt_midday_usd_mwh": 69.2740765625,
+      "rt_evening_usd_mwh": 138.51899999999998,
+      "da_midday_usd_mwh": 55.46997999999998,
+      "da_evening_usd_mwh": 121.12512749999998,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-27",
+      "settled_usd_per_mw_day": {
+        "hold": 162.86653992241344,
+        "replan": 181.65865424946372,
+        "foresight": 285.8610373060989
+      },
+      "net_usd_per_mw_day": {
+        "hold": 141.29531784298547,
+        "replan": 149.81542165602247,
+        "foresight": 257.61300839256234
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 116.31769054957687,
+        "replan": 107.79758673653987
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.351160699941447,
+        "foresight": 8.56000876167776
+      },
+      "rt_midday_usd_mwh": 99.8841025,
+      "rt_evening_usd_mwh": 102.665510625,
+      "da_midday_usd_mwh": 64.95566625,
+      "da_evening_usd_mwh": 123.05307500000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-28",
+      "settled_usd_per_mw_day": {
+        "hold": 93.20222205983222,
+        "replan": 118.71027683076028,
+        "foresight": 150.41876075108522
+      },
+      "net_usd_per_mw_day": {
+        "hold": 72.65820103180559,
+        "replan": 110.49266841954963,
+        "foresight": 139.11954918567056
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 66.46134815386498,
+        "replan": 28.626880766120934
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.423826224086727,
+        "foresight": 6.1060685164246795
+      },
+      "rt_midday_usd_mwh": 75.2358078125,
+      "rt_evening_usd_mwh": 65.83943937500001,
+      "da_midday_usd_mwh": 33.855506250000005,
+      "da_evening_usd_mwh": 77.77836500000001,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-08-29",
+      "settled_usd_per_mw_day": {
+        "hold": 22.40634028654985,
+        "replan": 19.82986162904701,
+        "foresight": 23.822313782308786
+      },
+      "net_usd_per_mw_day": {
+        "hold": 3.9167213613258873,
+        "replan": 18.80266057764568,
+        "foresight": 20.227110102404126
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.31038874107824,
+        "replan": 1.4244495247584474
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.620148163718264,
+        "foresight": 3.907969130798338
+      },
+      "rt_midday_usd_mwh": 25.618734687499995,
+      "rt_evening_usd_mwh": 29.847696874999993,
+      "da_midday_usd_mwh": 19.263130000000007,
+      "da_evening_usd_mwh": 31.696017500000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-30",
+      "settled_usd_per_mw_day": {
+        "hold": 61.7314848888577,
+        "replan": 61.74335946519634,
+        "foresight": 73.89991549769323
+      },
+      "net_usd_per_mw_day": {
+        "hold": 41.18746386083107,
+        "replan": 41.199338437169715,
+        "foresight": 54.383095521067936
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.195631660236863,
+        "replan": 13.183757083898222
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.114951106247656,
+        "foresight": 3.3557792754373077
+      },
+      "rt_midday_usd_mwh": 21.315729687500003,
+      "rt_evening_usd_mwh": 37.377165000000005,
+      "da_midday_usd_mwh": 15.261489999999998,
+      "da_evening_usd_mwh": 41.1232725,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-08-31",
+      "settled_usd_per_mw_day": {
+        "hold": 55.95677309635347,
+        "replan": 50.28064358816628,
+        "foresight": 56.904723049550675
+      },
+      "net_usd_per_mw_day": {
+        "hold": 36.43995311972818,
+        "replan": 30.763823611540985,
+        "foresight": 54.336720421047346
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 17.896767301319166,
+        "replan": 23.57289680950636
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.3025677366405928,
+        "foresight": 4.308786477546886
+      },
+      "rt_midday_usd_mwh": 25.8825778125,
+      "rt_evening_usd_mwh": 34.684456250000004,
+      "da_midday_usd_mwh": 27.78988250000001,
+      "da_evening_usd_mwh": 51.70130750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-01",
+      "settled_usd_per_mw_day": {
+        "hold": 34.02556868562286,
+        "replan": 15.849295692882997,
+        "foresight": 45.48255370607719
+      },
+      "net_usd_per_mw_day": {
+        "hold": 12.4543466061949,
+        "replan": -12.912333746354268,
+        "foresight": 29.04733688365589
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.59299027746099,
+        "replan": 41.95967063001016
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 8.353204066812816,
+        "foresight": 5.027272891665294
+      },
+      "rt_midday_usd_mwh": 16.387701874999998,
+      "rt_evening_usd_mwh": 24.832077500000004,
+      "da_midday_usd_mwh": 24.524775,
+      "da_evening_usd_mwh": 40.19477249999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-02",
+      "settled_usd_per_mw_day": {
+        "hold": 37.579585739460214,
+        "replan": 34.59090560579809,
+        "foresight": 43.52666704916699
+      },
+      "net_usd_per_mw_day": {
+        "hold": 17.035564711433587,
+        "replan": 20.210090886179454,
+        "foresight": 30.68665390665035
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.651089195216763,
+        "replan": 10.476563020470895
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.618104796846897,
+        "foresight": 4.146753933116622
+      },
+      "rt_midday_usd_mwh": 19.873059062499998,
+      "rt_evening_usd_mwh": 27.45412,
+      "da_midday_usd_mwh": 12.356493749999995,
+      "da_evening_usd_mwh": 30.368850000000002,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-03",
+      "settled_usd_per_mw_day": {
+        "hold": 47.24128242489562,
+        "replan": 36.870710456275276,
+        "foresight": 65.36656737899538
+      },
+      "net_usd_per_mw_day": {
+        "hold": 26.697261396869,
+        "replan": 26.598699942261966,
+        "foresight": 45.84974740237009
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 19.152486005501093,
+        "replan": 19.251047460108126
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.496491748232011,
+        "foresight": 6.212668874602486
+      },
+      "rt_midday_usd_mwh": 28.94214625,
+      "rt_evening_usd_mwh": 37.647290000000005,
+      "da_midday_usd_mwh": 14.484477499999999,
+      "da_evening_usd_mwh": 36.51688000000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-04",
+      "settled_usd_per_mw_day": {
+        "hold": 33.00133197698173,
+        "replan": 29.38878638024814,
+        "foresight": 46.80053838303316
+      },
+      "net_usd_per_mw_day": {
+        "hold": 13.484512000356439,
+        "replan": 23.225580071840152,
+        "foresight": 30.365321560611857
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.88080956025542,
+        "replan": 7.139741488771705
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.7310125362231825,
+        "foresight": 3.5817720347742545
+      },
+      "rt_midday_usd_mwh": 28.126683125000007,
+      "rt_evening_usd_mwh": 35.531913125,
+      "da_midday_usd_mwh": 21.141176249999994,
+      "da_evening_usd_mwh": 38.7016075,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-05",
+      "settled_usd_per_mw_day": {
+        "hold": 36.3727241967186,
+        "replan": 33.973364912537875,
+        "foresight": 47.63286086784138
+      },
+      "net_usd_per_mw_day": {
+        "hold": 16.855904220093308,
+        "replan": 17.53814809011657,
+        "foresight": 28.116040891216084
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 11.260136671122776,
+        "replan": 10.577892801099512
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.2152440832269795,
+        "foresight": 2.9037937567634144
+      },
+      "rt_midday_usd_mwh": 26.3209234375,
+      "rt_evening_usd_mwh": 40.881344999999996,
+      "da_midday_usd_mwh": 23.289636249999994,
+      "da_evening_usd_mwh": 40.9947625,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-06",
+      "settled_usd_per_mw_day": {
+        "hold": 12.787364078415486,
+        "replan": 12.0108281834105,
+        "foresight": 31.2279195278659
+      },
+      "net_usd_per_mw_day": {
+        "hold": 2.515353564402174,
+        "replan": 5.847621875002513,
+        "foresight": 19.415107436750596
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.89975387234842,
+        "replan": 13.567485561748082
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 0.8016346934970953,
+        "foresight": 4.308786477546885
+      },
+      "rt_midday_usd_mwh": 32.0395353125,
+      "rt_evening_usd_mwh": 33.38608375,
+      "da_midday_usd_mwh": 31.490958749999997,
+      "da_evening_usd_mwh": 39.19896499999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-07",
+      "settled_usd_per_mw_day": {
+        "hold": 82.12275724028791,
+        "replan": 78.17513139044277,
+        "foresight": 94.20493204138344
+      },
+      "net_usd_per_mw_day": {
+        "hold": 61.57873621226129,
+        "replan": 57.63111036241615,
+        "foresight": 73.66091101335682
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 12.082174801095533,
+        "replan": 16.029800650940672
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.225815478752572,
+        "foresight": 4.345030599327339
+      },
+      "rt_midday_usd_mwh": 16.987783124999996,
+      "rt_evening_usd_mwh": 32.92322375,
+      "da_midday_usd_mwh": 5.271045000000001,
+      "da_evening_usd_mwh": 37.13743999999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-08",
+      "settled_usd_per_mw_day": {
+        "hold": 45.04754214111589,
+        "replan": -5.948035468192745,
+        "foresight": 121.73048598180004
+      },
+      "net_usd_per_mw_day": {
+        "hold": 24.503521113089263,
+        "replan": -6.975236519594076,
+        "foresight": 88.3464518112568
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 63.842930698167535,
+        "replan": 95.32168833085088
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.020965510466811,
+        "foresight": 7.685885824619758
+      },
+      "rt_midday_usd_mwh": 41.7127334375,
+      "rt_evening_usd_mwh": 80.251675625,
+      "da_midday_usd_mwh": 14.627906249999999,
+      "da_evening_usd_mwh": 35.245275,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-09",
+      "settled_usd_per_mw_day": {
+        "hold": 87.42411423575737,
+        "replan": -24.482745023081478,
+        "foresight": 130.62135699097686
+      },
+      "net_usd_per_mw_day": {
+        "hold": 58.662484796520104,
+        "replan": -36.80915763989745,
+        "foresight": 99.80532544893694
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 41.14284065241684,
+        "replan": 136.6144830888344
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.246958269803757,
+        "foresight": 5.713779198330358
+      },
+      "rt_midday_usd_mwh": 43.34931562499999,
+      "rt_evening_usd_mwh": 171.822439375,
+      "da_midday_usd_mwh": 24.0882425,
+      "da_evening_usd_mwh": 55.56540999999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-10",
+      "settled_usd_per_mw_day": {
+        "hold": 58.93500289842243,
+        "replan": 25.9809689673624,
+        "foresight": 80.94292178787413
+      },
+      "net_usd_per_mw_day": {
+        "hold": 38.390981870395805,
+        "replan": 14.68175740194776,
+        "foresight": 54.23569445143952
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 15.844712581043716,
+        "replan": 39.553937049491765
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.8930450806534465,
+        "foresight": 3.5732440061200306
+      },
+      "rt_midday_usd_mwh": 34.8399259375,
+      "rt_evening_usd_mwh": 61.634026874999996,
+      "da_midday_usd_mwh": 20.36044625,
+      "da_evening_usd_mwh": 49.57134750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-11",
+      "settled_usd_per_mw_day": {
+        "hold": 38.686189176294,
+        "replan": 39.91610502925821,
+        "foresight": 52.43370504734493
+      },
+      "net_usd_per_mw_day": {
+        "hold": 19.169369199668708,
+        "replan": 20.39928505263292,
+        "foresight": 32.91688507071964
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.747515871050929,
+        "replan": 12.517600018086718
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.2536202121709894,
+        "foresight": 4.264014327112208
+      },
+      "rt_midday_usd_mwh": 30.542654062500006,
+      "rt_evening_usd_mwh": 46.871493125,
+      "da_midday_usd_mwh": 26.980356250000003,
+      "da_evening_usd_mwh": 46.967187499999994,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-12",
+      "settled_usd_per_mw_day": {
+        "hold": 24.738369718501897,
+        "replan": 38.70306192362654,
+        "foresight": 50.37919278373216
+      },
+      "net_usd_per_mw_day": {
+        "hold": 5.221549741876604,
+        "replan": 18.15904089559992,
+        "foresight": 35.48477753841286
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 30.263227796536253,
+        "replan": 17.325736642812938
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.5945640777555914,
+        "foresight": 5.434486259904508
+      },
+      "rt_midday_usd_mwh": 31.1686196875,
+      "rt_evening_usd_mwh": 37.189388750000006,
+      "da_midday_usd_mwh": 31.271265000000007,
+      "da_evening_usd_mwh": 45.3478025,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-13",
+      "settled_usd_per_mw_day": {
+        "hold": 37.02906285786022,
+        "replan": 34.43584632379803,
+        "foresight": 49.641820922238516
+      },
+      "net_usd_per_mw_day": {
+        "hold": 17.512242881234926,
+        "replan": 18.000629501376732,
+        "foresight": 28.070598842810558
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 10.558355961575632,
+        "replan": 10.069969341433826
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.2556635790423587,
+        "foresight": 3.0871463728292383
+      },
+      "rt_midday_usd_mwh": 20.509953125000003,
+      "rt_evening_usd_mwh": 37.89310625000001,
+      "da_midday_usd_mwh": 17.64486875,
+      "da_evening_usd_mwh": 37.9511575,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-14",
+      "settled_usd_per_mw_day": {
+        "hold": 58.52356261278075,
+        "replan": 52.287085870023674,
+        "foresight": 69.26616695323196
+      },
+      "net_usd_per_mw_day": {
+        "hold": 37.97954158475413,
+        "replan": 23.525456430786406,
+        "foresight": 50.776548028007994
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 12.797006443253863,
+        "replan": 27.25109159722159
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.299992528016101,
+        "foresight": 4.323710527691779
+      },
+      "rt_midday_usd_mwh": 18.755795625,
+      "rt_evening_usd_mwh": 31.530466875,
+      "da_midday_usd_mwh": 11.076079999999994,
+      "da_evening_usd_mwh": 38.58986,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-15",
+      "settled_usd_per_mw_day": {
+        "hold": 5.425964200870346,
+        "replan": 4.264638237688553,
+        "foresight": 32.90288439287729
+      },
+      "net_usd_per_mw_day": {
+        "hold": 1.3171599952650208,
+        "replan": -14.224980687535409,
+        "foresight": 15.44046651905466
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 14.123306523789639,
+        "replan": 29.665447206590066
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.221374183841087,
+        "foresight": 4.20858214085975
+      },
+      "rt_midday_usd_mwh": 26.866054999999996,
+      "rt_evening_usd_mwh": 33.514475625,
+      "da_midday_usd_mwh": 27.421628750000004,
+      "da_evening_usd_mwh": 38.438975,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-16",
+      "settled_usd_per_mw_day": {
+        "hold": 52.44337653540117,
+        "replan": 54.11015615587013,
+        "foresight": 64.41515886245739
+      },
+      "net_usd_per_mw_day": {
+        "hold": 32.92655655877588,
+        "replan": 25.34852671663286,
+        "foresight": 53.11594729704275
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 20.189390738266873,
+        "replan": 27.76742058040989
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.837435613816613,
+        "foresight": 3.7949727511298645
+      },
+      "rt_midday_usd_mwh": 22.188882812500005,
+      "rt_evening_usd_mwh": 33.03120499999999,
+      "da_midday_usd_mwh": 28.203416249999997,
+      "da_evening_usd_mwh": 48.704282500000005,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-17",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -5.376362713089059,
+        "foresight": 13.644262316398404
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -24.89318268971435,
+        "foresight": 5.940254430888421
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 5.940254430888421,
+        "replan": 30.833437120602774
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.807764794111201,
+        "foresight": 1.5030650503070537
+      },
+      "rt_midday_usd_mwh": 27.3642596875,
+      "rt_evening_usd_mwh": 34.838154375,
+      "da_midday_usd_mwh": 34.00463874999999,
+      "da_evening_usd_mwh": 41.753685000000004,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-18",
+      "settled_usd_per_mw_day": {
+        "hold": 18.0802481362958,
+        "replan": 7.945236692920144,
+        "foresight": 24.26781104886212
+      },
+      "net_usd_per_mw_day": {
+        "hold": 1.645031313874501,
+        "replan": -11.571583283705149,
+        "foresight": 11.427797906345484
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 9.782766592470983,
+        "replan": 22.999381190050634
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.374701419032749,
+        "foresight": 2.5562765891037693
+      },
+      "rt_midday_usd_mwh": 22.8390371875,
+      "rt_evening_usd_mwh": 32.8703625,
+      "da_midday_usd_mwh": 28.130195000000004,
+      "da_evening_usd_mwh": 41.13468499999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-19",
+      "settled_usd_per_mw_day": {
+        "hold": 31.06461035886617,
+        "replan": 35.83260339938969,
+        "foresight": 44.13288448182098
+      },
+      "net_usd_per_mw_day": {
+        "hold": 10.520589330839542,
+        "replan": 15.288582371363066,
+        "foresight": 26.156866082297686
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 15.636276751458144,
+        "replan": 10.86828371093462
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.008173467485475,
+        "foresight": 2.547748560449545
+      },
+      "rt_midday_usd_mwh": 17.558038437500002,
+      "rt_evening_usd_mwh": 33.306959375000005,
+      "da_midday_usd_mwh": 19.722841250000002,
+      "da_evening_usd_mwh": 37.48637,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-20",
+      "settled_usd_per_mw_day": {
+        "hold": 41.56627599412198,
+        "replan": 35.242233581063765,
+        "foresight": 51.96110165491488
+      },
+      "net_usd_per_mw_day": {
+        "hold": 21.022254966095353,
+        "replan": 20.86141886144513,
+        "foresight": 33.98508325539159
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 12.962828289296233,
+        "replan": 13.123664393946456
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.281070384420657,
+        "foresight": 2.8846056922914096
+      },
+      "rt_midday_usd_mwh": 21.979580624999997,
+      "rt_evening_usd_mwh": 37.28908624999999,
+      "da_midday_usd_mwh": 17.310109999999998,
+      "da_evening_usd_mwh": 39.105747500000014,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-21",
+      "settled_usd_per_mw_day": {
+        "hold": 50.88064602805788,
+        "replan": 26.03957400667567,
+        "foresight": 74.08922784130377
+      },
+      "net_usd_per_mw_day": {
+        "hold": 30.33662500003126,
+        "replan": -1.6948543811602654,
+        "foresight": 53.03160628757648
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 22.69498128754522,
+        "replan": 54.72646066873675
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.558231315682949,
+        "foresight": 7.02069958959025
+      },
+      "rt_midday_usd_mwh": 31.225626875,
+      "rt_evening_usd_mwh": 34.829889375,
+      "da_midday_usd_mwh": 31.058957500000005,
+      "da_evening_usd_mwh": 49.7394225,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-22",
+      "settled_usd_per_mw_day": {
+        "hold": 27.589626938502256,
+        "replan": 19.713866709223424,
+        "foresight": 24.949413163409062
+      },
+      "net_usd_per_mw_day": {
+        "hold": 7.045605910475633,
+        "replan": 0.19704673259813177,
+        "foresight": 21.354209483504405
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 14.308603573028773,
+        "replan": 21.157162750906274
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.897131814396182,
+        "foresight": 4.283202391584213
+      },
+      "rt_midday_usd_mwh": 23.03066125,
+      "rt_evening_usd_mwh": 30.269102499999995,
+      "da_midday_usd_mwh": 27.498346249999997,
+      "da_evening_usd_mwh": 41.77191250000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-23",
+      "settled_usd_per_mw_day": {
+        "hold": 63.984649798144495,
+        "replan": 56.03011188285221,
+        "foresight": 72.70545532894032
+      },
+      "net_usd_per_mw_day": {
+        "hold": 44.4678298215192,
+        "replan": 36.51329190622692,
+        "foresight": 54.72943692941702
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 10.261607107897817,
+        "replan": 18.2161450231901
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.483522424666299,
+        "foresight": 3.5369998843395765
+      },
+      "rt_midday_usd_mwh": 22.6540725,
+      "rt_evening_usd_mwh": 37.831835625,
+      "da_midday_usd_mwh": 24.052822499999984,
+      "da_evening_usd_mwh": 61.11369500000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-24",
+      "settled_usd_per_mw_day": {
+        "hold": 23.918997237085748,
+        "replan": 12.56019413132317,
+        "foresight": 35.55169552949767
+      },
+      "net_usd_per_mw_day": {
+        "hold": 7.483780414664448,
+        "replan": -6.956625845302122,
+        "foresight": 27.84768764398769
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 20.363907229323242,
+        "replan": 34.80431348928981
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.014303568099581,
+        "foresight": 4.240562248313089
+      },
+      "rt_midday_usd_mwh": 31.077892187500005,
+      "rt_evening_usd_mwh": 33.189375,
+      "da_midday_usd_mwh": 38.51240999999998,
+      "da_evening_usd_mwh": 56.7069325,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-25",
+      "settled_usd_per_mw_day": {
+        "hold": 31.07304261775861,
+        "replan": 24.5374249945665,
+        "foresight": 37.85482600942908
+      },
+      "net_usd_per_mw_day": {
+        "hold": 10.529021589731986,
+        "replan": -4.224204444670768,
+        "foresight": 29.637217598218434
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 19.10819600848645,
+        "replan": 33.8614220428892
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 7.743450018035771,
+        "foresight": 4.545439272701613
+      },
+      "rt_midday_usd_mwh": 20.2702303125,
+      "rt_evening_usd_mwh": 26.023654375,
+      "da_midday_usd_mwh": 25.288415000000004,
+      "da_evening_usd_mwh": 40.8869225,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-26",
+      "settled_usd_per_mw_day": {
+        "hold": 32.613529595883556,
+        "replan": 25.032408876355127,
+        "foresight": 41.4696696753642
+      },
+      "net_usd_per_mw_day": {
+        "hold": 13.096709619258263,
+        "replan": 5.515588899729835,
+        "foresight": 21.95284969873891
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 8.856140079480646,
+        "replan": 16.437260799009074
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.270321708310688,
+        "foresight": 1.6587015732466492
+      },
+      "rt_midday_usd_mwh": 17.1797046875,
+      "rt_evening_usd_mwh": 34.997175625000004,
+      "da_midday_usd_mwh": 19.018650000000004,
+      "da_evening_usd_mwh": 36.291525,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-27",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -0.3915773129819815,
+        "foresight": 37.34510524640445
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -1.4187783643833127,
+        "foresight": 12.692280012772507
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 12.692280012772507,
+        "replan": 14.11105837715582
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 0.20040867337427382,
+        "foresight": 4.809808160982572
+      },
+      "rt_midday_usd_mwh": 39.2551378125,
+      "rt_evening_usd_mwh": 42.043366875000004,
+      "da_midday_usd_mwh": 29.180002500000008,
+      "da_evening_usd_mwh": 35.23029500000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-28",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -0.16468424966000894,
+        "foresight": 35.302240244526494
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": -1.1918853010613402,
+        "foresight": 15.785420267901202
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 15.785420267901202,
+        "replan": 16.977305568962542
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 0.20040867337427382,
+        "foresight": 3.807764794111202
+      },
+      "rt_midday_usd_mwh": 36.138529687500004,
+      "rt_evening_usd_mwh": 31.598483125,
+      "da_midday_usd_mwh": 27.576758750000003,
+      "da_evening_usd_mwh": 35.979497499999994,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-09-29",
+      "settled_usd_per_mw_day": {
+        "hold": 17.49062731340651,
+        "replan": 15.030891078758877,
+        "foresight": 20.157921736890835
+      },
+      "net_usd_per_mw_day": {
+        "hold": 4.137013645189207,
+        "replan": -4.485928897866415,
+        "foresight": 17.589919108387505
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.452905463198299,
+        "replan": 22.07584800625392
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.494271100776268,
+        "foresight": 3.106334437301244
+      },
+      "rt_midday_usd_mwh": 26.702557499999998,
+      "rt_evening_usd_mwh": 30.948369375,
+      "da_midday_usd_mwh": 31.985774999999997,
+      "da_evening_usd_mwh": 43.913189999999986,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-09-30",
+      "settled_usd_per_mw_day": {
+        "hold": 1.568149515231223,
+        "replan": -7.435138372746905,
+        "foresight": 55.88226850701764
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.5409484638298918,
+        "replan": -16.679947835358885,
+        "foresight": 28.66144064488237
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 28.120492181052477,
+        "replan": 45.34138848024125
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.8164701033498014,
+        "foresight": 5.298037801436918
+      },
+      "rt_midday_usd_mwh": 29.624264999999998,
+      "rt_evening_usd_mwh": 42.892514375000005,
+      "da_midday_usd_mwh": 23.766540000000003,
+      "da_evening_usd_mwh": 30.74207999999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-01",
+      "settled_usd_per_mw_day": {
+        "hold": 32.77019152898852,
+        "replan": 34.16631595277447,
+        "foresight": 51.306469601547484
+      },
+      "net_usd_per_mw_day": {
+        "hold": 16.33497470656722,
+        "replan": 22.867104387359827,
+        "foresight": 34.87125277912618
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 18.53627807255896,
+        "replan": 12.004148391766353
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.1084664444648005,
+        "foresight": 4.728791888767439
+      },
+      "rt_midday_usd_mwh": 27.909081874999995,
+      "rt_evening_usd_mwh": 37.6181775,
+      "da_midday_usd_mwh": 25.940917499999994,
+      "da_evening_usd_mwh": 40.01984500000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-02",
+      "settled_usd_per_mw_day": {
+        "hold": 23.30862678239756,
+        "replan": -0.4648335481633472,
+        "foresight": 49.79687118584829
+      },
+      "net_usd_per_mw_day": {
+        "hold": 4.819007857173599,
+        "replan": -11.764045113577989,
+        "foresight": 26.68484752931834
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 21.86583967214474,
+        "replan": 38.448892642896325
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.6798443642978365,
+        "foresight": 3.7672566580036353
+      },
+      "rt_midday_usd_mwh": 23.2117015625,
+      "rt_evening_usd_mwh": 49.266528124999994,
+      "da_midday_usd_mwh": 22.97862750000001,
+      "da_evening_usd_mwh": 38.38574750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-03",
+      "settled_usd_per_mw_day": {
+        "hold": 52.63722634457765,
+        "replan": 57.81733376876783,
+        "foresight": 68.64127190126106
+      },
+      "net_usd_per_mw_day": {
+        "hold": 32.09320531655102,
+        "replan": 37.273312740741204,
+        "foresight": 48.097250873234444
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.004045556683423,
+        "replan": 10.82393813249324
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.7716093126229344,
+        "foresight": 3.922893180943231
+      },
+      "rt_midday_usd_mwh": 33.4210528125,
+      "rt_evening_usd_mwh": 64.549429375,
+      "da_midday_usd_mwh": 29.505256250000006,
+      "da_evening_usd_mwh": 45.90683000000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-04",
+      "settled_usd_per_mw_day": {
+        "hold": 100.93160249355415,
+        "replan": 38.35723562952826,
+        "foresight": 121.46390183147582
+      },
+      "net_usd_per_mw_day": {
+        "hold": 80.38758146552753,
+        "replan": 9.595606190290987,
+        "foresight": 99.89267975204787
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 19.505098286520337,
+        "replan": 90.29707356175689
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.332238556346003,
+        "foresight": 1.8846943325835965
+      },
+      "rt_midday_usd_mwh": 24.869360937499998,
+      "rt_evening_usd_mwh": 63.507259999999995,
+      "da_midday_usd_mwh": 26.947652500000004,
+      "da_evening_usd_mwh": 65.31284,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-05",
+      "settled_usd_per_mw_day": {
+        "hold": 49.50365952393543,
+        "replan": 9.57576884435737,
+        "foresight": 81.72036451080606
+      },
+      "net_usd_per_mw_day": {
+        "hold": 29.98683954731014,
+        "replan": -3.777844823859933,
+        "foresight": 57.06753927717412
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 27.08069972986398,
+        "replan": 60.84538410103406
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.029670819705411,
+        "foresight": 4.818336189636794
+      },
+      "rt_midday_usd_mwh": 35.413936875,
+      "rt_evening_usd_mwh": 83.86693249999999,
+      "da_midday_usd_mwh": 25.251243750000008,
+      "da_evening_usd_mwh": 49.95696249999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-06",
+      "settled_usd_per_mw_day": {
+        "hold": 87.60613908040185,
+        "replan": 76.06861789442554,
+        "foresight": 221.17555106438007
+      },
+      "net_usd_per_mw_day": {
+        "hold": 68.08931910377655,
+        "replan": 63.74220527760957,
+        "foresight": 198.06352740785013
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 129.97420830407358,
+        "replan": 134.32132213024056
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.483699705250675,
+        "foresight": 6.270233068018501
+      },
+      "rt_midday_usd_mwh": 46.6890215625,
+      "rt_evening_usd_mwh": 104.94764,
+      "da_midday_usd_mwh": 29.925105000000002,
+      "da_evening_usd_mwh": 71.4452975,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-07",
+      "settled_usd_per_mw_day": {
+        "hold": 78.3679190549704,
+        "replan": 52.67701667651341,
+        "foresight": 105.08526884161651
+      },
+      "net_usd_per_mw_day": {
+        "hold": 58.85109907834511,
+        "replan": 24.94258828867747,
+        "foresight": 74.26923729957659
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 15.41813822123148,
+        "replan": 49.32664901089912
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.0634283731535605,
+        "foresight": 5.594386797171216
+      },
+      "rt_midday_usd_mwh": 39.0724721875,
+      "rt_evening_usd_mwh": 73.89489375,
+      "da_midday_usd_mwh": 35.36089375000002,
+      "da_evening_usd_mwh": 64.56554750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-08",
+      "settled_usd_per_mw_day": {
+        "hold": 122.8384244601996,
+        "replan": 115.57017943765527,
+        "foresight": 150.79178344024356
+      },
+      "net_usd_per_mw_day": {
+        "hold": 102.29440343217298,
+        "replan": 79.61814263860869,
+        "foresight": 122.54375452670696
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 20.249351094533978,
+        "replan": 42.925611888098274
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.28533439874777,
+        "foresight": 5.3619980163436
+      },
+      "rt_midday_usd_mwh": 41.0521925,
+      "rt_evening_usd_mwh": 53.82114250000001,
+      "da_midday_usd_mwh": 32.56731375000001,
+      "da_evening_usd_mwh": 84.5957,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-09",
+      "settled_usd_per_mw_day": {
+        "hold": 1.8565329910813304,
+        "replan": -7.431192709729446,
+        "foresight": 4.090131575185181
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.8293319396799992,
+        "replan": -18.73040427514409,
+        "foresight": 1.5221289466818528
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 0.6927970070018536,
+        "replan": 20.252533221825942
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.217287450098349,
+        "foresight": 0.7014303568099584
+      },
+      "rt_midday_usd_mwh": 31.907003124999996,
+      "rt_evening_usd_mwh": 33.073765,
+      "da_midday_usd_mwh": 27.441468749999995,
+      "da_evening_usd_mwh": 38.14622499999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-10",
+      "settled_usd_per_mw_day": {
+        "hold": 17.436687958569973,
+        "replan": 21.247016086213993,
+        "foresight": 28.389125382141543
+      },
+      "net_usd_per_mw_day": {
+        "hold": 7.164677444556661,
+        "replan": 13.029407675003343,
+        "foresight": 25.30752222793755
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 18.142844783380887,
+        "replan": 12.278114552934207
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.6073561207369274,
+        "foresight": 2.605312753865559
+      },
+      "rt_midday_usd_mwh": 32.799767187499995,
+      "rt_evening_usd_mwh": 31.722823749999996,
+      "da_midday_usd_mwh": 25.447398750000012,
+      "da_evening_usd_mwh": 41.19189750000002,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-10-11",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 8.551576225624395,
+        "foresight": 17.29392833249682
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 0.3339678144137448,
+        "foresight": 6.508317292782841
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 6.508317292782841,
+        "replan": 6.174349478369097
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.6032693869941905,
+        "foresight": 2.1042910704298756
+      },
+      "rt_midday_usd_mwh": 25.0814875,
+      "rt_evening_usd_mwh": 32.45654125,
+      "da_midday_usd_mwh": 29.783144999999998,
+      "da_evening_usd_mwh": 38.635560000000005,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-12",
+      "settled_usd_per_mw_day": {
+        "hold": 29.605192612014307,
+        "replan": 40.63863438988094,
+        "foresight": 53.10388911224718
+      },
+      "net_usd_per_mw_day": {
+        "hold": 10.088372635389014,
+        "replan": 31.39382492726896,
+        "foresight": 41.80467754683254
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 31.716304911443522,
+        "replan": 10.410852619563578
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.611442854479666,
+        "foresight": 6.012260201228213
+      },
+      "rt_midday_usd_mwh": 34.953605937499994,
+      "rt_evening_usd_mwh": 38.565394375000004,
+      "da_midday_usd_mwh": 28.51434500000001,
+      "da_evening_usd_mwh": 46.869257499999996,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-13",
+      "settled_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 22.193003910578412,
+        "foresight": 60.609193716913005
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0,
+        "replan": 1.6489828825517883,
+        "foresight": 26.197958494968418
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 26.197958494968418,
+        "replan": 24.54897561241663
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.008173467485475,
+        "foresight": 6.71369055803817
+      },
+      "rt_midday_usd_mwh": 29.703247500000007,
+      "rt_evening_usd_mwh": 44.68632875,
+      "da_midday_usd_mwh": 40.898961250000006,
+      "da_evening_usd_mwh": 50.38936249999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-14",
+      "settled_usd_per_mw_day": {
+        "hold": 26.227684687088598,
+        "replan": 28.653539063892985,
+        "foresight": 52.71030709424939
+      },
+      "net_usd_per_mw_day": {
+        "hold": 6.710864710463305,
+        "replan": 8.109518035866358,
+        "foresight": 28.057481860617443
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 21.346617150154138,
+        "replan": 19.947963824751085
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 2.74176121233315,
+        "foresight": 4.293862427401993
+      },
+      "rt_midday_usd_mwh": 20.933299062499994,
+      "rt_evening_usd_mwh": 45.244748125,
+      "da_midday_usd_mwh": 28.220124999999996,
+      "da_evening_usd_mwh": 46.48644000000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-15",
+      "settled_usd_per_mw_day": {
+        "hold": 2.6239464964750407,
+        "replan": 12.920450937228084,
+        "foresight": 32.9200375204719
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.5695443936723783,
+        "replan": 4.7028425260174345,
+        "foresight": 17.512021749451936
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 16.94247735577956,
+        "replan": 12.809179223434501
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 1.5776853010315177,
+        "foresight": 2.9805460146514338
+      },
+      "rt_midday_usd_mwh": 19.374170625000005,
+      "rt_evening_usd_mwh": 33.540365625,
+      "da_midday_usd_mwh": 23.842675000000003,
+      "da_evening_usd_mwh": 35.186767499999995,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-16",
+      "settled_usd_per_mw_day": {
+        "hold": 1.290680807414799,
+        "replan": 1.6839790339390603,
+        "foresight": 30.30541077351127
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.26347975601346785,
+        "replan": -0.3704230688636021,
+        "foresight": 13.87019395108997
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 13.606714195076503,
+        "replan": 14.240617019953572
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 0.388025303767211,
+        "foresight": 3.1937467310070433
+      },
+      "rt_midday_usd_mwh": 26.2079609375,
+      "rt_evening_usd_mwh": 38.846145625000005,
+      "da_midday_usd_mwh": 24.408131249999997,
+      "da_evening_usd_mwh": 32.11067499999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-17",
+      "settled_usd_per_mw_day": {
+        "hold": 14.69335187518524,
+        "replan": 8.469905938891765,
+        "foresight": 19.582463730988668
+      },
+      "net_usd_per_mw_day": {
+        "hold": 2.3669392583692677,
+        "replan": 0.25229752768111524,
+        "foresight": 13.419257422580682
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 11.052318164211414,
+        "replan": 13.166959894899566
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.2065387739883806,
+        "foresight": 2.8185134702211694
+      },
+      "rt_midday_usd_mwh": 22.9465771875,
+      "rt_evening_usd_mwh": 28.307313125000004,
+      "da_midday_usd_mwh": 20.5846825,
+      "da_evening_usd_mwh": 36.127427499999996,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-18",
+      "settled_usd_per_mw_day": {
+        "hold": 24.27881237638663,
+        "replan": 14.201669406489357,
+        "foresight": 30.047277601102344
+      },
+      "net_usd_per_mw_day": {
+        "hold": 4.761992399761336,
+        "replan": -5.315150570135936,
+        "foresight": 10.530457624477052
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 5.768465224715715,
+        "replan": 15.845608194612987
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.564715977465806,
+        "foresight": 2.8568895991651795
+      },
+      "rt_midday_usd_mwh": 26.13018125,
+      "rt_evening_usd_mwh": 38.378248750000004,
+      "da_midday_usd_mwh": 28.82511250000001,
+      "da_evening_usd_mwh": 45.37164000000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-19",
+      "settled_usd_per_mw_day": {
+        "hold": 34.00303106733633,
+        "replan": 32.99240362134242,
+        "foresight": 57.39249784759673
+      },
+      "net_usd_per_mw_day": {
+        "hold": 7.295803730901724,
+        "replan": 13.475583644717126,
+        "foresight": 32.739672613964785
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 25.44386888306306,
+        "replan": 19.26408896924766
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.624234897461,
+        "foresight": 6.37043740470564
+      },
+      "rt_midday_usd_mwh": 34.0290534375,
+      "rt_evening_usd_mwh": 58.209369375,
+      "da_midday_usd_mwh": 35.683822500000005,
+      "da_evening_usd_mwh": 55.37934000000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-20",
+      "settled_usd_per_mw_day": {
+        "hold": 36.145225984483346,
+        "replan": 13.143792588297302,
+        "foresight": 70.46664025630906
+      },
+      "net_usd_per_mw_day": {
+        "hold": 17.655607059259385,
+        "replan": -14.590635799538635,
+        "foresight": 41.705010817071795
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 24.04940375781241,
+        "replan": 56.295646616610426
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.811851527853938,
+        "foresight": 5.573066725535656
+      },
+      "rt_midday_usd_mwh": 39.77934687500001,
+      "rt_evening_usd_mwh": 68.525545,
+      "da_midday_usd_mwh": 34.75603999999999,
+      "da_evening_usd_mwh": 60.99887749999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-21",
+      "settled_usd_per_mw_day": {
+        "hold": 35.678493883940874,
+        "replan": 55.495705546963904,
+        "foresight": 128.08691339179205
+      },
+      "net_usd_per_mw_day": {
+        "hold": 8.971266547506268,
+        "replan": 23.65247295352264,
+        "foresight": 88.53967291284081
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 79.56840636533454,
+        "replan": 64.88719995931817
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 6.749934679818627,
+        "foresight": 9.532204028259349
+      },
+      "rt_midday_usd_mwh": 73.84118812500002,
+      "rt_evening_usd_mwh": 69.66701375000001,
+      "da_midday_usd_mwh": 50.08268875,
+      "da_evening_usd_mwh": 71.8036725,
+      "rt_evening_below_midday": true
+    },
+    {
+      "operating_day_mt": "2026-10-22",
+      "settled_usd_per_mw_day": {
+        "hold": 51.10758070815974,
+        "replan": 44.54414796010858,
+        "foresight": 88.11243590388203
+      },
+      "net_usd_per_mw_day": {
+        "hold": 30.563559680133114,
+        "replan": 21.9457248292793,
+        "foresight": 70.13641750435873
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 39.57285782422562,
+        "replan": 48.19069267507943
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.2321228599510543,
+        "foresight": 4.551835294192282
+      },
+      "rt_midday_usd_mwh": 44.431343125,
+      "rt_evening_usd_mwh": 51.340435625,
+      "da_midday_usd_mwh": 41.79756125000001,
+      "da_evening_usd_mwh": 59.984504999999984,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-23",
+      "settled_usd_per_mw_day": {
+        "hold": 1.6192281854958444,
+        "replan": 2.0628183929614456,
+        "foresight": 25.41184189277221
+      },
+      "net_usd_per_mw_day": {
+        "hold": 0.5920271340945131,
+        "replan": 1.0356173415601144,
+        "foresight": 10.003826121752244
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 9.41179898765773,
+        "replan": 8.96820878019213
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 0.21320071635561044,
+        "foresight": 3.20653877398838
+      },
+      "rt_midday_usd_mwh": 28.212239062499997,
+      "rt_evening_usd_mwh": 36.47964312500001,
+      "da_midday_usd_mwh": 20.995073750000007,
+      "da_evening_usd_mwh": 31.456524999999992,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-24",
+      "settled_usd_per_mw_day": {
+        "hold": 10.419914886572844,
+        "replan": 20.44203435467083,
+        "foresight": 54.27410582246195
+      },
+      "net_usd_per_mw_day": {
+        "hold": 1.1751054239608631,
+        "replan": 2.9796164808482004,
+        "foresight": 30.134881114530664
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 28.9597756905698,
+        "replan": 27.155264633682464
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.2918190605306252,
+        "foresight": 5.020876870174624
+      },
+      "rt_midday_usd_mwh": 21.2376365625,
+      "rt_evening_usd_mwh": 42.44074937500001,
+      "da_midday_usd_mwh": 28.1868525,
+      "da_evening_usd_mwh": 36.06807750000001,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-25",
+      "settled_usd_per_mw_day": {
+        "hold": 41.20793833578543,
+        "replan": 40.38798021332151,
+        "foresight": 70.60392900276
+      },
+      "net_usd_per_mw_day": {
+        "hold": 21.691118359160136,
+        "replan": 14.707953928288234,
+        "foresight": 43.89670166632539
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 22.205583307165256,
+        "replan": 29.188747738037158
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 4.767168017711448,
+        "foresight": 5.60291482582544
+      },
+      "rt_midday_usd_mwh": 26.634081562500008,
+      "rt_evening_usd_mwh": 52.42294125,
+      "da_midday_usd_mwh": 27.570150000000005,
+      "da_evening_usd_mwh": 55.687325,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-26",
+      "settled_usd_per_mw_day": {
+        "hold": 25.936905815909967,
+        "replan": 47.39583251962482,
+        "foresight": 77.22395479364404
+      },
+      "net_usd_per_mw_day": {
+        "hold": 8.474487942087336,
+        "replan": 18.63420308038755,
+        "foresight": 44.35352114880145
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 35.87903320671411,
+        "replan": 25.719318068413898
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 5.436618267068065,
+        "foresight": 6.963135396174235
+      },
+      "rt_midday_usd_mwh": 27.703460624999995,
+      "rt_evening_usd_mwh": 46.6521675,
+      "da_midday_usd_mwh": 31.88951875,
+      "da_evening_usd_mwh": 41.95451749999999,
+      "rt_evening_below_midday": false
+    },
+    {
+      "operating_day_mt": "2026-10-27",
+      "settled_usd_per_mw_day": {
+        "hold": 48.896162119460726,
+        "replan": 47.481692840035976,
+        "foresight": 70.36738545165234
+      },
+      "net_usd_per_mw_day": {
+        "hold": 29.379342142835434,
+        "replan": 25.910470760608018,
+        "foresight": 44.17375864091839
+      },
+      "regret_usd_per_mw_day": {
+        "hold": 14.79441649808296,
+        "replan": 18.263287880310376
+      },
+      "deviation_mwh_per_mw": {
+        "hold": 0,
+        "replan": 3.965533324214354,
+        "foresight": 2.7737413197864917
+      },
+      "rt_midday_usd_mwh": 12.694256562500001,
+      "rt_evening_usd_mwh": 35.39341249999999,
+      "da_midday_usd_mwh": 22.830285000000003,
+      "da_evening_usd_mwh": 55.311317500000015,
+      "rt_evening_below_midday": false
+    }
+  ]
+}
