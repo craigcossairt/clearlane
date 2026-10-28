@@ -577,7 +577,7 @@ Afterwards, check GitHub's secret-scanning alerts for the repo, and post the res
 - **`demo/stage-script.md`** is the operator's script. For each of the six beats it gives:
   - the time window (0:00-0:25, 0:25-0:55, 0:55-1:40, 1:40-2:00, 2:00-2:25, 2:25-2:45);
   - the keys to press;
-  - the expected `data-beat` and `data-state`;
+  - the expected `data-beat` (every beat) and `data-state` (only where a beat sets one; beats 5 and 6 are not checked, because after the crash it still reads `call`);
   - the `{key}`s on screen;
   - the one thing the judge must see;
   - the recovery if the beat fails: press R, or jump with the beat number, or cut to the backup video at that beat's timestamp.
