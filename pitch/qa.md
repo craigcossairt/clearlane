@@ -60,6 +60,14 @@ A: Spin answers the first call, then refills under the host's ceiling. A second 
 
 Source: FACTS `second_call_shortfall_kw`
 
+### Do your System Critical Hours predict RMP's calls?
+
+Judge: Ryan Byrd
+
+A: No: they mark the grid's tightest hours, and Torus's 2025 calls were spread across the day, so our rule flags call hours no better than chance. Spin keeps its full reserve in every hour, not only those, and in the backtest Clearlane missed `{calls_missed_by_policy_clearlane_mt}` of calls.
+
+Source: `science/sch_study.json` (lift against the 2025 heatmap, Mountain reading); FACTS `calls_missed_by_policy_clearlane_mt`; `reserve_kw` is the full enrolled kW in all 24 hours of `public/derived/envelope_2026-10-27.json`
+
 ### Isn't this just arbitrage?
 
 Judge: Ryan Byrd
