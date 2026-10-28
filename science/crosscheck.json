@@ -1,5 +1,156 @@
 {
   "checks": {
+    "backtest_days": {
+      "facts_key": "backtest_days",
+      "inputs": [
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        "public/derived/backtest.json",
+        "research/data/caiso7/20260425_20260524_PRC_LMP_DAM_20261026_20_27_01_v12.csv"
+      ],
+      "method": "Mountain days May 1 to Oct 27 with a 24-price hist row; missing days listed with raw OASIS hours.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "backtest_json": {
+            "days": 179,
+            "missing_days": [
+              "2026-05-01"
+            ]
+          },
+          "facts_days": 179
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "days": 179,
+        "hist_rows_not_24_finite": [],
+        "missing_days": [
+          "2026-05-01"
+        ],
+        "raw_hours_on_missing": {
+          "2026-05-01": 23
+        }
+      },
+      "status": "match",
+      "tolerance": "exact",
+      "unit": "days"
+    },
+    "backtest_dominance": {
+      "facts_key": "backtest_dominance",
+      "inputs": [
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        "public/derived/backtest.json",
+        "public/derived/backtest_days.json",
+        "public/derived/site_default.json"
+      ],
+      "method": "Order statistics of backtest.json clearlane against price_only (engine) and the science DP.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": "clearlane <= price_only at P10, P50, P90",
+        "numbers_json": null
+      },
+      "science": {
+        "days_clearlane_above_science_price_only": 0,
+        "first_such_days": [],
+        "violations_vs_backtest_json": [],
+        "violations_vs_science_dp": []
+      },
+      "status": "match",
+      "tolerance": "each <=",
+      "unit": "$/MW-day"
+    },
+    "backtest_fixed_overnight": {
+      "facts_key": "backtest_fixed_overnight",
+      "inputs": [
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        "public/derived/backtest.json",
+        "public/derived/backtest_days.json"
+      ],
+      "method": "Reference race per hist day: sell 2 x sqrt(0.88) MWh at mean HB 18 to 19, buy 2 / sqrt(0.88) at mean HB 1 to 4; percentiles both ways.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "mean": 17.23775,
+          "p10": -14.26152,
+          "p50": 7.75102,
+          "p90": 57.18101
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "linear": {
+          "p10": -14.26152,
+          "p50": 7.75102,
+          "p90": 57.18101
+        },
+        "max_abs_diff_per_day_vs_backtest_days": 0.0,
+        "mean": 17.23775,
+        "n": 179,
+        "nearest_rank": {
+          "p10": -14.48651,
+          "p50": 7.75102,
+          "p90": 58.03545
+        }
+      },
+      "status": "match",
+      "tolerance": "0.01 each (P10, P50, P90 under the matching method, mean); 0.01 every day",
+      "unit": "$/MW-day"
+    },
+    "backtest_price_only_p50": {
+      "facts_key": "backtest_price_only_p50",
+      "inputs": [
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        "public/derived/backtest.json",
+        "public/derived/backtest_days.json",
+        "public/derived/site_default.json"
+      ],
+      "method": "Independent stdlib DP (science/dp.py): 96 steps, 41 levels of 12.5 kWh, 4 up and 5 down at the meter, sqrt(0.88) each leg, discharge at most host load (export limit 0), start and end level 2, W = 0.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": 44.90588,
+        "numbers_json": null
+      },
+      "science": {
+        "days_compared": 179,
+        "days_over_0.01": 0,
+        "first_days_over": [],
+        "max_abs_diff_per_day": 0.0,
+        "mean": 60.66428,
+        "p10_linear": 20.97331,
+        "p50_linear": 44.90588,
+        "p50_nearest_rank": 44.90588,
+        "p90_linear": 133.42112,
+        "worst_day": "2026-08-19"
+      },
+      "status": "match",
+      "tolerance": "0.01 on P50 (linear)",
+      "unit": "$/MW-day"
+    },
+    "bundle_oct27_hb0": {
+      "facts_key": "bundle_oct27_hb0",
+      "inputs": [
+        "public/data/bundle_2026-10-27.json",
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv"
+      ],
+      "method": "Bundle hours[hour_mt == 0] against raw OASIS Oct 27 06:00Z (CAISO OPR_DT Oct 26 HE24).",
+      "numbers_key": null,
+      "pinned": {
+        "facts": {
+          "not": 46.11,
+          "raw": 30.21857
+        },
+        "numbers_json": null
+      },
+      "science": {
+        "bundle_hb0": 30.22,
+        "hist_hb0": 30.21857,
+        "raw_hb0": 30.21857,
+        "ts_utc": "2026-10-27T06:00:00Z"
+      },
+      "status": "match",
+      "tolerance": "bundle within its cent precision of raw; not 46.11",
+      "unit": "$/MWh"
+    },
     "clearlane_500": {
       "facts_key": "clearlane_500",
       "inputs": [
@@ -48,16 +199,27 @@
     },
     "clearlane_p50": {
       "facts_key": "clearlane_p50",
-      "inputs": [],
-      "method": "Not computed in #102; waits on public/derived/backtest.json and the hist file (#107).",
+      "inputs": [
+        "public/derived/backtest.json",
+        "public/derived/backtest_days.json"
+      ],
+      "method": "P50 of backtest_days.json clearlane rows (not recomputed: needs the engine's wear, calls and re-plan), both methods; ordered against the science DP.",
       "numbers_key": null,
       "pinned": {
-        "facts": "PENDING-ENGINE",
+        "facts": {
+          "backtest_json": 39.21367,
+          "facts": 39.21
+        },
         "numbers_json": null
       },
-      "science": null,
-      "status": "pending",
-      "tolerance": null,
+      "science": {
+        "below_science_price_only_p50": true,
+        "n": 179,
+        "p50_linear": 39.21367,
+        "p50_nearest_rank": 39.21367
+      },
+      "status": "match",
+      "tolerance": "0.01 vs backtest.json; rounds equal at 2 dp; at or below the science price_only P50",
       "unit": "$/MW-day"
     },
     "clearlane_usd_mw_day": {
@@ -212,6 +374,53 @@
       "tolerance": "LMP rounds equal at 1 dp; shares within 0.1 point",
       "unit": "$/MWh and % fossil"
     },
+    "hist_vs_raw_prices": {
+      "facts_key": "hist_vs_raw_prices",
+      "inputs": [
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        "research/analysis/option2/oct/20260930_20261028_PRC_LMP_DAM_20261026_20_37_47_v12.csv",
+        "research/data/caiso7/20260425_20260524_PRC_LMP_DAM_20261026_20_27_01_v12.csv",
+        "research/data/oasis/dam_jul/20260630_20260730_PRC_LMP_DAM_20261026_20_19_29_v12.csv"
+      ],
+      "method": "Hist lmp_usd_mwh against raw OASIS DAM LMP for ELAP_PACE-APND, Mountain days from 06:00Z.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": "raw OASIS, every hour",
+        "numbers_json": null
+      },
+      "science": {
+        "jul": {
+          "days_absent": [],
+          "hours": 720,
+          "max_abs_diff": 0.0,
+          "worst": {
+            "day": "2026-07-01",
+            "hb": 0
+          }
+        },
+        "may": {
+          "days_absent": [],
+          "hours": 528,
+          "max_abs_diff": 0.0,
+          "worst": {
+            "day": "2026-05-02",
+            "hb": 0
+          }
+        },
+        "oct": {
+          "days_absent": [],
+          "hours": 648,
+          "max_abs_diff": 0.0,
+          "worst": {
+            "day": "2026-10-01",
+            "hb": 0
+          }
+        }
+      },
+      "status": "match",
+      "tolerance": "within 0.00001 every hour",
+      "unit": "$/MWh"
+    },
     "jul_step_hour_spread": {
       "facts_key": "jul_step_hour_spread",
       "inputs": [
@@ -358,6 +567,26 @@
       "tolerance": "counts exact; median rounds equal at 1 dp",
       "unit": "days"
     },
+    "percentile_method": {
+      "facts_key": "percentile_method",
+      "inputs": [
+        "public/derived/backtest.json"
+      ],
+      "method": "Which percentile method reproduces backtest.json fixed_overnight to $0.01.",
+      "numbers_key": null,
+      "pinned": {
+        "facts": "linear (engine.md 6.4)",
+        "numbers_json": null
+      },
+      "science": {
+        "matches": [
+          "linear"
+        ]
+      },
+      "status": "match",
+      "tolerance": "the matching method",
+      "unit": "method"
+    },
     "race_ratio": {
       "facts_key": "race_ratio",
       "inputs": [
@@ -383,20 +612,52 @@
     },
     "share_days_beating": {
       "facts_key": "share_days_beating",
-      "inputs": [],
-      "method": "Not computed in #102; waits on public/derived/backtest.json and the hist file (#107).",
+      "inputs": [
+        "public/data/hist_2026-05-01_2026-10-27.json",
+        "public/derived/backtest.json",
+        "public/derived/backtest_days.json"
+      ],
+      "method": "Days with clearlane (backtest_days.json) strictly above the science fixed_overnight value, of all days.",
       "numbers_key": null,
       "pinned": {
-        "facts": "PENDING-ENGINE",
+        "facts": {
+          "backtest_json": 95.53073,
+          "facts": "96%"
+        },
         "numbers_json": null
       },
-      "science": null,
-      "status": "pending",
-      "tolerance": null,
-      "unit": "%"
+      "science": {
+        "days": 179,
+        "pct_engine_fixed": 95.53073,
+        "pct_science_fixed": 95.53073,
+        "ties": 0
+      },
+      "status": "match",
+      "tolerance": "0.01 percentage point; rounds equal at 0 dp",
+      "unit": "% of days"
     }
   },
   "inputs": [
+    {
+      "path": "public/data/bundle_2026-10-27.json",
+      "sha256": "390e2fc0c1d7fe5cf032facf13e18ad845c109b2b16c8bddddc4f26e9e64fc1b"
+    },
+    {
+      "path": "public/data/hist_2026-05-01_2026-10-27.json",
+      "sha256": "cfe0c0098def35e1ad6138c72951e0ac58a236f13722cfa6fa707c14ae9d2bd3"
+    },
+    {
+      "path": "public/derived/backtest.json",
+      "sha256": "3009fbdc04bc54b74d8923a933e5370880a5fadfe7e9b969e90376742f110c2d"
+    },
+    {
+      "path": "public/derived/backtest_days.json",
+      "sha256": "a33c7e0c23ddc6541b07edc1d3ca077363d227a4a7476f53e91d6df148c8600a"
+    },
+    {
+      "path": "public/derived/site_default.json",
+      "sha256": "7f57a045cb75e53162a020917f49c9465c9125114cf7afba384ef0bdadd31024"
+    },
     {
       "path": "research/analysis/option2/jul/20260630_20260730_PRC_LMP_DAM_20261026_20_37_57_v12.csv",
       "sha256": "016421c4429a87e35491aa55aeb0679c86f8f050caf49d09cb2591dfb7a53eaa"
@@ -416,6 +677,10 @@
     {
       "path": "research/data/caiso4/20261027_20261027_EDAM_WND_SLR_FORECAST_GRP_N_v1.xml",
       "sha256": "3b7f3d25b64aa6803e5b6d3475a4c695596df320eaccd45005e54bf541e01088"
+    },
+    {
+      "path": "research/data/caiso7/20260425_20260524_PRC_LMP_DAM_20261026_20_27_01_v12.csv",
+      "sha256": "6017cdcf74155e4b679e2a8597f9a6e855f5d675b2f9059b21be06406097d828"
     },
     {
       "path": "research/data/eia930/PACE_EIA930_BALANCE_2026_Jul_Dec.csv",
@@ -438,7 +703,8 @@
     "Mountain day 2026-10-27 HB 0 from raw OASIS = 30.21857; snapshot HB 0 row is 10-28 00:00 MT = 46.11000.",
     "Raw OASIS vs snapshot, HB 1 to 23: max abs difference 0.00487 $/MWh.",
     "caiso4 rows are hourly; no sub-hourly averaging was needed.",
-    "caiso3 filter: TAC_AREA_NAME == PACE and MARKET_RUN_ID == DAM (24 rows, LOAD_TYPE 1). caiso4 filter: BAA_GRP_ID == PACE."
+    "caiso3 filter: TAC_AREA_NAME == PACE and MARKET_RUN_ID == DAM (24 rows, LOAD_TYPE 1). caiso4 filter: BAA_GRP_ID == PACE.",
+    "hist vs raw: May 1 is not in the hist file (23 hours), so May compares May 2 to 23 (528 hours)."
   ],
   "operating_day_mt": "2026-10-27",
   "schema": "clearlane.science.crosscheck/v1",
