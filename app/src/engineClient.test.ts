@@ -1,6 +1,9 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { describe, expect, it } from "vitest";
+import { loadStageData } from "./data";
+import { crash, defaultSite, scriptedCalls, solve, STUB_ACTIVE } from "./engineClient";
+import { resolveStageDay } from "./stageDay";
 
 const SRC = join(import.meta.dirname);
 
@@ -55,5 +58,48 @@ describe("engine seam", () => {
       .filter((f) => /torus\.co|datocms-assets|businesswire/.test(readFileSync(f, "utf8")))
       .map(rel);
     expect(offenders).toEqual([]);
+  });
+});
+
+const cents = (usd: number) => Math.round(usd * 100);
+
+describe("live engine on the stage bundle (#83)", () => {
+  const data = loadStageData();
+  const resolved = resolveStageDay(data, "");
+  if (resolved.state !== "ready") throw new Error(`no stage day: ${resolved.reason}`);
+  const bundle = resolved.entry.bundle;
+  const site = defaultSite();
+  const numberFor = (key: string) => {
+    if (!data.numbers) throw new Error("public/derived/numbers.json is missing");
+    const entry = data.numbers.find((n) => n.key === key);
+    if (!entry) throw new Error(`numbers.json has no ${key}`);
+    return entry.value;
+  };
+
+  it("runs on the real engine: the stub flag is off", () => {
+    expect(STUB_ACTIVE).toBe(false);
+  });
+
+  it("fixed_overnight matches fixed_usd_mw_day to the cent", () => {
+    const plan = solve(bundle, site, "fixed_overnight");
+    expect(cents(plan.value_usd_per_mw_day)).toBe(cents(numberFor("fixed_usd_mw_day")));
+  });
+
+  it("clearlane matches clearlane_dp_usd_mw_day to the cent", () => {
+    const plan = solve(bundle, site, "clearlane");
+    expect(cents(plan.value_usd_per_mw_day)).toBe(cents(numberFor("clearlane_dp_usd_mw_day")));
+  });
+
+  it("solve_ms and replan.solve_ms are measured by the engine, never zero or typed", () => {
+    const plan = solve(bundle, site, "clearlane");
+    expect(Number.isFinite(plan.solve_ms)).toBe(true);
+    expect(plan.solve_ms).toBeGreaterThan(0);
+    const { first } = scriptedCalls(bundle, site);
+    const result = crash(plan, site, first, data.torus);
+    expect(result.replan).toBeTruthy();
+    expect(Number.isFinite(result.replan?.solve_ms)).toBe(true);
+    expect(result.replan?.solve_ms).toBeGreaterThan(0);
+    // MEASURED values are never stored in numbers.json.
+    expect(data.numbers?.some((n) => /solve_ms|replan_ms/.test(n.key))).toBe(false);
   });
 });

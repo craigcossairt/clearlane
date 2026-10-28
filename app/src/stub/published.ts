@@ -1,4 +1,5 @@
 import type { TorusPublished } from "@contracts/types";
+import { STUB_MARKER } from "./marker";
 
 /**
  * No Torus value or URL is typed here. The stub reads what it needs from
@@ -8,6 +9,6 @@ import type { TorusPublished } from "@contracts/types";
 export const TORUS_FILE = "public/data/torus_published.json";
 
 export function requireTorus(torus: TorusPublished | null): TorusPublished {
-  if (!torus) throw new Error(`failed: ${TORUS_FILE} is missing`);
+  if (!torus) throw new Error(`${STUB_MARKER} failed: ${TORUS_FILE} is missing`);
   return torus;
 }

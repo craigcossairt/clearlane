@@ -121,14 +121,10 @@ describe("beat 2 race", () => {
       expect(plan.host_peak_kw).toBeLessThanOrEqual(site.host_ceiling_kw + 1e-6);
   });
 
-  it("live clearlane value matches clearlane_dp_usd_mw_day to the cent (skips on the stub or without numbers.json)", () => {
+  it("live clearlane value matches clearlane_dp_usd_mw_day to the cent", () => {
     const key = data.numbers?.find((n) => n.key === "clearlane_dp_usd_mw_day");
-    if (STUB_ACTIVE || !key) {
-      console.info(
-        "skipped: needs the real engine and public/derived/numbers.json with clearlane_dp_usd_mw_day",
-      );
-      return;
-    }
+    expect(key, "numbers.json must carry clearlane_dp_usd_mw_day").toBeTruthy();
+    if (!key) return;
     expect(Math.round(live.plans.clearlane.value_usd_per_mw_day * 100)).toBe(
       Math.round(key.value * 100),
     );
