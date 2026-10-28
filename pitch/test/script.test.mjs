@@ -8,9 +8,9 @@ import { MEASURED_DISPLAY, resolveText } from "../lib/rules.mjs";
 const BEATS = [
   ["Beat 1, traffic report (0:00 to 0:25)", 62],
   ["Beat 2, the race (0:25 to 0:55)", 75],
-  ["Beat 3, the crash (0:55 to 1:40)", 112],
-  ["Beat 4, re-plan (1:40 to 2:00)", 50],
-  ["Beat 5, envelope and proof (2:00 to 2:25)", 62],
+  ["Beat 3, the crash (0:55 to 1:35)", 100],
+  ["Beat 4, re-plan (1:35 to 1:50)", 37],
+  ["Beat 5, envelope and proof (1:50 to 2:25)", 87],
   ["Beat 6, scale and close (2:25 to 2:45)", 50],
 ];
 
@@ -77,6 +77,9 @@ test("required lines are present where they belong", () => {
   assert.match(b5, /a format Clearlane proposes/);
   assert.match(b5, /Mountain time/);
   assert.match(b5, /\{calls_missed_by_policy_clearlane_mt\}/);
+  assert.match(b5, /earns more on paper/);
+  assert.match(b5, /Clearlane is the plan a host and RMP would allow\./);
+  assert.doesNotMatch(beats().map((b) => b.spoken).join(" "), /price-only|\{second_call_shortfall_kw\}/);
   assert.match(b6, /\ban MOU for up to `?\{torus_500mw\}`? MW/i);
   assert.match(b6, /not installed capacity/);
   assert.match(b6, /the fleet is assumed not to move prices/);

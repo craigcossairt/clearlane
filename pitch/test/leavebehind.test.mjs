@@ -25,7 +25,7 @@ test("build lists the leave-behind at one page and the packet at two", () => {
 test("leave-behind carries the ribbon, race, crash, envelope, what-is-real and Torus questions", () => {
   assert.match(page, /<!-- ribbon -->/);
   assert.match(page, /<!-- envelope-excerpt -->/);
-  for (const key of ["fixed_usd_mw_day", "clearlane_usd_mw_day", "race_ratio", "enrolled_kw", "second_call_shortfall_kw", "rmp_events_2025"]) {
+  for (const key of ["fixed_usd_mw_day", "clearlane_usd_mw_day", "race_ratio", "enrolled_kw", "second_call_delivered_pct", "second_call_shortfall_kwh", "rmp_events_2025"]) {
     assert.ok(page.includes(`{${key}}`), key);
   }
   for (const cls of ["REAL", "DERIVED", "SIMULATED", "TORUS_PUBLISHED", "ASSUMPTION", "MEASURED"]) {

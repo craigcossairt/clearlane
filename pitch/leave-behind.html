@@ -18,7 +18,7 @@
     <p class="note">Both are value to RMP's system at day-ahead prices, not Torus revenue and not a host bill cut. The off-peak rule is our baseline, not Torus practice. Across the {backtest_days}-day backtest Clearlane beats it on {share_days_beating} of days.</p>
 
     <h2>The call</h2>
-    <p>Rocky Mountain Power calls for {enrolled_kw}&nbsp;kW. Spin answers a call of about five and a half minutes, and the host meter stays under {host_ceiling_kw}&nbsp;kW while Spin refills. A second call inside the refill window comes up {second_call_shortfall_kw}&nbsp;kW short on average, and the card says so.</p>
+    <p>Rocky Mountain Power calls for {enrolled_kw}&nbsp;kW. Spin answers a call of about five and a half minutes, and the host meter stays under {host_ceiling_kw}&nbsp;kW while Spin refills. A second call inside the refill window delivers {second_call_delivered_pct} of the call, {second_call_shortfall_kwh}&nbsp;kWh short, and the card says so.</p>
     <p class="note">Our call trace is simulated. Torus's own 2025 record for Rocky Mountain Power: {rmp_events_2025} events, all unplanned calls. In the backtest, with Torus's heatmap in Mountain time, Clearlane missed {calls_missed_by_policy_clearlane_mt} of calls.</p>
   </section>
 
