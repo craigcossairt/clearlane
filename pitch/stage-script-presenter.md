@@ -1,6 +1,10 @@
 # Talk track, presenter mode
 
-For presenter mode (`?ff=presenter`): eight screens. About two minutes and forty-five seconds. Every result is a key in braces; the screen shows the same number.
+For presenter mode (`?ff=presenter`): eight screens. About two minutes and forty-five seconds.
+
+**The slot.** Group 4 (Torus) at 5:20pm, five minutes for setup, the talk and Q&A together. The talk ends by 2:45 at the latest, leaving about two minutes for questions. Finals, 6:15 to 6:45pm, are the same talk to the full panel.
+
+**Running long?** Drop, in this order: the October sentence on Traffic, the second-call sentence on Call, then the Re-plan line (press Resume the day and Next without speaking). That saves about 25 seconds. Every result is a key in braces; the screen shows the same number.
 
 Each screen has four parts:
 
@@ -37,9 +41,9 @@ Three words to have ready: **Spin** is Torus's flywheel, for short, sharp calls.
 
 ## Screen 4, call (1:00 to 1:35)
 
-> Now Rocky Mountain Power calls for `{enrolled_kw}` kW, right now. Spin, the flywheel, answers, and the host building's meter stays under its `{host_ceiling_kw}` kW limit while Spin refills. If a second call comes during the refill, it gets `{second_call_delivered_pct}`, `{second_call_shortfall_kwh}` kWh short, and the card says so. The card beside it is Torus's own 2025 record: `{rmp_events_2025}` calls, all unplanned. Our trace is simulated. We keep the two apart.
+> Now Rocky Mountain Power calls for `{enrolled_kw}` kW, right now. Spin, the flywheel, answers, and the host building's meter stays under its `{host_ceiling_kw}` kW limit while Spin refills. If a second call comes during the refill, only `{second_call_delivered_pct}` of it is delivered, `{second_call_shortfall_kwh}` kWh short, and the card says so. The card beside it is Torus's own 2025 record: `{rmp_events_2025}` calls, all unplanned. Our trace is simulated. We keep the two apart.
 
-- **Point at:** the call line on the chart, then the second-call card, then the Torus record card.
+- **Point at:** the gray line (what Rocky Mountain Power asked for) and the blue Spin line under it; then "of the call delivered" on the Our simulation card; then the card headed Torus's published record, separate from this simulation.
 - **Press:** Rocky Mountain Power calls now, then Call again during refill, then Next.
 - **If asked:** none of the five lands here.
 
@@ -47,15 +51,15 @@ Three words to have ready: **Spin** is Torus's flywheel, for short, sharp calls.
 
 > After the call, Clearlane re-plans the rest of the day in `{replan_ms}`, timed on this laptop. The meter shows the battery's cycles today against its yearly budget.
 
-- **Point at:** the solve time, read off the screen, never from a file; then the dashed morning plan against the solid re-plan.
+- **Point at:** "Re-planned in" and the time beside it, read off the screen, never from a file; then where the re-plan takes over from this morning's plan; then Pulse cycles today against the Budget.
 - **Press:** Resume the day, then Next.
 - **If asked:** none of the five lands here.
 
 ## Screen 6, envelope (1:50 to 2:25)
 
-> This is what we hand RMP: for each hour, how much the station may charge or discharge, and how much it holds back for calls. It is a format Clearlane proposes. Outlined hours are the grid's tightest; that rule is our proposal. Across every day since May, a battery-only plan earns more on paper, but it runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget, breaks the host's limit, and misses `{calls_missed_by_policy_price_only_mt}` of calls. Clearlane misses `{calls_missed_by_policy_clearlane_mt}`.
+> This is what we hand RMP: each hour, the most the station will draw, and the power it keeps ready for calls. It is a format Clearlane proposes. Marked hours are the grid's tightest; that rule is our proposal. Across every day since May, a battery-only plan earns more on paper, but it runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget, breaks the host's meter ceiling, and misses `{calls_missed_by_policy_price_only_mt}` of simulated calls. Clearlane misses `{calls_missed_by_policy_clearlane_mt}`.
 
-- **Point at:** the outlined hours on the strip; after the press, the battery-only row against Clearlane's. Say no number for the limit breaks.
+- **Point at:** the System Critical Hours marked on the strip; after the press, the scorecard's Battery-only column against Clearlane's, row by row: wear, meter ceiling, calls. Say no number for the ceiling breaks.
 - **Press:** Show the backtest at "Across every day", then Next. Show the envelope flips back, for Q&A only.
 - **If asked:** "Your battery-only plan out-earns Clearlane." On paper it does; it runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget, breaks the host ceiling and misses `{calls_missed_by_policy_price_only_mt}` of calls.
 - **Or:** "So your System Critical Hours predict calls?" No. They mark the tightest hours, and no rule we tested catches call hours better than chance.
