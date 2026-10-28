@@ -163,9 +163,9 @@ describe("presenter mode (#216, ff_presenter)", () => {
     expect(
       container.querySelector('[data-slot="envelope-strip"]'),
     ).toBeTruthy();
-    expect(
-      container.querySelector('[data-slot="headline"]')?.textContent,
-    ).toBe(PRESENTER.envelopeHeadline);
+    expect(container.querySelector('[data-slot="headline"]')?.textContent).toBe(
+      PRESENTER.envelopeHeadline,
+    );
     expect(PRESENTER.envelopeHeadline).toBe(
       "An hourly envelope Rocky Mountain Power could plan around.",
     );
@@ -174,18 +174,21 @@ describe("presenter mode (#216, ff_presenter)", () => {
       container.querySelector('[data-slot="backtest-bands"]'),
     ).toBeTruthy();
     // Pitch review: the count and the window, never "every day".
-    const head = container.querySelector<HTMLElement>('[data-slot="headline"]')!;
+    const head = container.querySelector<HTMLElement>(
+      '[data-slot="headline"]',
+    )!;
     expect(spoken(head)).toBe("Backtested on 179 days, May 1 to Oct 27.");
     expect(container.textContent).toContain(
       "Each policy run on every day of the history with full data, beside the off-peak rule.",
     );
     expect(
-      head.querySelector('[data-num="backtest_days"]')?.getAttribute("data-prov"),
+      head
+        .querySelector('[data-num="backtest_days"]')
+        ?.getAttribute("data-prov"),
     ).toBe("DERIVED");
-    expect([...head.querySelectorAll("[data-time]")].map((e) => e.textContent)).toEqual([
-      "May 1",
-      "Oct 27",
-    ]);
+    expect(
+      [...head.querySelectorAll("[data-time]")].map((e) => e.textContent),
+    ).toEqual(["May 1", "Oct 27"]);
     expect(container.textContent).toContain(PRESENTER.showEnvelope);
     click(container, "action-backtest");
     expect(
@@ -252,6 +255,38 @@ describe("presenter mode (#216, ff_presenter)", () => {
     expect(dialog.querySelectorAll("li")).toHaveLength(SCREENS.length);
   });
 
+  it("the Sources dialog takes focus, traps Tab, blocks the clicker keys and gives focus back", () => {
+    const { container } = renderPresenter("screen=3&motion=off");
+    click(container, "sources");
+    const dialog = container.querySelector<HTMLElement>('[role="dialog"]')!;
+    const close = dialog.querySelector<HTMLButtonElement>(
+      '[data-action="overlay-close"]',
+    )!;
+    expect(document.activeElement).toBe(close);
+    for (const key of [
+      "ArrowRight",
+      "PageDown",
+      "ArrowLeft",
+      "PageUp",
+      "Home",
+    ]) {
+      fireEvent.keyDown(window, { key });
+      expect(body().screen).toBe("3");
+      expect(body().actions).toBe("0");
+    }
+    expect(container.querySelector('[role="dialog"]')).toBeTruthy();
+    const tab = fireEvent.keyDown(close, { key: "Tab" });
+    expect(tab).toBe(false);
+    expect(dialog.contains(document.activeElement)).toBe(true);
+    fireEvent.keyDown(close, { key: "Tab", shiftKey: true });
+    expect(dialog.contains(document.activeElement)).toBe(true);
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(container.querySelector('[role="dialog"]')).toBeNull();
+    expect(document.activeElement).toBe(container.querySelector(".p-viewport"));
+    fireEvent.keyDown(window, { key: "ArrowRight" });
+    expect(body().actions).toBe("1");
+  });
+
   it("the footer names the operating day on every screen", () => {
     for (const s of SCREENS) {
       const { container, unmount } = renderPresenter(
@@ -309,17 +344,21 @@ describe("presenter race screen (#216)", () => {
       container.querySelector(".p-headline [data-num='race_ratio'] .figure")
         ?.textContent,
     ).toBe("2.9x");
+    expect(spoken(container.querySelector('[data-slot="headline"]'))).toBe(
+      "Filling up at midday is worth 2.9x the off-peak rule.",
+    );
     expect(
-      spoken(container.querySelector('[data-slot="headline"]')),
-    ).toBe("Filling up at midday is worth 2.9x the off-peak rule.");
-    expect(
-      [...container.querySelectorAll(".p-keep-label")].map((e) => e.textContent),
+      [...container.querySelectorAll(".p-keep-label")].map(
+        (e) => e.textContent,
+      ),
     ).toEqual([
       "value to RMP's system per MW per day, higher is better",
       "value to RMP's system per MW per day, higher is better",
     ]);
     expect(
-      [...container.querySelectorAll(".p-arith-keep th")].map((e) => e.textContent),
+      [...container.querySelectorAll(".p-arith-keep th")].map(
+        (e) => e.textContent,
+      ),
     ).toEqual(["Net", "Net"]);
   });
 
@@ -337,6 +376,61 @@ describe("presenter race screen (#216)", () => {
       ...container.querySelectorAll('[data-row="clearlane"] [data-mark="buy"]'),
     ];
     expect(buys).toHaveLength(3);
+  });
+
+  it("the first frame after Replay shows no filled marks, even after a resume ran", () => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      configurable: true,
+      value: (query: string) => ({
+        matches: false,
+        media: query,
+        addEventListener: () => undefined,
+        removeEventListener: () => undefined,
+      }),
+    });
+    // Frames never fire, so the clock holds whatever the last start set.
+    const raf = window.requestAnimationFrame;
+    window.requestAnimationFrame = () => 0;
+    try {
+      const { container } = render(
+        <App
+          data={data}
+          now={STAGE_NOW}
+          search="?ff=presenter&screen=5"
+          reducedMotion={false}
+        />,
+      );
+      act(() => click(container, "action-resume"));
+      const seg = [
+        ...container.querySelectorAll<HTMLButtonElement>(".p-seg"),
+      ][2]!;
+      act(() => fireEvent.click(seg));
+      expect(body().screen).toBe("3");
+      const marks = [...container.querySelectorAll("[data-mark]")];
+      expect(new Set(marks.map((m) => m.getAttribute("data-filled")))).toEqual(
+        new Set(["false"]),
+      );
+      const seen = new MutationObserver(() => undefined);
+      seen.observe(container, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["data-filled"],
+        attributeOldValue: true,
+      });
+      act(() => click(container, "action-replay"));
+      // Every value a mark held during the click: a stale frame leaves an old "true" behind.
+      const held = seen.takeRecords().map((r) => r.oldValue);
+      seen.disconnect();
+      expect(held.filter((v) => v === "true")).toEqual([]);
+      expect(
+        [...container.querySelectorAll("[data-mark]")].every(
+          (m) => m.getAttribute("data-filled") === "false",
+        ),
+      ).toBe(true);
+    } finally {
+      window.requestAnimationFrame = raf;
+    }
   });
 
   it("Next during a running replay jumps it to its end; the next Next leaves the screen", () => {

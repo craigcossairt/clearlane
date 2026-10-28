@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Policy } from "@contracts/types";
 import { CrashBeat } from "./beats/CrashBeat";
 import { EnvelopeBeat } from "./beats/EnvelopeBeat";
 import { Race } from "./beats/Race";
@@ -7,18 +6,16 @@ import { Replan } from "./beats/Replan";
 import { Ribbon } from "./beats/Ribbon";
 import { ScaleBeat } from "./beats/ScaleBeat";
 import type { BeatProps, CallState, Live } from "./beats/types";
-import { findNumber, NumbersContext, type NumbersState } from "./components/Num";
+import {
+  findNumber,
+  NumbersContext,
+  type NumbersState,
+} from "./components/Num";
 import { mtClock, mtDate } from "./components/Time";
 import { COPY } from "./copy";
-import { loadStageData, stageWearUsdMwh, type StageData } from "./data";
-import {
-  crash,
-  dayLanes,
-  defaultSite,
-  scriptedCalls,
-  solve,
-  STUB_ACTIVE,
-} from "./engineClient";
+import { loadStageData, type StageData } from "./data";
+import { crash } from "./engineClient";
+import { buildLive, callHour, runCalls } from "./live";
 import { FlagsContext, parseFlags, type FlagName } from "./flags";
 import { KEYMAP, lookup, typedIntoInput } from "./keymap";
 import { dayLabel, resolveStageDay } from "./stageDay";
@@ -68,7 +65,10 @@ export function App({ data, search, now, reducedMotion, flags }: AppProps) {
     () => resolveStageDay(stageData, query),
     [stageData, query],
   );
-  const numbersState: NumbersState = { state: "ready", numbers: stageData.numbers };
+  const numbersState: NumbersState = {
+    state: "ready",
+    numbers: stageData.numbers,
+  };
   const flagSet = useMemo(() => flags ?? parseFlags(query), [flags, query]);
 
   useEffect(() => {
@@ -158,7 +158,11 @@ function Stage({
   );
   const [backtest, setBacktest] = useState(startEnd && startBeat === 5);
   const [fleetMw, setFleetMw] = useState<number | null>(
-    fleetRange ? (startEnd && startBeat === 6 ? fleetRange.max : fleetRange.min) : null,
+    fleetRange
+      ? startEnd && startBeat === 6
+        ? fleetRange.max
+        : fleetRange.min
+      : null,
   );
   const [help, setHelp] = useState(false);
   const [reduced, setReduced] = useState(motionOff);
@@ -232,7 +236,8 @@ function Stage({
           break;
         case "play":
           // After the re-plan, Space resumes the day from the call minute, not from midnight.
-          if (beat === 4 && hourRef.current < callHour(live)) setHour(callHour(live));
+          if (beat === 4 && hourRef.current < callHour(live))
+            setHour(callHour(live));
           setPlaying((p) => !p);
           break;
         case "call":
@@ -376,7 +381,12 @@ function Stage({
           <p>Press ? for the key map.</p>
         </footer>
         {help ? (
-          <div className="keymap" role="dialog" aria-modal="true" aria-label="Key map">
+          <div
+            className="keymap"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Key map"
+          >
             <dl>
               {KEYMAP.map((b) => (
                 <div key={b.action} style={{ display: "contents" }}>
@@ -392,53 +402,7 @@ function Stage({
   );
 }
 
-/** Solve the stage day once: the three plans, the lanes and the scripted calls. */
-export function buildLive(
-  bundle: Live["bundle"],
-  bundleFile: string,
-  torus: Live["torus"],
-): Live {
-  const site = defaultSite();
-  const policies: Policy[] = ["fixed_overnight", "price_only", "clearlane"];
-  const wear_usd_mwh = stageWearUsdMwh();
-  const plans = Object.fromEntries(
-    policies.map((p) => [p, solve(bundle, site, p, { wear_usd_mwh })]),
-  ) as Live["plans"];
-  return {
-    bundle,
-    bundleFile,
-    day: dayLanes(bundle),
-    site,
-    plans,
-    torus,
-    calls: scriptedCalls(bundle, site),
-    stub: STUB_ACTIVE,
-  };
-}
-
-/** Hours from the bundle's first interval to the scripted call start (time arithmetic only). */
-export function callHour(live: Live): number {
-  const h0 = live.bundle.hours[0]?.ts_utc;
-  if (!h0) return 0;
-  return (Date.parse(live.calls.first.start_utc) - Date.parse(h0)) / 3_600_000;
-}
-
 function clampBeat(n: number): BeatId {
   if (!Number.isFinite(n)) return 1;
   return Math.max(1, Math.min(6, Math.round(n))) as BeatId;
-}
-
-export function runCalls(live: Live, withSecond: boolean): CallState {
-  const first = crash(live.plans.clearlane, live.site, live.calls.first, live.torus);
-  const ghost = crash(live.plans.price_only, live.site, live.calls.first, live.torus);
-  const second = withSecond
-    ? crash(
-        live.plans.clearlane,
-        live.site,
-        live.calls.second,
-        live.torus,
-        live.calls.first,
-      )
-    : null;
-  return { first, ghost, second };
 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { buildLive, callHour, runCalls } from "../App";
+import { buildLive, callHour, runCalls } from "../live";
 import { CrashBeat } from "../beats/CrashBeat";
 import { EnvelopeBeat } from "../beats/EnvelopeBeat";
 import { Replan } from "../beats/Replan";
@@ -172,16 +172,25 @@ export function Presenter({
       setSt(next);
       setFleetDrag(null);
       const key = screenDef(next.screen).key;
-      if (animate && !reduced && next.actions === 1 && key === "race")
+      // The clock is set in the same update as the play, so the first frame never shows the
+      // last replay's (or resume's) hour.
+      if (animate && !reduced && next.actions === 1 && key === "race") {
+        setPlayHour(0);
         setPlay({ screen: next.screen, from: 0, to: 24, ms: REPLAY_MS });
-      else if (animate && !reduced && next.actions === 1 && key === "replan")
+      } else if (
+        animate &&
+        !reduced &&
+        next.actions === 1 &&
+        key === "replan"
+      ) {
+        setPlayHour(cHour);
         setPlay({
           screen: next.screen,
           from: cHour,
           to: 24,
           ms: (REPLAY_MS * Math.max(0, 24 - cHour)) / 24,
         });
-      else setPlay(null);
+      } else setPlay(null);
     },
     [reduced, cHour],
   );
@@ -208,6 +217,8 @@ export function Presenter({
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target?.tagName === "INPUT" && event.key !== "Escape") return;
+      // While an overlay is open the clicker keys do nothing; only ? and Escape reach it.
+      if (overlay && event.key !== "?" && event.key !== "Escape") return;
       switch (event.key) {
         case "ArrowRight":
         case "PageDown":
@@ -234,7 +245,36 @@ export function Presenter({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onNext, onBack, go]);
+  }, [onNext, onBack, go, overlay]);
+
+  // An open overlay takes focus (its Close button); closing it hands focus back to the stage.
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const hadOverlay = useRef(false);
+  useEffect(() => {
+    if (overlay) {
+      overlayRef.current
+        ?.querySelector<HTMLButtonElement>('[data-action="overlay-close"]')
+        ?.focus({ preventScroll: true });
+    } else if (hadOverlay.current) {
+      rootRef.current?.focus({ preventScroll: true });
+    }
+    hadOverlay.current = overlay !== null;
+  }, [overlay]);
+  /** Tab and Shift+Tab cycle inside the overlay. */
+  const trapTab = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "Tab") return;
+    const items = [
+      ...(overlayRef.current?.querySelectorAll<HTMLElement>(
+        'button, [href], input, [tabindex]:not([tabindex="-1"])',
+      ) ?? []),
+    ];
+    if (items.length === 0) return;
+    event.preventDefault();
+    const at = items.indexOf(document.activeElement as HTMLElement);
+    const step = event.shiftKey ? -1 : 1;
+    const next = at < 0 ? 0 : (at + step + items.length) % items.length;
+    items[next]!.focus({ preventScroll: true });
+  };
 
   const def = screenDef(st.screen);
   const step = stepName(st);
@@ -388,11 +428,7 @@ export function Presenter({
       case "replan":
         return PRESENTER.replanHeadline;
       case "envelope":
-        return isAction(1) ? (
-          <BacktestHeadline />
-        ) : (
-          PRESENTER.envelopeHeadline
-        );
+        return isAction(1) ? <BacktestHeadline /> : PRESENTER.envelopeHeadline;
       case "scale":
         return PRESENTER.scaleHeadline;
       case "close":
@@ -545,7 +581,9 @@ export function Presenter({
       </div>
       {overlay ? (
         <div
+          ref={overlayRef}
           className="p-overlay"
+          onKeyDown={trapTab}
           role="dialog"
           aria-modal="true"
           aria-label={
@@ -723,7 +761,10 @@ function shortDay(day: string): string {
  * backtest.json, so the headline never claims more days than were run (Pitch review, #217).
  */
 function BacktestHeadline() {
-  const window = useMemo(() => loadDerivedFiles().backtest?.result?.window ?? null, []);
+  const window = useMemo(
+    () => loadDerivedFiles().backtest?.result?.window ?? null,
+    [],
+  );
   return (
     <>
       {PRESENTER.backtestHeadlinePre} <Num k="backtest_days" width={3} />{" "}
