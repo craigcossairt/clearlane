@@ -93,7 +93,7 @@ lists every number with its source, class and how it was checked.
 - **Torus**: published specs and the RMP case study, cited by URL:
   [Spin](https://www.torus.co/torus-flywheel), [Nova](https://www.torus.co/torus-nova),
   [Pulse](https://www.torus.co/torus-nova-pulse), [utilities](https://www.torus.co/utilities-electrical-utilities).
-  Quoted with Torus's permission (Torus, Oct 27 2026). No Torus logos or page text are copied.
+  Quoted with Torus's permission (Torus, message to Craig Cossairt, Oct 27 2026). No Torus logos or page text are copied.
 - **Open-Meteo**: Salt Lake City weather columns (`slc_*`) in one research snapshot,
   `research/data/pace_snapshot_2026-10-27.csv`. Not used by the app. CC BY 4.0; weather data by Open-Meteo.com.
 
