@@ -6,7 +6,7 @@ Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file w
 |---|---|
 | Lane | Pitch |
 | Harness | Grok Build |
-| Worktree | `C:\Users\Craig Cossairt\Code\clearlane-pitch` (Git Bash: `/c/Users/Craig Cossairt/Code/clearlane-pitch`) |
+| Worktree | `~/Code/clearlane-pitch` (Git Bash: `~/Code/clearlane-pitch`) |
 | Branch prefix | `pitch/` for every new issue. The three open `grok/*` branches (PRs #15, #16, #17) keep their names. |
 | Owns | `pitch/**` and nothing else |
 | Done when | The deck, both one-pagers, the Q&A cards and the stage script read every number as a `{key}`; the deck and one-pager PDFs build offline; every PR on the repo has a pitch review for its head commit |
@@ -63,7 +63,7 @@ You write what the judges read and hear, and you are the claim check on everythi
 Run this at the start of every session and after every compaction. Use Git Bash, not PowerShell or WSL.
 
 ```bash
-cd "/c/Users/Craig Cossairt/Code/clearlane-pitch"
+cd ~/Code/clearlane-pitch
 git fetch origin --prune
 git status --short                       # must be empty before you switch branches
 git branch --show-current

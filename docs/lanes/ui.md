@@ -1,6 +1,6 @@
 # UI lane brief
 
-You are the **ui lane**: Cursor (Agent; Design Mode allowed), worktree `C:\Users\Craig Cossairt\Code\clearlane-ui`, branch prefix `ui/`. You build the stage app the judges watch: six beats, keyboard driven, offline, on a projector in a sponsor room, plus a phone layout.
+You are the **ui lane**: Cursor (Agent; Design Mode allowed), worktree `~/Code/clearlane-ui`, branch prefix `ui/`. You build the stage app the judges watch: six beats, keyboard driven, offline, on a projector in a sponsor room, plus a phone layout.
 
 Precedence: `AGENTS.md`, `contracts/types.ts` and `DESIGN.md` win over this file. This file wins over the plan files in `docs/plan/`, which are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
 
@@ -26,13 +26,13 @@ Lane done when (from `AGENTS.md`): the six beats run from the keyboard at 1920x1
 ## 2. Boot sequence
 
 ```bash
-cd "C:/Users/Craig Cossairt/Code/clearlane-ui"
+cd ~/Code/clearlane-ui
 git fetch origin
 git status        # uncommitted work belongs to an open issue; do not discard it
 npm ci            # only if node_modules is missing or package-lock.json changed on origin/main
 ```
 
-If the worktree is missing: `git -C "C:/Users/Craig Cossairt/Code/clearlane" worktree add ../clearlane-ui origin/main`, then `npm ci` inside it. Forward slashes work in PowerShell and Git Bash; backslashes break in Git Bash.
+If the worktree is missing: `git -C ~/Code/clearlane worktree add ../clearlane-ui origin/main`, then `npm ci` inside it. Forward slashes work in PowerShell and Git Bash; backslashes break in Git Bash.
 
 Read, in this order:
 1. `AGENTS.md`, then this file.
@@ -73,7 +73,7 @@ gh issue comment <n> --body "claimed by Cursor (ui lane)"
    The body has these fields, in order:
    - `Closes #<n>`
    - **What changed:** three to six bullets.
-   - **Evidence:** the `npm run check:all` summary lines (test files, tests passed, build ok); the names of the new tests; for a visible change, absolute paths to screenshots at 1920x1080 and 375x812 saved under `C:\Users\Craig Cossairt\Code\clearlane-ui\tools\out\screens\` (Integration opens them on this machine).
+   - **Evidence:** the `npm run check:all` summary lines (test files, tests passed, build ok); the names of the new tests; for a visible change, absolute paths to screenshots at 1920x1080 and 375x812 saved under `~/Code/clearlane-ui/tools/out/screens/` (Integration opens them on this machine).
    - **New numbers:** every new on-screen number with its `numbers.json` key or engine field and its provenance class. Write "None" if there are none.
    - **New copy:** every new judge-facing string (Pitch reviews these for guardrails and em dashes).
    - **Flag:** stretch PRs only: the flag name and the name of the flag-off test.

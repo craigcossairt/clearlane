@@ -1,6 +1,6 @@
 # Data lane brief
 
-Harness: **Codex desktop app**. Worktree: `C:\Users\Craig Cossairt\Code\clearlane-data`. Branch prefix: `data/`.
+Harness: **Codex desktop app**. Worktree: `~/Code/clearlane-data`. Branch prefix: `data/`.
 Tracking issue: **#2 "Lane: data status"**. Queue: `gh issue list --label lane:data --state open`.
 
 Precedence: `AGENTS.md` and `contracts/types.ts` win over this file. This file wins over the plan files in `docs/plan/`, which are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
@@ -66,7 +66,7 @@ You are the front of the pipeline: `prep/` (Python) writes `public/data/` (REAL)
 Run commands one per line (Windows PowerShell 5.1 has no `&&`).
 
 ```powershell
-cd "C:\Users\Craig Cossairt\Code\clearlane-data"
+cd ~/Code/clearlane-data
 git fetch origin
 git switch --detach origin/main
 git status --short --branch
@@ -487,7 +487,7 @@ os.replace(tmp, path)
 
 Timestamps as `YYYY-MM-DDTHH:MM:SSZ`. `fetched_utc` and `retrieved_utc` come from the raw cache meta, never from the current clock, so a rebuild from cache is byte-identical. Seed every random draw.
 
-**Raw folder.** `C:\Users\Craig Cossairt\Code\clearlane-raw` (resolved as `<repo>\..\clearlane-raw`; override with `CLEARLANE_RAW`). It already holds `eia\PACE.xlsx` and the full EIA-930 six-month CSVs. Write OASIS responses under `oasis\`, refresh runs under `refresh\`, RT under `rt\`. Never write raw files inside the worktree.
+**Raw folder.** `~/Code/clearlane-raw` (resolved as `<repo>\..\clearlane-raw`; override with `CLEARLANE_RAW`). It already holds `eia\PACE.xlsx` and the full EIA-930 six-month CSVs. Write OASIS responses under `oasis\`, refresh runs under `refresh\`, RT under `rt\`. Never write raw files inside the worktree.
 
 **OASIS rules** (`research/DATA-SOURCES.md` §1):
 
