@@ -475,7 +475,7 @@ Acceptance:
 - [ ] **Cards are grouped by judge voice.** Each card carries the judge's name and affiliation as `docs/JUDGING.md` lists them:
   - Ryan Byrd (former CTO): depth and correctness
   - Angela Smith (COO, Nucleus Fund): path to reality. Never Nucleus bounty framing.
-  - Nicole Witmyer (Torus): fit with Torus and Lasso
+  - The Torus judge: fit with Torus and Lasso
   - Scott Holley (Lassonde Center): Utah impact and students
   - Tanner Potter (Kickstart): market and ask
 - [ ] **Cover all 16 `anticipated_judge_questions`** from synthesis, with the FACTS corrections applied, plus at least 6 new ones. Include:
@@ -689,7 +689,7 @@ The 18 PENDING-ENGINE keys (backtest, crash, envelope and timing) have no value 
 ### Judges and rules
 
 - **The panel.**
-  - Five judges. Nicole Witmyer is the only Torus person shown.
+  - Five judges. The Torus judge is the only Torus person shown.
   - Which judges score the Torus bounty is not stated.
   - Torus's criteria are not stated. The rubric in `docs/JUDGING.md` section 8 is our ASSUMPTION, and "clarity of insight" as a criterion is UNVERIFIED.
 - **Not stated:** pitch length (we rehearse 2:45), submission method and the submission deadline.

@@ -334,7 +334,7 @@ How to position it: Clearlane is one more grid signal that Lasso could take thro
 - **Case studies.** Outcomes are mostly expected, with no sizes. Never use the placeholder Ash Grove or POWDR cards, and never attach the $25,000 figure to Waterford.
 - **Names.** Say "PacifiCorp's Shawn Grant" without a title; sources give two different ones.
 - **Networks.** Never imply Clearlane connects to a host's IT network. Torus says its stations sit on an isolated network with an electrical-only link to the facility.
-- **Torus judge.** Nicole Witmyer is Torus's Strategic Events Leader, per the judges slide. Do not assume grid-engineering depth; lead with the picture.
+- **Torus judge.** The Torus judge is Torus's Strategic Events Leader, per the judges slide. Do not assume grid-engineering depth; lead with the picture.
 - **CO2.** CO2 figures are average-emissions estimates, with the caveat on screen.
 - **Copy.** No em dashes in any externally facing copy.
 

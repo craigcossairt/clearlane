@@ -114,7 +114,7 @@ Label every chart REAL, DERIVED or SIMULATED.
 - Carbon intensity from the generation mix ignores imports and exports between regions (WattTime MOER accounts for them). Say this on the slide.
 - The parallel-search and Firecrawl free tiers hit their rate limits mid-research, so a few claims rest on WebSearch summaries and are marked unverified.
 ## OPEN QUESTIONS
-- Does Torus rate Spin cycle life by full equivalent cycles or by count of micro-cycles? This decides whether a flywheel suits the 0.2-3 Hz AI training ripple, and is worth asking Nicole Witmyer or the Torus engineers before the pitch.
+- Does Torus rate Spin cycle life by full equivalent cycles or by count of micro-cycles? This decides whether a flywheel suits the 0.2-3 Hz AI training ripple, and is worth asking the Torus judge or the Torus engineers before the pitch.
 - Does PacifiCorp / Rocky Mountain Power publish a ramp-rate or oscillation spec for large loads that the demo could use as the 'utility limit' line?
 - What sampling rate, columns and file layout does the NLR GenAI power-profile zip use for multi-node training runs? I did not download the 1 GB zip.
 - What file sizes do the Azure LLM 2024 one-week CSVs have? Not checked.

@@ -161,7 +161,7 @@
   "Ask the organizers (you send it, Tue about 8am) whether a double entry in the Torus bounty and the Nucleus x Startup State $10K bounty is allowed, and whether the Nucleus bounty needs a separate submission.",
   "Does the repo have to be public for judging? The plan keeps keys out of git so it can go public at any time. Pick a license, for example MIT.",
   "Demo framing: open on Oct 28 'today' (recommended, because the prices are real and fresh) or on the cached Oct 27 worked example? The deck anchors on the backtest either way.",
-  "Approve sending the Tuesday questions to Torus (mentor table or event channel; Nicole Witmyer runs Torus events): how Spin refills, the heatmap time zone, who sets the reserve kW, how event delivery is baselined, whether sites export, and whether Lasso accepts an external envelope. I can draft them; you send them.",
+  "Approve sending the Tuesday questions to Torus (mentor table or event channel; the Torus judge runs Torus events): how Spin refills, the heatmap time zone, who sets the reserve kW, how event delivery is baselined, whether sites export, and whether Lasso accepts an external envelope. I can draft them; you send them.",
   "Spend 30 minutes Tue (Grok lane) verifying RMP Schedules 6, 6A and 8? If verified, add the 'tariff and market clocks disagree' framing and host dollars. If not, stay in kW.",
   "Deploy the optional api/rtm.ts on Vercel for the live tile, or skip it? It is first on the cut list either way.",
   "Run a quick name check on 'Clearlane' (search and USPTO) before it goes on a slide."

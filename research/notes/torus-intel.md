@@ -22,7 +22,7 @@ Recommendation: Option 1 maps more directly to Torus revenue and roadmap. Build 
 - Several Torus numbers are company-reported marketing claims (99.9% uptime, 10C, 20x battery power, 25,000 cycles, 500 MW). The 500 MW is an MOU ceiling, not verified operating capacity. Do not present these as independently verified.
 - Grid-congestion software competes with established DERMS, VPP and forecasting vendors. Torus may see a generic forecaster as commodity unless the build ties to Torus-specific physics (flywheel and battery split, state-of-charge reserve for frequency events).
 ## OPEN QUESTIONS
-- Why did Torus take down its data center and AI landing pages after August 2026? Is a new data center product or partner announcement coming, perhaps timed to Hard Tech Week? Worth asking Nicole Witmyer or Torus staff at kickoff.
+- Why did Torus take down its data center and AI landing pages after August 2026? Is a new data center product or partner announcement coming, perhaps timed to Hard Tech Week? Worth asking the Torus judge or Torus staff at kickoff.
 - What does the 'Flexie' department name refer to: a new flexible-load product line, or an internal team name?
 - What exactly is Torus doing with PGE in Oregon? Only 'new work' and 'deployments' are stated publicly; there is no program name or MW figure.
 - Is Torus speaking or exhibiting at the 2026 Zero Gravity Summit? No Torus speaker was found in the 2026 agenda text.

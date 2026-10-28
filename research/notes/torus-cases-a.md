@@ -50,6 +50,6 @@ This maps directly to Option 1. A flexible AI-compute load class would bring in 
 - Were the 359 events all frequency/contingency events, or do they include scheduled peak-management and congestion dispatches? The 2024 CEO description (evening loads) and the 2025 heatmap (all hours) point in different directions.
 - What time zone does the heatmap use, and why is 1 AM the busiest hour?
 - Is the dual-use conflict real for Torus? Has an RMP call ever cost a host site its monthly demand-charge peak? Worth asking a Torus judge at kickoff.
-- Would Torus judges prefer the utility-side story (verified capacity, siting) or the customer-side story (savings report, peak protection)? Nicole Witmyer is Torus's events lead, not an engineer, so a crisp visual story matters.
+- Would Torus judges prefer the utility-side story (verified capacity, siting) or the customer-side story (savings report, peak protection)? The Torus judge is Torus's events lead, not an engineer, so a crisp visual story matters.
 - Is EIA-930 data for PacifiCorp East (PACE) available at hourly granularity with demand forecasts via the free EIA API? Not tested here.
 - Is there public RMP feeder or hosting-capacity data for a Utah congestion or siting map? Not researched.
