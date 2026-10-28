@@ -1,0 +1,611 @@
+{
+  "schema": "clearlane.scale_curve/v1",
+  "flag": "ff_price_impact",
+  "operating_day_mt": "2026-10-27",
+  "generated_utc": "2026-10-28T07:55:35Z",
+  "prov": "DERIVED",
+  "caveat": "Value to RMP's system at day-ahead prices, per MW of fleet. Beat 6 assumes the fleet does not move prices; this curve estimates how value per MW falls if it does. The slope of PACE price on PACE net load is confounded by gas prices, imports and the wider EDAM footprint that sets the price, so it is an estimate with an interval, not a forecast. 500 MW is the MOU ceiling, not installed capacity.",
+  "model": "The price in each Mountain hour moves by slope x fleet MW x the fleet's net injection per MW: discharge lowers it, charging raises it. Negative slopes are clamped to zero and flagged; an hour whose interval spans zero is marked inconclusive. The off-peak rule and the timetable are fixed schedules, repriced. The hourly DP (1 MW, 2 MWh, as fix.py) re-plans seeing its own price impact. The band puts every hour at its interval's upper slope (low) and lower slope (high).",
+  "sources": {
+    "bundle": "public/data/bundle_2026-10-27.json",
+    "snapshot": "research/data/pace_snapshot_2026-10-27.csv",
+    "response": "public/data/response_tables.json",
+    "code": "engine/src/scale.ts"
+  },
+  "fleet_mw": [
+    70,
+    140,
+    250,
+    500
+  ],
+  "fleet": [
+    {
+      "mw": 70,
+      "label": "70 MW: the first MOU (January 2025)"
+    },
+    {
+      "mw": 140,
+      "label": "140 MW: twice the first MOU"
+    },
+    {
+      "mw": 250,
+      "label": "250 MW: half the MOU ceiling"
+    },
+    {
+      "mw": 500,
+      "label": "500 MW: the MOU ceiling (up to 500 MW), not installed capacity"
+    }
+  ],
+  "slopes": {
+    "unit": "$/MWh per MW",
+    "prov": "DERIVED",
+    "caveat": "A slope of the PACE day-ahead price on PACE net load is confounded by gas prices, imports and the wider EDAM footprint that sets the price. It is a DERIVED association, not a causal price impact.",
+    "clamped_hb": [],
+    "inconclusive_hb": [],
+    "hours": [
+      {
+        "hb": 0,
+        "slope": 0.008045,
+        "lo": 0.006518,
+        "hi": 0.00955,
+        "r2": 0.318,
+        "n": 176,
+        "used": 0.008045,
+        "used_lo": 0.006518,
+        "used_hi": 0.00955,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 1,
+        "slope": 0.005016,
+        "lo": 0.003652,
+        "hi": 0.006312,
+        "r2": 0.1849,
+        "n": 176,
+        "used": 0.005016,
+        "used_lo": 0.003652,
+        "used_hi": 0.006312,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 2,
+        "slope": 0.004734,
+        "lo": 0.003531,
+        "hi": 0.006044,
+        "r2": 0.1743,
+        "n": 176,
+        "used": 0.004734,
+        "used_lo": 0.003531,
+        "used_hi": 0.006044,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 3,
+        "slope": 0.004231,
+        "lo": 0.003082,
+        "hi": 0.005314,
+        "r2": 0.1592,
+        "n": 176,
+        "used": 0.004231,
+        "used_lo": 0.003082,
+        "used_hi": 0.005314,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 4,
+        "slope": 0.004154,
+        "lo": 0.003066,
+        "hi": 0.005197,
+        "r2": 0.1644,
+        "n": 176,
+        "used": 0.004154,
+        "used_lo": 0.003066,
+        "used_hi": 0.005197,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 5,
+        "slope": 0.004463,
+        "lo": 0.003358,
+        "hi": 0.00553,
+        "r2": 0.1757,
+        "n": 176,
+        "used": 0.004463,
+        "used_lo": 0.003358,
+        "used_hi": 0.00553,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 6,
+        "slope": 0.005954,
+        "lo": 0.004748,
+        "hi": 0.007102,
+        "r2": 0.2493,
+        "n": 176,
+        "used": 0.005954,
+        "used_lo": 0.004748,
+        "used_hi": 0.007102,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 7,
+        "slope": 0.008933,
+        "lo": 0.007574,
+        "hi": 0.010226,
+        "r2": 0.5444,
+        "n": 176,
+        "used": 0.008933,
+        "used_lo": 0.007574,
+        "used_hi": 0.010226,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 8,
+        "slope": 0.010571,
+        "lo": 0.009195,
+        "hi": 0.011903,
+        "r2": 0.6023,
+        "n": 176,
+        "used": 0.010571,
+        "used_lo": 0.009195,
+        "used_hi": 0.011903,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 9,
+        "slope": 0.008426,
+        "lo": 0.007057,
+        "hi": 0.009724,
+        "r2": 0.4979,
+        "n": 176,
+        "used": 0.008426,
+        "used_lo": 0.007057,
+        "used_hi": 0.009724,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 10,
+        "slope": 0.007482,
+        "lo": 0.006153,
+        "hi": 0.008816,
+        "r2": 0.4829,
+        "n": 176,
+        "used": 0.007482,
+        "used_lo": 0.006153,
+        "used_hi": 0.008816,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 11,
+        "slope": 0.006857,
+        "lo": 0.005687,
+        "hi": 0.008103,
+        "r2": 0.4732,
+        "n": 176,
+        "used": 0.006857,
+        "used_lo": 0.005687,
+        "used_hi": 0.008103,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 12,
+        "slope": 0.006747,
+        "lo": 0.005515,
+        "hi": 0.007945,
+        "r2": 0.4835,
+        "n": 176,
+        "used": 0.006747,
+        "used_lo": 0.005515,
+        "used_hi": 0.007945,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 13,
+        "slope": 0.007177,
+        "lo": 0.005919,
+        "hi": 0.008337,
+        "r2": 0.5087,
+        "n": 176,
+        "used": 0.007177,
+        "used_lo": 0.005919,
+        "used_hi": 0.008337,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 14,
+        "slope": 0.007547,
+        "lo": 0.006445,
+        "hi": 0.008627,
+        "r2": 0.5597,
+        "n": 176,
+        "used": 0.007547,
+        "used_lo": 0.006445,
+        "used_hi": 0.008627,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 15,
+        "slope": 0.008184,
+        "lo": 0.006945,
+        "hi": 0.009406,
+        "r2": 0.5417,
+        "n": 176,
+        "used": 0.008184,
+        "used_lo": 0.006945,
+        "used_hi": 0.009406,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 16,
+        "slope": 0.008997,
+        "lo": 0.007729,
+        "hi": 0.010144,
+        "r2": 0.5776,
+        "n": 176,
+        "used": 0.008997,
+        "used_lo": 0.007729,
+        "used_hi": 0.010144,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 17,
+        "slope": 0.009303,
+        "lo": 0.00799,
+        "hi": 0.010568,
+        "r2": 0.56,
+        "n": 176,
+        "used": 0.009303,
+        "used_lo": 0.00799,
+        "used_hi": 0.010568,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 18,
+        "slope": 0.011325,
+        "lo": 0.009845,
+        "hi": 0.01275,
+        "r2": 0.5227,
+        "n": 176,
+        "used": 0.011325,
+        "used_lo": 0.009845,
+        "used_hi": 0.01275,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 19,
+        "slope": 0.01253,
+        "lo": 0.010615,
+        "hi": 0.014368,
+        "r2": 0.4712,
+        "n": 176,
+        "used": 0.01253,
+        "used_lo": 0.010615,
+        "used_hi": 0.014368,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 20,
+        "slope": 0.010596,
+        "lo": 0.00853,
+        "hi": 0.012655,
+        "r2": 0.3332,
+        "n": 176,
+        "used": 0.010596,
+        "used_lo": 0.00853,
+        "used_hi": 0.012655,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 21,
+        "slope": 0.008061,
+        "lo": 0.006277,
+        "hi": 0.009856,
+        "r2": 0.2762,
+        "n": 176,
+        "used": 0.008061,
+        "used_lo": 0.006277,
+        "used_hi": 0.009856,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 22,
+        "slope": 0.007586,
+        "lo": 0.006055,
+        "hi": 0.009139,
+        "r2": 0.2706,
+        "n": 176,
+        "used": 0.007586,
+        "used_lo": 0.006055,
+        "used_hi": 0.009139,
+        "clamped": false,
+        "inconclusive": false
+      },
+      {
+        "hb": 23,
+        "slope": 0.009045,
+        "lo": 0.007273,
+        "hi": 0.010718,
+        "r2": 0.3088,
+        "n": 176,
+        "used": 0.009045,
+        "used_lo": 0.007273,
+        "used_hi": 0.010718,
+        "clamped": false,
+        "inconclusive": false
+      }
+    ]
+  },
+  "series": [
+    {
+      "id": "fixed_overnight",
+      "label": "Battery on the off-peak rule",
+      "method": "fixed schedule, repriced",
+      "price_taker_keys": [
+        "fixed_usd_mw_day",
+        "fixed_70",
+        "fixed_500"
+      ],
+      "price_taker_usd_per_mw_day": 20.064745817659215,
+      "traded_hb": [
+        1,
+        2,
+        3,
+        4,
+        18,
+        19
+      ],
+      "inconclusive_traded_hb": [],
+      "points": [
+        {
+          "fleet_mw": 70,
+          "usd_per_mw_day": 18.23463861311376,
+          "band_low_usd_per_mw_day": 17.939535540386487,
+          "band_high_usd_per_mw_day": 18.53930470402285,
+          "usd_per_day": 1276.4247029179633,
+          "price_taker_usd_per_day": 1404.532207236145,
+          "pct_of_price_taker": 90.87899133546583,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 140,
+          "usd_per_mw_day": 16.404531408568307,
+          "band_low_usd_per_mw_day": 15.81432526311376,
+          "band_high_usd_per_mw_day": 17.01386359038649,
+          "usd_per_day": 2296.634397199563,
+          "price_taker_usd_per_day": 2809.06441447229,
+          "pct_of_price_taker": 81.75798267093167,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 250,
+          "usd_per_mw_day": 13.528648658568304,
+          "band_low_usd_per_mw_day": 12.47470911311376,
+          "band_high_usd_per_mw_day": 14.616741840386489,
+          "usd_per_day": 3382.1621646420763,
+          "price_taker_usd_per_day": 5016.186454414804,
+          "pct_of_price_taker": 67.4249690552351,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 500,
+          "usd_per_mw_day": 6.992551499477395,
+          "band_low_usd_per_mw_day": 4.884672408568306,
+          "band_high_usd_per_mw_day": 9.168737863113762,
+          "usd_per_day": 3496.2757497386974,
+          "price_taker_usd_per_day": 10032.372908829608,
+          "pct_of_price_taker": 34.849938110470205,
+          "discharged_mwh_per_mw": 1.876166303929372
+        }
+      ]
+    },
+    {
+      "id": "clearlane",
+      "label": "Clearlane timetable: charge in the clear lane",
+      "method": "fixed schedule, repriced",
+      "price_taker_keys": [
+        "clearlane_usd_mw_day",
+        "clearlane_70",
+        "clearlane_500"
+      ],
+      "price_taker_usd_per_mw_day": 58.40534130894316,
+      "traded_hb": [
+        13,
+        14,
+        15,
+        18,
+        19
+      ],
+      "inconclusive_traded_hb": [],
+      "points": [
+        {
+          "fleet_mw": 70,
+          "usd_per_mw_day": 56.12599452106437,
+          "band_low_usd_per_mw_day": 55.80259978167043,
+          "band_high_usd_per_mw_day": 56.46236389480174,
+          "usd_per_day": 3928.819616474506,
+          "price_taker_usd_per_day": 4088.373891626021,
+          "pct_of_price_taker": 96.09736586278666,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 140,
+          "usd_per_mw_day": 53.846647733185584,
+          "band_low_usd_per_mw_day": 53.199858254397704,
+          "band_high_usd_per_mw_day": 54.51938648066033,
+          "usd_per_day": 7538.530682645982,
+          "price_taker_usd_per_day": 8176.747783252042,
+          "pct_of_price_taker": 92.19473172557329,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 250,
+          "usd_per_mw_day": 50.264817066518916,
+          "band_low_usd_per_mw_day": 49.1098358543977,
+          "band_high_usd_per_mw_day": 51.466136258438105,
+          "usd_per_day": 12566.20426662973,
+          "price_taker_usd_per_day": 14601.335327235789,
+          "pct_of_price_taker": 86.06202093852374,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 500,
+          "usd_per_mw_day": 42.124292824094674,
+          "band_low_usd_per_mw_day": 39.81433039985225,
+          "band_high_usd_per_mw_day": 44.52693120793306,
+          "usd_per_day": 21062.146412047336,
+          "price_taker_usd_per_day": 29202.670654471578,
+          "pct_of_price_taker": 72.12404187704749,
+          "discharged_mwh_per_mw": 1.876166303929372
+        }
+      ]
+    },
+    {
+      "id": "dp_price_only",
+      "label": "Battery-only plan: hourly DP, no wear",
+      "method": "hourly DP, re-planned seeing its own impact",
+      "price_taker_keys": [
+        "price_only_usd_mw_day"
+      ],
+      "price_taker_usd_per_mw_day": 65.79160906017785,
+      "traded_hb": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        7,
+        8,
+        13,
+        14,
+        15,
+        18,
+        19
+      ],
+      "inconclusive_traded_hb": [],
+      "points": [
+        {
+          "fleet_mw": 70,
+          "usd_per_mw_day": 62.41335795343869,
+          "band_low_usd_per_mw_day": 61.96548952285322,
+          "band_high_usd_per_mw_day": 62.89639849151721,
+          "usd_per_day": 4368.935056740708,
+          "price_taker_usd_per_day": 4605.412634212449,
+          "pct_of_price_taker": 94.86522498081912,
+          "discharged_mwh_per_mw": 3.846140923055212
+        },
+        {
+          "fleet_mw": 140,
+          "usd_per_mw_day": 59.95295930001926,
+          "band_low_usd_per_mw_day": 59.17746095549367,
+          "band_high_usd_per_mw_day": 60.7837172655695,
+          "usd_per_day": 8393.414302002697,
+          "price_taker_usd_per_day": 9210.825268424898,
+          "pct_of_price_taker": 91.12554040923648,
+          "discharged_mwh_per_mw": 3.846140923055213
+        },
+        {
+          "fleet_mw": 250,
+          "usd_per_mw_day": 56.58475212270861,
+          "band_low_usd_per_mw_day": 55.44460832109453,
+          "band_high_usd_per_mw_day": 57.96582498686923,
+          "usd_per_day": 14146.188030677153,
+          "price_taker_usd_per_day": 16447.90226504446,
+          "pct_of_price_taker": 86.00603166727846,
+          "discharged_mwh_per_mw": 3.70542845026051
+        },
+        {
+          "fleet_mw": 500,
+          "usd_per_mw_day": 51.72258855002845,
+          "band_low_usd_per_mw_day": 50.52408590034015,
+          "band_high_usd_per_mw_day": 53.15453876299644,
+          "usd_per_day": 25861.294275014225,
+          "price_taker_usd_per_day": 32895.80453008892,
+          "pct_of_price_taker": 78.61578290739045,
+          "discharged_mwh_per_mw": 2.7673452982958233
+        }
+      ]
+    },
+    {
+      "id": "dp_wear10",
+      "label": "Hourly DP with wear at $10/MWh",
+      "method": "hourly DP, re-planned seeing its own impact",
+      "price_taker_keys": [
+        "wear10_usd_mw_day"
+      ],
+      "price_taker_usd_per_mw_day": 57.53707428489438,
+      "traded_hb": [
+        8,
+        13,
+        14,
+        15,
+        18,
+        19
+      ],
+      "inconclusive_traded_hb": [],
+      "points": [
+        {
+          "fleet_mw": 70,
+          "usd_per_mw_day": 55.71067418545515,
+          "band_low_usd_per_mw_day": 55.49331394633634,
+          "band_high_usd_per_mw_day": 55.94874395467079,
+          "usd_per_day": 3899.7471929818603,
+          "price_taker_usd_per_day": 4027.5951999426065,
+          "pct_of_price_taker": 96.8256986957734,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 140,
+          "usd_per_mw_day": 54.46792423755454,
+          "band_low_usd_per_mw_day": 54.140124929089325,
+          "band_high_usd_per_mw_day": 54.82815523961989,
+          "usd_per_day": 7625.509393257636,
+          "price_taker_usd_per_day": 8055.190399885213,
+          "pct_of_price_taker": 94.6657870851358,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 250,
+          "usd_per_mw_day": 52.93822590994805,
+          "band_low_usd_per_mw_day": 52.41639638523334,
+          "band_high_usd_per_mw_day": 53.483547129331804,
+          "usd_per_day": 13234.556477487013,
+          "price_taker_usd_per_day": 14384.268571223594,
+          "pct_of_price_taker": 92.00715637334083,
+          "discharged_mwh_per_mw": 1.876166303929372
+        },
+        {
+          "fleet_mw": 500,
+          "usd_per_mw_day": 49.9457343453976,
+          "band_low_usd_per_mw_day": 49.04037443610685,
+          "band_high_usd_per_mw_day": 50.905902458277026,
+          "usd_per_day": 24972.8671726988,
+          "price_taker_usd_per_day": 28768.53714244719,
+          "pct_of_price_taker": 86.80617665418939,
+          "discharged_mwh_per_mw": 1.876166303929372
+        }
+      ]
+    }
+  ]
+}
