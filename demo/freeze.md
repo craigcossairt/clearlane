@@ -16,7 +16,7 @@ Two decisions must be made before 1:45pm, both Craig's:
 ## 2:00pm, tag `v1-stage`
 
 ```bash
-cd "C:/Users/Craig Cossairt/Code/clearlane"
+cd ~/Code/clearlane
 git pull --ff-only && npm run check:all
 node tools/offline-check.mjs && node tools/facts-check.mjs
 npm run reproduce
@@ -31,8 +31,8 @@ git ls-remote --tags origin v1-stage
 ## 2:10pm, stage worktree from the tag
 
 ```bash
-git -C "C:/Users/Craig Cossairt/Code/clearlane" worktree add ../clearlane-stage --detach v1-stage
-cd "C:/Users/Craig Cossairt/Code/clearlane-stage"
+git -C ~/Code/clearlane worktree add ../clearlane-stage --detach v1-stage
+cd ~/Code/clearlane-stage
 git describe --tags && npm ci && npm run build && node tools/offline-check.mjs
 npx vite preview --port 4173 --strictPort
 ```

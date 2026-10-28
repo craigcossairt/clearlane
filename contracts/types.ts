@@ -80,7 +80,7 @@ export interface HistMeta {   // public/data/hist_<start>_<end>.meta.json, the s
 
 export interface TorusPublished {  // public/data/torus_published.json
   events_2025_total: Tagged<number>;               // 359
-  events_2025_by_hour: Tagged<number[]>;           // 24 counts, index 0 = 12am; source states no time zone
+  events_2025_by_hour: Tagged<number[]>;           // 24 counts, index 0 = 12am Mountain time (Torus confirmed; heatmap_readings)
   events_2025_by_weekday: Tagged<number[]>;        // Mon..Sun
   ramp_s: Tagged<number>;                          // 19
   ramp_target_s: Tagged<number>;                   // 30
@@ -207,7 +207,7 @@ export interface PolicyStats {
   usd_per_mw_day: Pctl;
   co2_t_per_mw_day: Pctl;          // + avoided, average emissions
   pulse_cycles_per_yr: number;
-  calls_unanswerable_pct: {        // the 2025 heatmap states no time zone, so every reading is kept
+  calls_unanswerable_pct: {        // heatmap is Mountain time (Torus confirmed); the UTC readings are a sensitivity check only
     heatmap_as_mt: number;         // hours read as Mountain local time
     heatmap_as_utc: number;        // hours read as UTC, shifted to Mountain at UTC-6 (MDT)
     heatmap_as_utc_mst: number;    // hours read as UTC, shifted at UTC-7 (MST); the 43% in "43% to 77%"

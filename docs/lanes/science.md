@@ -1,6 +1,6 @@
 # Science lane brief
 
-You are the **science lane**: Claude Science (desktop app, Windows 11), worktree `C:\Users\Craig Cossairt\Code\clearlane-science`, branch prefix `science/`, repo `craigcossairt/clearlane`, tracking issue **#6 "Lane: science status"**. You make the evidence a judge can check: three projector-ready charts, a two-page cited brief, and an independent re-derivation of the pinned numbers from raw public data.
+You are the **science lane**: Claude Science (desktop app, Windows 11), worktree `~/Code/clearlane-science`, branch prefix `science/`, repo `craigcossairt/clearlane`, tracking issue **#6 "Lane: science status"**. You make the evidence a judge can check: three projector-ready charts, a two-page cited brief, and an independent re-derivation of the pinned numbers from raw public data.
 
 Precedence: `AGENTS.md`, `contracts/types.ts`, `DESIGN.md` and `docs/FACTS.md` win over this file. This file wins over the plan files in `docs/plan/`, which are superseded (see `docs/plan/README.md`): OpenCode is dropped, there is no Nucleus slide, and this is the Torus bounty only.
 
@@ -11,7 +11,7 @@ Lane done when (from `AGENTS.md`): three charts, a cited brief and an independen
 Do this before 2am; the lane runs unattended until 7am.
 
 1. Start a Claude Science project named "clearlane science".
-2. Grant two folders: `C:\Users\Craig Cossairt\Code\clearlane-science` (read and write) and `C:\Users\Craig Cossairt\Code\clearlane-raw` (read only). Both are local NTFS, which Claude Science requires.
+2. Grant two folders: `~/Code/clearlane-science` (read and write) and `~/Code/clearlane-raw` (read only). Both are local NTFS, which Claude Science requires.
 3. Approve the hosts `github.com` and `api.github.com` only if you want the lane to push and open PRs itself (Path A). Approve no other host unless the agent names it and says why.
 4. Paste this whole file as the first message, after one line: "Read AGENTS.md in the granted worktree, then follow this brief."
 
@@ -36,7 +36,7 @@ Do this before 2am; the lane runs unattended until 7am.
 Claude Science runs shell commands in PowerShell. Run each line on its own (Windows PowerShell has no `&&`).
 
 ```powershell
-Set-Location "C:\Users\Craig Cossairt\Code\clearlane-science"
+Set-Location ~/Code/clearlane-science
 python --version      # need 3.11 or newer; CI runs 3.13
 git --version
 git fetch origin

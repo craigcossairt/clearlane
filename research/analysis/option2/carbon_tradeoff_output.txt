@@ -52,6 +52,6 @@
 
 PACE DA price jump HB17->HB18 MDT in Oct: median $10.8, n=27
 Traceback (most recent call last):
-  File "C:\Users\Craig Cossairt\AppData\Local\Temp\claude\C--Users-Craig-Cossairt-Bloom\5949fb18-8d0b-4731-a708-73a6ce2e61d5\scratchpad\research\scratch-opt2\carbon_tradeoff.py", line 88, in <module>
+  File "<research scratchpad>/research/scratch-opt2/carbon_tradeoff.py", line 88, in <module>
     best = max(range(len(ts)-1), key=lambda i: lmp[ts[i+1]]["PACE"] - lmp[ts[i]]["PACE"])
 ValueError: max() iterable argument is empty
