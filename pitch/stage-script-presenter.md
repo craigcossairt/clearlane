@@ -1,96 +1,77 @@
-# Stage script, presenter mode
+# Talk track, presenter mode
 
-For presenter mode (`?ff=presenter`): eight screens, clicked through with Next or the named button. A clicker works as Next. Craig speaks the quoted lines; the app shows the rest. The spoken lines are the six-beat script's, re-cued to the screens, with two changes on the race screen: the CO2 line is gone, because the race screen does not show CO2, and "Same battery, same evening sale." stands in for it, because the screen says so. Every result is a key in braces. About two minutes and forty-five seconds.
+For presenter mode (`?ff=presenter`): eight screens. About two minutes and forty-five seconds. Every result is a key in braces; the screen shows the same number.
 
-The race screen reads the reference timetable, `{clearlane_usd_mw_day}` per MW-day, the same set the scale screen multiplies. The engine's own 15-minute plan is a Q&A answer, not a stage line.
+Each screen has four parts:
 
-Next runs a screen's buttons in order before it leaves the screen, so Next alone walks the whole talk. Back lands on the previous screen with its buttons already run.
+- **Say:** the quoted lines, in plain words. Say them slowly; each screen has room to spare.
+- **Point at:** where to put the judges' eyes.
+- **Press:** the button to click, or Next. A clicker works as Next. Next alone walks the whole talk, because it presses each screen's buttons in order before it leaves the screen.
+- **If asked:** the hard question most likely on that screen, with the one-line answer from `pitch/drill.md`'s five hard questions. The full card is in `pitch/qa.md`.
 
-## Screen 1, title (0:00 to 0:06)
+Three words to have ready: **Spin** is Torus's flywheel, for short, sharp calls. **Pulse** is its battery, for moving energy across the day. **RMP** is Rocky Mountain Power, Utah's utility.
 
-> This is Utah's traffic report for the day on screen, published the evening before.
+## Screen 1, title (0:00 to 0:08)
 
-| Craig's cue                                | Screen                                                       |
-| ------------------------------------------ | ------------------------------------------------------------ |
-| Open on the title                          | Wordmark, the one-line pitch, the operating day and the node |
-| "published the evening before", then Start | Traffic screen                                               |
+> Clearlane is a traffic report for Utah's power grid, and a day plan for simulated Torus-style stations.
 
-## Screen 2, traffic (0:06 to 0:25)
+- **Point at:** the operating day under the title.
+- **Press:** Start.
+- **If asked:** none of the five lands here.
 
-> The road is clear at midday. Then net load climbs `{net_load_climb_mw}` MW in three hours, and the 6pm price is `{peak_over_trough}` the day's low. In October that jump landed at 5pm or 6pm on `{oct_step_hour_days_at_5_or_6}` of `{oct_step_hour_days_total}` days.
+## Screen 2, traffic (0:08 to 0:30)
 
-| Craig's cue           | Screen                                                     |
-| --------------------- | ---------------------------------------------------------- |
-| On arrival            | The price ribbon, each hour labeled Clear, Shoulder or Jam |
-| "net load climbs"     | Point at the evening hours; no click                       |
-| End of the line, Next | Race screen                                                |
+> This is the price of power for the day on screen, hour by hour, set the evening before. Midday is cheap: the road is clear. By 6pm power costs `{peak_over_trough}` the day's low. In October that jump came at 5pm or 6pm on `{oct_step_hour_days_at_5_or_6}` of `{oct_step_hour_days_total}` days.
 
-## Screen 3, race (0:25 to 0:55)
+- **Point at:** the Clear hours at midday, then the Jam hours in the evening.
+- **Press:** Next.
+- **If asked:** none of the five lands here.
 
-> Left, a battery on a fixed off-peak rule. That rule is ours, not Torus practice. It buys at `{fixed_rule_charge_usd_mwh}`. Right, a simulated Torus-style station on Clearlane, buying in the clear lane at `{timetable_charge_usd_mwh}`. Same battery, same evening sale. Off-peak is worth `{fixed_usd_mw_day}` per MW-day, Clearlane `{clearlane_usd_mw_day}`. At `{mou_70mw}` MW that is `{clearlane_70}` a day, as value to RMP's system at day-ahead prices.
+## Screen 3, race (0:30 to 1:00)
 
-| Craig's cue                       | Screen                                                                         |
-| --------------------------------- | ------------------------------------------------------------------------------ |
-| On arrival, Replay the day        | Both plans play the day in 15 seconds; Next during the replay jumps to its end |
-| "It buys at"                      | Left card, Buys row                                                            |
-| "buying in the clear lane at"     | Right card, Buys row                                                           |
-| "Same battery, same evening sale" | Both Sells rows; say no number for the sale price, the MWh or the subtotals    |
-| "Off-peak is worth"               | Both Net rows, the large figures                                               |
-| End of the line, Next             | Call screen                                                                    |
+> Two identical batteries. The left one follows a fixed off-peak rule. That rule is ours, not Torus practice. It buys power at `{fixed_rule_charge_usd_mwh}`. The right one is a simulated Torus-style station on Clearlane, buying at midday at `{timetable_charge_usd_mwh}`. Both sell in the same evening hours. Off-peak nets `{fixed_usd_mw_day}` per MW a day, Clearlane `{clearlane_usd_mw_day}`. That is value to RMP's system at day-ahead prices.
 
-## Screen 4, call (0:55 to 1:32)
+- **Point at:** each card's Buys row, then both Sells rows (say no number for the sale), then the two large Net figures.
+- **Press:** Replay the day. It plays in 15 seconds; Next during the replay jumps to the end. Then Next.
+- **If asked:** "Your race says `{race_ratio}` but the engine says `{dp_race_ratio}`." The race is the reference timetable; the engine's 15-minute plan prices wear and moves energy in coarse steps.
 
-> Rocky Mountain Power calls for `{enrolled_kw}` kW, now. Spin answers. A call of about five and a half minutes fits inside Spin's discharge, and the host meter stays under `{host_ceiling_kw}` kW while Spin refills. Press again inside that window, and the second call delivers `{second_call_delivered_pct}` of it, `{second_call_shortfall_kwh}` kWh short. The card says so. The event card is Torus's own 2025 report: `{rmp_events_2025}` events, all unplanned calls. Our trace is simulated. The two stay apart.
+## Screen 4, call (1:00 to 1:35)
 
-| Craig's cue                             | Screen                                                                   |
-| --------------------------------------- | ------------------------------------------------------------------------ |
-| "now", Rocky Mountain Power calls now   | Call at 6:40pm; Spin carries it, Pulse keeps its plan                    |
-| "Press again", Call again during refill | Second call during the refill; delivered share and kWh short on the card |
-| "Torus's own 2025 report"               | Event card, labeled Torus-published, beside our simulated trace          |
-| End of the line, Next                   | Re-plan screen                                                           |
+> Now Rocky Mountain Power calls for `{enrolled_kw}` kW, right now. Spin, the flywheel, answers, and the host building's meter stays under its `{host_ceiling_kw}` kW limit while Spin refills. If a second call comes during the refill, it gets `{second_call_delivered_pct}`, `{second_call_shortfall_kwh}` kWh short, and the card says so. The card beside it is Torus's own 2025 record: `{rmp_events_2025}` calls, all unplanned. Our trace is simulated. We keep the two apart.
 
-## Screen 5, re-plan (1:32 to 1:47)
+- **Point at:** the call line on the chart, then the second-call card, then the Torus record card.
+- **Press:** Rocky Mountain Power calls now, then Call again during refill, then Next.
+- **If asked:** none of the five lands here.
 
-> The rest of the day is re-solved from the state of charge after the call, in `{replan_ms}`, measured on this machine. The meter shows Pulse's cycles for the day beside its yearly budget.
+## Screen 5, re-plan (1:35 to 1:50)
 
-| Craig's cue                     | Screen                                                           |
-| ------------------------------- | ---------------------------------------------------------------- |
-| On arrival                      | Dashed plan from the morning, solid re-plan from the call minute |
-| Read the time off the screen    | MEASURED solve time; never a number from a file                  |
-| "yearly budget", Resume the day | The day plays on from the call minute                            |
-| End of the line, Next           | Envelope screen                                                  |
+> After the call, Clearlane re-plans the rest of the day in `{replan_ms}`, timed on this laptop. The meter shows the battery's cycles today against its yearly budget.
 
-## Screen 6, envelope (1:47 to 2:22)
+- **Point at:** the solve time, read off the screen, never from a file; then the dashed morning plan against the solid re-plan.
+- **Press:** Resume the day, then Next.
+- **If asked:** none of the five lands here.
 
-> An hourly envelope: System Critical Hours, reserve kW, and charge and discharge limits. It is a format Clearlane proposes, and the hours rule is our proposal: we found no Utah or Wyoming docket that defines it. The backtest, in Mountain time: calls missed, Clearlane `{calls_missed_by_policy_clearlane_mt}`, battery-only `{calls_missed_by_policy_price_only_mt}`. The battery-only plan earns more on paper, but runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget and breaks the host ceiling. Clearlane is the plan a host and RMP would allow.
+## Screen 6, envelope (1:50 to 2:25)
 
-| Craig's cue                       | Screen                                                        |
-| --------------------------------- | ------------------------------------------------------------- |
-| On arrival                        | Envelope strip, System Critical Hours marked                  |
-| "The backtest", Show the backtest | Backtest card, calls missed by policy in Mountain time        |
-| "earns more on paper"             | Battery-only plan row; say no number for the ceiling breaches |
-| End of the line, Next             | Scale screen                                                  |
+> This is what we hand RMP: for each hour, how much the station may charge or discharge, and how much it holds back for calls. It is a format Clearlane proposes. Outlined hours are the grid's tightest; that rule is our proposal. Across every day since May, a battery-only plan earns more on paper, but it runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget, breaks the host's limit, and misses `{calls_missed_by_policy_price_only_mt}` of calls. Clearlane misses `{calls_missed_by_policy_clearlane_mt}`.
 
-Show the envelope flips back from the backtest, for Q&A only.
+- **Point at:** the outlined hours on the strip; after the press, the battery-only row against Clearlane's. Say no number for the limit breaks.
+- **Press:** Show the backtest at "Across every day", then Next. Show the envelope flips back, for Q&A only.
+- **If asked:** "Your battery-only plan out-earns Clearlane." On paper it does; it runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget, breaks the host ceiling and misses `{calls_missed_by_policy_price_only_mt}` of calls.
+- **Or:** "So your System Critical Hours predict calls?" No. They mark the tightest hours, and no rule we tested catches call hours better than chance.
 
-## Screen 7, scale (2:22 to 2:34)
+## Screen 7, scale (2:25 to 2:35)
 
-> An MOU for up to `{torus_500mw}` MW, not installed capacity, and the fleet is assumed not to move prices: `{clearlane_500}` a day.
+> An MOU for up to `{torus_500mw}` MW, not installed capacity. If the fleet does not move prices: `{clearlane_500}` a day.
 
-| Craig's cue                               | Screen                                             |
-| ----------------------------------------- | -------------------------------------------------- |
-| On arrival, the `{torus_500mw}` MW button | Fleet at the MOU ceiling, the caveat line under it |
-| End of the line, Next                     | Close screen                                       |
+- **Point at:** the fleet figure, then the caveat line under it.
+- **Press:** the `{torus_500mw}` MW button, then Next. The `{mou_70mw}` MW button is for Q&A only.
+- **If asked:** "Is `{clearlane_70}` a day real?" It assumes every enrolled MW is an arbitrage battery and the fleet does not move prices; the MOU is demand-response capacity, some of it maybe Spin.
 
-The `{mou_70mw}` MW button goes back to the smaller MOU, for Q&A only.
+## Screen 8, close (2:35 to 2:45)
 
-## Screen 8, close (2:34 to 2:45)
+> Compute moves in time, not in space. Fill up when the road is clear, keep Spin ready for the crash. Our ask: pilot this envelope.
 
-> Compute moves in time, not in space. Fill up when the road is clear, keep Spin ready for the crash. Ask: pilot the envelope.
-
-| Craig's cue             | Screen                                    |
-| ----------------------- | ----------------------------------------- |
-| "in time, not in space" | Campus card (Option 2), labeled simulated |
-| Close line              | The ask: pilot the envelope               |
-
-Stay on this screen for Q&A. The Sources button opens every screen's source line.
+- **Point at:** the ask.
+- **Press:** nothing. Stay here for Q&A; the Sources button opens every screen's source line.
+- **If asked:** "Isn't this Lasso?" Lasso forecasts and dispatches; a day-ahead timetable and an hourly envelope are not advertised, and the envelope is a format Clearlane proposes.
