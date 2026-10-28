@@ -53,35 +53,54 @@
 </div>
 </header>
 <div class="p-hero p-hero-replan">
-<section class="beat" aria-labelledby="beat-replan">
-<h2 id="beat-replan">Re-plan</h2>
-<div class="card" data-slot="replan-line">
-<p>Re-planned in <span class="num num-ok" data-num="live" data-prov="MEASURED" data-num-state="ok" style="min-width: 9ch;">
+<section class="beat p-replan" aria-label="Re-plan">
+<div class="p-replan-hero" data-slot="replan-line">
+<p>
+<span class="p-replan-lead">Re-planned in</span> <span class="p-replan-ms">
+<span class="num num-ok" data-num="live" data-prov="MEASURED" data-num-state="ok" style="min-width: 9ch;">
 <span class="figure">[masked: MEASURED]</span>
 <abbr class="chip chip-measured" title="performance.now inside the engine solve, this laptop" data-copy-ok="provenance class name">MEASURED</abbr>
-</span>. <span class="muted">The rest of the day, re-solved from the state of charge the call left behind, timed live on this laptop. Simulated station.</span>
+</span>
+</span> <span class="p-replan-tail">timed live on this laptop, from the charge the call left behind.</span>
 </p>
 </div>
-<svg class="chart" viewBox="0 0 960 200" role="img" aria-label="Pulse state of charge across the day: the morning plan, dashed, and the re-plan from the call, solid" data-slot="replan-chart">
-<polyline data-series="planned" fill="none" stroke="var(--muted)" stroke-width="3" stroke-dasharray="6 4" points="40,154.5 49.26315789473684,154.5 58.526315789473685,154.5 67.78947368421052,147 77.05263157894737,147 86.3157894736842,147 95.57894736842105,147 104.84210526315789,147 114.10526315789474,147 123.36842105263158,147 132.6315789473684,147 141.89473684210526,147 151.1578947368421,147 160.42105263157896,147 169.68421052631578,147 178.94736842105263,147 188.21052631578948,147 197.47368421052633,147 206.73684210526315,147 216,147 225.26315789473682,147 234.52631578947367,147 243.78947368421052,147 253.05263157894737,147 262.3157894736842,147 271.57894736842104,147 280.8421052631579,147 290.10526315789474,147 299.36842105263156,147 308.63157894736844,147 317.89473684210526,147 327.15789473684214,147 336.42105263157896,147 345.68421052631584,147 354.94736842105266,147 364.2105263157895,147 373.4736842105263,135.75 382.7368421052631,124.5 392,113.25 401.2631578947368,102 410.52631578947364,94.5 419.7894736842105,87 429.05263157894734,79.5 438.3157894736842,72 447.57894736842104,64.5 456.84210526315786,57 466.10526315789474,49.5 475.36842105263156,42 484.63157894736844,38.25 493.8947368421053,34.5 503.1578947368421,30.75 512.421052631579,27 521.6842105263158,27 530.9473684210526,27 540.2105263157895,27 549.4736842105264,27 558.7368421052631,27 568,27 577.2631578947369,27 586.5263157894738,27 595.7894736842105,27 605.0526315789474,27 614.3157894736843,27 623.578947368421,27 632.8421052631579,23.25 642.1052631578948,19.5 651.3684210526317,15.75 660.6315789473684,12 669.8947368421053,12 679.1578947368421,12 688.421052631579,12 697.6842105263158,12 706.9473684210526,30.75 716.2105263157895,49.5 725.4736842105262,68.25 734.7368421052631,87 744,105.75 753.2631578947368,124.5 762.5263157894736,143.25 771.7894736842105,154.5 781.0526315789473,154.5 790.3157894736842,154.5 799.578947368421,154.5 808.8421052631579,154.5 818.1052631578947,154.5 827.3684210526316,154.5 836.6315789473684,154.5 845.8947368421052,154.5 855.1578947368421,154.5 864.421052631579,154.5 873.6842105263157,154.5 882.9473684210526,154.5 892.2105263157895,154.5 901.4736842105264,154.5 910.7368421052631,154.5 920,154.5">
-</polyline>
-<polyline data-series="replanned" fill="none" stroke="var(--accent)" stroke-width="4" points="725.4736842105262,68.25">
-</polyline>
-<line x1="725.4736842105262" x2="725.4736842105262" y1="12" y2="162" stroke="var(--jam)" stroke-width="3">
+<div class="p-replan-key">
+<span>
+<i class="p-key is-planned" aria-hidden="true">
+</i>This morning's plan</span>
+<span>
+<i class="p-key is-replanned" aria-hidden="true">
+</i>Re-plan after the call</span>
+</div>
+<svg class="chart p-replan-chart" viewBox="0 0 960 250" role="img" aria-label="Pulse state of charge across the day: the morning plan, dashed, and the re-plan from the call, solid" data-slot="replan-chart">
+<text x="20" y="119" class="p-replan-axis" transform="rotate(-90 20 119)" text-anchor="middle">Pulse battery charge</text>
+<line x1="60" x2="940" y1="204" y2="204" class="p-call-base">
 </line>
-<text x="40" y="188" fill="var(--muted)" font-size="14" data-axis="">12am</text>
-<text x="262.3157894736842" y="188" fill="var(--muted)" font-size="14" data-axis="">6am</text>
-<text x="484.63157894736844" y="188" fill="var(--muted)" font-size="14" data-axis="">12pm</text>
-<text x="706.9473684210526" y="188" fill="var(--muted)" font-size="14" data-axis="">6pm</text>
+<polyline data-series="planned" fill="none" stroke="var(--muted)" stroke-width="3" stroke-dasharray="6 4" points="60,195.5 69.26315789473685,195.5 78.52631578947368,195.5 87.78947368421052,187 97.05263157894737,187 106.3157894736842,187 115.57894736842105,187 124.84210526315789,187 134.10526315789474,187 143.36842105263156,187 152.6315789473684,187 161.89473684210526,187 171.1578947368421,187 180.42105263157896,187 189.68421052631578,187 198.94736842105263,187 208.21052631578948,187 217.47368421052633,187 226.73684210526315,187 236,187 245.26315789473682,187 254.52631578947367,187 263.7894736842105,187 273.0526315789474,187 282.3157894736842,187 291.57894736842104,187 300.8421052631579,187 310.10526315789474,187 319.36842105263156,187 328.63157894736844,187 337.89473684210526,187 347.15789473684214,187 356.42105263157896,187 365.68421052631584,187 374.94736842105266,187 384.2105263157895,187 393.4736842105263,174.25 402.7368421052631,161.5 412,148.75 421.2631578947368,136 430.52631578947364,127.5 439.7894736842105,119 449.05263157894734,110.49999999999999 458.3157894736842,102 467.57894736842104,93.5 476.84210526315786,85.00000000000001 486.10526315789474,76.5 495.36842105263156,68 504.63157894736844,63.75 513.8947368421053,59.5 523.1578947368421,55.25 532.421052631579,51 541.6842105263158,51 550.9473684210526,51 560.2105263157895,51 569.4736842105264,51 578.7368421052631,51 588,51 597.2631578947369,51 606.5263157894738,51 615.7894736842105,51 625.0526315789474,51 634.3157894736843,51 643.578947368421,51 652.8421052631579,46.75 662.1052631578948,42.5 671.3684210526317,38.25 680.6315789473684,34 689.8947368421053,34 699.1578947368421,34 708.421052631579,34 717.6842105263158,34 726.9473684210526,55.25 736.2105263157895,76.5 745.4736842105262,97.75 754.7368421052631,119 764,140.25 773.2631578947368,161.5 782.5263157894736,182.75 791.7894736842105,195.5 801.0526315789473,195.5 810.3157894736842,195.5 819.578947368421,195.5 828.8421052631579,195.5 838.1052631578947,195.5 847.3684210526316,195.5 856.6315789473684,195.5 865.8947368421052,195.5 875.1578947368421,195.5 884.421052631579,195.5 893.6842105263157,195.5 902.9473684210526,195.5 912.2105263157895,195.5 921.4736842105264,195.5 930.7368421052631,195.5 940,195.5">
+</polyline>
+<polyline data-series="replanned" fill="none" stroke="var(--accent)" stroke-width="5" points="745.4736842105262,97.75">
+</polyline>
+<line x1="745.4736842105262" x2="745.4736842105262" y1="34" y2="204" stroke="var(--jam)" stroke-width="3">
+</line>
+<text x="735.4736842105262" y="24" text-anchor="end" class="p-replan-callmark">RMP call, <tspan data-time="">6:40pm</tspan>
+</text>
+<g data-slot="replan-leave">
+<circle cx="745.4736842105262" cy="97.75" r="8" fill="var(--accent)" stroke="var(--bg)" stroke-width="3">
+</circle>
+<text x="729.4736842105262" y="129.75" text-anchor="end" class="p-replan-note">The re-plan takes over here</text>
+</g>
+<text x="60" y="236" class="p-replan-tick" data-axis="">12am</text>
+<text x="282.3157894736842" y="236" class="p-replan-tick" data-axis="">6am</text>
+<text x="504.63157894736844" y="236" class="p-replan-tick" data-axis="">12pm</text>
+<text x="726.9473684210526" y="236" class="p-replan-tick" data-axis="">6pm</text>
 </svg>
-<p class="muted">Dashed: Pulse state of charge as planned this morning. Solid: the re-plan from the call (red line).</p>
-<p data-slot="replan-cycles">Pulse cycles today: <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 5ch;">
+<p class="p-replan-cycles" data-slot="replan-cycles" data-detail="">Pulse cycles today <span class="num num-ok" data-num="live" data-prov="DERIVED" data-num-state="ok" style="min-width: 5ch;">
 <span class="figure">0.93</span>
 <abbr class="chip chip-derived" title="engine re-plan (live, this laptop)" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>. Budget: <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 5ch;">
+</span>. Budget <span class="num num-ok" data-num="pulse_cycle_budget" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
 <span class="figure">300</span>
 <abbr class="chip chip-derived" title="https://www.torus.co/torus-nova-pulse + https://www.torus.co/torus-nova, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> cycles a year.</p>
+</span> a year.</p>
 </section>
 </div>
 </main>

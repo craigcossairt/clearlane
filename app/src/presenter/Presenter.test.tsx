@@ -135,6 +135,42 @@ describe("presenter mode (#216, ff_presenter)", () => {
     expect(second()).toContain(PRESENTER.secondRule);
   });
 
+  it("the call screen leads each trace with its Delivered share, simulated (#270)", () => {
+    const { container } = renderPresenter("screen=4&step=end&motion=off");
+    for (const slot of ["call-inset", "call-ghost"]) {
+      const pct = container.querySelector(
+        `[data-slot="${slot}"] .p-call-pct [data-num]`,
+      );
+      expect(pct?.getAttribute("data-prov")).toBe("SIMULATED");
+      expect(pct?.textContent).toMatch(/%/);
+    }
+    // Our simulation and Torus's published record stay in separate halves.
+    expect(
+      container.querySelector('.is-sim [data-prov="TORUS_PUBLISHED"]'),
+    ).toBeNull();
+    expect(
+      container.querySelector('.is-published [data-prov="SIMULATED"]'),
+    ).toBeNull();
+    expect(
+      container.querySelector(
+        '[data-slot="call-result"] [data-slot="second-call"]',
+      )?.textContent,
+    ).toContain(PRESENTER.secondRule);
+  });
+
+  it("the re-plan screen names its axis and the call, and leads with the measured time (#270)", () => {
+    const { container } = renderPresenter("screen=5&step=end&motion=off");
+    const chart = container.querySelector('[data-slot="replan-chart"]')!;
+    expect(chart.textContent).toContain(PRESENTER.replanAxis);
+    expect(chart.textContent).toContain(PRESENTER.replanCallMark);
+    expect(chart.textContent).toContain(PRESENTER.replanTakesOver);
+    expect(
+      container
+        .querySelector(".p-replan-ms [data-num]")
+        ?.getAttribute("data-prov"),
+    ).toBe("MEASURED");
+  });
+
   it("arriving on Re-plan by a segment click has both calls applied", () => {
     const { container } = renderPresenter("motion=off");
     const seg = [
@@ -173,22 +209,38 @@ describe("presenter mode (#216, ff_presenter)", () => {
     expect(
       container.querySelector('[data-slot="backtest-bands"]'),
     ).toBeTruthy();
-    // Pitch review: the count and the window, never "every day".
+    // #270: the headline is the story; the line carries the count, the window and the share.
     const head = container.querySelector<HTMLElement>(
       '[data-slot="headline"]',
     )!;
-    expect(spoken(head)).toBe("Backtested on 179 days, May 1 to Oct 27.");
-    expect(container.textContent).toContain(
-      "Each policy run on every day of the history with full data, beside the off-peak rule.",
+    expect(spoken(head)).toBe(
+      "Battery-only is worth more on paper. Clearlane is the plan a host and RMP would allow.",
+    );
+    const line = container.querySelector<HTMLElement>(
+      '[data-slot="backtest-line"]',
+    )!;
+    // Pitch review: the count and the window, never "every day".
+    expect(spoken(line)).toBe(
+      "Backtested on 179 days, May 1 to Oct 27. Clearlane beats the off-peak rule on 91% of days.",
     );
     expect(
-      head
+      line
         .querySelector('[data-num="backtest_days"]')
         ?.getAttribute("data-prov"),
     ).toBe("DERIVED");
     expect(
-      [...head.querySelectorAll("[data-time]")].map((e) => e.textContent),
+      [...line.querySelectorAll("[data-time]")].map((e) => e.textContent),
     ).toEqual(["May 1", "Oct 27"]);
+    // The rules of the road: battery-only fails all three, Clearlane passes all three.
+    const marks = (policy: string) =>
+      [
+        ...container.querySelectorAll(
+          `[data-policy="${policy}"] [data-rule] .p-mark`,
+        ),
+      ].map((m) => m.className.replace("p-mark is-", ""));
+    expect(marks("price_only")).toEqual(["fail", "fail", "fail"]);
+    expect(marks("clearlane")).toEqual(["pass", "pass", "pass"]);
+    expect(marks("fixed_overnight")).toEqual(["fail", "pass", "baseline"]);
     expect(container.textContent).toContain(PRESENTER.showEnvelope);
     click(container, "action-backtest");
     expect(
