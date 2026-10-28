@@ -80,10 +80,15 @@ for (const p of ["hold", "replan"] as const) {
       `sum ${usd(s.regret_sum_usd_per_mw[p])} per MW`,
   );
 }
+const rec = s.replan_recovers_pct;
 console.log(
   `re-plan vs hold: above on ${s.days_replan_above_hold} days, below on ${s.days_replan_below_hold}, ` +
-    `equal on ${s.days_replan_equal_hold}; wins back ` +
-    `${s.replan_recovers_pct === null ? "n/a" : `${s.replan_recovers_pct.toFixed(1)}%`} of hold's regret`,
+    `equal on ${s.days_replan_equal_hold}; ` +
+    (rec === null
+      ? "hold has no regret to win back"
+      : rec >= 0
+        ? `wins back ${rec.toFixed(1)}% of hold's regret`
+        : `adds ${(-rec).toFixed(1)}% to hold's regret`),
 );
 console.log(
   `RT evening (HB 18-21) below RT midday (HB 9-16) on ${s.rt_evening_below_midday_days} of ${s.days} days ` +

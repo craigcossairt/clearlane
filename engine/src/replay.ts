@@ -53,6 +53,7 @@ export interface RtHistory {
   schema: "clearlane.rt/v1";
   node: string;
   interval_min: number;
+  prov?: Provenance;
   days: RtDay[];
   missing?: unknown[];
   sources?: unknown[];
@@ -345,7 +346,7 @@ export interface RtReplay {
     net_usd_per_mw_day: Record<ReplayPolicy, Pctl>;
     regret_usd_per_mw_day: { hold: Pctl; replan: Pctl };
     regret_sum_usd_per_mw: ByRegret;
-    replan_recovers_pct: number | null; // share of hold's regret the hourly re-plans win back
+    replan_recovers_pct: number | null; // share of hold's regret the re-plans win back; < 0 when they add to it
     days_replan_above_hold: number;
     days_replan_below_hold: number;
     days_replan_equal_hold: number;
@@ -368,9 +369,13 @@ export interface ReplayOpts {
   da_path: string;
 }
 
-// The RT file's class: SIMULATED when its notes say so (the test fixtures), else REAL.
+// The RT file's class: its own `prov` when given, else SIMULATED when its notes say so (the test
+// fixtures), else REAL.
 export const rtProv = (rt: RtHistory): Provenance =>
-  (rt.notes ?? []).some((n) => n.includes("SIMULATED")) ? "SIMULATED" : "REAL";
+  rt.prov ??
+  ((rt.notes ?? []).some((n) => n.includes("SIMULATED"))
+    ? "SIMULATED"
+    : "REAL");
 
 export interface ReplayRun {
   result: RtReplay;
@@ -466,7 +471,7 @@ export function buildReplay(
         "Perfect foresight: the plan solved on the day's real-time prices. Not achievable; it is the yardstick for regret.",
     },
     regret:
-      "Regret is the foresight value minus the policy's value, net of wear at W: the objective all three plans maximize, so it is never below zero.",
+      "Regret is the foresight value minus the policy's value, net of wear at W: the objective all three plans maximize, so it is never below zero. replan_recovers_pct is the share of hold's summed regret that hourly re-planning wins back; it is negative when re-planning does worse than holding.",
     windows_mt: { midday_hb: MIDDAY_HB, evening_hb: EVENING_HB },
     prov: {
       da_prices: "REAL",
