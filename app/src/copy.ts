@@ -191,15 +191,15 @@ export const PRESENTER = {
   trafficLine:
     "Day-ahead price for PacifiCorp East, each hour labeled Clear, Shoulder or Jam.",
 
-  raceHeadlinePre: "Filling up at midday keeps",
-  raceHeadlinePost: "the value of the off-peak rule.",
+  raceHeadlinePre: "Filling up at midday is worth",
+  raceHeadlinePost: "the off-peak rule.",
   raceLine:
     "Same battery, same evening sale. Only the hours it buys in change. The off-peak rule is our baseline, not Torus practice.",
   replay: "Replay the day",
-  keepsLabel: "value kept per MW per day, higher is better",
+  keepsLabel: "value to RMP's system per MW per day, higher is better",
   rowBuys: "Buys",
   rowSells: "Sells",
-  rowKeeps: "Keeps",
+  rowKeeps: "Net",
   at: "at",
   equals: "=",
   clearlaneChip: "Clearlane",
@@ -230,10 +230,14 @@ export const PRESENTER = {
     "Dashed: Pulse state of charge as planned this morning. Solid: the re-plan from the call (red line).",
   resume: "Resume the day",
 
-  envelopeHeadline: "An hourly limit Rocky Mountain Power can plan around.",
+  envelopeHeadline: "An hourly envelope Rocky Mountain Power could plan around.",
   envelopeLine:
     "A format Clearlane proposes: a working example, not a filing. System Critical Hours are our proposal.",
-  backtestHeadline: "Backtested on every day from May to October.",
+  // "Backtested on {backtest_days} days, {window start} to {window end}." The count is a Num and the
+  // dates are the backtest window rendered as times, so no digit sits in copy (Pitch review, #217).
+  backtestHeadlinePre: "Backtested on",
+  backtestHeadlineDays: "days,",
+  backtestHeadlineTo: "to",
   backtestLine:
     "Each policy run on every day of the history, beside the off-peak rule.",
   showBacktest: "Show the backtest",

@@ -39,6 +39,13 @@ function strayDigits(root: HTMLElement): string[] {
 }
 
 const body = () => document.body.dataset;
+/** Visible text of an element without its provenance chips, whitespace collapsed. */
+const spoken = (el: Element | null | undefined) => {
+  if (!el) return "";
+  const copy = el.cloneNode(true) as HTMLElement;
+  copy.querySelectorAll(".chip").forEach((c) => c.remove());
+  return (copy.textContent ?? "").replace(/\s+/g, " ").trim();
+};
 const click = (root: HTMLElement, action: string) => {
   const el = root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`);
   if (!el) throw new Error(`no [data-action=${action}]`);
@@ -156,10 +163,26 @@ describe("presenter mode (#216, ff_presenter)", () => {
     expect(
       container.querySelector('[data-slot="envelope-strip"]'),
     ).toBeTruthy();
+    expect(
+      container.querySelector('[data-slot="headline"]')?.textContent,
+    ).toBe(PRESENTER.envelopeHeadline);
+    expect(PRESENTER.envelopeHeadline).toBe(
+      "An hourly envelope Rocky Mountain Power could plan around.",
+    );
     click(container, "action-backtest");
     expect(
       container.querySelector('[data-slot="backtest-bands"]'),
     ).toBeTruthy();
+    // Pitch review: the count and the window, never "every day".
+    const head = container.querySelector<HTMLElement>('[data-slot="headline"]')!;
+    expect(spoken(head)).toBe("Backtested on 179 days, May 1 to Oct 27.");
+    expect(
+      head.querySelector('[data-num="backtest_days"]')?.getAttribute("data-prov"),
+    ).toBe("DERIVED");
+    expect([...head.querySelectorAll("[data-time]")].map((e) => e.textContent)).toEqual([
+      "May 1",
+      "Oct 27",
+    ]);
     expect(container.textContent).toContain(PRESENTER.showEnvelope);
     click(container, "action-backtest");
     expect(
@@ -283,6 +306,18 @@ describe("presenter race screen (#216)", () => {
       container.querySelector(".p-headline [data-num='race_ratio'] .figure")
         ?.textContent,
     ).toBe("2.9x");
+    expect(
+      spoken(container.querySelector('[data-slot="headline"]')),
+    ).toBe("Filling up at midday is worth 2.9x the off-peak rule.");
+    expect(
+      [...container.querySelectorAll(".p-keep-label")].map((e) => e.textContent),
+    ).toEqual([
+      "value to RMP's system per MW per day, higher is better",
+      "value to RMP's system per MW per day, higher is better",
+    ]);
+    expect(
+      [...container.querySelectorAll(".p-arith-keep th")].map((e) => e.textContent),
+    ).toEqual(["Net", "Net"]);
   });
 
   it("marks buy and sell hours, outlined before the replay and filled after", () => {

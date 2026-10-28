@@ -57,10 +57,11 @@ not in the Next order (copying to the clipboard is not a talk step).
 Headlines and supporting lines live in `app/src/copy.ts` in a new `PRESENTER` block so Pitch reviews one
 file. Write them from the existing beat copy and `pitch/stage-script.md`, which are already reviewed for
 guardrails: same claims, shorter. Numbers never appear in copy; a headline that needs one renders it with
-`Num` (for example "keeps `{race_ratio}` the value of the off-peak rule"). Drafts to start from:
+`Num` (for example "is worth `{race_ratio}` the off-peak rule"). Drafts to start from:
 
 - Traffic report: "Power is cheapest at midday. The road jams after the evening step."
-- Race: "Filling up at midday keeps {race_ratio} the value of the off-peak rule."
+- Race: "Filling up at midday is worth {race_ratio} the off-peak rule." (Pitch review on #217: value is to
+  RMP's system, not trading profit.)
 - Envelope: "Every hour, a limit Rocky Mountain Power can plan around." The supporting line says the
   envelope is a format Clearlane proposes (Torus does not know the Lasso API).
 - Close: `closeLine1` and `closeLine2` as they are.
@@ -74,8 +75,8 @@ The stage day is Oct 27. Craig made it final on Oct 27 at 11pm; there is no Oct 
 
 Layout (the mockup Craig approved, in words): the headline top left. Below it, two cards side by side,
 "Battery on the off-peak rule" on the left and "Simulated Torus-style station on Clearlane" on the right,
-the Clearlane card marked with a check chip. Each card leads with its Keeps figure, large, labelled "value
-kept per MW per day, higher is better", then the three arithmetic rows beneath it. The arithmetic is
+the Clearlane card marked with a check chip. Each card leads with its Net figure, large, labelled "value
+to RMP's system per MW per day, higher is better", then the three arithmetic rows beneath it. The arithmetic is
 visible from the start; nothing waits for the replay. Under both cards, one thin 24-hour lane ribbon marks
 each plan's buy hours and sell hours from `referenceRace`'s `charge_hb` and `discharge_hb` (fixed rule HB 1
 to 4, Clearlane HB 13 to 15, both sell HB 18 and 19). "Replay the day" sweeps a time cursor across that
@@ -89,12 +90,12 @@ The arithmetic rows, per card:
 | ----- | -------------------------- | -------------------------- |
 | Buys  | 2.132 MWh at $39.53 = $84  | 2.132 MWh at $21.55 = $46  |
 | Sells | 1.876 MWh at $55.62 = $104 | 1.876 MWh at $55.62 = $104 |
-| Keeps | $20                        | $58                        |
+| Net   | $20                        | $58                        |
 
-The large Keeps figure at the top of each card shows the key's own display in cents ($20.06, $58.41).
+The large Net figure at the top of each card shows the key's own display in cents ($20.06, $58.41).
 
 - Prices come from `fixed_rule_charge_usd_mwh`, `timetable_charge_usd_mwh` and `race_discharge_usd_mwh`.
-  Keeps come from `fixed_usd_mw_day` and `clearlane_usd_mw_day`. All through `Num`, with their chips.
+  Net comes from `fixed_usd_mw_day` and `clearlane_usd_mw_day`. All through `Num`, with their chips.
 - Engine export: `RaceLeg` in `engine/src/reference.ts` gains `charge_mwh`, `discharge_mwh`,
   `buy_usd_per_mw_day` and `sell_usd_per_mw_day` (the `cg`, `dg`, `cost` and `rev` that `leg()` already
   computes). An engine test pins them on the Oct 27 bundle and asserts `sell - buy === usd_per_mw_day`
@@ -102,7 +103,7 @@ The large Keeps figure at the top of each card shows the key's own display in ce
   `ref_station`); the dollar subtotals carry DERIVED.
 - The rows must reproduce by hand as displayed. In cents they do not ($104.34 - $45.94 = $58.40, but the
   key is $58.41), and MWh at two decimals does not either (1.88 x $55.62 = $104.57). So MWh shows three
-  decimals, prices show cents, and subtotals and the Keeps row show whole dollars. Tests on the Oct 27
+  decimals, prices show cents, and subtotals and the Net row show whole dollars. Tests on the Oct 27
   bundle, for both cards: the displayed MWh times the displayed price rounds to the displayed subtotal;
   the displayed sell minus the displayed buy equals the displayed keep; each displayed subtotal equals the
   engine value rounded to the dollar.

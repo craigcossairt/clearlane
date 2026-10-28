@@ -9,7 +9,7 @@ import type { CallState, Live } from "../beats/types";
 import { findNumber, Num, type NumbersState } from "../components/Num";
 import { mtClock, mtDate } from "../components/Time";
 import { COPY, PRESENTER } from "../copy";
-import type { StageData } from "../data";
+import { loadDerivedFiles, type StageData } from "../data";
 import { grouped } from "../format";
 import { dayLabel } from "../stageDay";
 import {
@@ -388,9 +388,11 @@ export function Presenter({
       case "replan":
         return PRESENTER.replanHeadline;
       case "envelope":
-        return isAction(1)
-          ? PRESENTER.backtestHeadline
-          : PRESENTER.envelopeHeadline;
+        return isAction(1) ? (
+          <BacktestHeadline />
+        ) : (
+          PRESENTER.envelopeHeadline
+        );
       case "scale":
         return PRESENTER.scaleHeadline;
       case "close":
@@ -704,5 +706,37 @@ function ScaleHero({
         />
       </div>
     </section>
+  );
+}
+
+/** "Mon D" for a Mountain day YYYY-MM-DD ("May 1"); noon-ish UTC keeps it on that date. */
+function shortDay(day: string): string {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Denver",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(`${day}T18:00:00Z`));
+}
+
+/**
+ * Screen 6 after "Show the backtest": the day count through Num and the window from
+ * backtest.json, so the headline never claims more days than were run (Pitch review, #217).
+ */
+function BacktestHeadline() {
+  const window = useMemo(() => loadDerivedFiles().backtest?.result?.window ?? null, []);
+  return (
+    <>
+      {PRESENTER.backtestHeadlinePre} <Num k="backtest_days" width={3} />{" "}
+      {PRESENTER.backtestHeadlineDays}
+      {window ? (
+        <>
+          {" "}
+          <span data-time="">{shortDay(window.start_mt)}</span>{" "}
+          {PRESENTER.backtestHeadlineTo}{" "}
+          <span data-time="">{shortDay(window.end_mt)}</span>
+        </>
+      ) : null}
+      .
+    </>
   );
 }
