@@ -46,7 +46,7 @@
 <header class="p-head">
 <h1 class="p-headline" data-slot="headline">Power is cheapest at midday. The road jams after the evening step.</h1>
 <div class="p-subrow">
-<p class="p-line">Day-ahead price for PacifiCorp East, each hour labeled Clear, Shoulder or Jam.</p>
+<p class="p-line">Like a traffic report published the evening before: each bar is one hour's price, green when the road is clear and red in the evening jam.</p>
 </div>
 </header>
 <div class="p-hero p-hero-traffic">
@@ -246,38 +246,10 @@
 <p class="ribbon-caption" data-slot="ribbon-caption">Price jumps <span class="num num-ok" data-num="peak_over_trough" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">2.6x</span>
 <abbr class="chip chip-derived" title="engine/src/numbers.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> by the peak hour, <span class="num num-ok" data-num="peak_hour_mt" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
+</span> from the midday low to the <span class="num num-ok" data-num="peak_hour_mt" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
 <span class="figure">6pm</span>
 <abbr class="chip chip-derived" title="engine/src/numbers.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> (from <span class="num num-ok" data-num="price_min_oct27" data-prov="REAL" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">$21.38</span>
-<abbr class="chip chip-real" title="engine/src/numbers.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">REAL</abbr>
-</span> to <span class="num num-ok" data-num="peak_price" data-prov="REAL" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">$55.78</span>
-<abbr class="chip chip-real" title="engine/src/numbers.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">REAL</abbr>
-</span>). Net load climbs <span class="num num-ok" data-num="net_load_climb_mw" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">3,655</span>
-<abbr class="chip chip-derived" title="engine/src/numbers.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> MW as the solar forecast falls from <span class="num num-ok" data-num="solar_4pm_to_6pm_mw_4pm" data-prov="REAL" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">2,056</span>
-<abbr class="chip chip-real" title="engine/src/numbers.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">REAL</abbr>
-</span> to <span class="num num-ok" data-num="solar_4pm_to_6pm_mw_6pm" data-prov="REAL" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">36</span>
-<abbr class="chip chip-real" title="engine/src/numbers.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">REAL</abbr>
-</span> MW.</p>
-<p class="ribbon-caption" data-slot="ribbon-lanes">Clear means a price at or under <span class="num num-ok" data-num="lane_clear_max_usd" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">$29.98</span>
-<abbr class="chip chip-derived" title="engine/src/lanes.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>; jam means at or over <span class="num num-ok" data-num="lane_jam_min_usd" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">$47.18</span>
-<abbr class="chip chip-derived" title="engine/src/lanes.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span>. In October the evening price step landed at <span data-time="">5pm or 6pm</span> on <span class="num num-ok" data-num="oct_step_hour_days_at_5_or_6" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">24</span>
-<abbr class="chip chip-derived" title="engine/src/numbers.ts + public/data/hist_2026-05-01_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> of <span class="num num-ok" data-num="oct_step_hour_days_total" data-prov="DERIVED" data-num-state="ok" style="min-width: 6ch;">
-<span class="figure">27</span>
-<abbr class="chip chip-derived" title="engine/src/numbers.ts + public/data/hist_2026-05-01_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
-</span> days.</p>
+</span> peak.</p>
 </section>
 </div>
 </main>
