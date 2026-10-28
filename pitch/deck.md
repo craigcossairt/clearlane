@@ -83,7 +83,7 @@ The ceiling is about `{mou_share_of_peak_oct27}` of the operating day's peak loa
 | ASSUMPTION      | Round-trip efficiency, the cycle budget applied to Pulse, export limit |
 | MEASURED        | Solve time and re-plan time, timed live                                |
 
-What Torus told us (Torus, message to Craig Cossairt, Oct 27 2026): the 2025 heatmap hours are Mountain time, and all `{rmp_events_2025}` events were unplanned calls. Whether Lasso's API accepts an outside envelope is unknown to Torus too. Still open: how Spin refills, how event delivery is baselined, and whether sites export.
+What Torus told us (Torus, message to Craig Cossairt, Oct 27 2026): the 2025 heatmap hours are Mountain time, and all `{rmp_events_2025}` events were unplanned calls. Whether Lasso's API accepts an outside envelope is unknown to Torus too. Questions we have not asked Torus yet: how Spin refills, how event delivery is baselined, and whether sites export.
 
 ## 11. Close
 
