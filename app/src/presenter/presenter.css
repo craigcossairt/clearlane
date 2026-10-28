@@ -1559,3 +1559,167 @@ body[data-mode="presenter"] {
   height: 28px;
   font-size: 16px;
 }
+
+/* Round 2 motion. Keyframes carry only a from{} state: the resting style is the final state, so
+   reduced motion (styles.css kills animation and transition) and ?motion=off (data-motion="off")
+   land on the end state. */
+[data-mode="presenter"][data-motion="off"] *,
+[data-mode="presenter"][data-motion="off"] *::before {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Every screen arrives with a short fade and rise; p-main is keyed by screen. */
+@keyframes p-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+[data-mode="presenter"] .p-main {
+  animation: p-enter 250ms ease-out;
+}
+
+/* Race: each buy or sell tile fills with a small pop as the replay cursor reaches it. */
+@keyframes p-mark-pop {
+  from {
+    transform: scale(1.08);
+  }
+}
+[data-mode="presenter"] .p-mark-buy,
+[data-mode="presenter"] .p-mark-sell {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    fill 250ms ease-out,
+    stroke 250ms ease-out;
+}
+[data-mode="presenter"] .p-mark-buy.is-filled,
+[data-mode="presenter"] .p-mark-sell.is-filled {
+  animation: p-mark-pop 250ms ease-out;
+}
+[data-mode="presenter"] .p-mark-word {
+  transition: fill 250ms ease-out;
+}
+
+/* Race: the payoff waits for the replay. The buy and sell rows stay readable; the Net figures
+   and the Net row sit dim until the strip reports the replay done, then fade up. */
+[data-mode="presenter"] .p-race .p-keep,
+[data-mode="presenter"] .p-race .p-arith-keep {
+  transition: opacity 600ms ease-out;
+}
+[data-mode="presenter"] .p-race:has([data-replay="idle"], [data-replay="running"]) .p-keep,
+[data-mode="presenter"]
+  .p-race:has([data-replay="idle"], [data-replay="running"])
+  .p-arith-keep {
+  opacity: 0.35;
+}
+
+/* Traffic: the price bars rise left to right, then the net-load line draws itself. CSS only;
+   Ribbon is shared with beat 1, whose DOM does not change. */
+@keyframes p-bar-rise {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes p-line-draw {
+  from {
+    stroke-dashoffset: 1600;
+  }
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g > rect:first-child {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: p-bar-rise 320ms ease-out backwards;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(1) > rect:first-child {
+  animation-delay: 0ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(2) > rect:first-child {
+  animation-delay: 30ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(3) > rect:first-child {
+  animation-delay: 60ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(4) > rect:first-child {
+  animation-delay: 90ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(5) > rect:first-child {
+  animation-delay: 120ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(6) > rect:first-child {
+  animation-delay: 150ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(7) > rect:first-child {
+  animation-delay: 180ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(8) > rect:first-child {
+  animation-delay: 210ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(9) > rect:first-child {
+  animation-delay: 240ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(10) > rect:first-child {
+  animation-delay: 270ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(11) > rect:first-child {
+  animation-delay: 300ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(12) > rect:first-child {
+  animation-delay: 330ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(13) > rect:first-child {
+  animation-delay: 360ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(14) > rect:first-child {
+  animation-delay: 390ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(15) > rect:first-child {
+  animation-delay: 420ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(16) > rect:first-child {
+  animation-delay: 450ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(17) > rect:first-child {
+  animation-delay: 480ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(18) > rect:first-child {
+  animation-delay: 510ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(19) > rect:first-child {
+  animation-delay: 540ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(20) > rect:first-child {
+  animation-delay: 570ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(21) > rect:first-child {
+  animation-delay: 600ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(22) > rect:first-child {
+  animation-delay: 630ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(23) > rect:first-child {
+  animation-delay: 660ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(24) > rect:first-child {
+  animation-delay: 690ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > g:nth-child(25) > rect:first-child {
+  animation-delay: 720ms;
+}
+[data-mode="presenter"] .p-hero-traffic .chart > polyline[stroke="var(--ink)"] {
+  stroke-dasharray: 1600;
+  stroke-dashoffset: 0;
+  animation: p-line-draw 900ms ease-in-out 1000ms backwards;
+}
+
+/* Scale: the cards are keyed by the fleet pill chosen, so the new totals pop in. */
+@keyframes p-cards-pop {
+  from {
+    opacity: 0.3;
+    transform: scale(0.97);
+  }
+}
+[data-mode="presenter"] .p-scale-cards {
+  animation: p-cards-pop 350ms ease-out;
+}
