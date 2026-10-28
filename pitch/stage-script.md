@@ -23,17 +23,17 @@ Beats 2 and 6 say the reference timetable, `{clearlane_usd_mw_day}` per MW-day, 
 | "Clearlane"                       | End cards: the off-peak rule and Clearlane, per MW-day and at the MOU size |
 | "CO2"                             | CO2 line under the cards, added and avoided tons a day                     |
 
-## Beat 3, the crash (0:55 to 1:40)
+## Beat 3, the crash (0:55 to 1:35)
 
-> Rocky Mountain Power calls for `{enrolled_kw}` kW, now. Spin answers. A call of about five and a half minutes fits inside Spin's discharge, and the host meter stays under `{host_ceiling_kw}` kW while Spin refills. Press again inside that window, and the second call comes up `{second_call_shortfall_kw}` kW short on average. The card says so. The event card is Torus's own 2025 report: `{rmp_events_2025}` events, all unplanned calls. Our trace is simulated. The two stay apart.
+> Rocky Mountain Power calls for `{enrolled_kw}` kW, now. Spin answers. A call of about five and a half minutes fits inside Spin's discharge, and the host meter stays under `{host_ceiling_kw}` kW while Spin refills. Press again inside that window, and the second call delivers `{second_call_delivered_pct}` of it, `{second_call_shortfall_kwh}` kWh short. The card says so. The event card is Torus's own 2025 report: `{rmp_events_2025}` events, all unplanned calls. Our trace is simulated. The two stay apart.
 
 | Craig's cue                   | Screen                                                          |
 | ----------------------------- | --------------------------------------------------------------- |
 | Right arrow to beat 3, then C | Call at 6:40pm; Spin carries it, Pulse keeps its plan           |
-| "Press again", then C         | Second call during the refill; the shortfall shows on the card  |
+| "Press again", then C         | Second call during the refill; delivered share and kWh short on the card |
 | "Torus's own 2025 report"     | Event card, labeled Torus-published, beside our simulated trace |
 
-## Beat 4, re-plan (1:40 to 2:00)
+## Beat 4, re-plan (1:35 to 1:50)
 
 > The rest of the day is re-solved from the state of charge after the call, in `{replan_ms}`, measured on this machine. The meter shows Pulse's cycles for the day beside its yearly budget.
 
@@ -43,14 +43,15 @@ Beats 2 and 6 say the reference timetable, `{clearlane_usd_mw_day}` per MW-day, 
 | Read the time off the screen | MEASURED solve time; never a number from a file                  |
 | Space                        | The day plays on from the call minute                            |
 
-## Beat 5, envelope and proof (2:00 to 2:25)
+## Beat 5, envelope and proof (1:50 to 2:25)
 
-> An hourly envelope: System Critical Hours, reserve kW, and charge and discharge limits. It is a format Clearlane proposes, and the hours rule is our proposal: we found no Utah or Wyoming docket that defines it. The backtest, with Torus's heatmap in Mountain time: calls missed, Clearlane `{calls_missed_by_policy_clearlane_mt}`, overnight `{calls_missed_by_policy_fixed_overnight_mt}`, price-only `{calls_missed_by_policy_price_only_mt}`.
+> An hourly envelope: System Critical Hours, reserve kW, and charge and discharge limits. It is a format Clearlane proposes, and the hours rule is our proposal: we found no Utah or Wyoming docket that defines it. The backtest, in Mountain time: calls missed, Clearlane `{calls_missed_by_policy_clearlane_mt}`, battery-only `{calls_missed_by_policy_price_only_mt}`. The battery-only plan earns more on paper, but runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget and breaks the host ceiling. Clearlane is the plan a host and RMP would allow.
 
 | Craig's cue                   | Screen                                                                  |
 | ----------------------------- | ----------------------------------------------------------------------- |
 | Right arrow to beat 5, then E | Envelope strip, System Critical Hours marked                            |
 | "The backtest", then B        | Backtest card, May 1 to Oct 27, calls missed by policy in Mountain time |
+| "earns more on paper"         | Battery-only plan row on the backtest card; say no number for the ceiling breaches |
 
 ## Beat 6, scale and close (2:25 to 2:45)
 

@@ -512,6 +512,38 @@
       "prov": "DERIVED",
       "note": "Not in numbers.json. FACTS row from public/derived/rt_replay.json (#227, #235); forecast ASSUMPTION, settlement UNVERIFIED, no RMP calls replayed. Q&A only, never stage.",
       "display": "17"
+    },
+    "cycles_per_year_by_policy_price_only": {
+      "fact": "cycles_per_year_by_policy_price_only",
+      "source": "numbers",
+      "unit": "cycles/yr",
+      "prov": "DERIVED",
+      "note": "Backtest, the battery-only plan (price_only). Display has no unit; copy writes cycles a year after it.",
+      "display": "{cycles_per_year_by_policy_price_only}"
+    },
+    "dp_race_ratio": {
+      "fact": "dp_race_ratio",
+      "source": "numbers",
+      "unit": "x",
+      "prov": "DERIVED",
+      "note": "The engine's 15-minute plan over the off-peak rule, same day. Q&A and drill only.",
+      "display": "{dp_race_ratio}"
+    },
+    "second_call_delivered_pct": {
+      "fact": "second_call_delivered_pct",
+      "source": "numbers",
+      "unit": "%",
+      "prov": "SIMULATED",
+      "note": "Share of the second call delivered inside Spin's refill; the beat 3 card shows it.",
+      "display": "{second_call_delivered_pct}"
+    },
+    "second_call_shortfall_kwh": {
+      "fact": "second_call_shortfall_kwh",
+      "source": "numbers",
+      "unit": "kWh",
+      "prov": "SIMULATED",
+      "note": "Energy short on the second call; the beat 3 card shows it. Display has no unit; copy writes kWh after it.",
+      "display": "{second_call_shortfall_kwh}"
     }
   }
 }

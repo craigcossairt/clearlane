@@ -56,9 +56,9 @@ Source: FACTS `calls_unanswerable_price_only_mt`, `rmp_heatmap_by_hour`
 
 Judge: Ryan Byrd
 
-A: Spin answers the first call, then refills under the host's ceiling. A second press inside that window shows the shortfall, `{second_call_shortfall_kw}` kW on average over the call, on the card.
+A: Spin answers the first call, then refills under the host's ceiling. A second press inside that window delivers `{second_call_delivered_pct}` of the call, `{second_call_shortfall_kwh}` kWh short, which the card shows; that is about `{second_call_shortfall_kw}` kW short on average over the call.
 
-Source: FACTS `second_call_shortfall_kw`
+Source: FACTS `second_call_delivered_pct`, `second_call_shortfall_kwh`, `second_call_shortfall_kw`
 
 ### Do your System Critical Hours predict RMP's calls?
 
@@ -72,7 +72,7 @@ Source: `science/sch_study.json` (lift against the 2025 heatmap, Mountain readin
 
 Judge: Ryan Byrd
 
-A: The price leg is, worth `{clearlane_usd_mw_day}` per MW-day against `{fixed_usd_mw_day}` for a fixed off-peak rule. The rest is keeping Spin ready for RMP's calls, which price alone does not do: in the backtest a price-only plan misses `{calls_missed_by_policy_price_only_mt}` of calls and Clearlane `{calls_missed_by_policy_clearlane_mt}`.
+A: The price leg is, worth `{clearlane_usd_mw_day}` per MW-day against `{fixed_usd_mw_day}` for a fixed off-peak rule. The rest is keeping Spin ready for RMP's calls, which price alone does not do: in the backtest the battery-only plan misses `{calls_missed_by_policy_price_only_mt}` of calls and Clearlane `{calls_missed_by_policy_clearlane_mt}`.
 
 Source: FACTS `clearlane_usd_mw_day`, `fixed_usd_mw_day`, `calls_missed_by_policy_price_only_mt`, `calls_missed_by_policy_clearlane_mt`
 
@@ -101,6 +101,14 @@ Judge: Angela Smith
 A: No: on Oct 28 overnight power cost about the same as noon, and the fixed off-peak rule almost tied. Across the backtest Clearlane beats that rule on `{share_days_beating}` of days, with a median day of `{clearlane_p50}` per MW-day.
 
 Source: FACTS `share_days_beating`, `clearlane_p50`; Oct 28 CAISO day-ahead prices, Integration's story check on the Oct 28 refresh PR
+
+### Your battery-only plan out-earns Clearlane.
+
+Judge: Angela Smith
+
+A: On paper it does, because it chases every price with no wear cost and no reserve, so it runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget, breaks the host ceiling, and misses `{calls_missed_by_policy_price_only_mt}` of calls in the backtest. Clearlane is the plan a host and RMP would allow, and it still beats the off-peak rule on `{share_days_beating}` of days.
+
+Source: FACTS `cycles_per_year_by_policy_price_only`, `pulse_cycle_budget`, `calls_missed_by_policy_price_only_mt`, `share_days_beating`, `price_only_usd_mw_day`; `public/derived/backtest.json` (policy price_only: usd_per_mw_day percentiles, host_ceiling_breaches)
 
 ### Is Utah allowed to cycle these daily?
 
@@ -227,6 +235,14 @@ Judge: Tanner Potter
 A: Nobody, as revenue: it is value to RMP's system at day-ahead prices. Torus and hosts share it only if a program credits scheduled dispatch.
 
 Source: FACTS `clearlane_70`
+
+### Is `{clearlane_70}` a day what `{mou_70mw}` MW of real sites would deliver?
+
+Judge: Tanner Potter
+
+A: No: it assumes every enrolled MW is our reference battery doing arbitrage in the clear lane, and that the fleet does not move prices. The MOU is demand-response capacity, and some of it may be Spin, which does no arbitrage, so it is a scale illustration of value to RMP's system, not a forecast for the fleet.
+
+Source: FACTS `clearlane_70`, `fixed_70` (notes the every-MW assumption), `mou_70mw` (a demand-response MOU), `ref_station`
 
 ### Does a `{torus_500mw}` MW ceiling move the price?
 

@@ -28,4 +28,4 @@ CO2 is estimated, using average emissions for PacifiCorp East, not marginal: the
 
 Spin, sized to the enrolled kW, covers one call of about five and a half minutes. A second call inside the refill window is the case the crash card shows, including any shortfall.
 
-The 2025 heatmap is in Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). In the backtest, calls missed: Clearlane `{calls_missed_by_policy_clearlane_mt}`, the fixed overnight rule `{calls_missed_by_policy_fixed_overnight_mt}`, price-only `{calls_missed_by_policy_price_only_mt}`.
+The 2025 heatmap is in Mountain time (Torus, message to Craig Cossairt, Oct 27 2026). In the backtest, calls missed: Clearlane `{calls_missed_by_policy_clearlane_mt}`, the fixed overnight rule `{calls_missed_by_policy_fixed_overnight_mt}`, the battery-only plan `{calls_missed_by_policy_price_only_mt}`.

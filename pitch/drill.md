@@ -2,6 +2,25 @@
 
 For Tuesday night. Twenty questions by judge, each with its answer (from `pitch/qa.md`) and the trap word to avoid. Then a stopwatch table for the six beats.
 
+## Five hard questions first
+
+Drill these before the twenty below. Each has its card in `pitch/qa.md`.
+
+1. "Your battery-only plan out-earns Clearlane." On paper it does; it runs `{cycles_per_year_by_policy_price_only}` cycles a year against a `{pulse_cycle_budget}` budget, breaks the host ceiling and misses `{calls_missed_by_policy_price_only_mt}` of calls. Card: "Your battery-only plan out-earns Clearlane."
+2. "Your race says `{race_ratio}` but the engine says `{dp_race_ratio}`." The race is the reference timetable; the engine's 15-minute plan prices wear and moves energy in coarse steps. Card: "Why is the engine's own plan worth less than the race card?"
+3. "Is `{clearlane_70}` a day real?" It assumes every enrolled MW is an arbitrage battery and the fleet does not move prices; the MOU is demand-response capacity, some of it maybe Spin. Card: "Is `{clearlane_70}` a day what `{mou_70mw}` MW of real sites would deliver?"
+4. "So your System Critical Hours predict calls?" No. They mark the tightest hours, and no rule we tested catches call hours better than chance. Card: "Do your System Critical Hours predict RMP's calls?"
+5. "Isn't this Lasso?" Lasso forecasts and dispatches; a day-ahead timetable and an hourly envelope are not advertised, and the envelope is a format Clearlane proposes. Card: "Isn't this what Lasso already does?"
+
+## Do not ad-lib
+
+Never say these on stage or in Q&A, even loosely:
+
+- "Torus could earn". Say value to RMP's system at day-ahead prices.
+- "Lasso can't do this". Say not advertised.
+- "our SCH predicts calls". Say they mark the tightest hours; they do not forecast calls.
+- "price-only". Say the battery-only plan, as the screen does.
+
 ## Questions
 
 ### Ryan Byrd
@@ -32,13 +51,13 @@ For Tuesday night. Twenty questions by judge, each with its answer (from `pitch/
 
 5. **What happens if a second call comes during the refill?**
 
-   A: Spin answers the first call, then refills under the host's ceiling. A second press inside that window shows the shortfall, `{second_call_shortfall_kw}` kW on average over the call, on the card.
+   A: Spin answers the first call, then refills under the host's ceiling. A second press inside that window delivers `{second_call_delivered_pct}` of the call, `{second_call_shortfall_kwh}` kWh short, which the card shows; that is about `{second_call_shortfall_kw}` kW short on average over the call.
 
-   Trap: "six-minute call": say about five and a half minutes
+   Trap: "six-minute call": say about five and a half minutes; read the card's delivered share and kWh
 
 6. **Isn't this just arbitrage?**
 
-   A: The price leg is, worth `{clearlane_usd_mw_day}` per MW-day against `{fixed_usd_mw_day}` for a fixed off-peak rule. The rest is keeping Spin ready for RMP's calls, which price alone does not do: in the backtest a price-only plan misses `{calls_missed_by_policy_price_only_mt}` of calls and Clearlane `{calls_missed_by_policy_clearlane_mt}`.
+   A: The price leg is, worth `{clearlane_usd_mw_day}` per MW-day against `{fixed_usd_mw_day}` for a fixed off-peak rule. The rest is keeping Spin ready for RMP's calls, which price alone does not do: in the backtest the battery-only plan misses `{calls_missed_by_policy_price_only_mt}` of calls and Clearlane `{calls_missed_by_policy_clearlane_mt}`.
 
    Trap: "revenue"
 
@@ -142,9 +161,9 @@ Fill in during the 11:30pm run. Budget is 2.5 words a second; the script is 361 
 |---|---|---|---|---|---|
 | 1, traffic report | 0:25 | | | | |
 | 2, the race | 0:30 | | | | |
-| 3, the crash | 0:45 | | | | |
-| 4, re-plan | 0:20 | | | | |
-| 5, envelope and proof | 0:25 | | | | |
+| 3, the crash | 0:40 | | | | |
+| 4, re-plan | 0:15 | | | | |
+| 5, envelope and proof | 0:35 | | | | |
 | 6, scale and close | 0:20 | | | | |
 | Total | 2:45 | | | | |
 
