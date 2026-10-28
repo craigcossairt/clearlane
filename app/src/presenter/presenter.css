@@ -841,3 +841,12 @@ body[data-mode="presenter"] {
 [data-mode="presenter"].phone .p-hero-envelope .envelope-table .chip {
   font-size: 10px;
 }
+/* A pressed choice (the fleet size shown, a call already made) reads as selected, not disabled. */
+[data-mode="presenter"] .p-pill[aria-pressed="true"] {
+  background: var(--surface-2);
+  border-color: var(--clear);
+  color: var(--ink);
+}
+[data-mode="presenter"].phone .p-title-facts dt {
+  font-size: 16px;
+}
