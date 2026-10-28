@@ -575,7 +575,7 @@
           background: "#3a3936",
         },
       );
-      L.keepLbl = el("div", "abs", L.keepBar, "kept", {
+      L.keepLbl = el("div", "abs", L.keepBar, "net", {
         right: "12px",
         top: "0",
         lineHeight: "26px",
@@ -644,7 +644,7 @@
       "div",
       "muted",
       cmp,
-      "Value kept per MW per day: value to Rocky Mountain Power's system at day-ahead prices. Higher is better.",
+      "Net per MW per day: value to Rocky Mountain Power's system at day-ahead prices. Higher is better.",
       { fontSize: "25px" },
     );
     const cmpMax = 1150;
@@ -709,11 +709,11 @@
         const tNet =
           L.key === "fixed"
             ? c.when("fixed-sell", "Sell minus buy")
-            : c.when("cl-sell", "It keeps");
+            : c.when("cl-sell", "It is worth");
         const tKeep =
           L.key === "fixed"
-            ? c.when("fixed-sell", "it keeps")
-            : c.when("cl-sell", "It keeps");
+            ? c.when("fixed-sell", "is worth")
+            : c.when("cl-sell", "It is worth");
         // Each row builds left to right: what, how much, at what price, the subtotal.
         const build = (row, t0) =>
           [...row.children].forEach((ch, i) =>
@@ -752,7 +752,7 @@
           from: 17,
           to: 20,
           t0: c.when("cl-sell"),
-          t1: c.when("cl-sell", "It keeps"),
+          t1: c.when("cl-sell", "It is worth"),
         },
       ];
       const done = [-1, -1];
@@ -1524,7 +1524,7 @@
       "div",
       "abs",
       grid,
-      `${copy.schLabel}: ${n("sch_hours_today")} hours today`,
+      `${copy.schLabel}: ${n("sch_hours_today")} hours that day`,
       {
         right: "72px",
         top: "614px",
@@ -1543,7 +1543,7 @@
       "div",
       "muted",
       bt,
-      `Calls missed in a simulated backtest over ${nu("backtest_days", "days")}, with Torus's call heatmap in Mountain time. Lower is better.`,
+      `Calls missed over ${nu("backtest_days", "days")} of real prices and simulated calls, timed by Torus's heatmap in Mountain time. Lower is better.`,
       { fontSize: "25px" },
     );
     const btRows = [
@@ -1558,7 +1558,7 @@
         color: C.shoulder,
       },
       {
-        label: "Price-only plan",
+        label: copy.priceOnlyLabel,
         key: "calls_missed_by_policy_price_only_mt",
         color: C.jam,
       },

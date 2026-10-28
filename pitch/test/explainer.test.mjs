@@ -59,6 +59,13 @@ test("every scene has a builder and every cue the scenes use is in the narration
   for (const cue of used) assert.ok(cues.has(cue), `scenes.js uses cue "${cue}"`);
 });
 
+test("every phrase a scene times itself to is in its line", () => {
+  const byCue = new Map(buildNarration(data).flatMap((s) => s.lines.map((l) => [l.cue, l.caption])));
+  const phrases = [...scenesJs.matchAll(/c\.when\(\s*"([a-z0-9-]+)",\s*"([^"]+)"\s*\)/g)];
+  assert.ok(phrases.length > 5);
+  for (const [, cue, phrase] of phrases) assert.ok(byCue.get(cue)?.includes(phrase), `cue "${cue}" has no phrase "${phrase}"`);
+});
+
 test("the voice reads units and acronyms the way they are said", () => {
   assert.equal(spoken("Clearlane"), "Clear-lane");
   assert.equal(spoken("At the 70 MW MOU"), "At the 70 megawatt M.O.U.");
