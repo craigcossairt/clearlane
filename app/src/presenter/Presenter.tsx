@@ -4,7 +4,8 @@ import { CrashBeat } from "../beats/CrashBeat";
 import { EnvelopeBeat } from "../beats/EnvelopeBeat";
 import { Replan } from "../beats/Replan";
 import { Ribbon } from "../beats/Ribbon";
-import { CloseCard, ScaleCard } from "../beats/ScaleBeat";
+import { ScaleCard } from "../beats/ScaleBeat";
+import { Chip } from "../components/Chip";
 import type { CallState, Live } from "../beats/types";
 import { findNumber, Num, type NumbersState } from "../components/Num";
 import { mtClock, mtDate } from "../components/Time";
@@ -68,7 +69,11 @@ const HEADLINES: Record<
     source: PRESENTER.footScale,
     sourceLong: PRESENTER.sourceScale,
   },
-  close: { source: PRESENTER.footClose, sourceLong: PRESENTER.sourceClose },
+  close: {
+    line: `${PRESENTER.closeLine} ${PRESENTER.closeWhat}`,
+    source: PRESENTER.footClose,
+    sourceLong: PRESENTER.sourceClose,
+  },
 };
 
 interface Play {
@@ -510,7 +515,7 @@ export function Presenter({
           />
         );
       case "close":
-        return <CloseCard />;
+        return <CloseHero />;
     }
   })();
 
@@ -713,17 +718,7 @@ function ScaleHero({
         <p className="p-scale-size">
           {COPY.fleetSize}{" "}
           <span className="slot-fleet" data-slot="fleet-value">
-            {fleetMw !== null ? (
-              <Num
-                value={fleetMw}
-                display={`${grouped(fleetMw, 0)} MW`}
-                prov="SIMULATED"
-                source="fleet slider, between mou_70mw and torus_500mw"
-                width={8}
-              />
-            ) : (
-              <Num k="mou_70mw" width={8} />
-            )}
+            <FleetNum fleetMw={fleetMw} width={8} />
           </span>
         </p>
         <input
@@ -739,16 +734,96 @@ function ScaleHero({
         />
       </div>
       <div className="p-scale-cards" data-slot="scale-cards">
-        <ScaleCard
-          title={COPY.fixedLabel}
-          perMwKey="fixed_usd_mw_day"
-          fleetMw={fleetMw}
-        />
-        <ScaleCard
-          title={COPY.clearlaneLabel}
-          perMwKey="clearlane_usd_mw_day"
-          fleetMw={fleetMw}
-        />
+        {(
+          [
+            [COPY.fixedLabel, "fixed_usd_mw_day"],
+            [COPY.clearlaneLabel, "clearlane_usd_mw_day"],
+          ] as const
+        ).map(([title, perMwKey]) => (
+          <div className="p-scale-col" key={perMwKey}>
+            <ScaleCard title={title} perMwKey={perMwKey} fleetMw={fleetMw} />
+            <p className="p-scale-arith" data-detail="">
+              <Num k={perMwKey} width={4} /> {PRESENTER.scalePerMw}{" "}
+              <span className="p-op">{PRESENTER.scaleTimes}</span>{" "}
+              <FleetNum fleetMw={fleetMw} />
+            </p>
+          </div>
+        ))}
+      </div>
+      <p className="p-scale-caveat">{PRESENTER.scaleCaveat}</p>
+    </section>
+  );
+}
+
+/** The fleet size as the slider holds it: SIMULATED between the two MOU keys. */
+function FleetNum({
+  fleetMw,
+  width,
+}: {
+  fleetMw: number | null;
+  width?: number;
+}) {
+  return fleetMw !== null ? (
+    <Num
+      value={fleetMw}
+      display={`${grouped(fleetMw, 0)} MW`}
+      prov="SIMULATED"
+      source="fleet slider, between mou_70mw and torus_500mw"
+      width={width}
+    />
+  ) : (
+    <Num k="mou_70mw" width={width} />
+  );
+}
+
+/**
+ * Screen 8 (#271): the ask spelled out in the supporting line, three numbers the judges already
+ * saw, the two close lines, and the Option 2 campus as a quieter card beside them.
+ */
+function CloseHero() {
+  return (
+    <section className="p-close" data-slot="close-card">
+      <dl className="p-saw" aria-label={PRESENTER.sawAria}>
+        <div>
+          <dd>
+            <Num k="race_ratio" width={4} />
+          </dd>
+          <dt>{PRESENTER.sawRatio}</dt>
+        </div>
+        <div>
+          <dd>
+            <Num k="calls_missed_by_policy_clearlane_mt" width={4} />
+          </dd>
+          <dt>{PRESENTER.sawCalls}</dt>
+        </div>
+        <div>
+          <dd>
+            <Num k="share_days_beating" width={4} />
+          </dd>
+          <dt>{PRESENTER.sawDays}</dt>
+        </div>
+      </dl>
+      <div className="p-close-body">
+        <div className="p-close-lines">
+          <p className="close-line">{COPY.closeLine1}</p>
+          <p className="close-line">{COPY.closeLine2}</p>
+        </div>
+        <aside className="p-campus" data-detail="">
+          <h3>
+            {COPY.campusTitle}{" "}
+            <Chip
+              prov="SIMULATED"
+              source="Option 2 campus shift (engine), simulated"
+            />
+          </h3>
+          <p>
+            {COPY.campusLine1} <Num k="campus_mwh" /> {COPY.campusLine2}{" "}
+            <Num k="campus_usd" />.
+          </p>
+          <p className="p-campus-note">
+            {COPY.simulated} {COPY.notTorusProduct}
+          </p>
+        </aside>
       </div>
     </section>
   );

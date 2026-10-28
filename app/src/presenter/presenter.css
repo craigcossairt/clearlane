@@ -50,18 +50,32 @@ body[data-mode="presenter"] {
   letter-spacing: -0.01em;
 }
 
-/* Provenance chips: quiet pills with a check mark in our own clear-lane green. */
+/* Provenance chips (#271): a small tag after the number, set like a superscript, so the number
+   leads. No pill, lowercase, a dim gray; the text, title and data attributes are unchanged, and
+   18px is the projector minimum for chips. */
+[data-mode="presenter"] {
+  --chip-ink: #7d7870;
+}
 [data-mode="presenter"] .chip {
-  border-color: var(--line);
-  color: var(--muted);
-  background: transparent;
-  padding: 0 10px;
-  letter-spacing: 0.04em;
+  align-self: flex-start;
+  margin: 0.1em 0 0 0.15em;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--chip-ink);
+  font-size: 18px;
   font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  vertical-align: super;
 }
 [data-mode="presenter"] .chip::before {
   content: "\2713\00a0";
-  color: var(--clear);
+  color: color-mix(in srgb, var(--clear) 60%, var(--bg));
+}
+[data-mode="presenter"] .num {
+  gap: 0;
 }
 
 /* The frame: 1920x1080, scaled to fit, as the stage does. */
@@ -186,8 +200,7 @@ body[data-mode="presenter"] {
   color: var(--bg);
 }
 [data-mode="presenter"] .p-pill-primary .chip {
-  color: var(--bg);
-  border-color: color-mix(in srgb, var(--bg) 40%, var(--ink));
+  color: color-mix(in srgb, var(--bg) 55%, var(--ink));
 }
 [data-mode="presenter"] .p-pill-quiet {
   border-color: var(--line);
@@ -402,8 +415,6 @@ body[data-mode="presenter"] {
 }
 [data-mode="presenter"] .p-arith .chip {
   margin-left: 2px;
-  padding: 0 6px;
-  letter-spacing: 0.02em;
 }
 [data-mode="presenter"] .p-arith .p-op {
   color: var(--muted);
@@ -521,21 +532,107 @@ body[data-mode="presenter"] {
   font-weight: 400;
   color: var(--muted);
 }
-
-/* Close */
-[data-mode="presenter"] .p-hero-close .close-card {
-  max-width: 1500px;
-  padding: 32px 40px;
+/* The arithmetic under each card: per MW-day times the fleet, in the card's own column. */
+[data-mode="presenter"] .p-scale-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
 }
-[data-mode="presenter"] .p-hero-close .close-card h3 {
+[data-mode="presenter"] .p-scale-arith {
+  margin: 0;
+  padding: 0 32px;
+  font-size: 28px;
+  color: var(--muted);
+}
+[data-mode="presenter"] .p-scale-cards .p-scale-arith .num,
+[data-mode="presenter"] .p-scale-cards .p-scale-arith .figure {
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--ink);
+}
+[data-mode="presenter"] .p-scale-arith .p-op {
+  padding: 0 6px;
+}
+[data-mode="presenter"] .p-scale-caveat {
+  margin: 0;
+  max-width: 1500px;
+  font-size: 26px;
+  line-height: 1.35;
+  color: var(--muted);
+  border-left: 4px solid var(--shoulder);
+  padding-left: 22px;
+}
+
+/* Close (#271): what the judges saw, then the two close lines at full weight, with the Option 2
+   campus as a quieter card beside them. */
+[data-mode="presenter"] .p-close {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 12px;
+}
+[data-mode="presenter"] .p-saw {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  margin: 0;
+}
+[data-mode="presenter"] .p-saw > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 18px;
+  border-top: 2px solid var(--line);
+}
+[data-mode="presenter"] .p-saw dd {
+  margin: 0;
+}
+[data-mode="presenter"] .p-saw .figure {
+  font-size: 88px;
   font-weight: 400;
-  font-size: 30px;
+  letter-spacing: -0.03em;
+  color: var(--clear);
+}
+[data-mode="presenter"] .p-saw dt {
+  font-size: 24px;
+  color: var(--muted);
+  max-width: 460px;
+}
+[data-mode="presenter"] .p-close-body {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 56px;
+  align-items: start;
 }
 [data-mode="presenter"] .p-hero-close .close-line {
-  font-size: 44px;
-  line-height: 1.2;
-  margin: 18px 0 0;
-  letter-spacing: -0.015em;
+  margin: 0 0 22px;
+  font-size: 56px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+[data-mode="presenter"] .p-campus {
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  color: var(--muted);
+  font-size: 24px;
+}
+[data-mode="presenter"] .p-campus h3 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--ink);
+}
+[data-mode="presenter"] .p-campus p {
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+[data-mode="presenter"] .p-campus .num,
+[data-mode="presenter"] .p-campus .figure {
+  font-size: 24px;
+  color: var(--ink);
 }
 
 /* Overlays: sources and keys. */
@@ -685,6 +782,34 @@ body[data-mode="presenter"] {
 }
 [data-mode="presenter"].phone .p-hero-close .close-line {
   font-size: 24px;
+}
+[data-mode="presenter"].phone .p-close {
+  gap: 20px;
+}
+[data-mode="presenter"].phone .p-saw,
+[data-mode="presenter"].phone .p-close-body {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+[data-mode="presenter"].phone .p-saw .figure {
+  font-size: 40px;
+}
+[data-mode="presenter"].phone .p-saw dt,
+[data-mode="presenter"].phone .p-campus,
+[data-mode="presenter"].phone .p-campus h3,
+[data-mode="presenter"].phone .p-campus .num,
+[data-mode="presenter"].phone .p-campus .figure,
+[data-mode="presenter"].phone .p-scale-caveat,
+[data-mode="presenter"].phone .p-scale-arith,
+[data-mode="presenter"].phone .p-scale-cards .p-scale-arith .num,
+[data-mode="presenter"].phone .p-scale-cards .p-scale-arith .figure {
+  font-size: 16px;
+}
+[data-mode="presenter"].phone .p-scale-arith {
+  padding: 0 16px;
+}
+[data-mode="presenter"].phone .chip {
+  font-size: 12px;
 }
 [data-mode="presenter"].phone .p-foot {
   grid-template-columns: 1fr;

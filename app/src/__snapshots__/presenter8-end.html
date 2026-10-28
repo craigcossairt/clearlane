@@ -46,12 +46,46 @@
 <header class="p-head">
 <h1 class="p-headline" data-slot="headline">The ask: pilot the envelope.</h1>
 <div class="p-subrow">
-<span>
-</span>
+<p class="p-line">Pilot the day-ahead envelope, a format Clearlane proposes, at a few Wattsmart sites this winter. Each hour it tells Rocky Mountain Power the reserve held for its calls and the most the station will charge or discharge.</p>
 </div>
 </header>
 <div class="p-hero p-hero-close">
-<article class="card close-card" data-slot="close-card">
+<section class="p-close" data-slot="close-card">
+<dl class="p-saw" aria-label="What you saw">
+<div>
+<dd>
+<span class="num num-ok" data-num="race_ratio" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">2.9x</span>
+<abbr class="chip chip-derived" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</dd>
+<dt>what filling up at midday is worth, against the off-peak rule</dt>
+</div>
+<div>
+<dd>
+<span class="num num-ok" data-num="calls_missed_by_policy_clearlane_mt" data-prov="SIMULATED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">1%</span>
+<abbr class="chip chip-simulated" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
+</span>
+</dd>
+<dt>of Rocky Mountain Power's calls missed in the backtest</dt>
+</div>
+<div>
+<dd>
+<span class="num num-ok" data-num="share_days_beating" data-prov="DERIVED" data-num-state="ok" style="min-width: 4ch;">
+<span class="figure">91%</span>
+<abbr class="chip chip-derived" title="engine/src/backtest.ts + public/derived/backtest.json, as of 2026-10-27" data-copy-ok="provenance class name">DERIVED</abbr>
+</span>
+</dd>
+<dt>of backtest days beat the off-peak rule</dt>
+</div>
+</dl>
+<div class="p-close-body">
+<div class="p-close-lines">
+<p class="close-line">In Utah, compute should follow the sun in time, not in space.</p>
+<p class="close-line">Clearlane: fill up when the road is clear, and keep Spin ready for the crash.</p>
+</div>
+<aside class="p-campus" data-detail="">
 <h3>Simulated AI campus, moved in time <abbr class="chip chip-simulated" title="Option 2 campus shift (engine), simulated" data-copy-ok="provenance class name">SIMULATED</abbr>
 </h3>
 <p>A simulated campus moves <span class="num num-ok" data-num="campus_mwh" data-prov="SIMULATED" data-num-state="ok" style="min-width: 6ch;">
@@ -61,10 +95,10 @@
 <span class="figure">$2,551</span>
 <abbr class="chip chip-simulated" title="engine/src/reference.ts + public/data/bundle_2026-10-27.json, as of 2026-10-27" data-copy-ok="provenance class name">SIMULATED</abbr>
 </span>.</p>
-<p class="muted">Simulated. This is not a Torus data-center product.</p>
-<p class="close-line">In Utah, compute should follow the sun in time, not in space.</p>
-<p class="close-line">Clearlane: fill up when the road is clear, and keep Spin ready for the crash.</p>
-</article>
+<p class="p-campus-note">Simulated. This is not a Torus data-center product.</p>
+</aside>
+</div>
+</section>
 </div>
 </main>
 <footer class="p-foot">

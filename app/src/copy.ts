@@ -47,7 +47,8 @@ export const COPY = {
   proofStatusMatch: "Match",
   proofStatusMismatch: "Outside tolerance",
   proofStatusPending: "Not recomputed here",
-  proofMismatchHead: "Outside tolerance, with the second path the script also ran:",
+  proofMismatchHead:
+    "Outside tolerance, with the second path the script also ran:",
   proofPinned: "pinned",
   proofScience: "science",
   proofSameCent:
@@ -80,7 +81,8 @@ export const COPY = {
   lineageTorusField: "field",
   lineageTorusNone: "No matching value in",
   lineageCross: "Cross-check",
-  lineageCrossLead: "A separate science script re-derived it from the raw public files:",
+  lineageCrossLead:
+    "A separate science script re-derived it from the raw public files:",
   lineageFacts: "Fact ledger",
   lineageFactsLoading: "Reading the fact ledger.",
   lineageFactsFailed: "The fact ledger did not load:",
@@ -88,7 +90,8 @@ export const COPY = {
   lineageFactsVerified: "Verified.",
   lineageFactsConflict:
     "Two sources disagree; the ledger row quotes both and says which wording to use.",
-  lineageFactsUnchecked: "Carried from a research note; not yet re-checked against its source.",
+  lineageFactsUnchecked:
+    "Carried from a research note; not yet re-checked against its source.",
   lineageFactsPending: "Not computed yet.",
   lineageLevel1: "Level one of five: stated in a research note or the plan.",
   lineageLevel2: "Level two of five: read in the named source.",
@@ -118,8 +121,7 @@ export const COPY = {
   proofStepBinom: "(exact binomial test).",
   proofChance: ", chance",
   proofPermPre: "October against July, the test to quote: of",
-  proofPermMid:
-    "random relabelings of the days as October or July,",
+  proofPermMid: "random relabelings of the days as October or July,",
   proofPermPost:
     "gave step-hour distributions as far apart as the real ones. Distance between the two (total variation):",
   proofPermP: "; p about",
@@ -145,7 +147,8 @@ export const COPY = {
   proofBeatPost: "of days, interval",
   proofStationaryPre: "Stationary blocks put Clearlane's median between",
   proofSeedPre: "; another seed moves the interval ends by at most",
-  proofPointChecks: "checks of the point values against the backtest file match.",
+  proofPointChecks:
+    "checks of the point values against the backtest file match.",
 
   proofRtTitle: "Would re-planning on real-time prices help?",
   proofRtLead:
@@ -205,7 +208,8 @@ export const COPY = {
   proofSchOfFlagged: "of flagged hours",
   proofSchNone:
     "No rule here, ours included, catches more of the call hours than chance. System Critical Hours mark the tightest hours on the grid; they do not forecast calls.",
-  proofSchStagePre: "On the stage day the rule, run on the engine's own inputs, flags",
+  proofSchStagePre:
+    "On the stage day the rule, run on the engine's own inputs, flags",
   proofSchStageMid: "hours,",
   proofSchStageMatch: ": the same hours the envelope marks.",
   proofSchStageOff: ". The study's check against the envelope reads:",
@@ -229,7 +233,8 @@ export const COPY = {
   proofScaleMw: "MW, the",
   proofScaleAssoc:
     "The price response comes from how PacifiCorp East day-ahead prices have moved with net load. Gas prices, imports and the wider EDAM footprint move them too, so it is an association, not a measured price impact: an estimate with a band, not a forecast.",
-  proofScaleInconclusive: "Hours whose price response could not be told from zero:",
+  proofScaleInconclusive:
+    "Hours whose price response could not be told from zero:",
   proofScaleClamped: "Hours whose response was clamped to none:",
 
   proofSensTitle: "What would change the answer?",
@@ -238,7 +243,8 @@ export const COPY = {
   proofSensAria:
     "For each input, one bar from the backtest's gap to the gap with the input at the low end of its range and one to the gap at the high end, with the backtest's gap and zero marked.",
   proofSensAxis: "Clearlane minus the off-peak rule, per MW-day",
-  proofSensBase: "Over the backtest, Clearlane is ahead of the off-peak rule by",
+  proofSensBase:
+    "Over the backtest, Clearlane is ahead of the off-peak rule by",
   proofSensPerMwDay: "per MW-day.",
   proofSensLowEnd: "input at the low end of its range",
   proofSensHighEnd: "input at the high end",
@@ -265,7 +271,8 @@ export const COPY = {
   proofSensSpreadNone: "Scaling every day's price spread from",
   proofSensSpreadNever: "times never closes the gap; the narrowest is",
   proofSensSpreadTimes: "times today's spreads.",
-  proofSensSpreadFound: "The gap closes with every day's price spread scaled to",
+  proofSensSpreadFound:
+    "The gap closes with every day's price spread scaled to",
   proofSensFlat:
     "At flat prices the off-peak rule still pays its round-trip losses while Clearlane sits idle.",
   proofSensWearFound: "The gap closes only at a wear price of",
@@ -343,7 +350,8 @@ export const COPY = {
   simClock: "Simulated clock",
   crashLegend:
     "Gray: requested kW. Blue: Spin kW. Gold: Pulse kW. Dotted: Spin energy. Red: host meter, under the dashed ceiling. Same scales on both sides.",
-  crashAria: "call trace of requested, Spin and Pulse kW, Spin energy and the host meter",
+  crashAria:
+    "call trace of requested, Spin and Pulse kW, Spin energy and the host meter",
   secondRule:
     "Second press inside the refill window: the call wins and Pulse diverts to cover it.",
   secondPrompt: "A second press during the refill shows any shortfall here.",
@@ -354,7 +362,8 @@ export const COPY = {
   spinFull: "Spin full again at",
   meterRefill: "Host meter peak during the refill",
   noCallYet: "No call yet.",
-  publishedTitle: "Published record (Torus, RMP case study), separate from this simulation",
+  publishedTitle:
+    "Published record (Torus, RMP case study), separate from this simulation",
   eventsTail: "events in 2025.",
   against: "against a",
   target: "target",
@@ -371,7 +380,8 @@ export const COPY = {
   closeHint: "Right turns to the close.",
   campusTitle: "Simulated AI campus, moved in time",
   campusLine1: "A simulated campus moves",
-  campusLine2: "MWh of compute load into the clear midday hours. Value to RMP's system at day-ahead prices:",
+  campusLine2:
+    "MWh of compute load into the clear midday hours. Value to RMP's system at day-ahead prices:",
   notTorusProduct: "This is not a Torus data-center product.",
   envelopeTitle: "Envelope",
   backtestTitle: "Backtest",
@@ -382,7 +392,8 @@ export const COPY = {
   envelopeOtherDay: "the envelope file describes",
   envelopeStageDay: ", not the stage day",
   schemaWord: "Schema",
-  workingExample: "The envelope is a format Clearlane proposes: a working example, not a filing.",
+  workingExample:
+    "The envelope is a format Clearlane proposes: a working example, not a filing.",
   schShort: "critical",
   colHour: "Hour",
   colReserve: "Reserve",
@@ -478,18 +489,24 @@ export const PRESENTER = {
 
   titleLine: "A day planner for simulated Torus-style stations on Utah's grid.",
   titleDetail:
-    "It reads the CAISO day-ahead price for PacifiCorp East, fills the battery in the midday clear lane, and keeps Spin ready for Rocky Mountain Power's calls.",
+    "It reads the next day's power prices, fills the battery when power is cheap at midday, stops buying in the evening rush, and keeps the flywheel ready for Rocky Mountain Power's calls.",
   titleNode: "CAISO day-ahead node",
   start: "Start",
 
-  trafficHeadline: "Power is cheapest at midday. The road jams after the evening step.",
+  trafficHeadline:
+    "Power is cheapest at midday. The road jams after the evening step.",
   trafficLine:
-    "Day-ahead price for PacifiCorp East, each hour labeled Clear, Shoulder or Jam.",
+    "Like a traffic report published the evening before: each bar is one hour's price, green when the road is clear and red in the evening jam.",
+  // Screen 2's one caption sentence: "Price jumps {peak_over_trough} from the midday low to the
+  // {peak_hour_mt} peak."
+  trafficPeak1: "Price jumps",
+  trafficPeak2: "from the midday low to the",
+  trafficPeak3: "peak.",
 
   raceHeadlinePre: "Filling up at midday is worth",
   raceHeadlinePost: "the off-peak rule.",
   raceLine:
-    "Same battery, same evening sale. Only the hours it buys in change. The off-peak rule is our baseline, not Torus practice.",
+    "Same battery, selling in the same evening hours. The only difference is when it fills up. The off-peak rule is our baseline, not Torus practice.",
   replay: "Replay the day",
   keepsLabel: "value to RMP's system per MW per day, higher is better",
   rowBuys: "Buys",
@@ -525,7 +542,8 @@ export const PRESENTER = {
     "Dashed: Pulse state of charge as planned this morning. Solid: the re-plan from the call (red line).",
   resume: "Resume the day",
 
-  envelopeHeadline: "An hourly envelope Rocky Mountain Power could plan around.",
+  envelopeHeadline:
+    "An hourly envelope Rocky Mountain Power could plan around.",
   envelopeLine:
     "A format Clearlane proposes: a working example, not a filing. System Critical Hours are our proposal.",
   // "Backtested on {backtest_days} days, {window start} to {window end}." The count is a Num and the
@@ -540,11 +558,24 @@ export const PRESENTER = {
 
   scaleHeadline: "Scale the station to the fleet the MOU allows.",
   scaleLine:
-    "MOU ceiling, not installed capacity. Assumes the fleet does not move prices.",
+    "One station's daily value per MW, multiplied by the fleet in Torus's agreement (MOU) with Rocky Mountain Power.",
+  scaleTimes: "×",
+  scaleEquals: "=",
+  scalePerMw: "per MW-day",
+  scaleCaveat:
+    "This assumes every enrolled MW is a two-hour battery like our reference station, and that the fleet does not move prices. The MOU is a ceiling, not installed capacity.",
   fleetMin: "MW",
   fleetMax: "MW",
 
   closeHeadline: "The ask: pilot the envelope.",
+  closeLine:
+    "Pilot the day-ahead envelope, a format Clearlane proposes, at a few Wattsmart sites this winter.",
+  closeWhat:
+    "Each hour it tells Rocky Mountain Power the reserve held for its calls and the most the station will charge or discharge.",
+  sawRatio: "what filling up at midday is worth, against the off-peak rule",
+  sawCalls: "of Rocky Mountain Power's calls missed in the backtest",
+  sawDays: "of backtest days beat the off-peak rule",
+  sawAria: "What you saw",
 
   footTitle: "Data: CAISO OASIS and EIA.",
   footTraffic: "CAISO day-ahead price and forecasts.",
@@ -562,12 +593,14 @@ export const PRESENTER = {
     "CAISO day-ahead prices; reference battery of one MW and two MWh (our assumption); engine reference race.",
   sourceCall:
     "Our simulated call and station; the event record is Torus's own published RMP case study.",
-  sourceReplan: "Engine re-plan, solved live on this laptop from the simulated call.",
+  sourceReplan:
+    "Engine re-plan, solved live on this laptop from the simulated call.",
   sourceEnvelope:
     "Engine envelope and backtest over the May to October CAISO day-ahead history.",
   sourceScale:
     "MOU and fleet sizes from Torus and Rocky Mountain Power announcements; price-taker scaling.",
-  sourceClose: "Simulated campus shift on the day-ahead prices; not a Torus product.",
+  sourceClose:
+    "Simulated campus shift on the day-ahead prices; not a Torus product.",
 } as const;
 
 /**
