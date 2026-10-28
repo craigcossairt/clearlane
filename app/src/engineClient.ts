@@ -82,9 +82,20 @@ export function defaultSite(): Site {
   };
 }
 
-export function solve(bundle: Bundle, site: Site, policy: Policy): Plan {
+/**
+ * `wear_usd_mwh` is the calibrated wear from backtest.json (stageWearUsdMwh in data.ts), the same
+ * value engine/cli/numbers.ts solves with. Left out, the engine uses its research-start default.
+ */
+export function solve(
+  bundle: Bundle,
+  site: Site,
+  policy: Policy,
+  opts: { wear_usd_mwh?: number } = {},
+): Plan {
   if (!STUB_ACTIVE) {
-    const plan = engineSolve(bundle, site, policy);
+    const plan = engineSolve(bundle, site, policy, {
+      wear_usd_mwh: opts.wear_usd_mwh,
+    });
     planBundle.set(plan, bundle);
     return plan;
   }

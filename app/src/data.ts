@@ -135,6 +135,16 @@ export function assembleDerived(raw: Record<string, unknown>): DerivedFiles {
   return out;
 }
 
+/**
+ * The calibrated wear price ($/MWh) from backtest.json, which engine/cli/numbers.ts also solves
+ * with. undefined when backtest.json is missing: the engine then uses its research-start default.
+ */
+export function stageWearUsdMwh(
+  derived: DerivedFiles = loadDerivedFiles(),
+): number | undefined {
+  return derived.backtest?.result.wear_usd_mwh;
+}
+
 let derivedCache: DerivedFiles | null = null;
 /** Envelope and backtest files, bundled as raw text at build time (no runtime request). */
 export function loadDerivedFiles(): DerivedFiles {

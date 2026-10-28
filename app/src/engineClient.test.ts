@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { describe, expect, it } from "vitest";
-import { loadStageData } from "./data";
+import { loadStageData, stageWearUsdMwh } from "./data";
 import { crash, defaultSite, scriptedCalls, solve, STUB_ACTIVE } from "./engineClient";
 import { resolveStageDay } from "./stageDay";
 
@@ -86,8 +86,23 @@ describe("live engine on the stage bundle (#83)", () => {
   });
 
   it("clearlane matches clearlane_dp_usd_mw_day to the cent", () => {
-    const plan = solve(bundle, site, "clearlane");
+    const plan = solve(bundle, site, "clearlane", { wear_usd_mwh: stageWearUsdMwh() });
     expect(cents(plan.value_usd_per_mw_day)).toBe(cents(numberFor("clearlane_dp_usd_mw_day")));
+  });
+
+  it("the live clearlane solve uses backtest.json's calibrated wear, as numbers.json does (#45)", () => {
+    const wear = stageWearUsdMwh();
+    expect(wear).toBe(numberFor("wear_usd_mwh"));
+    expect(wear).toBe(10.95);
+    const plan = solve(bundle, site, "clearlane", { wear_usd_mwh: wear });
+    expect(plan.wear_usd_mwh).toBe(10.95);
+    expect(plan.value_usd_per_mw_day.toFixed(2)).toBe("48.89");
+    expect(plan.pulse_cycles.toFixed(2)).toBe(numberFor("cycles_today").toFixed(2));
+    expect(plan.pulse_cycles.toFixed(2)).toBe("0.95");
+    // the research-start default would not match the stage numbers
+    expect(cents(solve(bundle, site, "clearlane").value_usd_per_mw_day)).not.toBe(
+      cents(numberFor("clearlane_dp_usd_mw_day")),
+    );
   });
 
   it("solve_ms and replan.solve_ms are measured by the engine, never zero or typed", () => {

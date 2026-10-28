@@ -9,7 +9,7 @@
   "class": "DERIVED",
   "input": {
     "path": "public/derived/backtest.json",
-    "sha256": "3009fbdc04bc54b74d8923a933e5370880a5fadfe7e9b969e90376742f110c2d"
+    "sha256": "ad4210272203c00fa69578fc52fb31b6f71c19247231dd7ff31dd3c355c8ee6d"
   },
   "marks": {
     "bar": "P10 to P90",
@@ -41,10 +41,10 @@
       "label": "Clearlane",
       "policy": "clearlane",
       "usd_per_mw_day": {
-        "mean": 52.5506409220984,
-        "p10": 8.70650045776269,
-        "p50": 39.21366936711043,
-        "p90": 116.19983685636377
+        "mean": 51.52222281976755,
+        "p10": 1.2821246533220731,
+        "p50": 38.686189176294,
+        "p90": 115.998956020155
       }
     }
   ],
