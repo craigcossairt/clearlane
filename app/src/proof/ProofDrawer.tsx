@@ -14,6 +14,7 @@ import { CallLedgerCard } from "./cards/CallLedgerCard";
 import { CrossCheckCard } from "./cards/CrossCheckCard";
 import { IntervalsCard } from "./cards/IntervalsCard";
 import { RtReplayCard } from "./cards/RtReplayCard";
+import { SchStudyCard } from "./cards/SchStudyCard";
 import { StepStatsCard } from "./cards/StepStatsCard";
 import {
   loadProofSources,
@@ -99,6 +100,11 @@ const CARDS: Record<ProofCardId, (s: ProofSources) => ReactNode> = {
   rtReplay: (s) => (
     <ProofCard id="rtReplay" title={COPY.proofRtTitle} source={s.rtReplay}>
       {(data) => <RtReplayCard data={data} />}
+    </ProofCard>
+  ),
+  schStudy: (s) => (
+    <ProofCard id="schStudy" title={COPY.proofSchTitle} source={s.schStudy}>
+      {(data) => <SchStudyCard data={data} />}
     </ProofCard>
   ),
   crosscheck: (s) => (

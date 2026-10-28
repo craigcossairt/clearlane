@@ -13,6 +13,7 @@ export const PROOF_FILES = {
   intervals: "science/backtest_intervals.json",
   callLedger: "public/derived/call_ledger.json",
   rtReplay: "public/derived/rt_replay.json",
+  schStudy: "science/sch_study.json",
   crosscheck: "science/crosscheck.json",
 } as const;
 
@@ -156,12 +157,41 @@ export interface CallLedger {
   summary: LedgerRow[];
 }
 
+export const SCH_RULES = [
+  "ours",
+  "top6_price",
+  "netload_p75",
+  "top4_netload",
+] as const;
+export type SchRule = (typeof SCH_RULES)[number];
+
+export interface SchOverlap {
+  coverage: number;
+  budget: number;
+  lift: number;
+}
+
+/**
+ * science/sch_study.json (#109): our System Critical Hours rule against simpler rules over the
+ * season, by how much of the 2025 call weight each catches. The Mountain reading only: the UTC
+ * reading is a sensitivity check the study marks not for stage.
+ */
+export interface SchStudy {
+  schema: "clearlane.science.sch_study/v1";
+  season: { days: number; first: string; last: string };
+  mean_per_day: Record<SchRule, number>;
+  overlap: Record<SchRule, { mountain: SchOverlap }>;
+  jaccard_vs_ours?: Partial<Record<SchRule, number>>;
+  oct27: { status: string; envelope_system_critical_hb: number[] };
+}
+
 export interface ProofSources {
   stepStats: CardSource<StepStats>;
   backtest: CardSource<BacktestResult>;
   intervals: CardSource<BacktestIntervals>;
   callLedger: CardSource<CallLedger>;
   rtReplay: CardSource<RtReplay>;
+  schStudy: CardSource<SchStudy>;
   crosscheck: CardSource<CrossCheck>;
 }
 
@@ -364,6 +394,37 @@ export const readCallLedger: Reader<CallLedger> = (json) => {
   return json as unknown as CallLedger;
 };
 
+export const readSchStudy: Reader<SchStudy> = (json) => {
+  if (!isObj(json) || json.schema !== "clearlane.science.sch_study/v1")
+    return "schema is not clearlane.science.sch_study/v1";
+  const season = json.season;
+  if (
+    !isObj(season) ||
+    !finite(season.days) ||
+    typeof season.first !== "string" ||
+    typeof season.last !== "string"
+  )
+    return "no season";
+  const mean = json.mean_per_day;
+  if (!isObj(mean) || !SCH_RULES.every((r) => finite(mean[r])))
+    return "no mean hours per day for every rule";
+  const overlap = json.overlap;
+  for (const r of SCH_RULES) {
+    const m = isObj(overlap) && isObj(overlap[r]) ? overlap[r].mountain : null;
+    if (!isObj(m) || !finite(m.coverage) || !finite(m.budget) || !finite(m.lift))
+      return `no Mountain overlap for ${r}`;
+  }
+  const oct = json.oct27;
+  if (
+    !isObj(oct) ||
+    typeof oct.status !== "string" ||
+    !Array.isArray(oct.envelope_system_critical_hb) ||
+    !oct.envelope_system_critical_hb.every(finite)
+  )
+    return "no stage-day check";
+  return json as unknown as SchStudy;
+};
+
 const repoPath = (globKey: string) => globKey.replace(/^(\.\.\/)+/, "");
 
 /** A glob entry is raw text to parse, or a file Vite has already parsed (the call ledger). */
@@ -397,6 +458,7 @@ export function assembleProof(raw: Record<string, unknown>): ProofSources {
     intervals: read(raw, PROOF_FILES.intervals, readIntervals),
     callLedger: read(raw, PROOF_FILES.callLedger, readCallLedger),
     rtReplay: read(raw, PROOF_FILES.rtReplay, readRtReplay),
+    schStudy: read(raw, PROOF_FILES.schStudy, readSchStudy),
     crosscheck: read(raw, PROOF_FILES.crosscheck, readCrossCheck),
   };
 }
@@ -460,6 +522,32 @@ function partFiles(): Record<string, unknown> {
       summary: import.meta.glob("../../../public/derived/rt_replay.json", {
         eager: true,
         import: "summary",
+      }),
+    }),
+    ...byFile({
+      schema: import.meta.glob("../../../science/sch_study.json", {
+        eager: true,
+        import: "schema",
+      }),
+      season: import.meta.glob("../../../science/sch_study.json", {
+        eager: true,
+        import: "season",
+      }),
+      mean_per_day: import.meta.glob("../../../science/sch_study.json", {
+        eager: true,
+        import: "mean_per_day",
+      }),
+      overlap: import.meta.glob("../../../science/sch_study.json", {
+        eager: true,
+        import: "overlap",
+      }),
+      jaccard_vs_ours: import.meta.glob("../../../science/sch_study.json", {
+        eager: true,
+        import: "jaccard_vs_ours",
+      }),
+      oct27: import.meta.glob("../../../science/sch_study.json", {
+        eager: true,
+        import: "oct27",
       }),
     }),
   };

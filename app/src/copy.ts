@@ -145,6 +145,31 @@ export const COPY = {
   proofLedgerRate: "daily rate of",
   proofLedgerStress: ". This is a stress replay, not a forecast.",
 
+  proofSchTitle: "How do System Critical Hours compare with simpler rules?",
+  proofSchLead:
+    "The envelope marks System Critical Hours with one rule Clearlane proposes: the four highest net-load hours of each day plus every jam hour. A separate science script compares it with simpler rules over the season on real PacifiCorp East data, and weighs each against the published call hours, read in Mountain time. It is a study of rules, not a call forecast.",
+  proofSchAria:
+    "For each rule, how much of the published call weight it catches compared with flagging the same number of hours at random, against a dashed line at chance.",
+  proofSchChance: "chance",
+  proofSchAxis: "lift over chance",
+  proofSchBars:
+    "Bars: lift, the share of the call weight a rule catches divided by the share of hours it flags. The dashed line is chance.",
+  proofSchTop6: "Six highest-price hours",
+  proofSchP75: "Net load in the season's top quarter",
+  proofSchTop4: "Four highest net-load hours only",
+  proofSchHoursADay: "hours a day, catching",
+  proofSchOfCalls: "of the call weight with",
+  proofSchOfHours: "of the hours; lift",
+  proofSchAgrees: "; agrees with ours on",
+  proofSchOfFlagged: "of flagged hours",
+  proofSchNone:
+    "No rule here, ours included, catches more of the call hours than chance. System Critical Hours mark the tightest hours on the grid; they do not forecast calls.",
+  proofSchStagePre: "On the stage day the rule, run on the engine's own inputs, flags",
+  proofSchStageMid: "hours,",
+  proofSchStageMatch: ": the same hours the envelope marks.",
+  proofSchStageOff: ". The study's check against the envelope reads:",
+  proofSchSeason: "Season:",
+
   fixedLabel: "Battery on the off-peak rule",
   clearlaneLabel: "Simulated Torus-style station on Clearlane",
   priceOnlyLabel: "Battery-only plan",

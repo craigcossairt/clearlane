@@ -12,6 +12,7 @@ import { App } from "../App";
 import { NumbersContext } from "../components/Num";
 import { COPY } from "../copy";
 import { loadStageData } from "../data";
+import { clock } from "../format";
 import { FlagsContext, type FlagName } from "../flags";
 import { KEYMAP, lookup, RESERVED_KEYS, STRETCH_KEYMAP } from "../keymap";
 import * as F from "../test/fixtures/proof";
@@ -98,10 +99,19 @@ const FIXTURES: Record<ProofCardId, { key: string; ok: string; unknown: string }
   intervals: { key: F.INTERVALS_KEY, ok: F.INTERVALS_OK, unknown: F.UNKNOWN_INTERVALS },
   callLedger: { key: F.CALL_LEDGER_KEY, ok: F.CALL_LEDGER_OK, unknown: F.UNKNOWN_CALL_LEDGER },
   rtReplay: { key: F.RT_REPLAY_KEY, ok: F.RT_REPLAY_OK, unknown: F.UNKNOWN_RT_REPLAY },
+  schStudy: { key: F.SCH_STUDY_KEY, ok: F.SCH_STUDY_OK, unknown: F.UNKNOWN_SCH_STUDY },
   crosscheck: { key: F.CROSSCHECK_KEY, ok: F.CROSSCHECK_OK, unknown: F.UNKNOWN_CROSSCHECK },
 };
 /** Cards whose files are on main in this build. A card wired ahead of its file is empty until it lands. */
-const ON_MAIN: ProofCardId[] = ["stepStats", "backtest", "crosscheck"];
+const ON_MAIN: ProofCardId[] = [
+  "stepStats",
+  "backtest",
+  "intervals",
+  "callLedger",
+  "rtReplay",
+  "schStudy",
+  "crosscheck",
+];
 const IDS = Object.keys(PROOF_FILES) as ProofCardId[];
 const every = (pick: (f: (typeof FIXTURES)[ProofCardId]) => string) =>
   Object.fromEntries(IDS.map((id) => [FIXTURES[id].key, pick(FIXTURES[id])]));
@@ -558,6 +568,70 @@ describe("call-ledger card", () => {
     const text = c.textContent ?? "";
     for (const s of ["359", "2.01", "2.0", "0.98"]) expect(text).toContain(s);
     expect(text).toContain(COPY.proofLedgerStress);
+  });
+});
+
+describe("SCH study card", () => {
+  const card = (raw = F.SCH_STUDY_OK) => {
+    renderDrawer(assembleProof({ [F.SCH_STUDY_KEY]: raw }));
+    return openDrawer().querySelector('[data-card="schStudy"]')!;
+  };
+
+  it("draws each rule's lift against a dashed line at chance, Mountain reading only", () => {
+    const c = card();
+    expect(
+      [...c.querySelectorAll("rect[data-lift]")].map((b) =>
+        b.getAttribute("data-lift"),
+      ),
+    ).toEqual(["ours", "top6_price", "netload_p75", "top4_netload"]);
+    expect(c.querySelector("line[data-chance]")).not.toBeNull();
+    expect(figures(c.querySelector('[data-rule="ours"]'))).toEqual([
+      "6.9",
+      "25%",
+      "29%",
+      "0.88",
+    ]);
+    expect(figures(c.querySelector('[data-rule="top6_price"]'))).toEqual([
+      "6.0",
+      "22%",
+      "25%",
+      "0.90",
+      "58%",
+    ]);
+    // The UTC reading (lift 2 in the fixture) is a sensitivity check, never shown.
+    expect(c.textContent).not.toContain("2.00");
+  });
+
+  it("says it is not a call forecast while no rule beats chance, and only then", () => {
+    expect(card().textContent).toContain(COPY.proofSchNone);
+    cleanup();
+    const beats = card(F.schStudy({ topLift: 1.1 }));
+    expect(beats.querySelector("[data-sch-finding]")).toBeNull();
+    expect(beats.textContent).toContain(COPY.proofSchLead);
+  });
+
+  it("checks the stage day with the pinned key and the envelope's hours", () => {
+    const c = card();
+    expect(
+      c
+        .querySelector('[data-num="sch_hours_today"]')
+        ?.getAttribute("data-num-state"),
+    ).toBe("ok");
+    const times = [...c.querySelectorAll("[data-time]")].map(
+      (t) => t.textContent,
+    );
+    expect(times).toContain(clock(18));
+    expect(times).toContain(clock(23));
+    expect(c.textContent).toContain(COPY.proofSchStageMatch);
+    cleanup();
+    const off = card(F.schStudy({ status: "mismatch", hours: [17, 19] }));
+    expect(off.querySelector("[data-sch-status]")?.textContent).toBe(
+      "mismatch",
+    );
+    expect(off.textContent).not.toContain(COPY.proofSchStageMatch);
+    expect(
+      [...off.querySelectorAll("[data-time]")].map((t) => t.textContent),
+    ).toContain(clock(17));
   });
 });
 

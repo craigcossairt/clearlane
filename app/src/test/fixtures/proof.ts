@@ -279,3 +279,45 @@ export const UNKNOWN_CALL_LEDGER = JSON.stringify({
   },
   summary: [ledgerRow("utc", "clearlane", 97.77, 4, 6, 48.64)],
 });
+
+export const SCH_STUDY_KEY = "../../../science/sch_study.json";
+
+const schRules = <T,>(ours: T, top6_price: T, netload_p75: T, top4_netload: T) => ({
+  ours,
+  top6_price,
+  netload_p75,
+  top4_netload,
+});
+const mountain = (coverage: number, budget: number, lift: number) => ({
+  mountain: { coverage, budget, lift },
+  utc: { coverage: 0.5, budget: 0.25, lift: 2 },
+});
+
+export const schStudy = (opts: { topLift?: number; status?: string; hours?: number[] } = {}) =>
+  JSON.stringify({
+    schema: "clearlane.science.sch_study/v1",
+    class: "DERIVED",
+    season: { days: 177, first: "2026-05-02", last: "2026-10-25" },
+    mean_per_day: schRules(6.88, 6, 6, 4),
+    overlap: schRules(
+      mountain(0.2514, 0.2867, 0.8768),
+      mountain(0.2239, 0.25, opts.topLift ?? 0.8955),
+      mountain(0.2249, 0.25, 0.8995),
+      mountain(0.1548, 0.1667, 0.9289),
+    ),
+    jaccard_vs_ours: { netload_p75: 0.29, top4_netload: 0.58, top6_price: 0.5844 },
+    oct27: {
+      status: opts.status ?? "match",
+      envelope_system_critical_hb: opts.hours ?? [18, 19, 20, 21, 22, 23],
+    },
+    per_day: { "2026-05-02": { ours: [18] } },
+  });
+
+export const SCH_STUDY_OK = schStudy();
+
+export const UNKNOWN_SCH_STUDY = JSON.stringify({
+  schema: "clearlane.science.sch_study/v1",
+  season: { days: 177, first: "2026-05-02", last: "2026-10-25" },
+  mean_per_day: schRules(6.88, 6, 6, 4),
+  overlap: { ours: mountain(0.25, 0.29, 0.88) },
+});
